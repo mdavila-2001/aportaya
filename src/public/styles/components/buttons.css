@@ -3,9 +3,9 @@
     align-items: center;
     justify-content: center;
     border-radius: var(--border-radius-lg);
-    height: 2.5rem;
-    padding: 0 1rem;
-    font-size: 1rem;
+    height: 40px;
+    padding: 0 16px;
+    font-size: 16px;
     font-weight: bold;
     cursor: pointer;
     border: none;
@@ -71,8 +71,8 @@
 }
 
 .btn-icon {
-    width: 2.5rem;
-    height: 2.5rem;
+    width: 40px;
+    height: 40px;
     padding: 0;
     border-radius: 50%;
     background: rgba(0, 0, 0, 0.5);
@@ -91,10 +91,10 @@
     align-items: center;
     justify-content: center;
     position: absolute;
-    top: 1rem;
-    right: 1rem;
-    width: 2.5rem;
-    height: 2.5rem;
+    top: 16px;
+    right: 16px;
+    width: 40px;
+    height: 40px;
     background: rgba(0, 0, 0, 0.5);
     color: #FFFFFF;
     border-radius: 50%;
@@ -117,21 +117,21 @@
 }
 
 .btn-sm {
-    height: 2rem;
-    padding: 0 0.75rem;
-    font-size: 0.875rem;
+    height: 32px;
+    padding: 0 12px;
+    font-size: 14px;
 }
 
 .btn-lg {
-    height: 3rem;
-    padding: 0 1.5rem;
-    font-size: 1.125rem;
+    height: 48px;
+    padding: 0 24px;
+    font-size: 18px;
 }
 
 .btn-xl {
-    height: 3.5rem;
-    padding: 0 2rem;
-    font-size: 1.25rem;
+    height: 56px;
+    padding: 0 32px;
+    font-size: 20px;
 }
 
 .btn-with-icon {
@@ -139,7 +139,7 @@
 }
 
 .btn-with-icon .material-symbols-outlined {
-    font-size: 1.25rem;
+    font-size: 20px;
 }
 
 .btn-block {

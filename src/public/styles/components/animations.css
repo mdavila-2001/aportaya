@@ -11,7 +11,7 @@
 
 .star {
     --star-color: var(--primary);
-    --star-tail-length: 6em;
+    --star-tail-length: 96px;
     --star-tail-height: 2px;
     --star-width: calc(var(--star-tail-length) / 6);
     --fall-duration: 9s;
@@ -26,7 +26,7 @@
     background: linear-gradient(45deg, currentColor, transparent);
     border-radius: 50%;
     filter: drop-shadow(0 0 6px currentColor);
-    transform: translate3d(104em, 0, 0);
+    transform: translate3d(1664px, 0, 0);
     animation: fall var(--fall-duration, 9s) var(--fall-delay, 0s) linear infinite;
 }
 
@@ -53,7 +53,7 @@
 
 @keyframes fall {
     to {
-        transform: translate3d(-30em, 0, 0);
+        transform: translate3d(-480px, 0, 0);
     }
 }
 
