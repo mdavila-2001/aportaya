@@ -1,0 +1,571 @@
+/* ===================================
+   LOGIN PAGE - FONDO ESTRELLADO + FORMULARIO
+   Breakpoints:
+   - Mobile: ≤767px
+   - Tablet: 768px-991px
+   - Desktop: ≥992px
+   =================================== */
+
+/* ===================================
+   FONDO ESTRELLADO ANIMADO
+   =================================== */
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: radial-gradient(ellipse at bottom, #0d1d31 0%, #0c0d13 100%);
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+}
+
+.stars {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+}
+
+.star {
+    --star-color: var(--primary);
+    --star-tail-length: 6em;
+    --star-tail-height: 2px;
+    --star-width: calc(var(--star-tail-length) / 6);
+    --fall-duration: 9s;
+    --tail-fade-duration: var(--fall-duration);
+    
+    position: absolute;
+    top: var(--top-offset, 0);
+    left: var(--left-offset, 0);
+    width: var(--star-tail-length);
+    height: var(--star-tail-height);
+    color: var(--star-color);
+    background: linear-gradient(45deg, currentColor, transparent);
+    border-radius: 50%;
+    filter: drop-shadow(0 0 6px currentColor);
+    transform: rotate(-45deg);
+    animation: fall var(--fall-duration, 9s) var(--fall-delay, 0s) linear infinite, 
+               tail-fade var(--tail-fade-duration, 9s) var(--fall-delay, 0s) ease-out infinite;
+}
+}
+
+.star::before, 
+.star::after {
+    position: absolute;
+    content: '';
+    top: 0;
+    left: calc(var(--star-width) / -2);
+    width: var(--star-width);
+    height: 100%;
+    background: linear-gradient(45deg, transparent, currentColor, transparent);
+    border-radius: inherit;
+    animation: blink 2s linear infinite;
+}
+
+.star::before {
+    transform: rotate(45deg);
+}
+
+.star::after {
+    transform: rotate(-45deg);
+}
+
+.hero-section {
+    display: none;
+}
+
+/* Animaciones de estrellas */
+@keyframes fall {
+    0% {
+        transform: translateY(0) translateX(0) rotate(-45deg);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(100vh) translateX(-100vh) rotate(-45deg);
+        opacity: 0;
+    }
+}
+
+@keyframes tail-fade {
+    0%, 50% {
+        width: var(--star-tail-length);
+        opacity: 1;
+    }
+    70%, 80% {
+        width: 0;
+        opacity: 0.4;
+    }
+    100% {
+        width: 0;
+        opacity: 0;
+    }
+}
+
+@keyframes blink {
+    50% {
+        opacity: 0.6;
+    }
+}
+
+/* ===================================
+   CONTENEDOR DEL LOGIN
+   =================================== */
+
+.login-wrapper {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex: 1;
+    justify-content: flex-end;
+    padding: var(--spXL);
+    width: 100%;
+}
+
+.login-content-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 512px;
+    padding: var(--spL);
+    background: rgba(16, 35, 25, 0.75);
+    backdrop-filter: blur(16px);
+    border-radius: var(--border-radius-lg);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4),
+                0 0 0 1px rgba(17, 212, 114, 0.1);
+    align-self: center;
+}
+
+.login-title {
+    color: var(--text-light);
+    font-family: var(--font-display);
+    font-size: var(--sf2XL);
+    font-weight: 700;
+    line-height: 1.2;
+    text-align: center;
+    padding: var(--spM) var(--spM) var(--spL);
+    margin: 0;
+}
+
+/* ===================================
+   FORMULARIO
+   =================================== */
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spM);
+}
+
+.form-field {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: var(--spM);
+    padding: 0 var(--spM);
+}
+
+.form-label {
+    display: flex;
+    flex-direction: column;
+    min-width: 160px;
+    flex: 1;
+}
+
+/* Inputs */
+.form-input {
+    display: flex;
+    width: 100%;
+    min-width: 0;
+    flex: 1;
+    resize: none;
+    overflow: hidden;
+    border-radius: var(--border-radius-md);
+    color: var(--text-light);
+    outline: none;
+    border: none;
+    background-color: #283930;
+    height: 56px;
+    padding: var(--spM);
+    font-size: var(--sfL);
+    font-weight: 400;
+    line-height: 1.5;
+    font-family: var(--font-base);
+    transition: background-color 0.2s, box-shadow 0.2s;
+}
+
+.form-input::placeholder {
+    color: #9db9ab;
+}
+
+.form-input:focus {
+    outline: none;
+    background-color: #2f4138;
+    box-shadow: 0 0 0 2px rgba(17, 212, 114, 0.3);
+}
+
+.form-input:hover {
+    background-color: #2f4138;
+}
+
+/* Wrapper de contraseña con toggle */
+.password-wrapper {
+    display: flex;
+    width: 100%;
+    flex: 1;
+    align-items: stretch;
+    border-radius: var(--border-radius-md);
+    position: relative;
+}
+
+.password-input {
+    border-radius: var(--border-radius-md);
+    padding-right: calc(var(--spM) + 44px);
+}
+
+.password-toggle {
+    position: absolute;
+    right: var(--spM);
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--spXS);
+    background: transparent;
+    border: none;
+    color: #9db9ab;
+    cursor: pointer;
+    border-radius: var(--border-radius-sm);
+    transition: color 0.2s, background-color 0.2s;
+    height: 40px;
+    width: 40px;
+}
+
+.password-toggle:hover {
+    color: var(--primary);
+    background-color: rgba(17, 212, 114, 0.1);
+}
+
+.password-toggle:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(17, 212, 114, 0.3);
+}
+
+.password-toggle .material-symbols-outlined {
+    font-size: 24px;
+}
+
+/* Link de olvido de contraseña */
+.forgot-password {
+    padding: var(--spXS) var(--spM) 0;
+    text-align: right;
+}
+
+.forgot-link {
+    color: var(--primary);
+    font-size: var(--sfM);
+    font-weight: 500;
+    text-decoration: underline;
+    transition: opacity 0.2s;
+}
+
+.forgot-link:hover {
+    opacity: 0.8;
+}
+
+/* Botón de submit */
+.form-submit {
+    display: flex;
+    padding: var(--spM);
+}
+
+.btn-login {
+    display: flex;
+    min-width: 84px;
+    max-width: 480px;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    border-radius: var(--border-radius-md);
+    height: 48px;
+    padding: 0 var(--spM);
+    flex: 1;
+    background-color: var(--primary);
+    color: #111814;
+    font-size: var(--sfM);
+    font-weight: 700;
+    line-height: 1.5;
+    letter-spacing: 0.015em;
+    border: none;
+    transition: opacity 0.2s, transform 0.2s;
+}
+
+.btn-login:hover {
+    opacity: 0.9;
+    transform: scale(1.02);
+}
+
+.btn-login:active {
+    transform: scale(0.98);
+}
+
+.btn-text {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Términos */
+.terms-text {
+    color: #9db9ab;
+    font-size: var(--sfM);
+    font-weight: 400;
+    line-height: 1.5;
+    padding: var(--spXS) var(--spM) var(--spM);
+    text-align: center;
+    margin: 0;
+}
+
+/* Link de registro */
+.signup-link {
+    color: #9db9ab;
+    font-size: var(--sfM);
+    font-weight: 400;
+    line-height: 1.5;
+    padding: var(--spM) var(--spM) var(--spXS);
+    text-align: center;
+    margin: 0;
+}
+
+.signup-link a {
+    color: var(--primary);
+    text-decoration: underline;
+    font-weight: 600;
+    transition: opacity 0.2s;
+}
+
+.signup-link a:hover {
+    opacity: 0.8;
+}
+
+/* ===================================
+   MOBILE: ≤767px
+   =================================== */
+@media screen and (max-width: 767px) {
+    /* Desactivar tail-fade para mejor performance */
+    .star {
+        animation: fall var(--fall-duration, 9s) var(--fall-delay, 0s) linear infinite;
+    }
+
+    .login-wrapper {
+        padding: var(--spM);
+    }
+
+    .login-content-container {
+        padding: var(--spM);
+        max-width: 100%;
+    }
+
+    .login-title {
+        font-size: var(--sfXL);
+        padding: var(--spM) var(--spXS) var(--spM);
+    }
+
+    .form-field {
+        padding: 0 var(--spXS);
+    }
+
+    .form-submit {
+        padding: var(--spXS) var(--spXS) var(--spM);
+    }
+
+    .btn-login {
+        height: 56px;
+        font-size: var(--sfL);
+    }
+}
+
+/* ===================================
+   TABLET: 768px-991px
+   =================================== */
+@media (min-width: 768px) and (max-width: 991px) {
+    .login-content-container {
+        padding: var(--spXL);
+    }
+
+    .login-title {
+        font-size: var(--sf3XL);
+        padding: var(--spL) var(--spM) var(--spXL);
+    }
+}
+
+/* ===================================
+   DESKTOP: ≥992px
+   =================================== */
+@media (min-width: 992px) {
+    body {
+        background: linear-gradient(135deg, #0d1d31 0%, #0c0d13 50%, #0d1d31 100%);
+        background-size: 200% 200%;
+        animation: gradient-shift 15s ease infinite;
+    }
+
+    @keyframes gradient-shift {
+        0%, 100% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+    }
+
+    .login-wrapper {
+        padding: var(--sp2XL);
+        justify-content: space-between;
+    }
+
+    /* Mostrar hero section en desktop */
+    .hero-section {
+        display: flex;
+        flex: 1;
+        align-items: center;
+        justify-content: center;
+        padding: var(--spXL);
+        max-width: 600px;
+    }
+
+    .hero-content {
+        width: 100%;
+        text-align: center;
+    }
+
+    .hero-title {
+        font-family: var(--font-display);
+        font-size: 48px;
+        font-weight: 700;
+        color: var(--text-light);
+        line-height: 1.2;
+        margin-bottom: var(--spM);
+        letter-spacing: -0.02em;
+    }
+
+    .hero-description {
+        font-family: var(--font-display);
+        font-size: var(--sfL);
+        color: #9db9ab;
+        line-height: 1.6;
+        margin-bottom: var(--sp2XL);
+    }
+
+    .hero-image-wrapper {
+        position: relative;
+        margin: 0 auto;
+        max-width: 400px;
+    }
+
+    .glow-effect {
+        position: absolute;
+        width: 200px;
+        height: 200px;
+        border-radius: 50%;
+        filter: blur(60px);
+        opacity: 0.3;
+        animation: pulse-glow 3s ease-in-out infinite;
+    }
+
+    .glow-top {
+        top: -80px;
+        left: -80px;
+        background: rgba(17, 212, 114, 0.4);
+    }
+
+    .glow-bottom {
+        bottom: -80px;
+        right: -80px;
+        background: rgba(0, 184, 212, 0.4);
+        animation-delay: 1.5s;
+    }
+
+    @keyframes pulse-glow {
+        0%, 100% {
+            opacity: 0.2;
+            transform: scale(1);
+        }
+        50% {
+            opacity: 0.4;
+            transform: scale(1.1);
+        }
+    }
+
+    .hero-image {
+        position: relative;
+        width: 100%;
+        height: auto;
+        filter: drop-shadow(0 10px 30px rgba(17, 212, 114, 0.3));
+        animation: float 6s ease-in-out infinite;
+    }
+
+    @keyframes float {
+        0%, 100% {
+            transform: translateY(0px);
+        }
+        50% {
+            transform: translateY(-20px);
+        }
+    }
+
+    .login-content-container {
+        max-width: 600px;
+        padding: var(--sp2XL);
+        margin-right: var(--sp2XL);
+    }
+
+    .login-title {
+        font-size: var(--sf3XL);
+        padding: var(--spXL) var(--spM) var(--sp2XL);
+    }
+
+    .form-input {
+        height: 64px;
+        font-size: var(--sfL);
+    }
+
+    .btn-login {
+        height: 56px;
+        font-size: var(--sfL);
+    }
+
+    /* Hover más pronunciado en desktop */
+    .form-input:hover {
+        background-color: #334a3d;
+    }
+}
+
+/* ===================================
+   ACCESIBILIDAD
+   =================================== */
+@media (prefers-reduced-motion: reduce) {
+    .star {
+        animation: none;
+        opacity: 0.3;
+    }
+
+    .btn-login:hover,
+    .btn-login:active {
+        transform: none;
+    }
+
+    .hero-image {
+        animation: none;
+    }
+
+    .glow-effect {
+        animation: none;
+    }
+
+    body {
+        animation: none;
+    }
+}

@@ -1,0 +1,121 @@
+:root {
+    /*Colores*/
+    --color-primary: #259feb;
+    --color-secondary: #27e86d;
+    --color-accent: #61d5ff;
+    --color-background: #f4f4f4;
+    --color-surface: #ffffff;
+    --color-border: #e0e0e0;
+    --color-shadow: rgba(0, 0, 0, 0.1);
+
+    /*Color para los estados de éxito*/
+    --color-success: #00bc00;
+    --color-warning: #facc15;
+    --color-error: #dc2626;
+    --color-info: #0766ff;
+
+    /*Color para las opacidades*/
+    --primary: #11d473;
+    --background-light: #f6f8f7;
+    --background-dark: #102219cc;
+
+
+    /*Color de fondo y texto*/
+    --color-bg: #f9fafb;
+    --color-text: #111827;
+    --color-muted: #6b7280;
+    --text-light: #fff;
+    --selected-text: #00af4f;
+    --text-dark: #1e293b;
+    --text-muted: #64748b;
+    --text-light-muted: #94a3b8;
+    --dark-bg: #13473d;
+
+    /* Tipografías */
+    --font-base: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    --font-heading: 'Poppins', sans-serif;
+    --font-display: 'Manrope', sans-serif;
+
+    /* Tamaños de fuente */
+    --sf2XS: 4px;
+    --sfXS: 8px;
+    --sfS: 10px;
+    --sfM: 12px;
+    --sfL: 16px;
+    --sfXL: 24px;
+    --sf2XL: 32px;
+    --sf3XL: 48px;
+
+    /* Espaciados */
+    --sp2XS: 4px;
+    --spXS: 8px;
+    --spS: 12px;
+    --spM: 16px;
+    --spL: 24px;
+    --spXL: 32px;
+    --sp2XL: 48px;
+
+    /* Bordes */
+    --border-radius-sm: 4px;
+    --border-radius-md: 8px;
+    --border-radius-lg: 16px;
+    --border-radius-full: 9999px;
+
+    --font-display: 'Manrope', sans-serif;
+
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: var(--font-base);
+    scroll-behavior: smooth;
+}
+
+html {
+    height: 100%;
+}
+
+body {
+    background-color: var(--dark-bg);
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1;
+}
+
+.btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--border-radius-lg);
+  height: 2.5rem;
+  padding: 0 1rem;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  border: none;
+  transition: background 0.2s, color 0.2s, opacity 0.2s, transform 0.2s;
+}
+.btn-primary {
+  background: var(--primary);
+  color: var(--text-dark);
+}
+.btn-primary:hover {
+  opacity: 0.9;
+  transform: scale(1.05);
+}
+
+.btn-secondary {
+  background: var(--dark-bg);
+  color: var(--text-light);
+}
+
+.btn-secondary:hover {
+  opacity: 0.9;
+  transform: scale(1.05);
+}

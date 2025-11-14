@@ -1,0 +1,129 @@
+.project-details-main{
+  padding: var(--spL);
+}
+
+
+/* Image */
+.project-image-container{
+  width: 100%;
+  aspect-ratio: 16/9;
+  overflow: hidden;
+  border-radius: var(--border-radius-lg);
+  background: linear-gradient(180deg, var(--background-light), rgba(255,255,255,0.6));
+}
+.project-image-container img.project-image{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.project-title{
+  font-family: var(--font-display);
+  font-size: var(--sf2XL);
+  line-height: 1.1;
+  margin: calc(var(--spM) / 2) 0 var(--spS);
+  color: var(--text-light);
+}
+
+.project-meta{
+  color: var(--text-light-muted);
+  font-size: var(--sfM);
+  margin-bottom: var(--spM);
+}
+
+.project-description{
+  color: var(--text-light);
+  font-size: var(--sfL);
+  line-height: 1.6;
+}
+
+/* Finances card */
+.project-stats{
+  margin-top: var(--spL);
+}
+
+.project-finances{
+  border: 1px solid rgba(255,255,255,0.06);
+  padding: var(--spM);
+  border-radius: var(--border-radius-lg);
+  background: transparent;
+}
+
+.project-finances .label{
+  font-size: var(--sfM);
+  color: var(--text-light-muted);
+  margin: 0;
+}
+.project-finances .percent{
+  font-size: var(--sfL);
+  color: var(--primary);
+  margin: 0.25rem 0 0;
+}
+
+.progress-bar{
+  height: 8px; /* match .project-card progress */
+  background: rgba(255,255,255,0.06);
+  border-radius: 9999px;
+  overflow: hidden;
+  margin: var(--spM) 0;
+}
+.progress-fill{
+  height: 100%;
+  background: var(--primary);
+  width: 0%;
+  transition: width 300ms ease;
+}
+
+.raised{
+  color: var(--text-light-muted);
+  font-size: var(--sfM);
+  margin-bottom: var(--spS);
+}
+
+.remains{
+  display: flex;
+  gap: var(--spM);
+  justify-content: space-between;
+  margin-top: var(--spS);
+}
+.remains h3{
+  margin: 0;
+  font-size: var(--sfL);
+}
+.remains p{
+  margin: 0;
+  color: var(--text-light-muted);
+  font-size: var(--sfM);
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  .project-details-main{
+    padding: var(--spXL);
+  }
+  .project-title{ font-size: var(--sf3XL); }
+}
+
+@media (min-width: 992px){
+  main.project-details-main{
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: var(--spXL);
+    align-items: start;
+  }
+  .project-stats{
+    margin-top: 0;
+    position: sticky;
+    top: calc(var(--spL) + 8px);
+  }
+  .project-title{ font-size: var(--sf3XL); }
+}
+
+/* Dark mode adjustments using existing tokens */
+html.dark .project-finances{
+  background: transparent;
+  border-color: rgba(17,212,115,0.14);
+}
+html.dark .project-title{ color: var(--text-light); }
+html.dark .project-description{ color: var(--text-light-muted); }
+html.dark .raised, html.dark .project-meta, html.dark .remains p { color: var(--text-light-muted); }

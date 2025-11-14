@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+    <html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="author" content="Danny Marcelo Dávila Barrancos">
+        <meta name="description" content="Plataforma de donaciones para causas sociales">
+        <meta property="og:title" content="AportaYa">
+        <meta property="og:author" content="Danny Marcelo Dávila Barrancos">
+        <meta property="og:description" content="Plataforma de donaciones para causas sociales">
+        <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
+        <link rel="stylesheet" href="styles/styles.css">
+        <link rel="stylesheet" href="styles/components/header.css">
+        <link rel="stylesheet" href="styles/components/hero.css">
+        <link rel="stylesheet" href="styles/components/footer.css">
+        <link rel="stylesheet" href="styles/landing/projects.css">
+        <link rel="stylesheet" href="styles/landing/faq.css">
+
+        <link rel="stylesheet" href="styles/fonts.css">
+        <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+        <title>AportaYa</title>
+    </head>
+    <body>
+        <header>
+            <div class="header-content">
+                <a class="logo" href="index.html" aria-label="Ir a inicio">
+                    <img src="images/aporta-ya-icon.webp" alt="AportaYa Logo" width="48" height="48">
+                    <img src="images/aporta-ya-letters.webp" alt="AportaYa" width="100" class="letters">
+                </a>
+                <nav class="menu">
+                    <label for="mobile-menu-label" for="menu-switch" class="mobile-menu">
+                        <span class="material-symbols-outlined">menu</span>
+                    </label>
+                    <ul class="menu-items">
+                        <li class="active-menu">
+                            <a href="#">
+                                Inicio
+                            </a>
+                        </li>
+                        <li class="menu-item">
+                            <a href="pages/projects/projects.html">
+                                Explorar
+                            </a>
+                        </li>
+                        <li class="session-actions">
+                            <button class="btn btn-primary" onclick="location.href='pages/auth/login.html'">
+                                Iniciar Sesión
+                            </button>
+                            <button class="btn btn-secondary" onclick="location.href='pages/auth/signup.html'">
+                                Regístrate
+                            </button>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </header>
+        <main>
+            <section class="hero">
+                <div class="hero-content">
+                    <h1 class="hero-title">Impulsa tus ideas, transforma el mundo</h1>
+                    <p class="hero-desc">Descubre proyectos innovadores y apoya a creadores apasionados. Juntos, podemos hacer la diferencia.</p>
+                    <button class="btn btn-primary">Explorar proyectos</button>
+                </div>
+            </section>
+            <section class="categories">
+                <h2>Explora por Categoría</h2>
+                <ul class="category-list">
+                </ul>
+            </section>
+            <section class="projects">
+                <h2>Proyectos Destacados</h2>
+                <ul class="project-list">
+                </ul>
+            </section>
+            <section class="faq">
+                <h2 class="faq-title">Preguntas Frecuentes</h2>
+                <div class="faq-container">
+                    <details class="faq-item">
+                        <summary class="faq-question">
+                            <span>¿Cómo funciona AportaYa?</span>
+                            <span class="material-symbols-outlined">expand_more</span>
+                        </summary>
+                        <article class="faq-answer">
+                            <p>AportaYa es una plataforma donde los creadores pueden presentar sus proyectos y recaudar fondos de una comunidad que cree en sus ideas. Los patrocinadores apoyan proyectos a cambio de recompensas únicas.</p>
+                        </article>
+                    </details>
+                    <details class="faq-item">
+                        <summary class="faq-question">
+                            <span>¿Cómo puedo iniciar mi propio proyecto?</span>
+                            <span class="material-symbols-outlined">expand_more</span>
+                        </summary>
+                        <article class="faq-answer">
+                            <p>Simplemente haz clic en "Inicia tu proyecto", completa el formulario con los detalles de tu idea, establece una meta de financiamiento y ofrece recompensas atractivas para tus patrocinadores. Nuestro equipo revisará y te guiará en el proceso.</p>
+                        </article>
+                    </details>
+                    <details class="faq-item">
+                        <summary class="faq-question">
+                            <span>¿Qué garantías ofrece AportaYa?</span>
+                            <span class="material-symbols-outlined">expand_more</span>
+                        </summary>
+                        <article class="faq-answer">
+                            <p>Fomentamos la transparencia y la comunicación entre creadores y patrocinadores. Si un proyecto no alcanza su meta, los fondos se devuelven a los patrocinadores. Supervisamos los proyectos para asegurar su legitimidad.</p>
+                        </article>
+                    </details>
+                    <details class="faq-item">
+                        <summary class="faq-question">
+                            <span>¿Qué porcentaje se lleva la plataforma?</span>
+                            <span class="material-symbols-outlined">expand_more</span>
+                        </summary>
+                        <article class="faq-answer">
+                            <p>AportaYa cobra una tarifa del 5% sobre los fondos recaudados si el proyecto alcanza su meta. Esto nos ayuda a mantener y mejorar la plataforma. Además, existen las tarifas de procesamiento de pagos estándar.</p>
+                        </article>
+                    </details>
+                </div>
+            </section>
+        </main>
+        <footer>
+            <div class="footer-content">
+                <p>&copy; 2025 AportaYa. Todos los derechos reservados.</p>
+            </div>
+        </footer>
+        <script src="scripts/menu.js"></script>
+        <script type="module" src="scripts/categories.js"></script>
+        <script type="module" src="scripts/projects.js"></script>
+    </body>
+</html>

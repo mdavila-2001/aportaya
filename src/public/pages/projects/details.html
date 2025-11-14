@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="author" content="Danny Marcelo Dávila Barrancos">
+        <meta name="description" content="Listado de proyectos para colaborar y donar">
+        <meta property="og:title" content="Proyectos - AportaYa">
+        <meta property="og:author" content="Danny Marcelo Dávila Barrancos">
+        <meta property="og:description" content="Listado de proyectos para colaborar y donar">
+        <link rel="shortcut icon" href="../../images/favicon.ico" type="image/x-icon">
+        <link rel="stylesheet" href="../../styles/styles.css">
+        <link rel="stylesheet" href="../../styles/components/header.css">
+    <link rel="stylesheet" href="../../styles/components/footer.css">
+
+    <link rel="stylesheet" href="../../styles/fonts.css">
+    <link rel="stylesheet" href="../../styles/pages/project-detail.css">
+        <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+        <title>Detalles del Proyecto</title>
+    </head>
+    <body>
+        <header>
+            <div class="header-content">
+                <a class="logo" href="../../index.html" aria-label="Ir a inicio">
+                    <img src="../../images/aporta-ya-icon.webp" alt="AportaYa Logo" width="48" height="48">
+                    <img src="../../images/aporta-ya-letters.webp" alt="AportaYa" width="100" class="letters">
+                </a>
+                <nav class="menu" aria-label="Menú principal">
+                    <label for="mobile-menu-label" for="menu-switch" class="mobile-menu">
+                        <span class="material-symbols-outlined">menu</span>
+                    </label>
+                    <ul class="menu-items">
+                        <li class="menu-item">
+                            <a href="../../index.html">
+                                Inicio
+                            </a>
+                        </li>
+                        <li class="menu-item">
+                            <a href="projects.html">
+                                Explorar
+                            </a>
+                        </li>
+                        <li class="session-actions">
+                            <button class="btn btn-primary" onclick="location.href='auth/login.html'">
+                                Iniciar Sesión
+                            </button>
+                            <button class="btn btn-secondary" onclick="location.href='auth/signup.html'">
+                                Regístrate
+                            </button>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </header>
+        <main class="project-details-main">
+            <section class="project-details">
+                <div class="project-image-container">
+                    <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuDt8MV2NcRNMm6H5vPYk7V-8dOfMzcvP8oSKIA09cuf92DOREOj9tEm-G1xJ6FSEekoX8GbKO6zMyHA15RqdlFD1jmhv5WU6GVV--7-1uPx4hhp83FICIN2oFnLO6lMSd8CefYle0M5Ern1V5sSqJ_tyxRNeDl-fy-JnjunFo2XIy9Qw9W6OMOMmnCgMG9hLYv86NzSJK1xaQZl-avdtNivfeDSVbZlvYzby8GVUhHrkooWhPTWDUrbyyIYQCR0w_r2DelHRsvpwamk" alt="Project" class="project-image" id="project-cover">
+                </div>
+                <h1 class="project-title" id="project-title">Título del Proyecto</h1>
+                <p class="project-meta" id="project-meta">
+                    Categoria · Creado por Nombre del Creador · Ciudad, País
+                </p>
+                <div class="project-description" id="project-description">
+                    <p>Texto descriptivo del proyecto. Aquí se mostrará la descripción completa traída desde el JSON o API. Esta sección sirve como fallback si JS no se ejecuta.</p>
+                </div>
+            </section>
+            <section class="project-stats">
+                <article class="project-finances">
+                    <div class="goal-achieved">
+                        <h2 class="label">Financiado</h2>
+                        <h3 class="percent" id="project-percent">65%</h3>
+                    </div>
+                    <div class="progress-bar" aria-hidden="true">
+                        <div class="progress-fill" id="project-progress-fill" style="width:65%"></div>
+                    </div>
+                    <p class="raised" id="project-raised">$6,500 recaudados de $10,000</p>
+                    <div class="remains">
+                        <div class="sponsors">
+                            <h3 id="project-sponsors">125</h3>
+                            <p>Patrocinadores</p>
+                        </div>
+                        <div class="days-left">
+                            <h3 id="project-days">20</h3>
+                            <p>Días restantes</p>
+                        </div>
+                    </div>
+                </article>
+            </section>
+        </main>
+        <footer>
+            <div class="footer-content">
+                <p>&copy; 2025 AportaYa. Todos los derechos reservados.</p>
+            </div>
+        </footer>
+        <script src="../../scripts/pages/detail-loader.js" defer></script>
+    </body>
+</html>

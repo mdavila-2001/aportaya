@@ -1,0 +1,337 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: radial-gradient(ellipse at bottom, #0d1d31 0%, #0c0d13 100%);
+    background-attachment: fixed;
+    font-family: var(--font-display);
+    margin: 0;
+    padding: var(--spM);
+}
+
+.stars {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    transform: rotate(-45deg);
+    pointer-events: none;
+    z-index: 0;
+}
+
+.star {
+    --star-color: var(--primary);
+    --star-tail-length: 6em;
+    --star-tail-height: 2px;
+    --star-width: calc(var(--star-tail-length) / 6);
+    --fall-duration: 9s;
+    --tail-fade-duration: var(--fall-duration);
+    
+    position: absolute;
+    top: var(--top-offset, 50vh);
+    left: 0;
+    width: var(--star-tail-length);
+    height: var(--star-tail-height);
+    color: var(--star-color);
+    background: linear-gradient(45deg, currentColor, transparent);
+    border-radius: 50%;
+    filter: drop-shadow(0 0 6px currentColor);
+    transform: translate3d(104em, 0, 0);
+    animation: fall var(--fall-duration, 9s) var(--fall-delay, 0s) linear infinite, 
+               tail-fade var(--tail-fade-duration, 9s) var(--fall-delay, 0s) ease-out infinite;
+}
+
+.star::before, 
+.star::after {
+    position: absolute;
+    content: '';
+    top: 0;
+    left: calc(var(--star-width) / -2);
+    width: var(--star-width);
+    height: 100%;
+    background: linear-gradient(45deg, transparent, currentColor, transparent);
+    border-radius: inherit;
+    animation: blink 2s linear infinite;
+}
+
+.star::before {
+    transform: rotate(45deg);
+}
+
+.star::after {
+    transform: rotate(-45deg);
+}
+
+@keyframes fall {
+    to {
+        transform: translate3d(-30em, 0, 0);
+    }
+}
+
+@keyframes tail-fade {
+    0%, 50% {
+        width: var(--star-tail-length);
+        opacity: 1;
+    }
+    70%, 80% {
+        width: 0;
+        opacity: 0.4;
+    }
+    100% {
+        width: 0;
+        opacity: 0;
+    }
+}
+
+@keyframes blink {
+    50% {
+        opacity: 0.6;
+    }
+}
+
+.signup-page {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 512px;
+    display: flex;
+    flex-direction: column;
+}
+
+.signup-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spM);
+}
+
+.signup-title {
+    font-family: var(--font-display);
+    font-size: 28px;
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.015em;
+    color: var(--text-light);
+    text-align: center;
+    margin: 0 0 var(--spM);
+    padding: var(--spL) 0 var(--spS);
+}
+
+.signup-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spM);
+    width: 100%;
+}
+
+.form-field {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    position: relative;
+}
+
+.form-row {
+    display: flex;
+    gap: var(--spM);
+    width: 100%;
+}
+
+.form-row > * {
+    flex: 1;
+    min-width: 0;
+}
+
+.signup-form input,
+.signup-form select {
+    width: 100%;
+    height: 56px;
+    padding: var(--spM);
+    border-radius: var(--border-radius-lg);
+    border: none;
+    background-color: #283930;
+    color: var(--text-light);
+    font-size: var(--sfL);
+    font-weight: 400;
+    line-height: normal;
+    transition: all 0.2s ease;
+}
+
+.signup-form input::placeholder,
+.signup-form select option[value=""]:disabled {
+    color: #9db9ab;
+}
+
+.signup-form input:focus,
+.signup-form select:focus {
+    outline: none;
+    background-color: rgba(40, 57, 48, 0.9);
+    box-shadow: 0 0 0 2px rgba(17, 212, 114, 0.3);
+}
+
+/* Select specific */
+.signup-form select {
+    appearance: none;
+    cursor: pointer;
+    background-image: url('data:image/svg+xml,%3csvg xmlns=%27http://www.w3.org/2000/svg%27 fill=%27none%27 viewBox=%270 0 20 20%27%3e%3cpath stroke=%27%239db9ab%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27 stroke-width=%271.5%27 d=%27M6 8l4 4 4-4%27/%3e%3c/svg%3e');
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    background-size: 1.5em 1.5em;
+    padding-right: 2.5rem;
+}
+
+.signup-form select option {
+    background-color: var(--dark-bg);
+    color: var(--text-light);
+}
+
+/* Password field con toggle solo CSS */
+.password-field {
+    position: relative;
+}
+
+.password-field input[type="password"],
+.password-field input[type="text"] {
+    padding-right: 3rem;
+}
+
+.toggle-checkbox {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.toggle-label {
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 56px;
+    width: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    color: #9db9ab;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.toggle-label:hover {
+    color: var(--text-light);
+}
+
+.toggle-label .material-symbols-outlined {
+    font-size: 24px;
+}
+
+/* ===================================
+   MOBILE: ≤767px - Optimización
+   =================================== */
+@media screen and (max-width: 767px) {
+    /* Desactivar tail-fade para mejor performance */
+    .star {
+        animation: fall var(--fall-duration, 9s) var(--fall-delay, 0s) linear infinite;
+    }
+}
+
+/* ===================================
+   ACCESIBILIDAD
+   =================================== */
+@media (prefers-reduced-motion: reduce) {
+    .star {
+        animation: none;
+        opacity: 0.3;
+    }
+
+    .btn-submit:hover {
+        transform: none;
+    }
+}
+.toggle-checkbox:not(:checked) ~ .toggle-label .icon-show {
+    display: block;
+}
+
+.toggle-checkbox:not(:checked) ~ .toggle-label .icon-hide {
+    display: none;
+}
+
+.toggle-checkbox:checked ~ .toggle-label .icon-show {
+    display: none;
+}
+
+.toggle-checkbox:checked ~ .toggle-label .icon-hide {
+    display: block;
+}
+
+.password-field input[type="password"] {
+    -webkit-text-security: disc;
+}
+
+.toggle-checkbox:checked ~ input[type="password"] {
+    -webkit-text-security: none;
+}
+
+.btn-submit {
+    width: 100%;
+    height: 40px;
+    margin-top: var(--spS);
+    font-size: var(--sfM);
+    font-weight: 700;
+    letter-spacing: 0.015em;
+}
+
+.legal-text,
+.login-link {
+    text-align: center;
+    font-size: var(--sfM);
+    line-height: normal;
+    color: #9db9ab;
+    margin: 0;
+    padding: var(--spXS) var(--spM);
+}
+
+.login-link a {
+    color: var(--text-light);
+    text-decoration: underline;
+    transition: color 0.2s ease;
+}
+
+.login-link a:hover {
+    color: var(--primary);
+}
+@media (min-width: 768px) and (max-width: 991px) {
+    body {
+        padding: var(--spXL);
+    }
+
+    .signup-page {
+        max-width: 600px;
+    }
+
+    .signup-title {
+        font-size: 32px;
+    }
+}
+
+@media (min-width: 992px) {
+    .signup-page {
+        max-width: 640px;
+        padding: var(--sp2XL) 0;
+    }
+
+    .signup-container {
+        gap: var(--spL);
+    }
+
+    .signup-form {
+        gap: var(--spL);
+    }
+
+    .signup-title {
+        font-size: 36px;
+        margin-bottom: var(--spL);
+    }
+}
