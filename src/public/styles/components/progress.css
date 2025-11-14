@@ -1,0 +1,173 @@
+.progress-bar {
+    width: 100%;
+    height: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 999px;
+    overflow: hidden;
+    position: relative;
+}
+
+.progress-fill {
+    height: 100%;
+    background: var(--primary);
+    border-radius: 999px;
+    transition: width 0.3s ease;
+}
+
+.progress-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spS);
+}
+
+.progress-label {
+    font-family: var(--font-display);
+    font-size: var(--sfM);
+    color: var(--text-light-muted);
+}
+
+.progress-value {
+    font-family: var(--font-display);
+    font-size: var(--sfL);
+    font-weight: 700;
+    color: var(--primary);
+}
+
+.goal-percentage {
+    font-family: var(--font-display);
+    font-size: var(--sfL);
+    font-weight: 700;
+    color: var(--primary);
+}
+
+.raised-amount {
+    font-family: var(--font-display);
+    font-size: var(--sfL);
+    color: var(--text-light);
+    font-weight: 600;
+}
+
+.project-goal {
+    font-family: var(--font-display);
+    font-size: var(--sfL);
+    color: var(--text-light-muted);
+    display: block;
+}
+
+.progress-bar-sm {
+    height: 4px;
+}
+
+.progress-bar-md {
+    height: 8px;
+}
+
+.progress-bar-lg {
+    height: 12px;
+}
+
+.progress-bar-xl {
+    height: 16px;
+}
+
+.progress-success .progress-fill {
+    background: var(--color-success);
+}
+
+.progress-warning .progress-fill {
+    background: var(--color-warning);
+}
+
+.progress-error .progress-fill {
+    background: var(--color-error);
+}
+
+.progress-info-fill .progress-fill {
+    background: var(--color-info);
+}
+
+.progress-gradient .progress-fill {
+    background: linear-gradient(90deg, var(--primary) 0%, var(--color-secondary) 100%);
+}
+
+.progress-animated .progress-fill {
+    background-size: 40px 40px;
+    background-image: linear-gradient(
+        45deg,
+        rgba(255, 255, 255, 0.2) 25%,
+        transparent 25%,
+        transparent 50%,
+        rgba(255, 255, 255, 0.2) 50%,
+        rgba(255, 255, 255, 0.2) 75%,
+        transparent 75%,
+        transparent
+    );
+    animation: progress-stripes 1s linear infinite;
+}
+
+@keyframes progress-stripes {
+    0% {
+        background-position: 40px 0;
+    }
+    100% {
+        background-position: 0 0;
+    }
+}
+
+.progress-with-label {
+    position: relative;
+    height: 24px;
+}
+
+.progress-with-label .progress-fill {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding-right: var(--spS);
+}
+
+.progress-inner-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: var(--sfS);
+    font-weight: 600;
+    color: var(--text-light);
+    z-index: 1;
+}
+
+.progress-circle {
+    position: relative;
+    width: 120px;
+    height: 120px;
+}
+
+.progress-circle svg {
+    transform: rotate(-90deg);
+}
+
+.progress-circle-bg {
+    fill: none;
+    stroke: rgba(255, 255, 255, 0.1);
+    stroke-width: 8;
+}
+
+.progress-circle-fill {
+    fill: none;
+    stroke: var(--primary);
+    stroke-width: 8;
+    stroke-linecap: round;
+    transition: stroke-dashoffset 0.3s ease;
+}
+
+.progress-circle-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--primary);
+}

@@ -87,35 +87,3 @@ body {
 main {
     flex: 1;
 }
-
-.btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: var(--border-radius-lg);
-  height: 2.5rem;
-  padding: 0 1rem;
-  font-size: 1rem;
-  font-weight: bold;
-  cursor: pointer;
-  border: none;
-  transition: background 0.2s, color 0.2s, opacity 0.2s, transform 0.2s;
-}
-.btn-primary {
-  background: var(--primary);
-  color: var(--text-dark);
-}
-.btn-primary:hover {
-  opacity: 0.9;
-  transform: scale(1.05);
-}
-
-.btn-secondary {
-  background: var(--dark-bg);
-  color: var(--text-light);
-}
-
-.btn-secondary:hover {
-  opacity: 0.9;
-  transform: scale(1.05);
-}

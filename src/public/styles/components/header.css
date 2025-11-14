@@ -52,12 +52,11 @@ header {
     margin: 0;
 }
 
-/* Menú móvil activo */
 .menu-items.active {
     display: flex;
     flex-direction: column;
     position: fixed;
-    top: 68px; /* Altura aproximada del header */
+    top: 68px;
     left: 0;
     right: 0;
     background-color: var(--background-dark);

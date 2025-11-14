@@ -2,8 +2,6 @@
   padding: var(--spL);
 }
 
-
-/* Image */
 .project-image-container{
   width: 100%;
   aspect-ratio: 16/9;
@@ -38,7 +36,6 @@
   line-height: 1.6;
 }
 
-/* Finances card */
 .project-stats{
   margin-top: var(--spL);
 }
@@ -62,7 +59,7 @@
 }
 
 .progress-bar{
-  height: 8px; /* match .project-card progress */
+  height: 8px;
   background: rgba(255,255,255,0.06);
   border-radius: 9999px;
   overflow: hidden;
@@ -119,7 +116,6 @@
   .project-title{ font-size: var(--sf3XL); }
 }
 
-/* Dark mode adjustments using existing tokens */
 html.dark .project-finances{
   background: transparent;
   border-color: rgba(17,212,115,0.14);

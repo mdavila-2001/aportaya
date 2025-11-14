@@ -9,14 +9,28 @@
         <meta property="og:author" content="Danny Marcelo Dávila Barrancos">
         <meta property="og:description" content="Plataforma de donaciones para causas sociales">
         <link rel="shortcut icon" href="../../images/favicon.ico" type="image/x-icon">
+        
+        <!-- CSS Base -->
         <link rel="stylesheet" href="../../styles/styles.css">
         <link rel="stylesheet" href="../../styles/fonts.css">
+        
+        <!-- Componentes Reutilizables -->
+        <link rel="stylesheet" href="../../styles/components/buttons.css">
+        <link rel="stylesheet" href="../../styles/components/forms.css">
+        <link rel="stylesheet" href="../../styles/components/animations.css">
+        
+        <!-- Estilos de Página -->
         <link rel="stylesheet" href="../../styles/pages/auth/signup.css">
+        
+        <!-- Iconos -->
         <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
         <title>Regístrate - AportaYa</title>
     </head>
     <body>
         <div class="stars">
+            <div class="star"></div>
+            <div class="star"></div>
+            <div class="star"></div>
             <div class="star"></div>
             <div class="star"></div>
             <div class="star"></div>
@@ -74,21 +88,21 @@
                 <h1 class="signup-title">Crea tu cuenta</h1>
                 <form action="#" method="POST" class="signup-form">
                     <div class="form-field">
-                        <input type="email" name="email" id="email" placeholder="Correo electrónico" required>
+                        <input type="email" name="email" id="email" placeholder="Correo electrónico" required class="form-input">
                     </div>
                     
                     <div class="form-row">
-                        <input type="text" name="first-name" id="first-name" placeholder="Nombre" required>
-                        <input type="text" name="middle-name" id="middle-name" placeholder="Segundo Nombre">
+                        <input type="text" name="first-name" id="first-name" placeholder="Nombre" required class="form-input">
+                        <input type="text" name="middle-name" id="middle-name" placeholder="Segundo Nombre" class="form-input">
                     </div>
                     
                     <div class="form-row">
-                        <input type="text" name="last-name" id="last-name" placeholder="Apellido Paterno" required>
-                        <input type="text" name="second-last-name" id="second-last-name" placeholder="Apellido Materno">
+                        <input type="text" name="last-name" id="last-name" placeholder="Apellido Paterno" required class="form-input">
+                        <input type="text" name="second-last-name" id="second-last-name" placeholder="Apellido Materno" class="form-input">
                     </div>
                     
                     <div class="form-field password-field">
-                        <input type="password" name="password" id="password" placeholder="Contraseña" required>
+                        <input type="password" name="password" id="password" placeholder="Contraseña" required class="form-input">
                         <input type="checkbox" id="toggle-password" class="toggle-checkbox">
                         <label for="toggle-password" class="toggle-label" aria-label="Mostrar/ocultar contraseña">
                             <span class="material-symbols-outlined icon-show">visibility</span>
@@ -97,7 +111,7 @@
                     </div>
                     
                     <div class="form-field password-field">
-                        <input type="password" name="confirm-password" id="confirm-password" placeholder="Repetir Contraseña" required>
+                        <input type="password" name="confirm-password" id="confirm-password" placeholder="Repetir Contraseña" required class="form-input">
                         <input type="checkbox" id="toggle-confirm" class="toggle-checkbox">
                         <label for="toggle-confirm" class="toggle-label" aria-label="Mostrar/ocultar contraseña">
                             <span class="material-symbols-outlined icon-show">visibility</span>
@@ -106,8 +120,8 @@
                     </div>
                     
                     <div class="form-row">
-                        <input type="date" name="birthdate" id="birthdate" placeholder="Fecha de Nacimiento" required>
-                        <select name="gender" id="gender" required>
+                        <input type="date" name="birthdate" id="birthdate" placeholder="Fecha de Nacimiento" required class="form-input">
+                        <select name="gender" id="gender" required class="form-input">
                             <option value="" disabled selected>Género</option>
                             <option value="M">Masculino</option>
                             <option value="F">Femenino</option>

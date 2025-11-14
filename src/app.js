@@ -1,6 +1,10 @@
 const express = require('express');
 const cors = require('cors');
 
+const path = require('node:path');
+require('dotenv').config({ path: path.resolve(__dirname, '..', '.env') });
+const { testConnection } = require('./config/dbConnection');
+
 const app = express();
 
 app.use(cors());
@@ -13,6 +17,11 @@ app.get('/', (req, res) => {
   res.send('Bienvenido a la API de AportaYa');
 });
 
-app.listen(PORT, () => {
-  console.log(`Servidor corriendo en el puerto ${PORT}`);
-});
+const startServer = async () => {
+    await testConnection();
+    app.listen(PORT, () => {
+        console.log(`Servidor corriendo en el puerto http://localhost:${PORT}`);
+    });
+};
+
+startServer();

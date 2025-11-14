@@ -1,0 +1,174 @@
+.chip {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--spXS) var(--spM);
+    border-radius: var(--border-radius-lg);
+    font-size: var(--sfM);
+    font-weight: 500;
+    cursor: pointer;
+    border: none;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+    gap: var(--spXS);
+}
+
+.chip-default {
+    background-color: #83ffe84a;
+    color: var(--text-light);
+}
+
+.chip-default:hover {
+    background-color: #2fffd966;
+}
+
+.chip.active,
+.chip[aria-pressed="true"] {
+    background-color: var(--primary);
+    color: var(--text-dark);
+    font-weight: 600;
+}
+
+.chip-primary {
+    background-color: var(--primary);
+    color: var(--text-dark);
+}
+
+.chip-primary:hover {
+    opacity: 0.9;
+}
+
+.chip-secondary {
+    background-color: var(--dark-bg);
+    color: var(--text-light);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.chip-secondary:hover {
+    border-color: var(--primary);
+}
+
+.chip-outline {
+    background-color: transparent;
+    color: var(--primary);
+    border: 1px solid var(--primary);
+}
+
+.chip-outline:hover,
+.chip-outline.active {
+    background-color: var(--primary);
+    color: var(--text-dark);
+}
+
+.badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2px 8px;
+    border-radius: var(--border-radius-sm);
+    font-size: var(--sfS);
+    font-weight: 600;
+    line-height: 1;
+}
+
+.badge-success {
+    background-color: var(--color-success);
+    color: white;
+}
+
+.badge-warning {
+    background-color: var(--color-warning);
+    color: var(--text-dark);
+}
+
+.badge-error {
+    background-color: var(--color-error);
+    color: white;
+}
+
+.badge-info {
+    background-color: var(--color-info);
+    color: white;
+}
+
+.chip-with-icon,
+.badge-with-icon {
+    gap: 4px;
+}
+
+.chip-with-icon .material-symbols-outlined,
+.badge-with-icon .material-symbols-outlined {
+    font-size: 16px;
+}
+
+.chip-removable {
+    padding-right: var(--spXS);
+}
+
+.chip-remove-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    color: currentColor;
+    cursor: pointer;
+    padding: 2px;
+    margin-left: 4px;
+    border-radius: 50%;
+    transition: background 0.2s;
+}
+
+.chip-remove-btn:hover {
+    background: rgba(0, 0, 0, 0.2);
+}
+
+.chip-container,
+.category-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spS);
+}
+
+.chip-sm {
+    padding: 4px 12px;
+    font-size: var(--sfS);
+}
+
+.chip-lg {
+    padding: 12px 20px;
+    font-size: var(--sfL);
+}
+
+.status-badge {
+    padding: 4px 12px;
+    border-radius: var(--border-radius-full);
+    font-size: var(--sfS);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.status-active {
+    background: rgba(0, 188, 0, 0.2);
+    color: var(--color-success);
+    border: 1px solid var(--color-success);
+}
+
+.status-pending {
+    background: rgba(250, 204, 21, 0.2);
+    color: var(--color-warning);
+    border: 1px solid var(--color-warning);
+}
+
+.status-completed {
+    background: rgba(7, 102, 255, 0.2);
+    color: var(--color-info);
+    border: 1px solid var(--color-info);
+}
+
+.status-cancelled {
+    background: rgba(220, 38, 38, 0.2);
+    color: var(--color-error);
+    border: 1px solid var(--color-error);
+}
