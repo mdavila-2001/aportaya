@@ -74,19 +74,19 @@ INSERT INTO roles.ability (id, name, label, module_id) VALUES
 -- Habilidades para Dashboard (2)
 INSERT INTO roles.ability (id, name, label, module_id) VALUES
 (2, 'view', 'Ver Dashboard', 2),
-(3, 'view_stats', 'Ver Estadísticas', 2),
-(4, 'view_analytics', 'Ver Analytics', 2);
+(3, 'stats', 'Ver Estadísticas', 2),
+(4, 'analytics', 'Ver Analytics', 2);
 
 -- Habilidades para Configuración General (3)
 INSERT INTO roles.ability (id, name, label, module_id) VALUES
-(5, 'view', 'Ver Configuración', 3),
-(6, 'edit', 'Editar Configuración', 3),
+(5, 'read', 'Ver Configuración', 3),
+(6, 'update', 'Editar Configuración', 3),
 (7, 'manage_platform', 'Gestionar Plataforma', 3);
 
 -- Habilidades para Configuración de Usuario (4)
 INSERT INTO roles.ability (id, name, label, module_id) VALUES
-(8, 'view', 'Ver Mi Perfil', 4),
-(9, 'edit', 'Editar Mi Perfil', 4),
+(8, 'read', 'Ver Mi Perfil', 4),
+(9, 'update', 'Editar Mi Perfil', 4),
 (10, 'change_password', 'Cambiar Contraseña', 4);
 
 -- Habilidades para Gestión de Usuarios (5)
@@ -423,7 +423,26 @@ DECLARE
     v_user1_id UUID;
     v_user2_id UUID;
     v_user3_id UUID;
+    v_img1_id UUID;
+    v_img2_id UUID;
+    v_img3_id UUID;
 BEGIN
+    -- Primero crear las imágenes de perfil (simulando URLs almacenadas como archivos)
+    INSERT INTO files.image (file_name, file_path, alt_text, is_temporary)
+    VALUES 
+        ('avatar_maria.jpg', 'https://i.pravatar.cc/150?img=1', 'Avatar de María', FALSE)
+    RETURNING id INTO v_img1_id;
+    
+    INSERT INTO files.image (file_name, file_path, alt_text, is_temporary)
+    VALUES 
+        ('avatar_carlos.jpg', 'https://i.pravatar.cc/150?img=12', 'Avatar de Carlos', FALSE)
+    RETURNING id INTO v_img2_id;
+    
+    INSERT INTO files.image (file_name, file_path, alt_text, is_temporary)
+    VALUES 
+        ('avatar_ana.jpg', 'https://i.pravatar.cc/150?img=5', 'Avatar de Ana', FALSE)
+    RETURNING id INTO v_img3_id;
+    
     -- Usuario 1: María González (Creadora de proyectos tech)
     SELECT users.register_user(
         p_first_name := 'María',
@@ -432,7 +451,7 @@ BEGIN
         p_password := '12345678',
         p_gender := 'female',
         p_birth_date := '1990-05-15',
-        p_profile_image_url := 'https://i.pravatar.cc/150?img=1',
+        p_profile_image_id := v_img1_id,
         p_role_id := 8  -- User (Creator)
     ) INTO v_user1_id;
     
@@ -447,7 +466,7 @@ BEGIN
         p_password := '12345678',
         p_gender := 'male',
         p_birth_date := '1985-08-22',
-        p_profile_image_url := 'https://i.pravatar.cc/150?img=12',
+        p_profile_image_id := v_img2_id,
         p_role_id := 8  -- User (Creator)
     ) INTO v_user2_id;
     
@@ -462,14 +481,14 @@ BEGIN
         p_password := '12345678',
         p_gender := 'female',
         p_birth_date := '1992-03-10',
-        p_profile_image_url := 'https://i.pravatar.cc/150?img=5',
+        p_profile_image_id := v_img3_id,
         p_role_id := 8  -- User (Creator)
     ) INTO v_user3_id;
     
     UPDATE users.user SET status = 'active' WHERE id = v_user3_id;
     UPDATE users.email_verification_token SET used_at = now() WHERE user_id = v_user3_id;
     
-    RAISE NOTICE 'Usuarios de prueba creados exitosamente';
+    RAISE NOTICE 'Imágenes de perfil y usuarios de prueba creados exitosamente';
 END $$;
 
 -- ========================================
@@ -483,11 +502,46 @@ DECLARE
     v_user1_id UUID;
     v_user2_id UUID;
     v_user3_id UUID;
+    -- Arrays para almacenar IDs de imágenes
+    v_project1_images UUID[];
+    v_project2_images UUID[];
+    v_project3_images UUID[];
+    v_temp_img_id UUID;
 BEGIN
     -- Obtener IDs de usuarios
     SELECT id INTO v_user1_id FROM users.user WHERE email = 'maria.gonzalez@example.com';
     SELECT id INTO v_user2_id FROM users.user WHERE email = 'carlos.ramirez@example.com';
     SELECT id INTO v_user3_id FROM users.user WHERE email = 'ana.martinez@example.com';
+    
+    -- ========================================
+    -- CREAR IMÁGENES PARA PROYECTO 1
+    -- ========================================
+    v_project1_images := ARRAY[]::UUID[];
+    
+    INSERT INTO files.image (file_name, file_path, alt_text, is_temporary)
+    VALUES ('eduai_cover.jpg', 'https://images.unsplash.com/photo-1531482615713-2afd69097998?w=800', 'Estudiantes con laptop', FALSE)
+    RETURNING id INTO v_temp_img_id;
+    v_project1_images := array_append(v_project1_images, v_temp_img_id);
+    
+    INSERT INTO files.image (file_name, file_path, alt_text, is_temporary)
+    VALUES ('eduai_interface.jpg', 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=800', 'Interfaz de la app', FALSE)
+    RETURNING id INTO v_temp_img_id;
+    v_project1_images := array_append(v_project1_images, v_temp_img_id);
+    
+    INSERT INTO files.image (file_name, file_path, alt_text, is_temporary)
+    VALUES ('eduai_student.jpg', 'https://images.unsplash.com/photo-1509062522246-3755977927d7?w=800', 'Estudiante usando la app', FALSE)
+    RETURNING id INTO v_temp_img_id;
+    v_project1_images := array_append(v_project1_images, v_temp_img_id);
+    
+    INSERT INTO files.image (file_name, file_path, alt_text, is_temporary)
+    VALUES ('eduai_team.jpg', 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=800', 'Equipo de trabajo', FALSE)
+    RETURNING id INTO v_temp_img_id;
+    v_project1_images := array_append(v_project1_images, v_temp_img_id);
+    
+    INSERT INTO files.image (file_name, file_path, alt_text, is_temporary)
+    VALUES ('eduai_dashboard.jpg', 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=800', 'Dashboard de estadísticas', FALSE)
+    RETURNING id INTO v_temp_img_id;
+    v_project1_images := array_append(v_project1_images, v_temp_img_id);
     
     -- ========================================
     -- PROYECTO 1: App Educativa con IA
@@ -508,13 +562,7 @@ BEGIN
     -- Agregar múltiples imágenes al proyecto (índice 0 será la portada)
     PERFORM projects.add_project_images(
         v_project1_id,
-        ARRAY[
-            'https://images.unsplash.com/photo-1531482615713-2afd69097998?w=800',  -- Portada: estudiantes con laptop
-            'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=800',  -- Interfaz de la app
-            'https://images.unsplash.com/photo-1509062522246-3755977927d7?w=800',  -- Estudiante usando la app
-            'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=800',  -- Equipo de trabajo
-            'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=800'   -- Dashboard de estadísticas
-        ],
+        v_project1_images,
         0  -- Primera imagen como portada
     );
     
@@ -524,6 +572,41 @@ BEGIN
         campaign_status = 'in_progress',
         summary = 'Plataforma educativa que revoluciona el aprendizaje con IA personalizada'
     WHERE id = v_project1_id;
+    
+    -- ========================================
+    -- CREAR IMÁGENES PARA PROYECTO 2
+    -- ========================================
+    v_project2_images := ARRAY[]::UUID[];
+    
+    INSERT INTO files.image (file_name, file_path, alt_text, is_temporary)
+    VALUES ('arte_mural_progress.jpg', 'https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?w=800', 'Mural en progreso', FALSE)
+    RETURNING id INTO v_temp_img_id;
+    v_project2_images := array_append(v_project2_images, v_temp_img_id);
+    
+    INSERT INTO files.image (file_name, file_path, alt_text, is_temporary)
+    VALUES ('arte_urbano_colorido.jpg', 'https://images.unsplash.com/photo-1499781350541-7783f6c6a0c8?w=800', 'Arte urbano colorido', FALSE)
+    RETURNING id INTO v_temp_img_id;
+    v_project2_images := array_append(v_project2_images, v_temp_img_id);
+    
+    INSERT INTO files.image (file_name, file_path, alt_text, is_temporary)
+    VALUES ('festival_anterior.jpg', 'https://images.unsplash.com/photo-1499892477393-f675706cbe6e?w=800', 'Festival anterior', FALSE)
+    RETURNING id INTO v_temp_img_id;
+    v_project2_images := array_append(v_project2_images, v_temp_img_id);
+    
+    INSERT INTO files.image (file_name, file_path, alt_text, is_temporary)
+    VALUES ('artista_trabajando.jpg', 'https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=800', 'Artista trabajando', FALSE)
+    RETURNING id INTO v_temp_img_id;
+    v_project2_images := array_append(v_project2_images, v_temp_img_id);
+    
+    INSERT INTO files.image (file_name, file_path, alt_text, is_temporary)
+    VALUES ('publico_observando.jpg', 'https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?w=800', 'Público observando', FALSE)
+    RETURNING id INTO v_temp_img_id;
+    v_project2_images := array_append(v_project2_images, v_temp_img_id);
+    
+    INSERT INTO files.image (file_name, file_path, alt_text, is_temporary)
+    VALUES ('mural_terminado.jpg', 'https://images.unsplash.com/photo-1547826039-bfc35e0f1ea8?w=800', 'Mural terminado', FALSE)
+    RETURNING id INTO v_temp_img_id;
+    v_project2_images := array_append(v_project2_images, v_temp_img_id);
     
     -- ========================================
     -- PROYECTO 2: Festival de Arte Urbano
@@ -544,14 +627,7 @@ BEGIN
     -- Agregar galería de imágenes del proyecto (índice 2 será la portada)
     PERFORM projects.add_project_images(
         v_project2_id,
-        ARRAY[
-            'https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?w=800',  -- Mural en progreso
-            'https://images.unsplash.com/photo-1499781350541-7783f6c6a0c8?w=800',  -- Arte urbano colorido
-            'https://images.unsplash.com/photo-1499892477393-f675706cbe6e?w=800',  -- PORTADA: Festival anterior
-            'https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=800',  -- Artista trabajando
-            'https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?w=800',  -- Público observando
-            'https://images.unsplash.com/photo-1547826039-bfc35e0f1ea8?w=800'   -- Mural terminado
-        ],
+        v_project2_images,
         2  -- Tercera imagen como portada
     );
     
@@ -566,6 +642,46 @@ BEGIN
     VALUES 
         (v_project2_id, v_user1_id, 500.00, 'credit_card', 'completed', false),
         (v_project2_id, v_user3_id, 1000.00, 'paypal', 'completed', false);
+    
+    -- ========================================
+    -- CREAR IMÁGENES PARA PROYECTO 3
+    -- ========================================
+    v_project3_images := ARRAY[]::UUID[];
+    
+    INSERT INTO files.image (file_name, file_path, alt_text, is_temporary)
+    VALUES ('biblioteca_ninos_leyendo.jpg', 'https://images.unsplash.com/photo-1497633762265-9d179a990aa6?w=800', 'Niños leyendo', FALSE)
+    RETURNING id INTO v_temp_img_id;
+    v_project3_images := array_append(v_project3_images, v_temp_img_id);
+    
+    INSERT INTO files.image (file_name, file_path, alt_text, is_temporary)
+    VALUES ('biblioteca_tradicional.jpg', 'https://images.unsplash.com/photo-1507842217343-583bb7270b66?w=800', 'Biblioteca tradicional', FALSE)
+    RETURNING id INTO v_temp_img_id;
+    v_project3_images := array_append(v_project3_images, v_temp_img_id);
+    
+    INSERT INTO files.image (file_name, file_path, alt_text, is_temporary)
+    VALUES ('tecnologia_educativa.jpg', 'https://images.unsplash.com/photo-1516979187457-637abb4f9353?w=800', 'Tecnología educativa', FALSE)
+    RETURNING id INTO v_temp_img_id;
+    v_project3_images := array_append(v_project3_images, v_temp_img_id);
+    
+    INSERT INTO files.image (file_name, file_path, alt_text, is_temporary)
+    VALUES ('comunidad_rural.jpg', 'https://images.unsplash.com/photo-1524069290683-0457abfe42c3?w=800', 'Comunidad rural', FALSE)
+    RETURNING id INTO v_temp_img_id;
+    v_project3_images := array_append(v_project3_images, v_temp_img_id);
+    
+    INSERT INTO files.image (file_name, file_path, alt_text, is_temporary)
+    VALUES ('tablets_contenido.jpg', 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=800', 'Tablets con contenido', FALSE)
+    RETURNING id INTO v_temp_img_id;
+    v_project3_images := array_append(v_project3_images, v_temp_img_id);
+    
+    INSERT INTO files.image (file_name, file_path, alt_text, is_temporary)
+    VALUES ('capacitacion.jpg', 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=800', 'Capacitación bibliotecarios', FALSE)
+    RETURNING id INTO v_temp_img_id;
+    v_project3_images := array_append(v_project3_images, v_temp_img_id);
+    
+    INSERT INTO files.image (file_name, file_path, alt_text, is_temporary)
+    VALUES ('ninos_tablets.jpg', 'https://images.unsplash.com/photo-1509062522246-3755977927d7?w=800', 'Niños usando tablets', FALSE)
+    RETURNING id INTO v_temp_img_id;
+    v_project3_images := array_append(v_project3_images, v_temp_img_id);
     
     -- ========================================
     -- PROYECTO 3: Biblioteca Comunitaria Digital
@@ -586,15 +702,7 @@ BEGIN
     -- Agregar múltiples imágenes documentando el proyecto
     PERFORM projects.add_project_images(
         v_project3_id,
-        ARRAY[
-            'https://images.unsplash.com/photo-1497633762265-9d179a990aa6?w=800',  -- PORTADA: Niños leyendo
-            'https://images.unsplash.com/photo-1507842217343-583bb7270b66?w=800',  -- Biblioteca tradicional
-            'https://images.unsplash.com/photo-1516979187457-637abb4f9353?w=800',  -- Tecnología educativa
-            'https://images.unsplash.com/photo-1524069290683-0457abfe42c3?w=800',  -- Comunidad rural
-            'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=800',  -- Tablets con contenido
-            'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=800',  -- Capacitación
-            'https://images.unsplash.com/photo-1509062522246-3755977927d7?w=800'   -- Niños usando tablets
-        ],
+        v_project3_images,
         0  -- Primera imagen como portada
     );
     

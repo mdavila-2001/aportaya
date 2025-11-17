@@ -12,6 +12,20 @@ CREATE SCHEMA social;
 CREATE SCHEMA messaging;
 CREATE SCHEMA audit;
 CREATE SCHEMA roles;
+CREATE SCHEMA files;
+
+-- ========================================
+-- Esquema de Archivos (Files)
+-- ========================================
+
+CREATE TABLE files.image (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  file_name VARCHAR(255) NOT NULL,
+  file_path VARCHAR(500) NOT NULL,
+  alt_text VARCHAR(255),
+  is_temporary BOOLEAN DEFAULT TRUE,
+  uploaded_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
 
 -- ========================================
 -- Esquemas de Usuario
@@ -25,7 +39,7 @@ CREATE TABLE users.user (
   password_hash VARCHAR(255) NOT NULL,
   gender VARCHAR(50),
   birth_date DATE,
-  profile_image_url VARCHAR(500),
+  profile_image_id UUID REFERENCES files.image(id) ON DELETE SET NULL,
   status VARCHAR(50) NOT NULL DEFAULT 'pending_verification',
   registration_date TIMESTAMPTZ NOT NULL DEFAULT now(),
   updated_at TIMESTAMPTZ NOT NULL DEFAULT now(),
@@ -89,11 +103,10 @@ CREATE TABLE projects.project (
 CREATE TABLE projects.project_image (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   project_id UUID NOT NULL REFERENCES projects.project(id) ON DELETE CASCADE,
-  image_url VARCHAR(500) NOT NULL,
-  alt_text VARCHAR(255),
+  image_id UUID NOT NULL REFERENCES files.image(id) ON DELETE CASCADE,
   display_order INT NOT NULL DEFAULT 0,
   is_cover BOOLEAN DEFAULT FALSE,
-  uploaded_at TIMESTAMPTZ NOT NULL DEFAULT now()
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
 CREATE TABLE projects.category_requirements (
@@ -279,53 +292,7 @@ CREATE TABLE roles.user_role (
   PRIMARY KEY (user_id, role_id)
 );
 
--- 1) Arreglar FKs de roles.* con esquema calificado
-ALTER TABLE roles.module
-  DROP CONSTRAINT IF EXISTS module_category_id_fkey,
-  ADD  CONSTRAINT module_category_id_fkey
-      FOREIGN KEY (category_id) REFERENCES roles.role_category(id);
-
-ALTER TABLE roles.ability
-  DROP CONSTRAINT IF EXISTS ability_module_id_fkey,
-  ADD  CONSTRAINT ability_module_id_fkey
-      FOREIGN KEY (module_id) REFERENCES roles.module(id);
-
-ALTER TABLE roles.role_ability
-  DROP CONSTRAINT IF EXISTS role_ability_role_id_fkey,
-  ADD  CONSTRAINT role_ability_role_id_fkey
-      FOREIGN KEY (role_id) REFERENCES roles.role(id);
-
-ALTER TABLE roles.role_ability
-  DROP CONSTRAINT IF EXISTS role_ability_ability_id_fkey,
-  ADD  CONSTRAINT role_ability_ability_id_fkey
-      FOREIGN KEY (ability_id) REFERENCES roles.ability(id);
-
-ALTER TABLE roles.user_role
-  DROP CONSTRAINT IF EXISTS user_role_role_id_fkey,
-  ADD  CONSTRAINT user_role_role_id_fkey
-      FOREIGN KEY (role_id) REFERENCES roles.role(id);
-
--- 2) Reglas de integridad y constraints
-ALTER TABLE payments.donation
-  ADD CONSTRAINT donation_amount_positive CHECK (amount > 0);
-
-ALTER TABLE projects.project
-  ADD CONSTRAINT project_goal_positive CHECK (financial_goal > 0),
-  ADD CONSTRAINT project_raised_nonneg CHECK (raised_amount >= 0),
-  ADD CONSTRAINT project_dates_valid CHECK (end_date > start_date),
-  ADD CONSTRAINT project_approval_status_allowed CHECK (
-    approval_status IN ('draft','in_review','observed','rejected','published')
-  ),
-  ADD CONSTRAINT project_campaign_status_allowed CHECK (
-    campaign_status IN ('not_started','in_progress','paused','finished')
-  );
-
-ALTER TABLE users.user
-  ADD CONSTRAINT user_status_allowed CHECK (
-    status IN ('pending_verification','active','suspended','banned','deleted')
-  );
-
--- 3) Índices optimizados
+-- 1) Índices optimizados
 CREATE INDEX IF NOT EXISTS idx_user_email ON users.user(email);
 CREATE INDEX IF NOT EXISTS idx_user_status ON users.user(status) WHERE deleted_at IS NULL;
 CREATE INDEX IF NOT EXISTS idx_project_slug ON projects.project(slug);
@@ -346,22 +313,7 @@ CREATE INDEX IF NOT EXISTS idx_favorite_user ON social.favorite(user_id);
 CREATE INDEX IF NOT EXISTS idx_audit_actor ON audit.audit_log(actor_id, created_at);
 CREATE INDEX IF NOT EXISTS idx_audit_table ON audit.audit_log(table_name, record_id);
 
--- 4) Constraints adicionales para payment_status
-ALTER TABLE payments.donation
-  ADD CONSTRAINT donation_payment_status_allowed CHECK (
-    payment_status IN ('pending','processing','completed','failed','refunded')
-  );
-
--- 5) Tabla para observaciones de proyectos
-CREATE TABLE projects.project_observation (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  project_id UUID NOT NULL REFERENCES projects.project(id) ON DELETE CASCADE,
-  admin_id UUID NOT NULL REFERENCES users.user(id) ON DELETE SET NULL,
-  note TEXT NOT NULL,
-  created_at TIMESTAMPTZ NOT NULL DEFAULT now()
-);
-
--- 6) Email verification tokens
+-- 2) Email verification tokens
 CREATE TABLE users.email_verification_token (
   user_id UUID PRIMARY KEY REFERENCES users.user(id) ON DELETE CASCADE,
   token UUID NOT NULL UNIQUE DEFAULT gen_random_uuid(),
@@ -370,7 +322,7 @@ CREATE TABLE users.email_verification_token (
   expires_at TIMESTAMPTZ NOT NULL DEFAULT (now() + INTERVAL '24 hours')
 );
 
--- 7) Password reset tokens
+-- 3) Password reset tokens
 CREATE TABLE users.password_reset_token (
   user_id UUID NOT NULL REFERENCES users.user(id) ON DELETE CASCADE,
   token UUID NOT NULL UNIQUE DEFAULT gen_random_uuid(),
@@ -379,4 +331,3 @@ CREATE TABLE users.password_reset_token (
   expires_at TIMESTAMPTZ NOT NULL DEFAULT (now() + INTERVAL '1 hour'),
   PRIMARY KEY (user_id, token)
 );
-

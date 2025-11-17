@@ -169,7 +169,7 @@ CREATE OR REPLACE FUNCTION users.register_user(
     p_password VARCHAR,
     p_gender VARCHAR DEFAULT NULL,
     p_birth_date DATE DEFAULT NULL,
-    p_profile_image_url VARCHAR DEFAULT NULL,
+    p_profile_image_id UUID DEFAULT NULL,
     p_role_id INT DEFAULT 8  -- ID del rol "User" por defecto
 )
 RETURNS UUID AS $$
@@ -179,7 +179,7 @@ BEGIN
     -- Insertar usuario con password hasheado
     INSERT INTO users.user (
         id, first_name, last_name, email, password_hash, 
-        gender, birth_date, profile_image_url,
+        gender, birth_date, profile_image_id,
         status, registration_date, updated_at
     )
     VALUES (
@@ -190,7 +190,7 @@ BEGIN
         crypt(p_password, gen_salt('bf')),  -- Hash bcrypt
         p_gender,
         p_birth_date,
-        p_profile_image_url,
+        p_profile_image_id,
         'pending_verification',
         now(),
         now()
@@ -542,7 +542,7 @@ CREATE OR REPLACE FUNCTION projects.create_project(
     p_end_date TIMESTAMPTZ,
     p_category_id INT,
     p_location VARCHAR(255) DEFAULT NULL,
-    p_cover_image_url VARCHAR(500) DEFAULT NULL,
+    p_cover_image_id UUID DEFAULT NULL,
     p_video_url VARCHAR(500) DEFAULT NULL,
     p_currency VARCHAR(10) DEFAULT 'USD'
 )
@@ -566,12 +566,12 @@ BEGIN
     );
 
     -- Si se proporcionó imagen de portada, insertarla en project_image
-    IF p_cover_image_url IS NOT NULL THEN
+    IF p_cover_image_id IS NOT NULL THEN
         INSERT INTO projects.project_image (
-            project_id, image_url, alt_text, display_order, is_cover
+            project_id, image_id, display_order, is_cover
         )
         VALUES (
-            v_project_id, p_cover_image_url, p_title, 0, TRUE
+            v_project_id, p_cover_image_id, 0, TRUE
         );
     END IF;
 
@@ -582,13 +582,12 @@ $$ LANGUAGE plpgsql;
 -- Agregar imagen a proyecto
 CREATE OR REPLACE FUNCTION projects.add_project_image(
     p_project_id UUID,
-    p_image_url VARCHAR(500),
-    p_alt_text VARCHAR(255) DEFAULT NULL,
+    p_image_id UUID,
     p_is_cover BOOLEAN DEFAULT FALSE
 )
 RETURNS UUID AS $$
 DECLARE
-    v_image_id UUID;
+    v_image_record_id UUID;
     v_max_order INT;
 BEGIN
     -- Si se marca como portada, quitar la marca de las demás
@@ -606,39 +605,38 @@ BEGIN
     
     -- Insertar la nueva imagen
     INSERT INTO projects.project_image (
-        project_id, image_url, alt_text, display_order, is_cover
+        project_id, image_id, display_order, is_cover
     )
     VALUES (
-        p_project_id, p_image_url, p_alt_text, v_max_order, p_is_cover
+        p_project_id, p_image_id, v_max_order, p_is_cover
     )
-    RETURNING id INTO v_image_id;
+    RETURNING id INTO v_image_record_id;
     
-    RETURN v_image_id;
+    RETURN v_image_record_id;
 END;
 $$ LANGUAGE plpgsql;
 
 -- Agregar múltiples imágenes a un proyecto
 CREATE OR REPLACE FUNCTION projects.add_project_images(
     p_project_id UUID,
-    p_image_urls TEXT[],
+    p_image_ids UUID[],
     p_cover_index INT DEFAULT 0  -- Índice de la imagen que será portada (0-based)
 )
 RETURNS INT AS $$
 DECLARE
-    v_image_url TEXT;
+    v_image_id UUID;
     v_index INT := 0;
     v_is_cover BOOLEAN;
     v_count INT := 0;
 BEGIN
-    -- Iterar sobre las URLs de imágenes
-    FOREACH v_image_url IN ARRAY p_image_urls
+    -- Iterar sobre los IDs de imágenes
+    FOREACH v_image_id IN ARRAY p_image_ids
     LOOP
         v_is_cover := (v_index = p_cover_index);
         
         PERFORM projects.add_project_image(
             p_project_id,
-            v_image_url,
-            NULL,  -- alt_text
+            v_image_id,
             v_is_cover
         );
         
@@ -713,8 +711,10 @@ CREATE OR REPLACE FUNCTION projects.get_project_images(
     p_project_id UUID
 )
 RETURNS TABLE (
+    image_record_id UUID,
     image_id UUID,
-    image_url VARCHAR(500),
+    file_name VARCHAR(255),
+    file_path VARCHAR(500),
     alt_text VARCHAR(255),
     display_order INT,
     is_cover BOOLEAN,
@@ -722,10 +722,19 @@ RETURNS TABLE (
 ) AS $$
 BEGIN
     RETURN QUERY
-    SELECT id, image_url, alt_text, display_order, is_cover, uploaded_at
-    FROM projects.project_image
-    WHERE project_id = p_project_id
-    ORDER BY display_order ASC;
+    SELECT 
+        pi.id,
+        pi.image_id,
+        img.file_name,
+        img.file_path,
+        img.alt_text,
+        pi.display_order,
+        pi.is_cover,
+        img.uploaded_at
+    FROM projects.project_image pi
+    INNER JOIN files.image img ON img.id = pi.image_id
+    WHERE pi.project_id = p_project_id
+    ORDER BY pi.display_order ASC;
 END;
 $$ LANGUAGE plpgsql;
 
@@ -1136,14 +1145,15 @@ SELECT
   GREATEST(0, EXTRACT(DAY FROM (p.end_date - now()))::INTEGER) as days_remaining,
   p.category_id,
   (
-    SELECT image_url 
-    FROM projects.project_image 
-    WHERE project_id = p.id AND is_cover = TRUE 
+    SELECT img.file_path
+    FROM projects.project_image pi
+    INNER JOIN files.image img ON img.id = pi.image_id
+    WHERE pi.project_id = p.id AND pi.is_cover = TRUE 
     LIMIT 1
   ) as cover_image,
   p.created_at,
   CONCAT(u.first_name, ' ', u.last_name) as creator_name,
-  u.profile_image_url as creator_image,
+  u.profile_image_id as creator_image_id,
   c.name as category_name,
   get_unique_donors_count(p.id) as unique_donors
 FROM projects.project p
@@ -1167,14 +1177,15 @@ SELECT
   p.end_date,
   GREATEST(0, EXTRACT(DAY FROM (p.end_date - now()))::INTEGER) as days_remaining,
   (
-    SELECT image_url 
-    FROM projects.project_image 
-    WHERE project_id = p.id AND is_cover = TRUE 
+    SELECT img.file_path
+    FROM projects.project_image pi
+    INNER JOIN files.image img ON img.id = pi.image_id
+    WHERE pi.project_id = p.id AND pi.is_cover = TRUE 
     LIMIT 1
   ) as cover_image,
   p.video_url,
   CONCAT(u.first_name, ' ', u.last_name) AS creator_name,
-  u.profile_image_url as creator_image,
+  u.profile_image_id as creator_image_id,
   c.name AS category_name
 FROM projects.project p
 JOIN users.user u ON u.id = p.creator_id
