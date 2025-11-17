@@ -74,7 +74,6 @@ CREATE TABLE projects.project (
   campaign_status VARCHAR(20) NOT NULL DEFAULT 'not_started',
   category_id INT REFERENCES projects.category(id) ON DELETE SET NULL,
   location VARCHAR(255),
-  cover_image VARCHAR(500),
   video_url VARCHAR(500),
   proof_document VARCHAR(500),
   currency VARCHAR(10) DEFAULT 'USD',
@@ -85,6 +84,16 @@ CREATE TABLE projects.project (
   CONSTRAINT project_dates_valid CHECK (end_date > start_date),
   CONSTRAINT project_approval_status_allowed CHECK (approval_status IN ('draft','in_review','observed','rejected','published')),
   CONSTRAINT project_campaign_status_allowed CHECK (campaign_status IN ('not_started','in_progress','paused','finished'))
+);
+
+CREATE TABLE projects.project_image (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  project_id UUID NOT NULL REFERENCES projects.project(id) ON DELETE CASCADE,
+  image_url VARCHAR(500) NOT NULL,
+  alt_text VARCHAR(255),
+  display_order INT NOT NULL DEFAULT 0,
+  is_cover BOOLEAN DEFAULT FALSE,
+  uploaded_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
 CREATE TABLE projects.category_requirements (
@@ -324,6 +333,8 @@ CREATE INDEX IF NOT EXISTS idx_project_creator ON projects.project(creator_id);
 CREATE INDEX IF NOT EXISTS idx_project_category ON projects.project(category_id);
 CREATE INDEX IF NOT EXISTS idx_project_published ON projects.project(approval_status, campaign_status, end_date) 
   WHERE approval_status = 'published' AND campaign_status = 'in_progress';
+CREATE INDEX IF NOT EXISTS idx_project_images ON projects.project_image(project_id, display_order);
+CREATE INDEX IF NOT EXISTS idx_project_cover_image ON projects.project_image(project_id) WHERE is_cover = TRUE;
 CREATE INDEX IF NOT EXISTS idx_donation_project ON payments.donation(project_id);
 CREATE INDEX IF NOT EXISTS idx_donation_user ON payments.donation(user_id);
 CREATE INDEX IF NOT EXISTS idx_donation_user_project ON payments.donation(user_id, project_id);

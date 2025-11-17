@@ -542,7 +542,7 @@ CREATE OR REPLACE FUNCTION projects.create_project(
     p_end_date TIMESTAMPTZ,
     p_category_id INT,
     p_location VARCHAR(255) DEFAULT NULL,
-    p_cover_image VARCHAR(500) DEFAULT NULL,
+    p_cover_image_url VARCHAR(500) DEFAULT NULL,
     p_video_url VARCHAR(500) DEFAULT NULL,
     p_currency VARCHAR(10) DEFAULT 'USD'
 )
@@ -557,15 +557,175 @@ BEGIN
     INSERT INTO projects.project (
         id, creator_id, title, slug, description, financial_goal, raised_amount,
         start_date, end_date, approval_status, campaign_status, category_id,
-        location, cover_image, video_url, currency
+        location, video_url, currency
     )
     VALUES (
         v_project_id, p_creator_id, p_title, v_slug, p_description, p_financial_goal, 0,
         p_start_date, p_end_date, 'draft', 'not_started', p_category_id,
-        p_location, p_cover_image, p_video_url, p_currency
+        p_location, p_video_url, p_currency
     );
 
+    -- Si se proporcionó imagen de portada, insertarla en project_image
+    IF p_cover_image_url IS NOT NULL THEN
+        INSERT INTO projects.project_image (
+            project_id, image_url, alt_text, display_order, is_cover
+        )
+        VALUES (
+            v_project_id, p_cover_image_url, p_title, 0, TRUE
+        );
+    END IF;
+
     RETURN v_project_id;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Agregar imagen a proyecto
+CREATE OR REPLACE FUNCTION projects.add_project_image(
+    p_project_id UUID,
+    p_image_url VARCHAR(500),
+    p_alt_text VARCHAR(255) DEFAULT NULL,
+    p_is_cover BOOLEAN DEFAULT FALSE
+)
+RETURNS UUID AS $$
+DECLARE
+    v_image_id UUID;
+    v_max_order INT;
+BEGIN
+    -- Si se marca como portada, quitar la marca de las demás
+    IF p_is_cover THEN
+        UPDATE projects.project_image
+        SET is_cover = FALSE
+        WHERE project_id = p_project_id;
+    END IF;
+    
+    -- Obtener el siguiente orden de visualización
+    SELECT COALESCE(MAX(display_order), -1) + 1
+    INTO v_max_order
+    FROM projects.project_image
+    WHERE project_id = p_project_id;
+    
+    -- Insertar la nueva imagen
+    INSERT INTO projects.project_image (
+        project_id, image_url, alt_text, display_order, is_cover
+    )
+    VALUES (
+        p_project_id, p_image_url, p_alt_text, v_max_order, p_is_cover
+    )
+    RETURNING id INTO v_image_id;
+    
+    RETURN v_image_id;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Agregar múltiples imágenes a un proyecto
+CREATE OR REPLACE FUNCTION projects.add_project_images(
+    p_project_id UUID,
+    p_image_urls TEXT[],
+    p_cover_index INT DEFAULT 0  -- Índice de la imagen que será portada (0-based)
+)
+RETURNS INT AS $$
+DECLARE
+    v_image_url TEXT;
+    v_index INT := 0;
+    v_is_cover BOOLEAN;
+    v_count INT := 0;
+BEGIN
+    -- Iterar sobre las URLs de imágenes
+    FOREACH v_image_url IN ARRAY p_image_urls
+    LOOP
+        v_is_cover := (v_index = p_cover_index);
+        
+        PERFORM projects.add_project_image(
+            p_project_id,
+            v_image_url,
+            NULL,  -- alt_text
+            v_is_cover
+        );
+        
+        v_index := v_index + 1;
+        v_count := v_count + 1;
+    END LOOP;
+    
+    RETURN v_count;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Eliminar imagen de proyecto
+CREATE OR REPLACE FUNCTION projects.remove_project_image(
+    p_image_id UUID
+)
+RETURNS BOOLEAN AS $$
+BEGIN
+    DELETE FROM projects.project_image
+    WHERE id = p_image_id;
+    
+    RETURN FOUND;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Reordenar imágenes de proyecto
+CREATE OR REPLACE FUNCTION projects.reorder_project_images(
+    p_project_id UUID,
+    p_image_ids UUID[]
+)
+RETURNS BOOLEAN AS $$
+DECLARE
+    v_image_id UUID;
+    v_order INT := 0;
+BEGIN
+    -- Actualizar el orden según el array proporcionado
+    FOREACH v_image_id IN ARRAY p_image_ids
+    LOOP
+        UPDATE projects.project_image
+        SET display_order = v_order
+        WHERE id = v_image_id AND project_id = p_project_id;
+        
+        v_order := v_order + 1;
+    END LOOP;
+    
+    RETURN TRUE;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Cambiar imagen de portada
+CREATE OR REPLACE FUNCTION projects.set_cover_image(
+    p_project_id UUID,
+    p_image_id UUID
+)
+RETURNS BOOLEAN AS $$
+BEGIN
+    -- Quitar marca de portada a todas las imágenes del proyecto
+    UPDATE projects.project_image
+    SET is_cover = FALSE
+    WHERE project_id = p_project_id;
+    
+    -- Marcar la nueva imagen como portada
+    UPDATE projects.project_image
+    SET is_cover = TRUE
+    WHERE id = p_image_id AND project_id = p_project_id;
+    
+    RETURN FOUND;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Obtener todas las imágenes de un proyecto
+CREATE OR REPLACE FUNCTION projects.get_project_images(
+    p_project_id UUID
+)
+RETURNS TABLE (
+    image_id UUID,
+    image_url VARCHAR(500),
+    alt_text VARCHAR(255),
+    display_order INT,
+    is_cover BOOLEAN,
+    uploaded_at TIMESTAMPTZ
+) AS $$
+BEGIN
+    RETURN QUERY
+    SELECT id, image_url, alt_text, display_order, is_cover, uploaded_at
+    FROM projects.project_image
+    WHERE project_id = p_project_id
+    ORDER BY display_order ASC;
 END;
 $$ LANGUAGE plpgsql;
 
@@ -975,7 +1135,12 @@ SELECT
   p.end_date,
   GREATEST(0, EXTRACT(DAY FROM (p.end_date - now()))::INTEGER) as days_remaining,
   p.category_id,
-  p.cover_image,
+  (
+    SELECT image_url 
+    FROM projects.project_image 
+    WHERE project_id = p.id AND is_cover = TRUE 
+    LIMIT 1
+  ) as cover_image,
   p.created_at,
   CONCAT(u.first_name, ' ', u.last_name) as creator_name,
   u.profile_image_url as creator_image,
@@ -1001,7 +1166,12 @@ SELECT
   p.start_date,
   p.end_date,
   GREATEST(0, EXTRACT(DAY FROM (p.end_date - now()))::INTEGER) as days_remaining,
-  p.cover_image,
+  (
+    SELECT image_url 
+    FROM projects.project_image 
+    WHERE project_id = p.id AND is_cover = TRUE 
+    LIMIT 1
+  ) as cover_image,
   p.video_url,
   CONCAT(u.first_name, ' ', u.last_name) AS creator_name,
   u.profile_image_url as creator_image,
