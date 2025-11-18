@@ -34,7 +34,9 @@ CREATE TABLE files.image (
 CREATE TABLE users.user (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   first_name VARCHAR(255) NOT NULL,
+  middle_name VARCHAR(255) NOT NULL,
   last_name VARCHAR(255) NOT NULL,
+  mother_last_name VARCHAR(255) NOT NULL,
   email VARCHAR(255) UNIQUE NOT NULL,
   password_hash VARCHAR(255) NOT NULL,
   gender VARCHAR(50),
@@ -44,7 +46,8 @@ CREATE TABLE users.user (
   registration_date TIMESTAMPTZ NOT NULL DEFAULT now(),
   updated_at TIMESTAMPTZ NOT NULL DEFAULT now(),
   deleted_at TIMESTAMPTZ,
-  CONSTRAINT user_status_allowed CHECK (status IN ('pending_verification','active','suspended','banned','deleted'))
+  CONSTRAINT user_status_allowed CHECK (status IN ('pending_verification','active','suspended','banned','deleted')),
+  CONSTRAINT user_sex_allowed CHECK (gender IN ('M', 'F', 'O', 'U'))
 );
 
 CREATE TABLE users.user_status_history (
@@ -331,3 +334,11 @@ CREATE TABLE users.password_reset_token (
   expires_at TIMESTAMPTZ NOT NULL DEFAULT (now() + INTERVAL '1 hour'),
   PRIMARY KEY (user_id, token)
 );
+
+select * from users.user
+
+-- Alterar y agregar una restricción
+ALTER TABLE users.user
+  ADD CONSTRAINT user_sex_allowed CHECK (
+    gender IN ('M','F','O','U')
+  );

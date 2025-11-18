@@ -156,15 +156,138 @@ END;
 $$ LANGUAGE plpgsql;
 
 -- ========================================
--- 2. ESQUEMA: users
+-- 2. ESQUEMA: files
+-- ========================================
+-- Funciones para gestión de archivos e imágenes
+-- ========================================
+
+-- Crear registro de imagen
+CREATE OR REPLACE FUNCTION files.create_image(
+    p_file_name VARCHAR,
+    p_file_path VARCHAR,
+    p_alt_text VARCHAR DEFAULT NULL,
+    p_is_temporary BOOLEAN DEFAULT TRUE
+)
+RETURNS UUID AS $$
+DECLARE
+    v_image_id UUID;
+BEGIN
+    INSERT INTO files.image (file_name, file_path, alt_text, is_temporary)
+    VALUES (p_file_name, p_file_path, p_alt_text, p_is_temporary)
+    RETURNING id INTO v_image_id;
+    
+    RETURN v_image_id;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Marcar imagen como permanente
+CREATE OR REPLACE FUNCTION files.mark_image_as_permanent(
+    p_image_id UUID
+)
+RETURNS BOOLEAN AS $$
+BEGIN
+    UPDATE files.image
+    SET is_temporary = FALSE
+    WHERE id = p_image_id;
+    
+    RETURN FOUND;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Marcar imagen como temporal (para limpieza)
+CREATE OR REPLACE FUNCTION files.mark_image_as_temporary(
+    p_image_id UUID
+)
+RETURNS BOOLEAN AS $$
+BEGIN
+    UPDATE files.image
+    SET is_temporary = TRUE
+    WHERE id = p_image_id;
+    
+    RETURN FOUND;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Eliminar imágenes temporales antiguas (cron job)
+CREATE OR REPLACE FUNCTION files.cleanup_old_temporary_images(
+    p_days_old INT DEFAULT 7
+)
+RETURNS TABLE (
+    image_id UUID,
+    file_path VARCHAR
+) AS $$
+BEGIN
+    RETURN QUERY
+    DELETE FROM files.image
+    WHERE is_temporary = TRUE
+    AND uploaded_at < NOW() - (p_days_old || ' days')::INTERVAL
+    RETURNING id, file_path;
+END;
+$$ LANGUAGE plpgsql;
+
+-- ========================================
+-- 3. ESQUEMA: users
 -- ========================================
 -- Funciones para gestión de usuarios, autenticación y permisos
 -- ========================================
 
+-- Registrar administrador + Asignar Rol
+CREATE OR REPLACE FUNCTION users.create_admin(
+    p_first_name VARCHAR,
+    p_middle_name VARCHAR,
+    p_last_name VARCHAR,
+    p_mother_last_name VARCHAR,
+    p_email VARCHAR,
+    p_password VARCHAR,
+    p_gender VARCHAR DEFAULT NULL,
+    p_birth_date DATE DEFAULT NULL,
+    p_profile_image_id UUID DEFAULT NULL,
+    p_role_id INT DEFAULT 1  -- ID del rol "admin" por defecto
+)
+RETURNS UUID AS $$
+DECLARE
+    v_user_id UUID := gen_random_uuid();
+BEGIN
+    -- Insertar usuario con password hasheado
+    INSERT INTO users.user (
+        id, first_name, middle_name, last_name, mother_last_name, email, password_hash, 
+        gender, birth_date, profile_image_id,
+        status, registration_date, updated_at
+    )
+    VALUES (
+        v_user_id,
+        p_first_name,
+		p_middle_name,
+        p_last_name,
+		p_mother_last_name,
+        p_email,
+        crypt(p_password, gen_salt('bf')),  -- Hash bcrypt
+        p_gender,
+        p_birth_date,
+        p_profile_image_id,
+        'pending_verification',
+        now(),
+        now()
+    );
+
+    -- Asignar rol al usuario
+    INSERT INTO roles.user_role (user_id, role_id)
+    VALUES (v_user_id, p_role_id);
+    
+    -- Crear token de verificación de email
+    INSERT INTO users.email_verification_token (user_id)
+    VALUES (v_user_id);
+
+    RETURN v_user_id;
+END;
+$$ LANGUAGE plpgsql;
+
 -- Registrar Usuario + Asignar Rol
 CREATE OR REPLACE FUNCTION users.register_user(
     p_first_name VARCHAR,
+    p_middle_name VARCHAR,
     p_last_name VARCHAR,
+    p_mother_last_name VARCHAR,
     p_email VARCHAR,
     p_password VARCHAR,
     p_gender VARCHAR DEFAULT NULL,
@@ -178,14 +301,16 @@ DECLARE
 BEGIN
     -- Insertar usuario con password hasheado
     INSERT INTO users.user (
-        id, first_name, last_name, email, password_hash, 
+        id, first_name, middle_name, last_name, mother_last_name, email, password_hash, 
         gender, birth_date, profile_image_id,
         status, registration_date, updated_at
     )
     VALUES (
         v_user_id,
         p_first_name,
+		p_middle_name,
         p_last_name,
+		p_mother_last_name,
         p_email,
         crypt(p_password, gen_salt('bf')),  -- Hash bcrypt
         p_gender,
@@ -226,7 +351,7 @@ BEGIN
       AND deleted_at IS NULL;
 
     IF v_user_id IS NULL THEN
-        RAISE EXCEPTION 'Invalid email or password';
+        RAISE EXCEPTION 'Correo o Contraseña Incorrecta';
     END IF;
 
     RETURN v_user_id;
@@ -327,6 +452,46 @@ BEGIN
   END IF;
   
   RETURN FALSE;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Actualizar imagen de perfil de usuario
+CREATE OR REPLACE FUNCTION users.update_profile_image(
+    p_user_id UUID,
+    p_new_image_id UUID
+)
+RETURNS BOOLEAN AS $$
+DECLARE
+    v_old_image_id UUID;
+BEGIN
+    -- Obtener la imagen anterior
+    SELECT profile_image_id INTO v_old_image_id
+    FROM users.user
+    WHERE id = p_user_id;
+    
+    -- Actualizar con la nueva imagen
+    UPDATE users.user
+    SET profile_image_id = p_new_image_id,
+        updated_at = now()
+    WHERE id = p_user_id;
+    
+    IF NOT FOUND THEN
+        RAISE EXCEPTION 'Usuario no encontrado';
+    END IF;
+    
+    -- Marcar la nueva imagen como permanente
+    UPDATE files.image
+    SET is_temporary = FALSE
+    WHERE id = p_new_image_id;
+    
+    -- Si había una imagen anterior, marcarla como temporal para limpieza
+    IF v_old_image_id IS NOT NULL THEN
+        UPDATE files.image
+        SET is_temporary = TRUE
+        WHERE id = v_old_image_id;
+    END IF;
+    
+    RETURN TRUE;
 END;
 $$ LANGUAGE plpgsql;
 
