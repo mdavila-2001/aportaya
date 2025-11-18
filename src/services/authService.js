@@ -7,6 +7,8 @@ exports.loginUser = async (email, password) => {
 
         const user_id = rows[0].user_id;
 
+        console.log('User ID from login:', user_id);
+
         if (!user_id) {
             throw new Error('Credenciales inválidas o usuario no encontrado');
         }
@@ -21,9 +23,9 @@ exports.loginUser = async (email, password) => {
         return userDetails.rows[0];
 
     } catch (error) {
-        if (error.message === 'Credenciales inválidas o usuario no encontrado') {
+        if (error.message.includes('Invalid email or password')) {
             throw error;
         }
-        console.error('Error en loginUser:', error.message);
+        throw new Error('Error al iniciar sesión: ' + error.message);
     }
 };
