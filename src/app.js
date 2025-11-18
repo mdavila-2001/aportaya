@@ -1,5 +1,7 @@
 const express = require('express');
+require('dotenv').config();
 const cors = require('cors');
+const authRoutes = require('./routes/authRoutes');
 
 const path = require('node:path');
 require('dotenv').config({ path: path.resolve(__dirname, '..', '.env') });
@@ -11,9 +13,11 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static('public'))
 
+app.use('/api', authRoutes);
+
 const PORT = process.env.PORT || 3000;
 
-app.get('/', (req, res) => {
+app.get('/api', (req, res) => {
   res.send('Bienvenido a la API de AportaYa');
 });
 
