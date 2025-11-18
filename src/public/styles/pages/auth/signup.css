@@ -34,11 +34,16 @@ body {
     letter-spacing: -0.015em;
     color: var(--text-light);
     text-align: center;
-    margin: 0 0 var(--spM);
-    padding: var(--spL) 0 var(--spS);
 }
 
 .signup-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spM);
+    width: 100%;
+}
+
+.form-data {
     display: flex;
     flex-direction: column;
     gap: var(--spM);
@@ -50,6 +55,13 @@ body {
     flex-direction: column;
     width: 100%;
     position: relative;
+}
+
+.personal-info {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spM);
+    width: 100%;
 }
 
 .form-row {
@@ -194,6 +206,55 @@ body {
     color: var(--primary);
 }
 
+.profile-picture-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.profile-label {
+    position: relative;
+    display: inline-block;
+    width: 160px;
+    height: 160px;
+    background: url('../../../images/avatar.png') center / cover no-repeat;
+    background-color: #283930;
+    border: 4px solid var(--primary);
+    border-radius: 50%;
+    cursor: pointer;
+    overflow: hidden;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.profile-label:hover {
+    filter: brightness(1.2);
+    box-shadow: 0 6px 20px rgba(17, 212, 114, 0.4);
+}
+
+.profile-label:hover .camera-icon {
+    background-color: var(--primary);
+    border-width: 3px;
+}
+
+.profile-picture-input {
+    display: none;
+}
+
+.camera-icon {
+    position: absolute;
+    bottom: 8px;
+    right: 8px;
+    transform: translate(-25%, -25%);
+    padding: 8px;
+    background-color: var(--primary);
+    border: 3px solid var(--text-light);
+    border-radius: 50%;
+    font-size: 1.5rem;
+    line-height: 1;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
 @media (min-width: 768px) and (max-width: 991px) {
     body {
         padding: var(--spXL);
@@ -210,7 +271,7 @@ body {
 
 @media (min-width: 992px) {
     .signup-page {
-        max-width: 640px;
+        max-width: 800px;
         padding: var(--sp2XL) 0;
     }
 
@@ -219,11 +280,36 @@ body {
     }
 
     .signup-form {
+        display: flex;
+        flex-direction: column;
         gap: var(--spL);
+        width: 100%;
+    }
+
+    .form-data {
+        display: flex;
+        flex-direction: row;
+        gap: var(--spM);
+        width: 100%;
     }
 
     .signup-title {
         font-size: 36px;
-        margin-bottom: var(--spL);
+    }
+
+    .profile-label {
+        width: 200px;
+        height: 200px;
+    }
+
+    .user-icon {
+        font-size: 8rem;
+    }
+
+    .camera-icon {
+        bottom: 12px;
+        right: 12px;
+        padding: 10px;
+        font-size: 1.8rem;
     }
 }

@@ -87,4 +87,35 @@ function initializeStars() {
     };
 }
 
+const profileInput = document.getElementById('profile-picture-input');
+const profileLabel = document.querySelector('.profile-label');
+
+if (profileInput && profileLabel) {
+    profileInput.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        
+        if (file) {
+            if (!file.type.startsWith('image/')) {
+                alert('Por favor, selecciona un archivo de imagen válido.');
+                return;
+            }
+            
+            if (file.size > 5 * 1024 * 1024) {
+                alert('La imagen no debe superar los 5MB.');
+                return;
+            }
+            
+            const url = URL.createObjectURL(file);
+            
+            profileLabel.style.backgroundImage = `url(${url})`;
+            profileLabel.style.backgroundSize = 'cover';
+            profileLabel.style.backgroundPosition = 'center';
+            
+            setTimeout(() => {
+                URL.revokeObjectURL(url);
+            }, 100);
+        }
+    });
+}
+
 document.addEventListener('DOMContentLoaded', initializeStars);
