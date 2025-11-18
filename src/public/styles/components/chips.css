@@ -8,7 +8,6 @@
     font-weight: 500;
     cursor: pointer;
     border: none;
-    transition: all 0.3s ease;
     white-space: nowrap;
     gap: var(--spXS);
 }
@@ -116,7 +115,6 @@
     padding: 2px;
     margin-left: 4px;
     border-radius: 50%;
-    transition: background 0.2s;
 }
 
 .chip-remove-btn:hover {

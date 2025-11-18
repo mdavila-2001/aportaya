@@ -9,7 +9,6 @@
     font-weight: bold;
     cursor: pointer;
     border: none;
-    transition: background 0.2s, color 0.2s, opacity 0.2s, transform 0.2s;
     font-family: var(--font-display);
     white-space: nowrap;
 }
@@ -26,11 +25,6 @@
 
 .btn-primary:hover:not(:disabled) {
     opacity: 0.9;
-    transform: scale(1.05);
-}
-
-.btn-primary:active:not(:disabled) {
-    transform: scale(0.98);
 }
 
 .btn-secondary {
@@ -41,12 +35,7 @@
 
 .btn-secondary:hover:not(:disabled) {
     opacity: 0.9;
-    transform: scale(1.05);
     border-color: var(--primary);
-}
-
-.btn-secondary:active:not(:disabled) {
-    transform: scale(0.98);
 }
 
 .btn-outline {
@@ -83,7 +72,6 @@
 .btn-icon:hover:not(:disabled) {
     background: var(--primary);
     color: var(--text-dark);
-    transform: scale(1.1);
 }
 
 .btn-favorite {
@@ -100,7 +88,6 @@
     border-radius: 50%;
     border: none;
     cursor: pointer;
-    transition: all 0.3s ease;
     backdrop-filter: blur(4px);
     z-index: 4;
 }
@@ -108,7 +95,6 @@
 .btn-favorite:hover {
     background: var(--primary);
     color: var(--text-dark);
-    transform: scale(1.1);
 }
 
 .btn-favorite.active {

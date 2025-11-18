@@ -105,41 +105,43 @@
         <div class="login-content-container">
             <h2 class="login-title">Inicia sesión en tu cuenta</h2>
             
-            <form class="login-form" action="#" method="POST">
+            <form class="login-form" action="#" method="POST" onsubmit="event.preventDefault(); loginUser();">
                 <div class="form-field">
                     <label class="form-label">
-                        <input
-                            type="email"
-                            name="email"
-                            id="email"
-                            placeholder="Correo electrónico"
-                            class="form-input"
-                            required
-                            autocomplete="email"
-                        />
+                        <div>
+                            <input
+                                type="email"
+                                name="email"
+                                id="email"
+                                placeholder="Correo electrónico"
+                                class="form-input"
+                            />
+                            <div id="email_error_msg" class="error_msg"></div>
+                        </div>
                     </label>
                 </div>
 
                 <div class="form-field">
                     <label class="form-label">
-                        <div class="password-wrapper">
-                            <input
-                                type="password"
-                                name="password"
-                                id="password"
-                                placeholder="Contraseña"
-                                class="form-input password-input"
-                                required
-                                autocomplete="current-password"
-                            />
-                            <button 
-                                type="button" 
-                                class="password-toggle"
-                                aria-label="Mostrar contraseña"
-                                data-toggle="password"
-                            >
-                                <span class="material-symbols-outlined">visibility</span>
-                            </button>
+                        <div>
+                            <div class="password-wrapper">
+                                <input
+                                    type="password"
+                                    name="password"
+                                    id="password"
+                                    placeholder="Contraseña"
+                                    class="form-input password-input"
+                                />
+                                <button 
+                                    type="button" 
+                                    class="password-toggle"
+                                    aria-label="Mostrar contraseña"
+                                    data-toggle="password"
+                                >
+                                    <span class="material-symbols-outlined">visibility</span>
+                                </button>
+                            </div>
+                            <div id="password_error_msg" class="error_msg"></div>
                         </div>
                     </label>
                 </div>
@@ -169,6 +171,6 @@
         </div>
     </div>
 
-    <script src="../../scripts/pages/login.js"></script>
+    <script src="../../scripts/pages/auth/login.js"></script>
 </body>
 </html>

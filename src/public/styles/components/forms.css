@@ -98,6 +98,17 @@
     box-shadow: 0 0 0 2px rgba(220, 38, 38, 0.2);
 }
 
+.error_msg {
+    margin: 0 8px;
+    border-radius: var(--border-radius-md);
+    padding: 0 var(--spXS);
+    font-size: var(--sfM);
+    margin-top: var(--spXS);
+    width: max-content;
+    background-color: var(--color-error);
+    color: var(--text-light);
+}
+
 .form-input.success,
 .input.success {
     border: 1px solid var(--color-success);

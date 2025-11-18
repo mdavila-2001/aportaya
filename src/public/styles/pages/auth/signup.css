@@ -75,7 +75,6 @@ body {
     font-size: var(--sfL);
     font-weight: 400;
     line-height: normal;
-    transition: all 0.2s ease;
 }
 
 .signup-form input::placeholder,
@@ -133,7 +132,6 @@ body {
     border: none;
     color: #9db9ab;
     cursor: pointer;
-    transition: color 0.2s ease;
 }
 
 .toggle-label:hover {
@@ -190,7 +188,6 @@ body {
 .login-link a {
     color: var(--text-light);
     text-decoration: underline;
-    transition: color 0.2s ease;
 }
 
 .login-link a:hover {

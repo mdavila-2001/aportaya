@@ -37,7 +37,6 @@
     position: absolute;
     left: var(--spM);
     top: 50%;
-    transform: translateY(-50%);
     color: var(--text-muted);
     font-size: 20px;
     pointer-events: none;

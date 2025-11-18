@@ -82,23 +82,33 @@
         <main class="signup-page">
             <div class="signup-container">
                 <h1 class="signup-title">Crea tu cuenta</h1>
-                <form action="#" method="POST" class="signup-form">
+                <form action="#" method="POST" class="signup-form" onsubmit="event.preventDefault(); signupUser();">
                     <div class="form-field">
-                        <input type="email" name="email" id="email" placeholder="Correo electrónico" required class="form-input">
+                        <input type="email" name="email" id="email" placeholder="Correo electrónico" class="form-input">
+                        <div class="error_msg" id="email_error_msg"></div>
                     </div>
                     
                     <div class="form-row">
-                        <input type="text" name="first-name" id="first-name" placeholder="Nombre" required class="form-input">
+                        <div>
+                            <input type="text" name="first-name" id="first-name" placeholder="Nombre" class="form-input">
+                            <div class="error_msg" id="first_name_error_msg"></div>
+                        </div>
                         <input type="text" name="middle-name" id="middle-name" placeholder="Segundo Nombre" class="form-input">
                     </div>
                     
                     <div class="form-row">
-                        <input type="text" name="last-name" id="last-name" placeholder="Apellido Paterno" required class="form-input">
+                        <div>
+                            <input type="text" name="last-name" id="last-name" placeholder="Apellido Paterno" class="form-input">
+                            <div class="error_msg" id="last_name_error_msg"></div>
+                        </div>
                         <input type="text" name="second-last-name" id="second-last-name" placeholder="Apellido Materno" class="form-input">
                     </div>
                     
                     <div class="form-field password-field">
-                        <input type="password" name="password" id="password" placeholder="Contraseña" required class="form-input">
+                        <div>
+                            <input type="password" name="password" id="password" placeholder="Contraseña" class="form-input">
+                            <div class="error_msg" id="password_error_msg"></div>
+                        </div>
                         <input type="checkbox" id="toggle-password" class="toggle-checkbox">
                         <label for="toggle-password" class="toggle-label" aria-label="Mostrar/ocultar contraseña">
                             <span class="material-symbols-outlined icon-show">visibility</span>
@@ -107,7 +117,10 @@
                     </div>
                     
                     <div class="form-field password-field">
-                        <input type="password" name="confirm-password" id="confirm-password" placeholder="Repetir Contraseña" required class="form-input">
+                        <div>
+                            <input type="password" name="confirm-password" id="confirm-password" placeholder="Repetir Contraseña" class="form-input">
+                            <div class="error_msg" id="confirm_password_error_msg"></div>
+                        </div>
                         <input type="checkbox" id="toggle-confirm" class="toggle-checkbox">
                         <label for="toggle-confirm" class="toggle-label" aria-label="Mostrar/ocultar contraseña">
                             <span class="material-symbols-outlined icon-show">visibility</span>
@@ -116,14 +129,20 @@
                     </div>
                     
                     <div class="form-row">
-                        <input type="date" name="birthdate" id="birthdate" placeholder="Fecha de Nacimiento" required class="form-input">
-                        <select name="gender" id="gender" required class="form-input">
-                            <option value="" disabled selected>Género</option>
-                            <option value="M">Masculino</option>
-                            <option value="F">Femenino</option>
-                            <option value="O">Otro</option>
-                            <option value="U">Prefiero no decirlo</option>
-                        </select>
+                        <div>
+                            <input type="date" name="birthdate" id="birthdate" placeholder="Fecha de Nacimiento" class="form-input">
+                            <div class="error_msg" id="birthdate_error_msg"></div>
+                        </div>
+                        <div>
+                            <select name="gender" id="gender" class="form-input">
+                                <option value="" disabled selected>Género</option>
+                                <option value="M">Masculino</option>
+                                <option value="F">Femenino</option>
+                                <option value="O">Otro</option>
+                                <option value="U">Prefiero no decirlo</option>
+                            </select>
+                            <div class="error_msg" id="gender_error_msg"></div>
+                        </div>
                     </div>
                     
                     <button type="submit" class="btn btn-primary btn-submit">Registrarse</button>
@@ -133,5 +152,6 @@
                 <p class="login-link">¿Ya tienes una cuenta? <a href="login.html">Inicia sesión</a></p>
             </div>
         </main>
+        <script src="../../scripts/pages/auth/signup.js"></script>
     </body>
 </html>

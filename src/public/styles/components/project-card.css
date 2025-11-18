@@ -7,11 +7,6 @@
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
-.project-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-}
-
 .project-image-container {
     position: relative;
     width: 100%;
@@ -43,7 +38,6 @@
     border-radius: 50%;
     border: none;
     cursor: pointer;
-    transition: all 0.3s ease;
     backdrop-filter: blur(4px);
     z-index: 4;
 }
@@ -51,7 +45,6 @@
 .project-fav:hover {
     background: var(--primary);
     color: var(--text-dark);
-    transform: scale(1.1);
 }
 
 .project-details {
