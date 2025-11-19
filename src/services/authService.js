@@ -1,24 +1,24 @@
 const { dbPool } = require('../config/dbConnection');
 
-exports.loginUser = async (email, password) => {
+const loginUser = async (email, password) => {
     try {
         const login = "SELECT users.login_user($1, $2) AS user_data";
         const { rows } = await dbPool.query(login, [email, password]);
 
         const user_id = rows[0].user_data;
 
-        console.log('Login response rows:', rows);
-
-        console.log('User ID from login:', user_id);
-
         if (!user_id) {
             throw new Error('Credenciales inválidas o usuario no encontrado');
         }
 
         const userDetails = await dbPool.query(
-            `SELECT id, email, first_name, middle_name, last_name, mother_last_name
-             FROM users.user
-             WHERE id = $1`,
+            `SELECT u.id, u.email, u.first_name, u.middle_name, u.last_name, u.mother_last_name
+             FROM users."user" u
+             INNER JOIN roles.user_role ur
+                 ON u.id = ur.user_id
+            INNER JOIN roles."role" r
+                 ON ur.role_id = r.id
+             WHERE u.id = $1`,
              [user_id]
         );
         
@@ -30,4 +30,69 @@ exports.loginUser = async (email, password) => {
         }
         throw new Error('Error al iniciar sesión: ' + error.message);
     }
+};
+
+const getMyUser = async (userId) => {
+    try {
+        const userData = await dbPool.query(
+            `SELECT
+                u.id, u.first_name,
+                u.middle_name,
+                u.last_name,
+                u.mother_last_name,
+                u.email,
+                i.file_path AS profile_image_url
+            FROM users."user" u
+            INNER JOIN files.image i
+                ON u.profile_image_id = i.id
+            WHERE u.id = $1`,
+            [userId]
+        );
+
+        if (userData.rows.length === 0) {
+            throw new Error('Usuario no encontrado');
+        }
+
+        const user = userData.rows[0];
+
+        const roleData = await dbPool.query(
+            `SELECT r."name" AS role_name
+             FROM roles.user_role ur
+             INNER JOIN roles."role" r
+                 ON ur.role_id = r.id
+             WHERE ur.user_id = $1`,
+            [userId]
+        );
+
+        user.role = roleData.rows.length > 0 ? roleData.rows[0].role_name : null;
+
+        const abilitiesData = await dbPool.query(
+            `SELECT
+                m."name" as module_name,
+                a."name" AS ability_code,
+                a."label" as ability_name
+             FROM roles.user_role ur
+             INNER JOIN roles.role_ability ra
+                 ON ur.role_id = ra.role_id
+             INNER JOIN roles.ability a
+                 ON ra.ability_id = a.id
+             INNER JOIN roles."module" m
+                ON a.module_id = m.id
+             WHERE ur.user_id = $1
+             AND ra."granted" = true
+             ORDER BY m.id, a.id`,
+            [userId]
+        );
+
+        user.abilities = abilitiesData.rows.map(row => row.ability_name);
+
+        return user;
+    } catch (error) {
+        throw new Error('Error al obtener usuario: ' + error.message);
+    }
+};
+
+module.exports = {
+    loginUser,
+    getMyUser
 };

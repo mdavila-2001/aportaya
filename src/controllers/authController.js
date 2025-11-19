@@ -1,7 +1,7 @@
 const authService = require('../services/authService');
 const { generateToken } = require('../utils/jwt');
 
-exports.login = async (req, res) => {
+const login = async (req, res) => {
     const { email, password } = req.body;
 
     if (!email || !password) {
@@ -13,16 +13,61 @@ exports.login = async (req, res) => {
         const token = generateToken(user);
 
         res.status(200).json({
+            success: true,
             message: 'Inicio de sesión exitoso',
-            token,
-            user: {
+            data: {
                 id: user.id,
+                auth_token: token,
                 email: user.email,
-                //Validemos el no mandar espacio doble si no existe middle name y mother_last_name
-                user_full_name: `${user.first_name}${user.middle_name ? ' ' + user.middle_name : ''} ${user.last_name}${user.mother_last_name ? ' ' + user.mother_last_name : ''}`.trim()
+                first_name: user.first_name,
+                middle_name: user.middle_name,
+                last_name: user.last_name,
+                mother_last_name: user.mother_last_name
             }
         });
     } catch (error) {
-        res.status(401).json({ message: error.message });
+        res.status(401).json({
+            success: false,
+            message: error.message
+        });
     }
+};
+
+const getMe = async (req, res) => {
+    if (!req.user || !req.user.id) {
+        return res.status(401).json({
+            success: false,
+            message: 'Usuario no autenticado'
+        });
+    }
+
+    const userId = req.user.id;
+
+    try {
+        const myUser = await authService.getMyUser(userId);
+        res.status(200).json({
+            success: true,
+            data: {
+                id: myUser.id,
+                first_name: myUser.first_name,
+                middle_name: myUser.middle_name,
+                last_name: myUser.last_name,
+                mother_last_name: myUser.mother_last_name,
+                email: myUser.email,
+                profile_image_url: myUser.profile_image_url,
+                role: myUser.role,
+                abilities: myUser.abilities
+            }
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: error.message
+        });
+    }
+};
+
+module.exports = {
+    login, 
+    getMe
 };

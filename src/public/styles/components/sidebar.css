@@ -1,0 +1,35 @@
+.sidebar {
+    display: none;
+}
+
+.sidebar a {
+    text-decoration: none;
+    color: var(--text-light);
+    padding: var(--spM);
+}
+
+@media (min-width: 992px) {
+    .sidebar {
+        display: flex;
+        flex-direction: column;
+        width: 320px;
+        background-color: var(--dark-bg);
+        padding: var(--spL);
+    }
+
+    .sidebar .sidebar-items {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: var(--spS);
+        margin-top: var(--spL);
+    }
+
+    .sidebar-item {
+        align-items: center;
+    }
+
+    .logout {
+        bottom: 0;
+    }
+}
