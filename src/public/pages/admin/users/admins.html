@@ -26,47 +26,69 @@
     </head>
     <body>
         <main class="admin-content">
-            <div class="sidebar admin-sidebar">
-                <section class="icon">
-                    <a href="../dashboard.html">
-                        <h1>AportaYa Admin</h1>
-                    </a>
-                </section>
+            <aside class="sidebar admin-sidebar">
+                <div class="sidebar-header">
+                    <div class="sidebar-brand">
+                        <div class="brand-icon">
+                            <span class="material-symbols-outlined">volunteer_activism</span>
+                        </div>
+                        <div class="brand-text">
+                            <h1>AportaYa</h1>
+                            <p>Panel de Admin</p>
+                        </div>
+                    </div>
+                </div>
                 <nav class="sidebar-nav">
                     <ul class="sidebar-items">
                         <li class="sidebar-item">
                             <a href="../dashboard.html">
-                                <span class="material-symbols-outlined">stats</span>
+                                <span class="material-symbols-outlined">dashboard</span>
                                 <span>Dashboard</span>
                             </a>
                         </li>
                         <li class="sidebar-item">
+                            <a href="../../projects/projects.html">
+                                <span class="material-symbols-outlined">folder</span>
+                                <span>Proyectos</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item active">
                             <a href="admins.html">
-                                <span class="material-symbols-outlined">admin_panel_settings</span>
+                                <span class="material-symbols-outlined filled">admin_panel_settings</span>
                                 <span>Administradores</span>
                             </a>
                         </li>
                         <li class="sidebar-item">
-                            <a href="users.html">
+                            <a href="#">
                                 <span class="material-symbols-outlined">group</span>
                                 <span>Usuarios</span>
                             </a>
                         </li>
                         <li class="sidebar-item">
-                            <a href="../projects/projects.html">
-                                <span class="material-symbols-outlined">work</span>
-                                <span>Proyectos</span>
+                            <a href="#">
+                                <span class="material-symbols-outlined">settings</span>
+                                <span>Configuración</span>
                             </a>
                         </li>
                     </ul>
-                    <section class="logout">
-                        <a href="#">
-                            <span class="material-symbols-outlined">logout</span>
-                            <span>Cerrar Sesión</span>
-                        </a>
-                    </section>
                 </nav>
-            </div>
+                <div class="sidebar-footer">
+                    <ul class="sidebar-items">
+                        <li class="sidebar-item">
+                            <a href="#">
+                                <span class="material-symbols-outlined">help</span>
+                                <span>Ayuda</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a href="#">
+                                <span class="material-symbols-outlined">logout</span>
+                                <span>Cerrar Sesión</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </aside>
         </main>
     </body>
 </html>
