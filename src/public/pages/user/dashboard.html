@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - AportaYa</title>
+    <link rel="stylesheet" href="../../styles/components/header.css">
+    <link rel="stylesheet" href="../../styles/components/footer.css">
+    <link rel="stylesheet" href="../../styles/components/sidebar.css">
+
+    <link rel="stylesheet" href="../../styles/styles.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+</head>
+<body>
+    <header class="header">
+        <div class="header__container">
+            <a href="/" class="header__logo">AportaYa</a>
+            <nav class="header__nav">
+                <a href="/pages/projects/projects.html" class="header__link">Proyectos</a>
+                <a href="/pages/user/dashboard.html" class="header__link header__link--active">Mi Dashboard</a>
+                <div class="header__user-info">
+                    <img src="/uploads/avatar/default.png" alt="Usuario" class="user-avatar" width="40" height="40">
+                    <span class="user-name">Cargando...</span>
+                </div>
+                <button id="logout-btn" class="header__link">Cerrar Sesión</button>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="container">
+            <h1>Bienvenido a tu Dashboard</h1>
+            <p>Esta es tu área personal de usuario autenticado.</p>
+            
+            <section class="dashboard-section">
+                <h2>Mis Proyectos</h2>
+                <p>Aquí podrás ver tus proyectos favoritos y contribuciones.</p>
+            </section>
+
+            <section class="dashboard-section">
+                <h2>Mis Contribuciones</h2>
+                <p>Historial de tus aportes realizados.</p>
+            </section>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="footer__container">
+            <p class="footer__text">&copy; 2025 AportaYa. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <script src="/scripts/user-header.js"></script>
+    <script>
+        document.getElementById('logout-btn').addEventListener('click', () => {
+            localStorage.removeItem('token');
+            globalThis.location.href = '/';
+        });
+    </script>
+</body>
+</html>

@@ -16,9 +16,13 @@
         <link rel="stylesheet" href="../../../styles/components/buttons.css">
         <link rel="stylesheet" href="../../../styles/components/cards.css">
         <link rel="stylesheet" href="../../../styles/components/chips.css">
+        <link rel="stylesheet" href="../../../styles/components/header.css">
         <link rel="stylesheet" href="../../../styles/components/forms.css">
         <link rel="stylesheet" href="../../../styles/components/sidebar.css">
         <link rel="stylesheet" href="../../../styles/components/progress.css">
+
+        <link rel="stylesheet" href="../../../styles/pages/admin/layout.css">
+        
 
         <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
 
@@ -47,6 +51,12 @@
                             </a>
                         </li>
                         <li class="sidebar-item">
+                            <a href="../../projects/categories.html">
+                                <span class="material-symbols-outlined">category</span>
+                                <span>Categorías</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
                             <a href="../../projects/projects.html">
                                 <span class="material-symbols-outlined">folder</span>
                                 <span>Proyectos</span>
@@ -64,22 +74,10 @@
                                 <span>Usuarios</span>
                             </a>
                         </li>
-                        <li class="sidebar-item">
-                            <a href="#">
-                                <span class="material-symbols-outlined">settings</span>
-                                <span>Configuración</span>
-                            </a>
-                        </li>
                     </ul>
                 </nav>
                 <div class="sidebar-footer">
                     <ul class="sidebar-items">
-                        <li class="sidebar-item">
-                            <a href="#">
-                                <span class="material-symbols-outlined">help</span>
-                                <span>Ayuda</span>
-                            </a>
-                        </li>
                         <li class="sidebar-item">
                             <a href="#">
                                 <span class="material-symbols-outlined">logout</span>
@@ -89,6 +87,30 @@
                     </ul>
                 </div>
             </aside>
+            <section class="admin-main">
+                <header class="header-logged">
+                    <div class="logged-in-content">
+                        <a class="logo">
+                            <img src="../../../images/aporta-ya-icon.webp" alt="AportaYa Logo" width="48" height="48">
+                            <img src="../../../images/aporta-ya-letters.webp" alt="AportaYa" width="100" class="letters">
+                        </a>
+                        <div>
+                            <div class="user-info">
+                                <img src="/uploads/avatar/admin_avatar.png" alt="Avatar Default" class="user-avatar" width="48" height="48" style="border-radius: 999px;">
+                                <span class="user-name">Cargando...</span>
+                                <nav class="mobile-menu"></nav>
+                            </div>
+                        </div>
+                    </div>
+                </header>
+                <main>
+                    <div class="title">
+                        <h1>Lista de Administradores</h1>
+                        <button class="btn btn-primary">Agregar Administrador</button>
+                    </div>
+                </main>
+            </section>
         </main>
+        <script src="/scripts/user-header.js"></script>
     </body>
 </html>

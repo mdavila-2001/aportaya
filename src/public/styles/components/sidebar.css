@@ -9,7 +9,7 @@
         justify-content: space-between;
         width: 256px;
         min-height: 100vh;
-        background-color: var(--dark-bg);
+        background-color: var(--dark-bg-2);
         padding: var(--spM);
     }
 
