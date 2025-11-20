@@ -19,6 +19,7 @@
         <link rel="stylesheet" href="../../../styles/components/forms.css">
         <link rel="stylesheet" href="../../../styles/components/sidebar.css">
         <link rel="stylesheet" href="../../../styles/components/progress.css">
+        <link rel="stylesheet" href="../../../styles/components/table.css">
 
         <link rel="stylesheet" href="../../../styles/pages/admin/layout.css">
         
@@ -161,6 +162,121 @@
                             <span>Agregar Administrador</span>
                         </button>
                     </div>
+                    <div class="table-search">
+                        <span class="material-symbols-outlined table-search-icon">search</span>
+                        <input type="search" placeholder="Buscar por nombre, correo...">
+                    </div>
+                    <div class="table-container">
+                        <table class="table">
+                            <thead class="table-header">
+                                <tr>
+                                    <th>Nombre</th>
+                                    <th>Correo</th>
+                                    <th>Estado</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="cell-name">Liam Carter</td>
+                                    <td class="cell-secondary">liam.carter@email.com</td>
+                                    <td>
+                                        <span class="status-badge status-active">Activo</span>
+                                    </td>
+                                    <td>
+                                        <div class="table-actions">
+                                            <a href="#" class="table-link">Editar</a>
+                                            <span class="table-link-separator">|</span>
+                                            <a href="#" class="table-link table-link-danger">Desactivar</a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="cell-name">Olivia Bennett</td>
+                                    <td class="cell-secondary">olivia.bennett@email.com</td>
+                                    <td>
+                                        <span class="status-badge status-active">Activo</span>
+                                    </td>
+                                    <td>
+                                        <div class="table-actions">
+                                            <a href="#" class="table-link">Editar</a>
+                                            <span class="table-link-separator">|</span>
+                                            <a href="#" class="table-link table-link-danger">Desactivar</a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="cell-name">Noah Thompson</td>
+                                    <td class="cell-secondary">noah.thompson@email.com</td>
+                                    <td>
+                                        <span class="status-badge status-inactive">Inactivo</span>
+                                    </td>
+                                    <td>
+                                        <div class="table-actions">
+                                            <a href="#" class="table-link">Editar</a>
+                                            <span class="table-link-separator">|</span>
+                                            <a href="#" class="table-link table-link-success">Activar</a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="cell-name">Ava Martinez</td>
+                                    <td class="cell-secondary">ava.martinez@email.com</td>
+                                    <td>
+                                        <span class="status-badge status-active">Activo</span>
+                                    </td>
+                                    <td>
+                                        <div class="table-actions">
+                                            <a href="#" class="table-link">Editar</a>
+                                            <span class="table-link-separator">|</span>
+                                            <a href="#" class="table-link table-link-danger">Desactivar</a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="cell-name">Ethan Harris</td>
+                                    <td class="cell-secondary">ethan.harris@email.com</td>
+                                    <td>
+                                        <span class="status-badge status-active">Activo</span>
+                                    </td>
+                                    <td>
+                                        <div class="table-actions">
+                                            <a href="#" class="table-link">Editar</a>
+                                            <span class="table-link-separator">|</span>
+                                            <a href="#" class="table-link table-link-danger">Desactivar</a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="cell-name">Sophia Clark</td>
+                                    <td class="cell-secondary">sophia.clark@email.com</td>
+                                    <td>
+                                        <span class="status-badge status-inactive">Inactivo</span>
+                                    </td>
+                                    <td>
+                                        <div class="table-actions">
+                                            <a href="#" class="table-link">Editar</a>
+                                            <span class="table-link-separator">|</span>
+                                            <a href="#" class="table-link table-link-success">Activar</a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Pagination -->
+                    <nav class="table-pagination" aria-label="Paginación de tabla">
+                        <span class="table-pagination-info">
+                            Mostrando <span>1-6</span> de <span>10</span>
+                        </span>
+                        <div class="table-pagination-controls">
+                            <button class="table-pagination-btn" disabled>Anterior</button>
+                            <button class="table-pagination-btn active">1</button>
+                            <button class="table-pagination-btn">2</button>
+                            <button class="table-pagination-btn">Siguiente</button>
+                        </div>
+                    </nav>
                 </main>
             </section>
         </main>
