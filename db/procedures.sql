@@ -257,9 +257,9 @@ BEGIN
     VALUES (
         v_user_id,
         p_first_name,
-		    p_middle_name,
+		p_middle_name,
         p_last_name,
-		    p_mother_last_name,
+		p_mother_last_name,
         p_email,
         crypt(p_password, gen_salt('bf')),  -- Hash bcrypt
         p_gender,
@@ -1165,6 +1165,16 @@ GROUP BY
 ORDER BY 
     project_count DESC
 LIMIT 5;
+
+-- Vista pal seeder
+CREATE OR REPLACE VIEW projects.top_project_categories AS
+SELECT
+	*
+FROM 
+	projects.category c
+LIMIT 5;
+
+select * from projects.top_project_categories
 
 -- ----------------------------------------
 -- 4.3 GESTIÓN DE CAMPAÑAS

@@ -420,12 +420,14 @@ select * from roles.role_ability ra
 -- Imagen del Avatar del Administrador
 select files.create_image(
 	'admin_avatar',
-	'uploads/avatar/admin_avatar.png',
+	'/uploads/avatar/admin_avatar.png',
 	'Super Avatar',
 	FALSE
 );
 
 select * from files.image i 
+
+-- 9c2812d5-776c-4ea4-82c0-11cfd1aa9695
 
 -- Imágenes de proyectos
 select files.create_image(
@@ -435,7 +437,19 @@ select files.create_image(
 	FALSE
 );
 
+select files.create_image(
+	'comedor',
+	'/uploads/projects/comedor.png',
+	'Comedor Comunitario',
+	FALSE
+);
 
+select files.create_image(
+	'medibot',
+	'/uploads/projects/medibot.png',
+	'Médico Robot',
+	FALSE
+);
 
 -- =====================================================
 --               7. CREAR ADMINISTRADOR
@@ -458,3 +472,33 @@ select users.login_user(
 	'admin@aportaya.com',
 	'12345678'
 );
+
+-- =====================================================
+--          8. CREAR CATEGORÍA DE PROYECTO
+-- =====================================================
+select projects.create_category(
+	'Tecnología',
+	'tecnologia',
+	'Para proyectos innovadores'
+);
+
+select projects.create_category(
+	'Salud',
+	'salud',
+	'Para realizar proyectos en el área de salud'
+);
+
+select projects.create_category(
+	'Social',
+	'social',
+	'Impacto comunitario'
+);
+
+select projects.create_category(
+	'Arte',
+	'arte',
+	'Expresión artística'
+);
+
+select * from projects.category c;
+
