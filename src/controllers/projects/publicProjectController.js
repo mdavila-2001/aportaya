@@ -1,6 +1,6 @@
-const publicProjectService = require('../services/projects/publicProjectService');
+const publicProjectService = require('../../services/projects/publicProjectService');
 
-getPublicDashboarData = async (req, res) => {
+const getPublicDashboarData = async (req, res) => {
     try {
         const categories = await publicProjectService.getProjectCategories();
         const projects = await publicProjectService.getDashboardProjects();
@@ -12,6 +12,7 @@ getPublicDashboarData = async (req, res) => {
                     categories: categories.map((category) => ({
                         id: category.id,
                         name: category.name,
+                        description: category.description,
                     })),
                 },
                 data: {
@@ -36,3 +37,7 @@ getPublicDashboarData = async (req, res) => {
         res.status(500).json({ error: 'Error llamando a los datos' });
     }
 }
+
+module.exports = {
+    getPublicDashboarData,
+};

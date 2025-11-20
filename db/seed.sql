@@ -427,6 +427,16 @@ select files.create_image(
 
 select * from files.image i 
 
+-- Imágenes de proyectos
+select files.create_image(
+	'mochila',
+	'uploads/projects/mochila.png',
+	'Mochila Solar',
+	FALSE
+);
+
+
+
 -- =====================================================
 --               7. CREAR ADMINISTRADOR
 -- =====================================================

@@ -257,9 +257,9 @@ BEGIN
     VALUES (
         v_user_id,
         p_first_name,
-		p_middle_name,
+		    p_middle_name,
         p_last_name,
-		p_mother_last_name,
+		    p_mother_last_name,
         p_email,
         crypt(p_password, gen_salt('bf')),  -- Hash bcrypt
         p_gender,

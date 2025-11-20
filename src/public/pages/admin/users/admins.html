@@ -14,7 +14,6 @@
         <link rel="stylesheet" href="../../../styles/fonts.css">
         
         <link rel="stylesheet" href="../../../styles/components/buttons.css">
-        <link rel="stylesheet" href="../../../styles/components/cards.css">
         <link rel="stylesheet" href="../../../styles/components/chips.css">
         <link rel="stylesheet" href="../../../styles/components/header.css">
         <link rel="stylesheet" href="../../../styles/components/forms.css">
@@ -90,15 +89,66 @@
             <section class="admin-main">
                 <header class="header-logged">
                     <div class="logged-in-content">
-                        <a class="logo">
-                            <img src="../../../images/aporta-ya-icon.webp" alt="AportaYa Logo" width="48" height="48">
-                            <img src="../../../images/aporta-ya-letters.webp" alt="AportaYa" width="100" class="letters">
-                        </a>
+                        <div class="header-menu">
+                            <input type="checkbox" name="mobile-menu-switch" id="mobile-menu-switch">
+                            <label for="mobile-menu-switch" class="mobile-menu-label">
+                                <span class="material-symbols-outlined mobile-menu">menu</span>
+                            </label>
+                            <nav class="user-menu" aria-label="User Menu">
+                                <ul class="mobile-sidebar-items">
+                                    <li class="mobile-sidebar-item">
+                                        <a href="../dashboard.html">
+                                            <span class="material-symbols-outlined">dashboard</span>
+                                            <span>Dashboard</span>
+                                        </a>
+                                    </li>
+                                    <li class="mobile-sidebar-item">
+                                        <a href="../../projects/categories.html">
+                                            <span class="material-symbols-outlined">category</span>
+                                            <span>Categorías</span>
+                                        </a>
+                                    </li>
+                                    <li class="mobile-sidebar-item">
+                                        <a href="../../projects/projects.html">
+                                            <span class="material-symbols-outlined">folder</span>
+                                            <span>Proyectos</span>
+                                        </a>
+                                    </li>
+                                    <li class="mobile-sidebar-item active">
+                                        <a href="admins.html">
+                                            <span class="material-symbols-outlined filled">admin_panel_settings</span>
+                                            <span>Administradores</span>
+                                        </a>
+                                    </li>
+                                    <li class="mobile-sidebar-item">
+                                        <a href="#">
+                                            <span class="material-symbols-outlined">group</span>
+                                            <span>Usuarios</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </nav>
+                            <div class="mobile-sidebar-footer">
+                                <ul class="mobile-sidebar-items">
+                                    <li class="mobile-sidebar-item logout-item">
+                                        <a href="#">
+                                            <span class="material-symbols-outlined">logout</span>
+                                            <span>Cerrar Sesión</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div>
+                            <a class="logo">
+                                <img src="../../../images/aporta-ya-icon.webp" alt="AportaYa Logo" width="48" height="48">
+                                <img src="../../../images/aporta-ya-letters.webp" alt="AportaYa" width="100" class="letters">
+                            </a>
+                        </div>
                         <div>
                             <div class="user-info">
                                 <img src="/uploads/avatar/admin_avatar.png" alt="Avatar Default" class="user-avatar" width="48" height="48" style="border-radius: 999px;">
                                 <span class="user-name">Cargando...</span>
-                                <nav class="mobile-menu" aria-label="Mobile Menu for Dashboard"></nav>
                             </div>
                         </div>
                     </div>

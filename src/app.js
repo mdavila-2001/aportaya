@@ -2,6 +2,7 @@ const express = require('express');
 require('dotenv').config();
 const cors = require('cors');
 const authRoutes = require('./routes/authRoutes');
+const unatuhRoutes = require('./routes/unauthRoutes/unauthRoutes');
 
 const path = require('node:path');
 require('dotenv').config({ path: path.resolve(__dirname, '..', '.env') });
@@ -11,9 +12,11 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
-app.use(express.static('public'))
+app.use(express.static('public'));
+app.use('/uploads', express.static(path.join(__dirname, '..', 'uploads')))
 
 app.use('/api', authRoutes);
+app.use('/api', unatuhRoutes);
 
 const PORT = process.env.PORT || 3000;
 

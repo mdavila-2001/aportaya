@@ -1,9 +1,14 @@
-const { dbPool } = require('../config/dbConnection');
+const { dbPool } = require('../../config/dbConnection');
 
 const getProjectCategories = async () => {
     try {
         const sql = `
-            SELECT * FROM projects.top_project_categories
+            --SELECT * FROM projects.top_project_categories
+            SELECT
+                *
+            FROM 
+                projects.category c
+            LIMIT 5;
         `;
         const { rows } = await dbPool.query(sql);
         return rows;

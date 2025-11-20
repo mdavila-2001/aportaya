@@ -16,7 +16,7 @@
     justify-content: space-between;
     font-size: var(--fsXL);
     font-weight: bold;
-    margin-bottom: var(--spM);
+    margin: var(--spM) 0;
 }
 
 button {
