@@ -2,7 +2,7 @@ async function loadUserHeader() {
     const token = localStorage.getItem('token');
     
     if (!token) {
-        window.location.href = '/pages/auth/login.html';
+        globalThis.location.href = '/pages/auth/login.html';
         return;
     }
 
@@ -18,7 +18,7 @@ async function loadUserHeader() {
         if (!response.ok) {
             if (response.status === 401) {
                 localStorage.removeItem('token');
-                window.location.href = '/pages/auth/login.html';
+                globalThis.location.href = '/pages/auth/login.html';
                 return;
             }
             throw new Error('Error al cargar datos del usuario');
