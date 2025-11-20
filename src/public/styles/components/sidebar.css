@@ -116,4 +116,8 @@
     .sidebar-footer .sidebar-items {
         gap: var(--sp2XS);
     }
+
+    .logout-item a {
+        color: var(--color-error);
+    }
 }
