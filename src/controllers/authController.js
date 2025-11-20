@@ -34,7 +34,7 @@ const login = async (req, res) => {
 };
 
 const getMe = async (req, res) => {
-    if (!req.user || !req.user.id) {
+    if (!req.user?.id) {
         return res.status(401).json({
             success: false,
             message: 'Usuario no autenticado'
