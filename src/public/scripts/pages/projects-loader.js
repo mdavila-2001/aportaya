@@ -5,32 +5,40 @@ function createProjectCard(project) {
     card.className = 'project-card';
     
     const favoriteIcon = project.is_favorite ? 'favorite' : 'favorite_border';
-    const favoriteClass = project.is_favorite ? 'active' : '';
     
     const percentage = Math.round((project.raised_amount / project.goal_amount) * 100);
     
     card.style.cursor = 'pointer';
     card.addEventListener('click', (e) => {
-        if (!e.target.closest('.btn-favorite')) {
+        if (!e.target.closest('.project-fav')) {
             window.location.href = `details.html?id=${project.id}`;
         }
     });
     
     card.innerHTML = `
-        <div class="project-image-wrapper">
+        <div class="project-image-container">
             <img 
                 src="${project.cover_image_url}" 
                 alt="${project.title}"
-                class="project-image"
                 onerror="this.src='../../images/placeholder-project.jpg'"
             />
-            <button class="btn-favorite ${favoriteClass}" aria-label="${project.is_favorite ? 'Quitar de favoritos' : 'Agregar a favoritos'}" data-project-id="${project.id}">
+            <button class="project-fav" aria-label="${project.is_favorite ? 'Quitar de favoritos' : 'Agregar a favoritos'}" data-project-id="${project.id}">
                 <span class="material-symbols-outlined">${favoriteIcon}</span>
             </button>
         </div>
-        <div class="project-content">
-            <h3 class="project-card-title">${project.title}</h3>
+        <div class="project-details">
+            <h3 class="project-title">${project.title}</h3>
             <p class="project-description">${project.description}</p>
+        </div>
+        <div class="project-statistics">
+            <div class="progress-info">
+                <span class="goal-percentage">${percentage}%</span>
+                <span class="raised-amount">$${project.raised_amount.toLocaleString()}</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" style="width: ${percentage}%"></div>
+            </div>
+            <span class="project-goal">Meta: $${project.goal_amount.toLocaleString()}</span>
         </div>
     `;
     
@@ -56,16 +64,15 @@ function renderProjects(projects) {
 }
 
 function attachFavoriteListeners() {
-    const favoriteButtons = document.querySelectorAll('.btn-favorite');
+    const favoriteButtons = document.querySelectorAll('.project-fav');
     
     favoriteButtons.forEach(button => {
         button.addEventListener('click', (e) => {
             e.stopPropagation();
             const icon = button.querySelector('.material-symbols-outlined');
             
-            button.classList.toggle('active');
-            
-            if (button.classList.contains('active')) {
+            // Toggle entre favorite y favorite_border
+            if (icon.textContent === 'favorite_border') {
                 icon.textContent = 'favorite';
                 button.setAttribute('aria-label', 'Quitar de favoritos');
             } else {

@@ -2,6 +2,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    gap: var(--spXS);
     border-radius: var(--border-radius-lg);
     height: 40px;
     padding: 0 16px;
@@ -11,6 +12,11 @@
     border: none;
     font-family: var(--font-display);
     white-space: nowrap;
+    transition: all 0.2s ease;
+}
+
+.btn .material-symbols-outlined {
+    font-size: 20px;
 }
 
 .btn:disabled {

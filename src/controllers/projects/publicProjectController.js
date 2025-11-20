@@ -1,6 +1,6 @@
 const publicProjectService = require('../../services/projects/publicProjectService');
 
-const getPublicDashboarData = async (req, res) => {
+const getPublicLandingData = async (req, res) => {
     try {
         const categories = await publicProjectService.getProjectCategories();
         const projects = await publicProjectService.getDashboardProjects();
@@ -39,5 +39,5 @@ const getPublicDashboarData = async (req, res) => {
 }
 
 module.exports = {
-    getPublicDashboarData,
+    getPublicLandingData,
 };

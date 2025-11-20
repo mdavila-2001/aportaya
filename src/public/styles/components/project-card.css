@@ -40,11 +40,17 @@
     cursor: pointer;
     backdrop-filter: blur(4px);
     z-index: 4;
+    transition: all 0.3s ease;
 }
 
 .project-fav:hover {
     background: var(--primary);
     color: var(--text-dark);
+    transform: scale(1.1);
+}
+
+.project-fav .material-symbols-outlined {
+    font-size: 20px;
 }
 
 .project-details {

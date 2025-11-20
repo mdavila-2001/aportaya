@@ -1,16 +1,39 @@
-const DATA_URL = '../json/dashboard/dashboard.json';
-
-async function loadProjects() {
+async function getLandingData() {
     try {
-        const res = await fetch(DATA_URL);
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        const json = await res.json();
-        const projects = json?.data?.projects || [];
-        renderProjects(projects);
-    } catch (err) {
-        console.error('No se pudieron cargar los proyectos:', err);
-        showLoadError(err);
+        const response = await fetch('api/welcome');
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        renderCategories(data.extraData.categories);
+        //renderProjects(data.data.projects);
+    } catch (error) {
+        console.error('No se pudo obtener la data:', error);
+        showLoadError(error);
     }
+};
+
+function renderCategories(categories) {
+  const list = document.querySelector('.category-list');
+  if (!list) return;
+  list.innerHTML = '';
+
+  if (!categories.length) {
+    list.innerHTML = '<li class="category-item">No hay categorías disponibles.</li>';
+    return;
+  }
+
+  for (const cat of categories) {
+    const li = document.createElement('li');
+    li.className = 'category-item';
+
+    const title = document.createElement('h3');
+    title.textContent = cat.name;
+
+    li.appendChild(title);
+
+    list.appendChild(li);
+  };
 }
 
 function renderProjects(projects) {
@@ -55,16 +78,20 @@ function renderProjects(projects) {
     };
 }
 
+
 function showLoadError(err) {
-    const list = document.querySelector('.project-list');
-    if (!list) return;
-    list.innerHTML = `<li class="project-item">Error cargando proyectos.</li>`;
+  const categoryList = document.querySelector('.category-list');
+  if (!categoryList) return;
+  categoryList.innerHTML = `<li class="category-item">Error cargando categorías.</li>`;
+
+  const projectList = document.querySelector('.project-list');
+    if (!projectList) return;
+    projectList.innerHTML = `<li class="project-item">Error cargando proyectos.</li>`;
 }
 
 if (document.readyState === 'loading') {
-    await new Promise(resolve => {
-        document.addEventListener('DOMContentLoaded', resolve);
-    });
-};
-
-await loadProjects();
+  await new Promise(resolve => {
+    document.addEventListener('DOMContentLoaded', resolve, { once: true });
+  });
+}
+await getLandingData();

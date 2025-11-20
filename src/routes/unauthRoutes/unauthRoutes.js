@@ -2,6 +2,6 @@ const express = require('express');
 const router = express.Router();
 const publicProjectController = require('../../controllers/projects/publicProjectController');
 
-router.get('/welcome', publicProjectController.getPublicDashboarData);
+router.get('/welcome', publicProjectController.getPublicLandingData);
 
 module.exports = router;
