@@ -24,3 +24,9 @@ button {
     padding: var(--spXS) var(--spM);
     right: 0;
 }
+
+@media (min-width: 992px) {
+    .mobile-menu {
+        display: none;
+    }
+}
