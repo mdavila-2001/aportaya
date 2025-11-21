@@ -1,4 +1,5 @@
 const authService = require('../services/authService');
+const emailService = require('../services/mailService');
 const { generateToken } = require('../utils/jwt');
 
 const login = async (req, res) => {
@@ -79,16 +80,43 @@ const register = async (req, res) => {
             gender: req.body.gender,
             birthDate: req.body['birthdate'],
             profileImageId: req.body.profileImageId || null,
-        }
+        };
+
+        const result = await authService.registerUser(data);
+
+        await emailService.sendVerificationEmail(result.user.email, result.verificationToken);
+
+        res.status(201).json({
+            success: true,
+            message: 'Usuario registrado exitosamente. Por favor verifica tu correo electrónico.',
+        });
     } catch (error) {
         res.status(500).json({
             success: false,
             message: error.message
         })
     }
+};
+
+const verifyEmail = async (req, res) => {
+    try {
+        const verified = await authService.verifyUserEmail(req.params.token);
+        if (verified) {
+            return res.status(200).json({
+                success: true,
+                message: 'Correo electrónico verificado exitosamente.',
+            });
+        } else {
+            res.status(400).send('<h1>Error: El enlace es inválido o ha expirado.</h1>');
+        }
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
 }
 
 module.exports = {
     login, 
-    getMe
+    getMe,
+    register,
+    verifyEmail
 };
