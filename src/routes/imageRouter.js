@@ -1,0 +1,43 @@
+const express = require('express');
+const router = express.Router();
+const multer = require('multer');
+const path = require('path');
+const imageController = require('../controllers/imageController');
+
+const uploadDirectory = process.env.UPLOADS_PATH || path.join(__dirname, '../../uploads');
+
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, uploadDirectory);
+    },
+    filename: (req, file, cb) => {
+        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+        const extension = path.extname(file.originalname);
+        cb(null, uniqueSuffix + extension);
+    }
+});
+
+const fileFilter = (req, file, cb) => {
+    const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
+    
+    if (allowedTypes.includes(file.mimetype)) {
+        cb(null, true);
+    } else {
+        cb(new Error('Tipo de archivo no permitido. Solo se permiten imágenes (JPEG, PNG, GIF, WEBP)'), false);
+    }
+};
+
+const upload = multer({ 
+    storage: storage,
+    fileFilter: fileFilter,
+    limits: {
+        fileSize: 5 * 1024 * 1024
+    }
+});
+
+router.get('/:id', imageController.getImageById);
+router.post('/', upload.single('file'), imageController.uploadImage);
+router.delete('/:id', imageController.deleteImage);
+router.post('/cleanup', imageController.cleanupOldImages);
+
+module.exports = router;

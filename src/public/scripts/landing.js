@@ -6,7 +6,7 @@ async function getLandingData() {
         }
         const data = await response.json();
         renderCategories(data.extraData.categories);
-        //renderProjects(data.data.projects);
+        renderProjects(data.data.projects);
     } catch (error) {
         console.error('No se pudo obtener la data:', error);
         showLoadError(error);
@@ -50,28 +50,30 @@ function renderProjects(projects) {
         const item = document.createElement('li');
         item.className = 'project-card';
         
-        const percentage = Math.min(100, Math.round((proj.raised_amount / proj.goal_amount) * 100));
+        const raisedAmount = proj.raised_amount || 0;
+        const goalAmount = proj.goal_amount || 0;
+        const percentage = goalAmount > 0 ? Math.min(100, Math.round((raisedAmount / goalAmount) * 100)) : 0;
         
         item.innerHTML = `
             <div class="project-image-container">
-                <img src="${proj.cover_image_url || 'https://via.placeholder.com/400x200'}" alt="${proj.title}" />
+                <img src="${proj.cover_image_url || 'https://via.placeholder.com/400x200'}" alt="${proj.title || 'Proyecto'}" />
                 <button class="project-fav" aria-label="Agregar a favoritos">
                     <span class="material-symbols-outlined">favorite_border</span>
                 </button>
             </div>
             <div class="project-details">
-                <h3 class="project-title">${proj.title}</h3>
-                <p class="project-description">${proj.description}</p>
+                <h3 class="project-title">${proj.title || 'Sin título'}</h3>
+                <p class="project-description">${proj.description || 'Sin descripción'}</p>
             </div>
             <div class="project-statistics">
                 <div class="progress-info">
                     <span class="goal-percentage">${percentage}%</span>
-                    <span class="raised-amount">$${proj.raised_amount.toLocaleString()}</span>
+                    <span class="raised-amount">$${raisedAmount.toLocaleString()}</span>
                 </div>
                 <div class="progress-bar">
                     <div class="progress-fill" style="width: ${percentage}%;"></div>
                 </div>
-                <span class="project-goal">Meta: $${proj.goal_amount.toLocaleString()}</span>
+                <span class="project-goal">Meta: $${goalAmount.toLocaleString()}</span>
             </div>
         `;
         list.appendChild(item);

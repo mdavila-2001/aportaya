@@ -92,7 +92,56 @@ const getMyUser = async (userId) => {
     }
 };
 
+const registerUser = async (userData) => {
+    const client = await dbPool.connect();
+    try {
+        await client.query("BEGIN");
+
+        const sql = `SELECT users.register_user( $1, $2, $3, $4, $5, $6, $7, $8, $9 ) as new_user_id;`;
+        const values = [
+            userData.firstName,
+            userData.middleName || null,
+            userData.lastName,
+            userData.motherLastName || null,
+            userData.email,
+            userData.password,
+            userData.gender,
+            userData.birthDate,
+            userData.profileImageId || null,
+        ];
+
+        const res = await client.query(sql, values);
+        const newUserId = res.rows[0].new_user_id;
+
+        if (userData.profileImageId) {
+            await imageRepository.markImageAsPermanent(userData.profileImageId);
+        }
+
+        const tokenRes = await client.query(
+            'SELECT token FROM users.email_verification_token WHERE user_id = $1',
+            [newUserId]
+        );
+
+        const token = tokenRes.rows[0].token;
+        await client.query("COMMIT");
+        return token;
+    } catch (error) {
+        await client.query("ROLLBACK");
+        throw new Error("Error al registrar al usuario: " + error.message);
+    } finally {
+        client.release();
+    }
+}
+
+const verifyEmail = async (token) => {
+    const query = `SELECT users.verify_email($1) AS is_verified`;
+    const res = await dbPool.query(query, [token]);
+    return res.rows[0].success;
+}
+
 module.exports = {
     loginUser,
-    getMyUser
+    getMyUser,
+    registerUser,
+    verifyEmail
 };

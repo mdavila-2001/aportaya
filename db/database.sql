@@ -680,11 +680,3 @@ CREATE TABLE users.password_reset_token (
   expires_at TIMESTAMPTZ NOT NULL DEFAULT (now() + INTERVAL '1 hour'),
   PRIMARY KEY (user_id, token)
 );
-
-select * from users.user
-
--- Alterar y agregar una restricción
-ALTER TABLE users.user
-  ADD CONSTRAINT user_sex_allowed CHECK (
-    gender IN ('M','F','O','U')
-  );

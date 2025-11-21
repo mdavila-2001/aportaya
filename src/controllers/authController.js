@@ -67,6 +67,27 @@ const getMe = async (req, res) => {
     }
 };
 
+const register = async (req, res) => {
+    try {
+        const data = {
+            firstName: req.body['first-name'],
+            middleName: req.body['middle-name'] || null,
+            lastName: req.body['last-name'],
+            motherLastName: req.body['mother-last-name'] || null,
+            email: req.body.email,
+            password: req.body.password,
+            gender: req.body.gender,
+            birthDate: req.body['birthdate'],
+            profileImageId: req.body.profileImageId || null,
+        }
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: error.message
+        })
+    }
+}
+
 module.exports = {
     login, 
     getMe

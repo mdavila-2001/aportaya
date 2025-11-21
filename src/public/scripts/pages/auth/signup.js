@@ -3,13 +3,27 @@ async function signupUser() {
         e.textContent = '';
     }
 
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
-    const confirmPassword = document.getElementById('confirm-password').value;
-    const firstName = document.getElementById('first-name').value;
-    const lastName = document.getElementById('last-name').value;
-    const birthdate = document.getElementById('birthdate').value;
-    const gender = document.getElementById('gender').value;
+    const emailElement = document.getElementById('email');
+    const passwordElement = document.getElementById('password');
+    const confirmPasswordElement = document.getElementById('confirm-password');
+    const firstNameElement = document.getElementById('first-name');
+    const lastNameElement = document.getElementById('last-name');
+    const birthdateElement = document.getElementById('birthdate');
+    const genderElement = document.getElementById('gender');
+
+    if (!emailElement || !passwordElement || !confirmPasswordElement || 
+        !firstNameElement || !lastNameElement || !birthdateElement || !genderElement) {
+        console.error('Error: No se encontraron todos los elementos del formulario');
+        return false;
+    }
+
+    const email = emailElement.value;
+    const password = passwordElement.value;
+    const confirmPassword = confirmPasswordElement.value;
+    const firstName = firstNameElement.value;
+    const lastName = lastNameElement.value;
+    const birthdate = birthdateElement.value;
+    const gender = genderElement.value;
 
     let isValid = true;
 
@@ -60,8 +74,12 @@ async function signupUser() {
         document.getElementById('gender_error_msg').textContent = 'Por favor, selecciona tu género';
         isValid = false;
     }
-
-    return isValid;
+    
+    if (!isValid) {
+        return false;
+    }
+    console.log('Formulario válido - Listo para enviar');
+    return true;
 }
 
 function initializeStars() {
