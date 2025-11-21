@@ -1127,10 +1127,12 @@ INNER JOIN projects.project_image pi
 INNER JOIN files.image i
     ON pi.image_id = i.id
 WHERE 
-    p.approval_status = 'published'/* 
+    p.approval_status = 'published'
+    and p.campaign_status = 'in_progress'/* 
     AND p.campaign_status = 'not_started'
     AND p.start_date <= now()
     AND p.end_date > now() */
+    and p.raised_amount > 0
 ORDER BY 
     p.created_at DESC
 LIMIT 3;
@@ -1166,15 +1168,11 @@ ORDER BY
     project_count DESC
 LIMIT 5;
 
--- Vista pal seeder
-CREATE OR REPLACE VIEW projects.top_project_categories AS
-SELECT
-	*
-FROM 
-	projects.category c
-LIMIT 5;
-
 select * from projects.top_project_categories
+
+CREATE OR REPLACE VIEW projects.landing_top_projects AS
+SELECT
+
 
 -- ----------------------------------------
 -- 4.3 GESTIÓN DE CAMPAÑAS

@@ -135,12 +135,12 @@ BEGIN
     SELECT files.create_image('ana_av', '/uploads/avatar/ana.png', 'Ana', FALSE) INTO v_img_ana_id;
 
     -- Portadas de Proyectos
-    SELECT files.create_image('p_tech1', '/uploads/projects/tech1.jpg', 'Tech 1', FALSE) INTO v_img_p_tech1;
-    SELECT files.create_image('p_tech2', '/uploads/projects/tech2.jpg', 'Tech 2', FALSE) INTO v_img_p_tech2;
-    SELECT files.create_image('p_social1', '/uploads/projects/social1.jpg', 'Social 1', FALSE) INTO v_img_p_social1;
-    SELECT files.create_image('p_social2', '/uploads/projects/social2.jpg', 'Social 2', FALSE) INTO v_img_p_social2;
-    SELECT files.create_image('p_art1', '/uploads/projects/art1.jpg', 'Art 1', FALSE) INTO v_img_p_art1;
-    SELECT files.create_image('p_health1', '/uploads/projects/health1.jpg', 'Health 1', FALSE) INTO v_img_p_health1;
+    SELECT files.create_image('p_tech1', '/uploads/projects/tech1.png', 'Tech 1', FALSE) INTO v_img_p_tech1;
+    SELECT files.create_image('p_tech2', '/uploads/projects/tech2.png', 'Tech 2', FALSE) INTO v_img_p_tech2;
+    SELECT files.create_image('p_social1', '/uploads/projects/social1.png', 'Social 1', FALSE) INTO v_img_p_social1;
+    SELECT files.create_image('p_social2', '/uploads/projects/social2.png', 'Social 2', FALSE) INTO v_img_p_social2;
+    SELECT files.create_image('p_art1', '/uploads/projects/art1.png', 'Art 1', FALSE) INTO v_img_p_art1;
+    SELECT files.create_image('p_health1', '/uploads/projects/health1.png', 'Health 1', FALSE) INTO v_img_p_health1;
 
     -- =====================================================
     -- 8. CREAR USUARIOS
@@ -240,17 +240,17 @@ BEGIN
     INSERT INTO projects.project_image (project_id, image_id, is_cover) VALUES (v_proj_festival_id, v_img_p_art1, TRUE);
 
     -- 11. Borrador (Marcelo)
-    INSERT INTO projects.project (creator_id, category_id, title, slug, description, summary, financial_goal, approval_status, campaign_status) 
-    VALUES (v_user_marcelo_id, v_cat_proj_tech_id, 'Gadget IoT Hogar (Borrador)', 'gadget-iot-draft', '', 'Idea inicial.', 0.00, 'draft', 'not_started') RETURNING id INTO v_proj_iot_id;
+    INSERT INTO projects.project (creator_id, category_id, title, slug, description, summary, financial_goal, start_date, end_date, approval_status, campaign_status)
+    VALUES (v_user_marcelo_id, v_cat_proj_tech_id, 'Gadget IoT Hogar (Borrador)', 'gadget-iot-draft', '', 'Idea inicial.', 500.00, NOW(), NOW() + INTERVAL '30 days', 'draft', 'not_started') RETURNING id INTO v_proj_iot_id;
     INSERT INTO projects.project_image (project_id, image_id, is_cover) VALUES (v_proj_iot_id, v_img_p_tech2, TRUE);
 
     -- 12. Borrador (Carlos)
-    INSERT INTO projects.project (creator_id, category_id, title, slug, description, summary, financial_goal, approval_status, campaign_status) 
-    VALUES (v_user_carlos_id, v_cat_proj_env_id, 'Campaña Reciclaje (Draft)', 'reciclaje-draft', '', 'Planificando...', 0.00, 'draft', 'not_started') RETURNING id INTO v_proj_reciclaje_id;
+    INSERT INTO projects.project (creator_id, category_id, title, slug, description, summary, financial_goal, start_date, end_date, approval_status, campaign_status)
+    VALUES (v_user_carlos_id, v_cat_proj_env_id, 'Campaña Reciclaje (Draft)', 'reciclaje-draft', '', 'Planificando...', 500.00, NOW(), NOW() + INTERVAL '30 days', 'draft', 'not_started') RETURNING id INTO v_proj_reciclaje_id;
 
     -- 13. Borrador (Ana)
-    INSERT INTO projects.project (creator_id, category_id, title, slug, description, summary, financial_goal, approval_status, campaign_status) 
-    VALUES (v_user_ana_id, v_cat_proj_social_id, 'Taller de Oficios (Draft)', 'taller-oficios-draft', '<p>Falta completar...</p>', 'Capacitación.', 3000.00, 'draft', 'not_started') RETURNING id INTO v_proj_taller_id;
+    INSERT INTO projects.project (creator_id, category_id, title, slug, description, summary, financial_goal, start_date, end_date, approval_status, campaign_status)
+    VALUES (v_user_ana_id, v_cat_proj_social_id, 'Taller de Oficios (Draft)', 'taller-oficios-draft', '<p>Falta completar...</p>', 'Capacitación.', 3000.00, NOW(), NOW() + INTERVAL '30 days', 'draft', 'not_started') RETURNING id INTO v_proj_taller_id;
 
     -- 14. Rechazado (Marcelo)
     INSERT INTO projects.project (creator_id, category_id, title, slug, description, summary, financial_goal, start_date, end_date, approval_status, campaign_status) 
@@ -277,3 +277,5 @@ BEGIN
 
     RAISE NOTICE '--- SEED MASIVO COMPLETADO EXITOSAMENTE ---';
 END $$;
+
+select * from projects.project p 
