@@ -1,9 +1,9 @@
-const publicProjectService = require('../../services/projects/publicProjectService');
+const landingService = require('../services/landingService');
 
 const getPublicLandingData = async (req, res) => {
     try {
-        const categories = await publicProjectService.getProjectCategories();
-        const projects = await publicProjectService.getDashboardProjects();
+        const categories = await landingService.getLandingProjectCategories();
+        const projects = await landingService.getLandingDashboardProjects();
         res.status(200).json(
             {
                 message: "¡Bienvenido a AportaYa!",

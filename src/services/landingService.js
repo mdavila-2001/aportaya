@@ -1,6 +1,6 @@
-const { dbPool } = require('../../config/dbConnection');
+const { dbPool } = require('../config/dbConnection');
 
-const getProjectCategories = async () => {
+const getLandingProjectCategories = async () => {
     try {
         const sql = `
             --SELECT * FROM projects.top_project_categories
@@ -18,7 +18,7 @@ const getProjectCategories = async () => {
     }
 }
 
-const getDashboardProjects = async () => {
+const getLandingDashboardProjects = async () => {
     try {
         const query = `
             SELECT * FROM projects.dashboard_projects
@@ -32,6 +32,6 @@ const getDashboardProjects = async () => {
 };
 
 module.exports = {
-    getProjectCategories,
-    getDashboardProjects
+    getLandingProjectCategories,
+    getLandingDashboardProjects
 }

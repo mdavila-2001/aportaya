@@ -425,7 +425,22 @@ select files.create_image(
 	FALSE
 );
 
-select * from files.image i 
+select * from files.image i;
+
+-- Imagen de Avatar de un creador
+select files.create_image(
+	'juan',
+	'/uploads/avatar/juan.png',
+	'Avatar de Juan',
+	FALSE
+);
+
+select files.create_image(
+	'maria',
+	'/uploads/avatar/maria.png',
+	'Avatar de María',
+	FALSE
+);
 
 -- 9c2812d5-776c-4ea4-82c0-11cfd1aa9695
 
@@ -474,6 +489,37 @@ select users.login_user(
 );
 
 -- =====================================================
+--               8. CREAR USUARIOS
+-- =====================================================
+select users.register_user(
+	'Juan',
+	'David',
+	'Pérez',
+	'López',
+	'jperez@gmail.com',
+	'12345678',
+	'M',
+	'2001-11-26',
+	'43685d89-ca59-4f40-8868-ee84c63a6dd7',
+	2
+);
+
+select users.register_user(
+	'María',
+	'',
+	'Rocha',
+	'',
+	'mrocha@gmail.com',
+	'12345678',
+	'M',
+	'1994-03-31',
+	'22939073-6f8c-4320-9674-1c13a36a0b6f',
+	2
+);
+
+select * from users."user" u;
+
+-- =====================================================
 --          8. CREAR CATEGORÍA DE PROYECTO
 -- =====================================================
 select projects.create_category(
@@ -502,3 +548,19 @@ select projects.create_category(
 
 select * from projects.category c;
 
+-- =====================================================
+--                 9. CREAR PROYECTOS
+-- =====================================================
+select projects.create_project(
+	'ad6489ee-fe94-4610-99c1-9c3aa9561bc2',
+	'Mochila Solar',
+	'Una mochila con paneles solares para cargar dispositivos móviles en zonas rurales.',
+	30000.00,
+	'2025-01-01',
+	'2025-12-31',
+	1,
+	'Santa Cruz de la Sierra, Bolivia',
+	NULL,
+	NULL,
+	'BOB'
+);

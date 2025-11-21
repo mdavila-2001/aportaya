@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const publicProjectController = require('../../controllers/projects/publicProjectController');
+const landingController = require('../../controllers/landingController');
 
-router.get('/welcome', publicProjectController.getPublicLandingData);
+router.get('/welcome', landingController.getPublicLandingData);
 
 module.exports = router;
