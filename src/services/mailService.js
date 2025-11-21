@@ -86,3 +86,7 @@ const sendVerificationEmail = async (toEmail, token) => {
         return false;
     }
 }
+
+module.exports = {
+    sendVerificationEmail,
+};
