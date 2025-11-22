@@ -80,6 +80,26 @@
     line-height: 1.4;
 }
 
+.notification-link {
+    color: var(--color-primary);
+    text-decoration: underline;
+    font-weight: 600;
+    margin-left: 4px;
+    transition: color 0.2s;
+}
+
+.notification-link:hover {
+    color: var(--color-primary-dark);
+}
+
+.notification-success .notification-link {
+    color: var(--color-success);
+}
+
+.notification-success .notification-link:hover {
+    color: #059669;
+}
+
 .notification-close {
     background: none;
     border: none;

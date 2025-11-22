@@ -11,7 +11,17 @@ const uploadDirectory = path.isAbsolute(uploadsPath)
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, uploadDirectory);
+        const imageType = req.body.imageType || req.query.imageType || 'general';
+        let subDir = '';
+        
+        if (imageType === 'avatar' || imageType === 'profile') {
+            subDir = 'avatar';
+        } else if (imageType === 'project') {
+            subDir = 'projects';
+        }
+        
+        const finalPath = subDir ? path.join(uploadDirectory, subDir) : uploadDirectory;
+        cb(null, finalPath);
     },
     filename: (req, file, cb) => {
         const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);

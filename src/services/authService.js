@@ -1,4 +1,5 @@
 const { dbPool } = require('../config/dbConnection');
+const imageRepository = require('../repositories/imageRepository');
 
 const loginUser = async (email, password) => {
     try {
@@ -134,9 +135,9 @@ const registerUser = async (userData) => {
 }
 
 const verifyEmail = async (token) => {
-    const query = `SELECT users.verify_email($1) AS is_verified`;
+    const query = `SELECT verify_user_email($1) AS is_verified`;
     const res = await dbPool.query(query, [token]);
-    return res.rows[0].success;
+    return res.rows[0].is_verified;
 };
 
 module.exports = {

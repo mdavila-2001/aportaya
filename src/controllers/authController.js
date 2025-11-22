@@ -69,6 +69,7 @@ const getMe = async (req, res) => {
 };
 
 const register = async (req, res) => {
+    console.log('BODY REGISTER:', req.body); // DEBUG
     try {
         const data = {
             firstName: req.body['first-name'],
@@ -82,13 +83,14 @@ const register = async (req, res) => {
             profileImageId: req.body.profileImageId || null,
         };
 
-        const result = await authService.registerUser(data);
+        const verificationToken = await authService.registerUser(data);
 
-        await emailService.sendVerificationEmail(result.user.email, result.verificationToken);
+        const emailResult = await emailService.sendVerificationEmail(data.email, verificationToken);
 
         res.status(201).json({
             success: true,
             message: 'Usuario registrado exitosamente. Por favor verifica tu correo electrónico.',
+            etherealLink: emailResult.previewUrl || null
         });
     } catch (error) {
         res.status(500).json({
@@ -100,7 +102,7 @@ const register = async (req, res) => {
 
 const verifyEmail = async (req, res) => {
     try {
-        const verified = await authService.verifyUserEmail(req.params.token);
+        const verified = await authService.verifyEmail(req.params.token);
         if (verified) {
             return res.status(200).json({
                 success: true,

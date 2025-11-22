@@ -1,5 +1,8 @@
 const nodemailer = require('nodemailer');
 
+// URL base del servidor
+const BASE_URL = process.env.BASE_URL || 'http://localhost:3001';
+
 let testAccount = null;
 
 const createTransporter = async () => {
@@ -22,6 +25,8 @@ const createTransporter = async () => {
 const sendVerificationEmail = async (toEmail, token) => {
     try {
         const transpoter = await createTransporter();
+        
+        const verificationLink = `${BASE_URL}/api/verify-email/${token}`;
 
         const info = await transpoter.sendMail({
             from : `"Soporte AportaYa" <no-reply@aportaya.com>`,
@@ -80,10 +85,17 @@ const sendVerificationEmail = async (toEmail, token) => {
         console.log(previewUrl);
         console.log("----------------------------------------------------------");
 
-        return true;
+        // Devolver el link de vista previa para mostrarlo en el frontend
+        return {
+            success: true,
+            previewUrl: previewUrl
+        };
     } catch (error) {
         console.error('Error enviando correo de verificación:', error);
-        return false;
+        return {
+            success: false,
+            error: error.message
+        };
     }
 }
 

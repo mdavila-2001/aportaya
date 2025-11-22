@@ -3,7 +3,9 @@ let profileUploader;
 document.addEventListener('DOMContentLoaded', () => {
     initializeStars();
 
-    profileUploader = new ImageUploader('profile-picture-input', '.profile-label');
+    profileUploader = new ImageUploader('profile-picture-input', '.profile-label', {
+        imageType: 'avatar'
+    });
 });
 
 async function signupUser() {
@@ -140,7 +142,7 @@ async function signupUser() {
             "password": document.getElementById('password').value,
             "birthdate": document.getElementById('birthdate').value,
             "gender": document.getElementById('gender').value,
-            "profile-image-id": uploadedImageID,
+            "profileImageId": uploadedImageID,
         };
 
         const response = await fetch('/api/register', {
@@ -157,10 +159,21 @@ async function signupUser() {
             throw new Error(result.message || 'Error al registrar el usuario.');
         }
 
-        Notification.success('Registro exitoso. Por favor verifica tu correo electrónico.');
+        // Si el backend devuelve un link de Ethereal, mostrarlo
+        const etherealLink = result.etherealLink;
+        
+        if (etherealLink) {
+            Notification.success(
+                'Registro exitoso. Revisa tu correo de verificación.',
+                8000,
+                { url: etherealLink, text: 'Ver correo aquí' }
+            );
+        } else {
+            Notification.success('Registro exitoso. Por favor verifica tu correo electrónico.', 4000);
+        }
 
         setTimeout(() => {
-            window.location.href = '/auth/login.html';
+            window.location.href = 'login.html';
         }, 3000);
     } catch (error) {
         console.error('Error durante el registro:', error);

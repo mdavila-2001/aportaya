@@ -1,13 +1,18 @@
 class Notification {
-    static show(message, type = 'info', duration = 4000) {
+    static show(message, type = 'info', duration = 4000, link = null) {
         const notification = document.createElement('div');
         notification.className = `notification notification-${type}`;
         
         const icon = this.getIcon(type);
         
+        let messageContent = message;
+        if (link) {
+            messageContent = `${message} <a href="${link.url}" target="_blank" class="notification-link">${link.text || 'Ver aquí'}</a>`;
+        }
+        
         notification.innerHTML = `
             <span class="notification-icon material-symbols-outlined">${icon}</span>
-            <span class="notification-message">${message}</span>
+            <span class="notification-message">${messageContent}</span>
             <button class="notification-close" aria-label="Cerrar">
                 <span class="material-symbols-outlined">close</span>
             </button>
@@ -63,19 +68,19 @@ class Notification {
     }
     
     // Métodos helper
-    static success(message, duration) {
-        return this.show(message, 'success', duration);
+    static success(message, duration, link) {
+        return this.show(message, 'success', duration, link);
     }
     
-    static error(message, duration) {
-        return this.show(message, 'error', duration);
+    static error(message, duration, link) {
+        return this.show(message, 'error', duration, link);
     }
     
-    static warning(message, duration) {
-        return this.show(message, 'warning', duration);
+    static warning(message, duration, link) {
+        return this.show(message, 'warning', duration, link);
     }
     
-    static info(message, duration) {
-        return this.show(message, 'info', duration);
+    static info(message, duration, link) {
+        return this.show(message, 'info', duration, link);
     }
 }

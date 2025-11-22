@@ -10,6 +10,7 @@ class ImageUploader {
 
         this.maxSize = options.maxSize || 5 * 1024 * 1024;
         this.endpoint = options.endpoint || '/api/image';
+        this.imageType = options.imageType || 'general';
         
         this.init();
     }
@@ -62,6 +63,7 @@ class ImageUploader {
 
         const formData = new FormData();
         formData.append('file', file);
+        formData.append('imageType', this.imageType);
 
         try {
             const response = await fetch(this.endpoint, {
