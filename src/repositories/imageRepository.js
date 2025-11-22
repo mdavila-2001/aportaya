@@ -1,4 +1,4 @@
-const pool = require('../config/dbConnection');
+const { dbPool } = require('../config/dbConnection');
 
 const getImageById = async (id) => {
     const query = `
@@ -7,7 +7,7 @@ const getImageById = async (id) => {
         WHERE id = $1
     `;
     
-    const result = await pool.query(query, [id]);
+    const result = await dbPool.query(query, [id]);
     
     if (result.rows.length === 0) {
         return null;
@@ -21,7 +21,7 @@ const createImage = async ({ fileName, filePath, altText = null, isTemporary = t
         SELECT files.create_image($1, $2, $3, $4) as image_id
     `;
     
-    const result = await pool.query(query, [fileName, filePath, altText, isTemporary]);
+    const result = await dbPool.query(query, [fileName, filePath, altText, isTemporary]);
     
     return result.rows[0].image_id;
 };
@@ -31,7 +31,7 @@ const markImageAsPermanent = async (id) => {
         SELECT files.mark_image_as_permanent($1) as success
     `;
     
-    const result = await pool.query(query, [id]);
+    const result = await dbPool.query(query, [id]);
     
     return result.rows[0].success;
 };
@@ -41,7 +41,7 @@ const markImageAsTemporary = async (id) => {
         SELECT files.mark_image_as_temporary($1) as success
     `;
     
-    const result = await pool.query(query, [id]);
+    const result = await dbPool.query(query, [id]);
     
     return result.rows[0].success;
 };
@@ -51,7 +51,7 @@ const deleteOldTemporaryImages = async (daysOld = 7) => {
         SELECT * FROM files.cleanup_old_temporary_images($1)
     `;
     
-    const result = await pool.query(query, [daysOld]);
+    const result = await dbPool.query(query, [daysOld]);
     
     return result.rows;
 };

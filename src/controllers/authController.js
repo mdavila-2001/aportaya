@@ -114,6 +114,20 @@ const verifyEmail = async (req, res) => {
     }
 }
 
+const logout = async (req, res) => {
+    try {
+        res.status(200).json({
+            success: true,
+            message: 'Cierre de sesión exitoso',
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: error.message
+        });
+    }
+}
+
 module.exports = {
     login, 
     getMe,

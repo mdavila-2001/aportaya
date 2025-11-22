@@ -137,7 +137,7 @@ const verifyEmail = async (token) => {
     const query = `SELECT users.verify_email($1) AS is_verified`;
     const res = await dbPool.query(query, [token]);
     return res.rows[0].success;
-}
+};
 
 module.exports = {
     loginUser,

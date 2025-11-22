@@ -293,7 +293,7 @@ CREATE OR REPLACE FUNCTION users.register_user(
     p_gender VARCHAR DEFAULT NULL,
     p_birth_date DATE DEFAULT NULL,
     p_profile_image_id UUID DEFAULT NULL,
-    p_role_id INT DEFAULT 8  -- ID del rol "User" por defecto
+    p_role_id INT DEFAULT 2  -- ID del rol "User" por defecto
 )
 RETURNS UUID AS $$
 DECLARE

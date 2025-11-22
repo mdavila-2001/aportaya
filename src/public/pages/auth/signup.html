@@ -16,6 +16,7 @@
         <link rel="stylesheet" href="../../styles/components/buttons.css">
         <link rel="stylesheet" href="../../styles/components/forms.css">
         <link rel="stylesheet" href="../../styles/components/animations.css">
+        <link rel="stylesheet" href="../../styles/components/notification.css">
         
         <link rel="stylesheet" href="../../styles/pages/auth/signup.css">
         
@@ -82,7 +83,7 @@
         <main class="signup-page">
             <div class="signup-container">
                 <h1 class="signup-title">Crea tu cuenta</h1>
-                <form action="#" method="POST" class="signup-form" onsubmit="event.preventDefault(); signupUser();">
+                <form class="signup-form" onsubmit="event.preventDefault(); signupUser();">
                     <div class="form-data">
                         <div class="personal-info">
                             <div class="profile-picture-container">
@@ -109,7 +110,7 @@
                                     <input type="text" name="last-name" id="last-name" placeholder="Apellido Paterno" class="form-input">
                                     <div class="error_msg" id="last_name_error_msg"></div>
                                 </div>
-                                <input type="text" name="second-last-name" id="second-last-name" placeholder="Apellido Materno" class="form-input">
+                                <input type="text" name="mother-last-name" id="mother-last-name" placeholder="Apellido Materno" class="form-input">
                             </div>
                             
                             <div class="form-field password-field">
@@ -159,6 +160,8 @@
                 <p class="login-link">¿Ya tienes una cuenta? <a href="login.html">Inicia sesión</a></p>
             </div>
         </main>
+        <script src="../../scripts/components/notification.js"></script>
+        <script src="../../scripts/components/imageLoader.js"></script>
         <script src="../../scripts/pages/auth/signup.js"></script>
     </body>
 </html>

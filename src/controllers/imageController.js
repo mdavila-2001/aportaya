@@ -2,7 +2,10 @@ const imageRepository = require('../repositories/imageRepository');
 const fs = require('fs');
 const path = require('path');
 
-const uploadDirectory = process.env.UPLOADS_PATH || path.join(__dirname, '../../uploads');
+const uploadsPath = process.env.UPLOADS_PATH || 'uploads';
+const uploadDirectory = path.isAbsolute(uploadsPath) 
+    ? uploadsPath 
+    : path.join(__dirname, '../../', uploadsPath);
 
 const getMimeType = (fileName) => {
     const extension = path.extname(fileName.toLowerCase());

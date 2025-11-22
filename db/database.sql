@@ -4,6 +4,10 @@ drop DATABASE aporta_ya_db;
 
 CREATE DATABASE aporta_ya_db;
 
+--Usar la Base de Datos
+
+\c aporta_ya_db;
+
 -- Crear los esquemas
 CREATE SCHEMA users;
 CREATE SCHEMA projects;
@@ -34,9 +38,9 @@ CREATE TABLE files.image (
 CREATE TABLE users.user (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   first_name VARCHAR(255) NOT NULL,
-  middle_name VARCHAR(255) NOT NULL,
+  middle_name VARCHAR(255),
   last_name VARCHAR(255) NOT NULL,
-  mother_last_name VARCHAR(255) NOT NULL,
+  mother_last_name VARCHAR(255),
   email VARCHAR(255) UNIQUE NOT NULL,
   password_hash VARCHAR(255) NOT NULL,
   gender VARCHAR(50),

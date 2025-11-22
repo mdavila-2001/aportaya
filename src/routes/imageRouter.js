@@ -4,7 +4,10 @@ const multer = require('multer');
 const path = require('path');
 const imageController = require('../controllers/imageController');
 
-const uploadDirectory = process.env.UPLOADS_PATH || path.join(__dirname, '../../uploads');
+const uploadsPath = process.env.UPLOADS_PATH || 'uploads';
+const uploadDirectory = path.isAbsolute(uploadsPath) 
+    ? uploadsPath 
+    : path.join(__dirname, '../../', uploadsPath);
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
