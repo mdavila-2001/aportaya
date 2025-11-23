@@ -27,7 +27,6 @@ async function loadUserHeader() {
         const result = await response.json();
         const user = result.data;
 
-        // Construir nombre completo
         const fullName = [
             user.first_name,
             user.middle_name,
@@ -35,7 +34,6 @@ async function loadUserHeader() {
             user.mother_last_name
         ].filter(Boolean).join(' ');
 
-        // Actualizar elementos del header
         const userNameElement = document.querySelector('.user-name');
         const userAvatarElement = document.querySelector('.user-avatar');
 
@@ -53,5 +51,41 @@ async function loadUserHeader() {
     }
 }
 
-// Cargar automáticamente cuando el DOM esté listo
-document.addEventListener('DOMContentLoaded', loadUserHeader);
+function setupLogout() {
+    const logoutButton = document.querySelector('.logout-btn');
+    if (logoutButton) {
+        logoutButton.addEventListener('click', async (e) => {
+            e.preventDefault();
+            
+            const token = localStorage.getItem('token');
+
+            if (token) {
+                try {
+                    await fetch('/api/logout', {
+                        method: 'POST',
+                        headers: {
+                            'Authorization': `Bearer ${token}`,
+                            'Content-Type': 'application/json'
+                        }
+                    });
+                } catch (error) {
+                    console.error('Error al cerrar sesión:', error);
+                    Notification.error({
+                        message: 'Error al cerrar sesión',
+                        duration: 3000
+                    });
+                }
+
+                localStorage.removeItem('token');
+                localStorage.removeItem('user');
+
+                globalThis.location.href = '/pages/auth/login.html';
+            }
+        });
+    }
+};
+
+document.addEventListener('DOMContentLoaded', () => {
+    loadUserHeader();
+    setupLogout();
+});

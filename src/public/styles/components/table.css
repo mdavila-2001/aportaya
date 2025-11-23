@@ -1,6 +1,8 @@
 .table-container {
     width: 100%;
     overflow-x: auto;
+    overflow-y: auto; /* Permitir scroll vertical */
+    max-height: 500px; /* Ajustar según el diseño */
     background: var(--dark-bg-2);
     border-radius: var(--border-radius-lg);
     border: 1px solid color-mix(in srgb, var(--primary) 20%, transparent);
@@ -29,6 +31,10 @@
     letter-spacing: 0.5px;
     color: var(--text-light-muted);
     white-space: nowrap;
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    background-color: var(--table-header-bg);
 }
 
 .table tbody tr {
@@ -59,7 +65,6 @@
     color: var(--text-light-muted);
 }
 
-/* Table Actions */
 .table-actions {
     display: flex;
     align-items: center;
@@ -73,7 +78,6 @@
     padding: 0 var(--spS);
 }
 
-/* Table Action Links */
 .table-link {
     font-size: var(--sfM);
     font-weight: 500;

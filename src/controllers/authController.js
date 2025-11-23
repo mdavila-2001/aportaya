@@ -118,6 +118,7 @@ const verifyEmail = async (req, res) => {
 
 const logout = async (req, res) => {
     try {
+        await authService.logoutUser();
         res.status(200).json({
             success: true,
             message: 'Cierre de sesión exitoso',
@@ -134,5 +135,6 @@ module.exports = {
     login, 
     getMe,
     register,
-    verifyEmail
+    verifyEmail,
+    logout
 };

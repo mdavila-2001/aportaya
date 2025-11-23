@@ -1,7 +1,7 @@
 const nodemailer = require('nodemailer');
 
 // URL base del servidor
-const BASE_URL = process.env.BASE_URL || 'http://localhost:3001';
+const BASE_URL = process.env.BASE_URL || `http://localhost:${process.env.PORT || 3000}`;
 
 let testAccount = null;
 

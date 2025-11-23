@@ -140,9 +140,14 @@ const verifyEmail = async (token) => {
     return res.rows[0].is_verified;
 };
 
+const logoutUser = async () => {
+    return true;
+};
+
 module.exports = {
     loginUser,
     getMyUser,
     registerUser,
-    verifyEmail
+    verifyEmail,
+    logoutUser
 };

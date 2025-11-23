@@ -8,9 +8,12 @@
         flex-direction: column;
         justify-content: space-between;
         width: 256px;
-        min-height: 100vh;
+        height: 100vh;
         background-color: var(--dark-bg-2);
         padding: var(--spM);
+        position: sticky;
+        top: 0;
+        left: 0;
     }
 
     .sidebar-header {
