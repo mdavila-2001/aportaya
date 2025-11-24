@@ -1,13 +1,20 @@
 const { dbPool } = require('../config/dbConnection');
 
 
-const getProjects = async () => {
+const getProjects = async (name) => {
     const client = await dbPool.connect();
     try {
-        const sql = `
-            SELECT * FROM projects.view_projects;
+        let sql = `
+            SELECT * FROM projects.view_projects
         `;
-        const { rows } = await dbPool.query(sql);
+
+        const params = [];
+        if (name) {
+            sql += `WHERE LOWER(title) LIKE LOWER($1) `;
+            params.push(`%${name}%`);
+        }
+
+        const { rows } = await dbPool.query(sql, params);
         return rows;
     } catch (error) {
         console.error('Error obteniendo proyectos:', error);
@@ -59,3 +66,8 @@ const createProject = async(projectData, userId) => {
         client.release();
     }
 };
+
+module.exports = {
+    createProject,
+    getProjects
+}

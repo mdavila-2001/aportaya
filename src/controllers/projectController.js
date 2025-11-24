@@ -40,7 +40,9 @@ const createProject = async (req, res) => {
 
 const getProjects = async (req, res) => {
     try {
-        const projects = await projectService.getProjects();
+        const { searchBy } = req.query; // Leer el parámetro de consulta "searchBy"
+        const projects = await projectService.getProjects(searchBy); // Pasar el parámetro al servicio
+
         res.status(200).json({
             message: 'Proyectos obtenidos exitosamente',
             extraData: {
@@ -64,9 +66,10 @@ const getProjects = async (req, res) => {
             }
         });
     } catch (error) {
-        console.error('Error al obtener proyectos:', error);
+        console.error('Error obteniendo proyectos:', error);
         res.status(500).json({
-            message: 'Error al obtener los proyectos'
+            message: 'Error obteniendo proyectos',
+            error: error.message,
         });
     }
 };
