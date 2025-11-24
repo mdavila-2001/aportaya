@@ -31,6 +31,15 @@ CREATE TABLE files.image (
   uploaded_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
+CREATE TABLE files.document (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  file_name VARCHAR(255) NOT NULL,
+  file_path VARCHAR(500) NOT NULL,
+  document_type VARCHAR(50) DEFAULT 'proof',
+  is_temporary BOOLEAN DEFAULT TRUE,
+  uploaded_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
 -- ========================================
 -- Esquemas de Usuario
 -- ========================================
@@ -96,7 +105,7 @@ CREATE TABLE projects.project (
   category_id INT REFERENCES projects.category(id) ON DELETE SET NULL,
   location VARCHAR(255),
   video_url VARCHAR(500),
-  proof_document VARCHAR(500),
+  proof_document_id UUID REFERENCES files.document(id) ON DELETE SET NULL,
   currency VARCHAR(10) DEFAULT 'USD',
   created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
   updated_at TIMESTAMPTZ NOT NULL DEFAULT now(),

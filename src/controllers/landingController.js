@@ -3,7 +3,7 @@ const landingService = require('../services/landingService');
 const getPublicLandingData = async (req, res) => {
     try {
         const categories = await landingService.getLandingProjectCategories();
-        const projects = await landingService.getLandingDashboardProjects();
+        const projects = await landingService.getLandingProjects();
         res.status(200).json(
             {
                 message: "¡Bienvenido a AportaYa!",

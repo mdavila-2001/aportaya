@@ -188,42 +188,42 @@ BEGIN
     
     -- 1. Tecnología (Marcelo)
     INSERT INTO projects.project (creator_id, category_id, title, slug, description, summary, financial_goal, start_date, end_date, approval_status, campaign_status, location) 
-    VALUES (v_user_marcelo_id, v_cat_proj_tech_id, 'Mochila Solar Pro', 'mochila-solar-pro', '<p>Carga todo.</p>', 'Mochila con paneles.', 5000.00, NOW(), NOW() + INTERVAL '60 days', 'published', 'in_progress', 'La Paz') RETURNING id INTO v_proj_mochila_id;
+    VALUES (v_user_marcelo_id, v_cat_proj_tech_id, 'Mochila Solar Pro', 'mochila-solar-pro', 'Carga todo.', 'Mochila con paneles.', 5000.00, NOW(), NOW() + INTERVAL '60 days', 'published', 'in_progress', 'La Paz') RETURNING id INTO v_proj_mochila_id;
     INSERT INTO projects.project_image (project_id, image_id, is_cover) VALUES (v_proj_mochila_id, v_img_p_tech1, TRUE);
     
     -- 2. Tecnología (Ana)
     INSERT INTO projects.project (creator_id, category_id, title, slug, description, summary, financial_goal, start_date, end_date, approval_status, campaign_status, location) 
-    VALUES (v_user_ana_id, v_cat_proj_tech_id, 'Dron de Reforestación', 'dron-reforestacion', '<p>Planta árboles.</p>', 'Drones autónomos.', 15000.00, NOW() - INTERVAL '10 days', NOW() + INTERVAL '20 days', 'published', 'in_progress', 'Cochabamba') RETURNING id INTO v_proj_dron_id;
+    VALUES (v_user_ana_id, v_cat_proj_tech_id, 'Dron de Reforestación', 'dron-reforestacion', 'Planta árboles.', 'Drones autónomos.', 15000.00, NOW() - INTERVAL '10 days', NOW() + INTERVAL '20 days', 'published', 'in_progress', 'Cochabamba') RETURNING id INTO v_proj_dron_id;
     INSERT INTO projects.project_image (project_id, image_id, is_cover) VALUES (v_proj_dron_id, v_img_p_tech2, TRUE);
 
     -- 3. Social (Carlos)
     INSERT INTO projects.project (creator_id, category_id, title, slug, description, summary, financial_goal, start_date, end_date, approval_status, campaign_status, location) 
-    VALUES (v_user_carlos_id, v_cat_proj_social_id, 'Comedor Los Niños', 'comedor-los-ninos', '<p>Alimento diario.</p>', 'Comedor gratuito.', 3000.00, NOW(), NOW() + INTERVAL '45 days', 'published', 'in_progress', 'El Alto') RETURNING id INTO v_proj_comedor_id;
+    VALUES (v_user_carlos_id, v_cat_proj_social_id, 'Comedor Los Niños', 'comedor-los-ninos', 'Alimento diario.', 'Comedor gratuito.', 3000.00, NOW(), NOW() + INTERVAL '45 days', 'published', 'in_progress', 'El Alto') RETURNING id INTO v_proj_comedor_id;
     INSERT INTO projects.project_image (project_id, image_id, is_cover) VALUES (v_proj_comedor_id, v_img_p_social1, TRUE);
 
     -- 4. Salud (Ana)
     INSERT INTO projects.project (creator_id, category_id, title, slug, description, summary, financial_goal, start_date, end_date, approval_status, campaign_status, location) 
-    VALUES (v_user_ana_id, v_cat_proj_health_id, 'Clínica Móvil Rural', 'clinica-movil-rural', '<p>Salud accesible.</p>', 'Atención médica rural.', 20000.00, NOW() - INTERVAL '20 days', NOW() + INTERVAL '10 days', 'published', 'in_progress', 'Potosí') RETURNING id INTO v_proj_clinica_id;
+    VALUES (v_user_ana_id, v_cat_proj_health_id, 'Clínica Móvil Rural', 'clinica-movil-rural', 'Salud accesible.', 'Atención médica rural.', 20000.00, NOW() - INTERVAL '20 days', NOW() + INTERVAL '10 days', 'published', 'in_progress', 'Potosí') RETURNING id INTO v_proj_clinica_id;
     INSERT INTO projects.project_image (project_id, image_id, is_cover) VALUES (v_proj_clinica_id, v_img_p_health1, TRUE);
 
     -- 5. Arte (Marcelo)
     INSERT INTO projects.project (creator_id, category_id, title, slug, description, summary, financial_goal, start_date, end_date, approval_status, campaign_status, location) 
-    VALUES (v_user_marcelo_id, v_cat_proj_art_id, 'Murales Urbanos', 'murales-urbanos', '<p>Color en la ciudad.</p>', 'Embellecimiento urbano.', 1500.00, NOW(), NOW() + INTERVAL '30 days', 'published', 'in_progress', 'Sucre') RETURNING id INTO v_proj_murales_id;
+    VALUES (v_user_marcelo_id, v_cat_proj_art_id, 'Murales Urbanos', 'murales-urbanos', 'Color en la ciudad.', 'Embellecimiento urbano.', 1500.00, NOW(), NOW() + INTERVAL '30 days', 'published', 'in_progress', 'Sucre') RETURNING id INTO v_proj_murales_id;
     INSERT INTO projects.project_image (project_id, image_id, is_cover) VALUES (v_proj_murales_id, v_img_p_art1, TRUE);
 
     -- 6. Medio Ambiente (Carlos) - Finalizado exitoso
     INSERT INTO projects.project (creator_id, category_id, title, slug, description, summary, financial_goal, raised_amount, start_date, end_date, approval_status, campaign_status, location) 
-    VALUES (v_user_carlos_id, v_cat_proj_env_id, 'Limpieza Lago Uru Uru', 'limpieza-uru-uru', '<p>Recuperemos el lago.</p>', 'Limpieza de plásticos.', 8000.00, 8500.00, NOW() - INTERVAL '60 days', NOW() - INTERVAL '1 day', 'published', 'finished', 'Oruro') RETURNING id INTO v_proj_limpieza_id;
+    VALUES (v_user_carlos_id, v_cat_proj_env_id, 'Limpieza Lago Uru Uru', 'limpieza-uru-uru', 'Recuperemos el lago.', 'Limpieza de plásticos.', 8000.00, 8500.00, NOW() - INTERVAL '60 days', NOW() - INTERVAL '1 day', 'published', 'finished', 'Oruro') RETURNING id INTO v_proj_limpieza_id;
     INSERT INTO projects.project_image (project_id, image_id, is_cover) VALUES (v_proj_limpieza_id, v_img_p_social2, TRUE);
 
     -- 7. Tecnología (Ana) - Pausado
     INSERT INTO projects.project (creator_id, category_id, title, slug, description, summary, financial_goal, start_date, end_date, approval_status, campaign_status, location) 
-    VALUES (v_user_ana_id, v_cat_proj_tech_id, 'Impresora 3D Educativa', 'impresora-3d-edu', '<p>Para escuelas.</p>', 'Kit de impresora 3D.', 4000.00, NOW() - INTERVAL '15 days', NOW() + INTERVAL '30 days', 'published', 'paused', 'Tarija') RETURNING id INTO v_proj_impresora_id;
+    VALUES (v_user_ana_id, v_cat_proj_tech_id, 'Impresora 3D Educativa', 'impresora-3d-edu', 'Para escuelas.', 'Kit de impresora 3D.', 4000.00, NOW() - INTERVAL '15 days', NOW() + INTERVAL '30 days', 'published', 'paused', 'Tarija') RETURNING id INTO v_proj_impresora_id;
     INSERT INTO projects.project_image (project_id, image_id, is_cover) VALUES (v_proj_impresora_id, v_img_p_tech1, TRUE);
 
     -- 8. Social (Marcelo)
     INSERT INTO projects.project (creator_id, category_id, title, slug, description, summary, financial_goal, start_date, end_date, approval_status, campaign_status, location) 
-    VALUES (v_user_marcelo_id, v_cat_proj_social_id, 'Biblioteca Barrial', 'biblioteca-barrial', '<p>Libros para todos.</p>', 'Espacio de lectura.', 2500.00, NOW(), NOW() + INTERVAL '90 days', 'published', 'in_progress', 'Santa Cruz') RETURNING id INTO v_proj_biblioteca_id;
+    VALUES (v_user_marcelo_id, v_cat_proj_social_id, 'Biblioteca Barrial', 'biblioteca-barrial', 'Libros para todos.', 'Espacio de lectura.', 2500.00, NOW(), NOW() + INTERVAL '90 days', 'published', 'in_progress', 'Santa Cruz') RETURNING id INTO v_proj_biblioteca_id;
     INSERT INTO projects.project_image (project_id, image_id, is_cover) VALUES (v_proj_biblioteca_id, v_img_p_social1, TRUE);
 
 
@@ -231,12 +231,12 @@ BEGIN
 
     -- 9. En Revisión (Carlos)
     INSERT INTO projects.project (creator_id, category_id, title, slug, description, summary, financial_goal, start_date, end_date, approval_status, campaign_status) 
-    VALUES (v_user_carlos_id, v_cat_proj_health_id, 'App de Telemedicina', 'app-telemedicina', '<p>Consultas online.</p>', 'Conectando doctores.', 10000.00, NOW() + INTERVAL '1 day', NOW() + INTERVAL '60 days', 'in_review', 'not_started') RETURNING id INTO v_proj_telemed_id;
+    VALUES (v_user_carlos_id, v_cat_proj_health_id, 'App de Telemedicina', 'app-telemedicina', 'Consultas online.', 'Conectando doctores.', 10000.00, NOW() + INTERVAL '1 day', NOW() + INTERVAL '60 days', 'in_review', 'not_started') RETURNING id INTO v_proj_telemed_id;
     INSERT INTO projects.project_image (project_id, image_id, is_cover) VALUES (v_proj_telemed_id, v_img_p_health1, TRUE);
 
     -- 10. En Revisión (Ana)
     INSERT INTO projects.project (creator_id, category_id, title, slug, description, summary, financial_goal, start_date, end_date, approval_status, campaign_status) 
-    VALUES (v_user_ana_id, v_cat_proj_art_id, 'Festival de Cortometrajes', 'festival-cortos', '<p>Cine independiente.</p>', 'Apoyo a directores.', 5000.00, NOW() + INTERVAL '5 days', NOW() + INTERVAL '35 days', 'in_review', 'not_started') RETURNING id INTO v_proj_festival_id;
+    VALUES (v_user_ana_id, v_cat_proj_art_id, 'Festival de Cortometrajes', 'festival-cortos', 'Cine independiente.', 'Apoyo a directores.', 5000.00, NOW() + INTERVAL '5 days', NOW() + INTERVAL '35 days', 'in_review', 'not_started') RETURNING id INTO v_proj_festival_id;
     INSERT INTO projects.project_image (project_id, image_id, is_cover) VALUES (v_proj_festival_id, v_img_p_art1, TRUE);
 
     -- 11. Borrador (Marcelo)
@@ -250,17 +250,17 @@ BEGIN
 
     -- 13. Borrador (Ana)
     INSERT INTO projects.project (creator_id, category_id, title, slug, description, summary, financial_goal, start_date, end_date, approval_status, campaign_status)
-    VALUES (v_user_ana_id, v_cat_proj_social_id, 'Taller de Oficios (Draft)', 'taller-oficios-draft', '<p>Falta completar...</p>', 'Capacitación.', 3000.00, NOW(), NOW() + INTERVAL '30 days', 'draft', 'not_started') RETURNING id INTO v_proj_taller_id;
+    VALUES (v_user_ana_id, v_cat_proj_social_id, 'Taller de Oficios (Draft)', 'taller-oficios-draft', 'Falta completar...', 'Capacitación.', 3000.00, NOW(), NOW() + INTERVAL '30 days', 'draft', 'not_started') RETURNING id INTO v_proj_taller_id;
 
     -- 14. Rechazado (Marcelo)
     INSERT INTO projects.project (creator_id, category_id, title, slug, description, summary, financial_goal, start_date, end_date, approval_status, campaign_status) 
-    VALUES (v_user_marcelo_id, v_cat_proj_tech_id, 'Motor de Agua Perpetuo', 'motor-agua', '<p>Energía infinita.</p>', 'Dispositivo imposible.', 50000.00, NOW(), NOW() + INTERVAL '30 days', 'rejected', 'not_started') RETURNING id INTO v_proj_motor_id;
+    VALUES (v_user_marcelo_id, v_cat_proj_tech_id, 'Motor de Agua Perpetuo', 'motor-agua', 'Energía infinita.', 'Dispositivo imposible.', 50000.00, NOW(), NOW() + INTERVAL '30 days', 'rejected', 'not_started') RETURNING id INTO v_proj_motor_id;
     INSERT INTO projects.project_image (project_id, image_id, is_cover) VALUES (v_proj_motor_id, v_img_p_tech1, TRUE);
     INSERT INTO projects.project_observation (project_id, admin_id, note) VALUES (v_proj_motor_id, v_user_admin_id, 'Proyecto inviable físicamente.');
 
     -- 15. Observado (Carlos)
     INSERT INTO projects.project (creator_id, category_id, title, slug, description, summary, financial_goal, start_date, end_date, approval_status, campaign_status) 
-    VALUES (v_user_carlos_id, v_cat_proj_social_id, 'Ayuda Genérica', 'ayuda-generica', '<p>Queremos ayudar.</p>', 'Sin detalles.', 1000.00, NOW(), NOW() + INTERVAL '30 days', 'observed', 'not_started') RETURNING id INTO v_proj_ayuda_id;
+    VALUES (v_user_carlos_id, v_cat_proj_social_id, 'Ayuda Genérica', 'ayuda-generica', 'Queremos ayudar.', 'Sin detalles.', 1000.00, NOW(), NOW() + INTERVAL '30 days', 'observed', 'not_started') RETURNING id INTO v_proj_ayuda_id;
     INSERT INTO projects.project_image (project_id, image_id, is_cover) VALUES (v_proj_ayuda_id, v_img_p_social1, TRUE);
     INSERT INTO projects.project_observation (project_id, admin_id, note) VALUES (v_proj_ayuda_id, v_user_admin_id, 'Por favor, especificar beneficiarios.');
 

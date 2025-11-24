@@ -4,6 +4,8 @@ const cors = require('cors');
 const authRoutes = require('./routes/authRoutes');
 const unatuhRoutes = require('./routes/unauthRoutes/unauthRoutes');
 const imageRouter = require('./routes/imageRouter');
+const documentRouter = require('./routes/documentRouter');
+const projectRoutes = require('./routes/projectRoutes');
 
 const path = require('node:path');
 require('dotenv').config({ path: path.resolve(__dirname, '..', '.env') });
@@ -18,7 +20,9 @@ app.use('/uploads', express.static(path.join(__dirname, '..', 'uploads')))
 
 app.use('/api', authRoutes);
 app.use('/api', unatuhRoutes);
+app.use('/api', projectRoutes);
 app.use('/api/image', imageRouter);
+app.use('/api/document', documentRouter);
 
 const PORT = process.env.PORT || 3000;
 

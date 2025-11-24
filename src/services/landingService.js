@@ -18,7 +18,7 @@ const getLandingProjectCategories = async () => {
     }
 }
 
-const getLandingDashboardProjects = async () => {
+const getLandingProjects = async () => {
     try {
         const query = `
             SELECT * FROM projects.dashboard_projects
@@ -33,5 +33,5 @@ const getLandingDashboardProjects = async () => {
 
 module.exports = {
     getLandingProjectCategories,
-    getLandingDashboardProjects
+    getLandingProjects
 }

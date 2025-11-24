@@ -1,0 +1,131 @@
+const documentRepository = require('../repositories/documentRepository');
+const fs = require('fs');
+const path = require('path');
+
+const uploadsPath = process.env.UPLOADS_PATH || 'uploads';
+const uploadDirectory = path.isAbsolute(uploadsPath) 
+    ? uploadsPath 
+    : path.join(__dirname, '../../', uploadsPath);
+
+exports.getDocumentById = async (req, res) => {
+    const documentId = req.params.id;
+    
+    try {
+        const document = await documentRepository.getDocumentById(documentId);
+        
+        if (!document) {
+            return res.status(404).json({ error: 'Documento no encontrado' });
+        }
+        
+        fs.readFile(document.file_path, (err, data) => {
+            if (err) {
+                console.error('Error al leer el archivo:', err);
+                return res.status(404).json({ error: 'Archivo de documento no encontrado' });
+            }
+            
+            res.setHeader('Content-Type', 'application/pdf');
+            res.setHeader('Content-Disposition', `inline; filename="${document.file_name}"`);
+            res.setHeader('Cache-Control', 'public, max-age=31536000');
+            
+            res.send(data);
+        });
+        
+    } catch (error) {
+        console.error('Error al obtener documento:', error);
+        res.status(500).json({ error: 'Error al obtener el documento' });
+    }
+};
+
+exports.uploadDocument = async (req, res) => {
+    try {
+        if (!req.file) {
+            return res.status(400).json({ error: 'No se proporcionó ningún archivo' });
+        }
+        
+        const file = req.file;
+        const fileName = file.filename;
+        const filePath = file.path;
+        const documentType = req.body.documentType || 'proof';
+        
+        const documentId = await documentRepository.createDocument({
+            fileName: fileName,
+            filePath: filePath,
+            documentType: documentType,
+            isTemporary: true
+        });
+        
+        res.status(201).json({
+            success: true,
+            documentId: documentId,
+            message: 'Documento subido exitosamente',
+            data: {
+                id: documentId,
+                fileName: fileName,
+                url: `/api/document/${documentId}`
+            }
+        });
+        
+    } catch (error) {
+        console.error('Error al subir documento:', error);
+        
+        if (req.file && req.file.path) {
+            fs.unlink(req.file.path, (err) => {
+                if (err) console.error('Error al eliminar archivo:', err);
+            });
+        }
+        
+        res.status(500).json({ error: 'Error al subir el documento' });
+    }
+};
+
+exports.deleteDocument = async (req, res) => {
+    const documentId = req.params.id;
+    
+    try {
+        const deletedDocument = await documentRepository.deleteDocument(documentId);
+        
+        if (!deletedDocument) {
+            return res.status(404).json({ error: 'Documento no encontrado' });
+        }
+        
+        fs.unlink(deletedDocument.file_path, (err) => {
+            if (err) {
+                console.error('Error al eliminar archivo físico:', err);
+            }
+        });
+        
+        res.status(200).json({
+            success: true,
+            message: 'Documento eliminado exitosamente'
+        });
+        
+    } catch (error) {
+        console.error('Error al eliminar documento:', error);
+        res.status(500).json({ error: 'Error al eliminar el documento' });
+    }
+};
+
+exports.cleanupOldDocuments = async (req, res) => {
+    try {
+        const hoursOld = req.body.hoursOld || 24;
+        const deletedDocuments = await documentRepository.cleanupOldTemporaryDocuments(hoursOld);
+        
+        deletedDocuments.forEach(doc => {
+            fs.unlink(doc.file_path, (err) => {
+                if (err) {
+                    console.error('Error al eliminar archivo físico:', err);
+                }
+            });
+        });
+        
+        res.status(200).json({
+            success: true,
+            message: `${deletedDocuments.length} documentos temporales eliminados`,
+            count: deletedDocuments.length
+        });
+        
+    } catch (error) {
+        console.error('Error en limpieza de documentos:', error);
+        res.status(500).json({ error: 'Error en la limpieza de documentos' });
+    }
+};

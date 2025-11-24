@@ -208,6 +208,43 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+-- ========================================
+-- FUNCIONES PARA DOCUMENTOS
+-- ========================================
+
+-- Crear registro de documento
+CREATE OR REPLACE FUNCTION files.create_document(
+    p_file_name VARCHAR,
+    p_file_path VARCHAR,
+    p_document_type VARCHAR DEFAULT 'proof',
+    p_is_temporary BOOLEAN DEFAULT TRUE
+)
+RETURNS UUID AS $$
+DECLARE
+    v_document_id UUID;
+BEGIN
+    INSERT INTO files.document (file_name, file_path, document_type, is_temporary)
+    VALUES (p_file_name, p_file_path, p_document_type, p_is_temporary)
+    RETURNING id INTO v_document_id;
+    
+    RETURN v_document_id;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Marcar documento como permanente
+CREATE OR REPLACE FUNCTION files.mark_document_as_permanent(
+    p_document_id UUID
+)
+RETURNS BOOLEAN AS $$
+BEGIN
+    UPDATE files.document
+    SET is_temporary = FALSE
+    WHERE id = p_document_id;
+    
+    RETURN FOUND;
+END;
+$$ LANGUAGE plpgsql;
+
 -- Eliminar imágenes temporales antiguas (cron job)
 CREATE OR REPLACE FUNCTION files.cleanup_old_temporary_images(
     p_days_old INT DEFAULT 7
@@ -709,6 +746,7 @@ CREATE OR REPLACE FUNCTION projects.create_project(
     p_location VARCHAR(255) DEFAULT NULL,
     p_cover_image_id UUID DEFAULT NULL,
     p_video_url VARCHAR(500) DEFAULT NULL,
+    p_proof_document_id UUID DEFAULT NULL,
     p_currency VARCHAR(10) DEFAULT 'USD'
 )
 RETURNS UUID AS $$
@@ -722,12 +760,12 @@ BEGIN
     INSERT INTO projects.project (
         id, creator_id, title, slug, description, financial_goal, raised_amount,
         start_date, end_date, approval_status, campaign_status, category_id,
-        location, video_url, currency
+        location, video_url, proof_document_id, currency
     )
     VALUES (
         v_project_id, p_creator_id, p_title, v_slug, p_description, p_financial_goal, 0,
         p_start_date, p_end_date, 'draft', 'not_started', p_category_id,
-        p_location, p_video_url, p_currency
+        p_location, p_video_url, p_proof_document_id, p_currency
     );
 
     -- Si se proporcionó imagen de portada, insertarla en project_image
@@ -738,6 +776,11 @@ BEGIN
         VALUES (
             v_project_id, p_cover_image_id, 0, TRUE
         );
+    END IF;
+    
+    -- Si se proporcionó documento de prueba, marcarlo como permanente
+    IF p_proof_document_id IS NOT NULL THEN
+        PERFORM files.mark_document_as_permanent(p_proof_document_id);
     END IF;
 
     RETURN v_project_id;
@@ -1170,9 +1213,48 @@ LIMIT 5;
 
 select * from projects.top_project_categories
 
-CREATE OR REPLACE VIEW projects.landing_top_projects AS
-SELECT
+create or replace view projects.view_projects as
+select
+	p.id,
+	p.creator_id,
+	p.title,
+	u.first_name,
+	u.middle_name,
+	u.last_name,
+	u.mother_last_name,
+	p.description,
+	p.summary,
+	p.financial_goal,
+	p.raised_amount,
+	p.start_date,
+	p.end_date,
+	p.approval_status,
+	p.campaign_status,
+	p.location,
+	p.currency,
+	p.category_id,
+	i.file_path
+from
+	projects.project p
+inner join users.user u
+	on p.creator_id = u.id
+inner join projects.category c
+	on p.category_id = c.id
+inner join projects.project_image t
+	on p.id = t.project_id
+inner join files.image i
+	on t.image_id = i.id
+where p.approval_status = 'published';
 
+select * from projects.view_projects;
+
+select * from projects.project p;
+
+select * from projects.project_image t;
+
+select * from projects.category c;
+
+select * from files.image i;
 
 -- ----------------------------------------
 -- 4.3 GESTIÓN DE CAMPAÑAS
