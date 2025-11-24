@@ -1,7 +1,7 @@
 const { dbPool } = require('../config/dbConnection');
 
 
-const getProjects = async (name) => {
+const getProjects = async (searchBy, filterBy) => {
     const client = await dbPool.connect();
     try {
         let sql = `
@@ -9,9 +9,37 @@ const getProjects = async (name) => {
         `;
 
         const params = [];
-        if (name) {
+        if (searchBy) {
             sql += `WHERE LOWER(title) LIKE LOWER($1) `;
-            params.push(`%${name}%`);
+            params.push(`%${searchBy}%`);
+        }
+
+        if (filterBy) {
+            const { categoryId, state, financialGoalRange, popularity } = filterBy;
+
+            if (categoryId) {
+                sql += params.length ? `AND category_id = $${params.length + 1} ` : `WHERE category_id = $1 `;
+                params.push(categoryId);
+            }
+
+            if (state) {
+                sql += params.length ? `AND state = $${params.length + 1} ` : `WHERE state = $1 `;
+                params.push(state);
+            }
+
+            if (financialGoalRange) {
+                const { min, max } = financialGoalRange;
+                sql += params.length ? `AND financial_goal BETWEEN $${params.length + 1} AND $${params.length + 2} ` : `WHERE financial_goal BETWEEN $1 AND $2 `;
+                params.push(min, max);
+            }
+
+            if (popularity) {
+                if (popularity === 'financed') {
+                    sql += params.length ? `AND raised_amount >= financial_goal ` : `WHERE raised_amount >= financial_goal `;
+                } else if (popularity === 'recent') {
+                    sql += `ORDER BY created_at DESC `;
+                }
+            }
         }
 
         const { rows } = await dbPool.query(sql, params);

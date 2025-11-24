@@ -40,8 +40,12 @@ const createProject = async (req, res) => {
 
 const getProjects = async (req, res) => {
     try {
-        const { searchBy } = req.query; // Leer el parámetro de consulta "searchBy"
-        const projects = await projectService.getProjects(searchBy); // Pasar el parámetro al servicio
+        const { searchBy, filterBy } = req.query; // Leer los parámetros de consulta "searchBy" y "filterBy"
+
+        // Parsear el parámetro filterBy si viene como JSON
+        const filters = filterBy ? JSON.parse(filterBy) : null;
+
+        const projects = await projectService.getProjects(searchBy, filters); // Pasar los parámetros al servicio
 
         res.status(200).json({
             message: 'Proyectos obtenidos exitosamente',
