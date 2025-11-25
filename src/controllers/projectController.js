@@ -40,9 +40,8 @@ const createProject = async (req, res) => {
 
 const getProjects = async (req, res) => {
     try {
-        const { searchBy, filterBy } = req.query; // Leer los parámetros de consulta "searchBy" y "filterBy"
-
-        // Parsear el parámetro filterBy si viene como JSON
+        const { searchBy, filterBy } = req.query;
+        
         const filters = filterBy ? JSON.parse(filterBy) : null;
 
         const categories = await projectRepository.getProjectCategories();
@@ -67,7 +66,7 @@ const getProjects = async (req, res) => {
                     goal_amount: project.financial_goal,
                     raised_amount: project.raised_amount,
                     description: project.description,
-                    cover_image_url: project.file_path,
+                    cover_image_url: project.cover_image_url,
                 })),
             }
         });
