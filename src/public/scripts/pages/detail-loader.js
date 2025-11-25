@@ -1,100 +1,140 @@
-(function(){
+(function () {
   'use strict';
 
-  const DEFAULT_LIST_URL = '../../json/projects/projectList.json';
+  const API_BASE_URL = '/api';
 
-  function getIdFromQuery(){
-    try{
+  function getSlugFromQuery() {
+    try {
       const qs = new URLSearchParams(window.location.search);
-      return qs.get('id');
-    }catch(e){
+      return qs.get('slug');
+    } catch (e) {
       return null;
     }
   }
 
-  function formatCurrency(value){
-    if(value == null || isNaN(Number(value))) return '—';
-    try{ return new Intl.NumberFormat('es-ES',{ style: 'currency', currency: 'MXN' }).format(Number(value)); }
-    catch(e){ return String(value); }
+  function formatCurrency(value) {
+    if (value == null || isNaN(Number(value))) return '—';
+    try {
+      return new Intl.NumberFormat('es-BO', { style: 'currency', currency: 'BOB' }).format(Number(value));
+    }
+    catch (e) { return String(value); }
   }
 
-  function setText(id, text){
+  function setText(id, text) {
     const el = document.getElementById(id);
-    if(!el) return;
+    if (!el) return;
     el.textContent = (text == null || text === '') ? '' : String(text);
   }
 
-  function setDescription(id, html){
+  function setDescription(id, html) {
     const el = document.getElementById(id);
-    if(!el) return;
-    if(!html) el.innerHTML = '<p>Sin descripción disponible.</p>';
+    if (!el) return;
+    if (!html) el.innerHTML = '<p>Sin descripción disponible.</p>';
     else el.innerHTML = String(html);
   }
 
-  function setImage(id, src, alt){
+  function setImage(id, src, alt) {
     const img = document.getElementById(id);
-    if(!img) return;
-    if(src) img.src = src;
-    if(alt) img.alt = alt;
+    if (!img) return;
+    if (src) img.src = src;
+    if (alt) img.alt = alt;
   }
 
-  async function loadDetail(){
-    const id = getIdFromQuery();
+  function calculateDaysLeft(endDate) {
+    if (!endDate) return null;
+    try {
+      const end = new Date(endDate);
+      const now = new Date();
+      const diff = end - now;
+      const days = Math.ceil(diff / (1000 * 60 * 60 * 24));
+      return days > 0 ? days : 0;
+    } catch (e) {
+      return null;
+    }
+  }
 
-    if(!id){
-      console.info('detail-loader: no id en query string — mostrando fallback.');
+  async function loadDetail() {
+    const slug = getSlugFromQuery();
+
+    if (!slug) {
+      console.info('detail-loader: no slug en query string — mostrando fallback.');
+      setDescription('project-description', '<p>No se especificó un proyecto.</p>');
       return;
     }
 
-    try{
-      const resp = await fetch(DEFAULT_LIST_URL, { cache: 'no-cache' });
-      if(!resp.ok) throw new Error('Error fetching projects list: ' + resp.status);
+    try {
+      const resp = await fetch(`${API_BASE_URL}/projects/${slug}`, {
+        cache: 'no-cache',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (!resp.ok) {
+        if (resp.status === 404) {
+          setDescription('project-description', '<p>Proyecto no encontrado.</p>');
+          return;
+        }
+        throw new Error('Error fetching project: ' + resp.status);
+      }
+
       const payload = await resp.json();
+      const project = payload.data?.project;
 
-      const projects = (payload && payload.data && payload.data.projects) || payload.projects || [];
-
-      const project = projects.find(p => String((p.id || p.project_id || p._id)) === String(id));
-      if(!project){
-        console.warn('detail-loader: proyecto no encontrado para id=', id);
+      if (!project) {
+        console.warn('detail-loader: proyecto no encontrado para slug=', slug);
         setDescription('project-description', '<p>Proyecto no encontrado.</p>');
         return;
       }
 
-      const title = project.title || project.name || project.project_title || '';
-      const cover = project.cover_image_url || project.image || project.cover || '';
-      const description = project.description || project.long_description || project.summary || '';
-      const category = (project.category && (project.category.name || project.category)) || project.category_name || '';
-      const creator = (project.creator && (project.creator.name || project.creator)) || project.author || project.created_by || '';
-      const location = project.location || project.city || project.region || '';
+      // Extraer datos del proyecto
+      const title = project.title || '';
+      const cover = project.cover_image_url || '';
+      const description = project.description || '';
+      const category = project.category_name || '';
+      const creator = project.creator_name || '';
+      const location = project.location || '';
 
-      const goal = Number(project.goal_amount || project.goal || project.target_amount || 0) || 0;
-      const raised = Number(project.raised_amount || project.raised || project.current_amount || 0) || 0;
+      const goal = Number(project.goal_amount || 0);
+      const raised = Number(project.raised_amount || 0);
       const percent = goal > 0 ? Math.round((raised / goal) * 100) : 0;
 
-      const sponsors = project.sponsors_count || project.backers_count || project.supporters || project.patrons || '';
-      const daysLeft = project.days_left || project.remaining_days || project.ends_in_days || '';
+      // Calcular días restantes
+      const daysLeft = calculateDaysLeft(project.end_date);
 
-      // Inyectar en DOM (ids definidos en HTML)
+      // TODO: Obtener número de patrocinadores de la API cuando esté disponible
+      const sponsors = project.sponsors_count || 0;
+
+      // Inyectar en DOM
       setText('project-title', title);
       setImage('project-cover', cover, title || 'Portada del proyecto');
-      setText('project-meta', [category, creator ? `Creado por ${creator}` : '', location].filter(Boolean).join(' · '));
-      setDescription('project-description', description);
+
+      const metaParts = [];
+      if (category) metaParts.push(category);
+      if (creator) metaParts.push(`Creado por ${creator}`);
+      if (location) metaParts.push(location);
+      setText('project-meta', metaParts.join(' · '));
+
+      setDescription('project-description', description ? `<p>${description}</p>` : '<p>Sin descripción disponible.</p>');
 
       setText('project-percent', percent ? percent + '%' : '0%');
       const fillEl = document.getElementById('project-progress-fill');
-      if(fillEl) fillEl.style.width = Math.min(100, Math.max(0, percent)) + '%';
+      if (fillEl) fillEl.style.width = Math.min(100, Math.max(0, percent)) + '%';
 
       setText('project-raised', `${formatCurrency(raised)} recaudados de ${formatCurrency(goal)}`);
-      setText('project-sponsors', sponsors || '—');
-      setText('project-days', daysLeft || '—');
+      setText('project-sponsors', sponsors || '0');
+      setText('project-days', daysLeft !== null ? daysLeft : '—');
 
-    }catch(err){
+      // Actualizar el título de la página
+      document.title = `${title} - AportaYa`;
+
+    } catch (err) {
       console.error('detail-loader error', err);
       setDescription('project-description', '<p>Error al cargar los datos del proyecto.</p>');
     }
   }
 
-  if(document.readyState === 'loading'){
+  if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', loadDetail);
   } else {
     loadDetail();

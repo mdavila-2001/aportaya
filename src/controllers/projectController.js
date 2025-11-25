@@ -4,7 +4,7 @@ const documentRepository = require('../repositories/documentRepository');
 const createProject = async (req, res) => {
     try {
         const userId = req.user.id; // Del middleware de autenticación
-        
+
         const projectData = {
             title: req.body.title,
             description: req.body.description,
@@ -18,7 +18,7 @@ const createProject = async (req, res) => {
         };
 
         const projectId = await projectRepository.createProject(projectData, userId);
-        
+
         // Si hay documento de prueba, marcarlo como permanente
         if (projectData.proofDocumentId) {
             await documentRepository.markDocumentAsPermanent(projectData.proofDocumentId);
@@ -41,7 +41,7 @@ const createProject = async (req, res) => {
 const getProjects = async (req, res) => {
     try {
         const { searchBy, filterBy } = req.query;
-        
+
         const filters = filterBy ? JSON.parse(filterBy) : null;
 
         const categories = await projectRepository.getProjectCategories();
@@ -61,9 +61,10 @@ const getProjects = async (req, res) => {
                 projects: projects.map(project => ({
                     id: project.id,
                     title: project.title,
+                    slug: project.slug,
                     category_id: project.category_id,
-                    category_name: project.name,
-                    goal_amount: project.financial_goal,
+                    category_name: project.category_name,
+                    goal_amount: project.goal_amount,
                     raised_amount: project.raised_amount,
                     description: project.description,
                     cover_image_url: project.cover_image_url,
@@ -82,7 +83,7 @@ const getProjects = async (req, res) => {
 const getProjectDetail = async (req, res) => {
     const { slug } = req.params;
     try {
-        const project = await projectRepository.getProjectDetail(slug);
+        const project = await projectRepository.getProjectsBySLUG(slug);
         const categories = await projectRepository.getProjectCategories();
         if (!project) {
             return res.status(404).json({
@@ -101,12 +102,17 @@ const getProjectDetail = async (req, res) => {
                 project: {
                     id: project.id,
                     title: project.title,
-                    category_id: project.category_id,
-                    category_name: project.name,
-                    goal_amount: project.financial_goal,
+                    slug: project.slug,
+                    category_name: project.category_name,
+                    creator_name: project.creator_name,
+                    creator_image: project.creator_image,
+                    goal_amount: project.goal_amount,
                     raised_amount: project.raised_amount,
                     description: project.description,
                     cover_image_url: project.cover_image_url,
+                    location: project.location,
+                    start_date: project.start_date,
+                    end_date: project.end_date
                 }
             }
         });
