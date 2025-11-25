@@ -67,6 +67,46 @@ const getProjects = async (searchBy, filterBy) => {
     }
 }
 
+const getProjectsBySLUG = async (slug) => {
+    const client = await dbPool.connect();
+    try {
+        const query = `
+            SELECT 
+                p.id,
+                p.title,
+                p.description, -- Descripción completa
+                p.financial_goal as goal_amount,
+                p.raised_amount,
+                p.end_date,
+                p.start_date,
+                p.location,
+                p.slug,
+                -- Datos del Creador
+                u.first_name || ' ' || u.last_name as creator_name,
+                avatar.file_path as creator_image,
+                -- Datos de Categoría
+                c.name as category_name,
+                -- Imagen de Portada
+                f.file_path as cover_image_url
+            FROM projects.project p
+            JOIN users.user u ON p.creator_id = u.id
+            LEFT JOIN files.image avatar ON u.profile_image_id = avatar.id
+            JOIN projects.category c ON p.category_id = c.id
+            LEFT JOIN projects.project_image pi ON p.id = pi.project_id AND pi.is_cover = TRUE
+            LEFT JOIN files.image f ON pi.image_id = f.id
+            WHERE p.slug = $1
+        `;
+
+        const { rows } = await client.query(query, [slug]);
+        return rows[0];
+    } catch (error) {
+        console.error('Error obteniendo proyecto por SLUG:', error);
+        throw error;
+    } finally {
+        client.release();
+    }
+};
+
 const createProject = async(projectData, userId) => {
     const client = await dbPool.connect();
     try {
@@ -113,5 +153,6 @@ const createProject = async(projectData, userId) => {
 module.exports = {
     createProject,
     getProjects,
-    getProjectCategories
+    getProjectCategories,
+    getProjectsBySLUG
 };

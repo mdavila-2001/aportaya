@@ -1,566 +1,281 @@
+-- ================================================================
+-- SEED DE DATOS COMPLETO Y MASIVO - AportaYa (CORREGIDO)
+-- ================================================================
+-- 1. LIMPIEZA TOTAL
 TRUNCATE TABLE 
-    roles.user_role,
-    roles.role_ability,
-    roles.ability,
-    roles.module,
-    roles.role_category,
-    roles.role,
-    audit.audit_log,
-    messaging.message,
-    messaging.conversation,
-    social.favorite,
-    social.report,
-    social.update,
-    social.comment,
-    payments.webhook_event,
-    payments.payment_transaction,
-    payments.donation,
-    projects.project_observation,
-    projects.project_status_history,
-    projects.project_approval_history,
-    projects.category_requirements,
-    projects.project,
-    projects.category,
-    users.password_reset_token,
-    users.email_verification_token,
-    users.user_status_history,
-    users.user,
+    roles.user_role, roles.role_ability, roles.ability, roles.module, roles.role_category, roles.role,
+    audit.audit_log, messaging.message, messaging.conversation, social.favorite, social.report, social.update, social.comment,
+    payments.webhook_event, payments.payment_transaction, payments.donation,
+    projects.project_image, -- Se agrego esta tabla para limpieza
+    projects.project_observation, projects.project_status_history, projects.project_approval_history,
+    projects.category_requirements, projects.project, projects.category,
+    users.password_reset_token, users.email_verification_token, users.user_status_history, users.user,
     files.image
 RESTART IDENTITY CASCADE;
 
--- =====================================================
---                 CATEGORÍAS EN ROLES
--- =====================================================
-
-
--- Módulo del sistema
-select roles.create_role_category(
-	'Administración',
-	'Funciones exclusivas para administradores'
-);
-
--- Módulo de contenido
-select roles.create_role_category(
-	'Plataforma',
-	'Funcionalidades para usuarios'
-);
-
-select * from roles.role_category rc 
+CREATE EXTENSION IF NOT EXISTS "pgcrypto";
 
 -- =====================================================
---                  MÓDULOS EN ROLES
+-- INICIO DEL BLOQUE ANÓNIMO DINÁMICO
 -- =====================================================
-
--- Módulos de Administración (categoría 1)
-select roles.create_module(
-	'Administradores',
-	1
-);
-
-select roles.create_module(
-	'Gestión de Usuarios',
-	1
-);
-
-select roles.create_module(
-	'Gestión de Categorías de Proyectos',
-	1
-);
-
-select roles.create_module(
-	'Gestión de Proyectos',
-	1
-);
-
-select roles.create_module(
-	'Estadísticas',
-	1
-);
-
--- Módulos de Plataforma (Categoría 2)
-select roles.create_module(
-	'Mis Proyectos',
-	2
-);
-
-select roles.create_module(
-	'Donaciones',
-	2
-);
-
-select roles.create_module(
-	'Perfil',
-	2
-);
-
-select roles.create_module(
-	'Comentarios',
-	2
-);
-
-select roles.create_module(
-	'Favoritos',
-	2
-);
-
-select * from roles."module" m 
-
--- ========================================
--- 3. HABILIDADES (PERMISOS) POR MÓDULO
--- ========================================
-
--- Módulo Administradores (1)
-select roles.create_ability(
-	'find',
-	'Ver Administradores',
-	1
-);
-
-select roles.create_ability(
-	'update',
-	'Actualizar Administradores',
-	1
-);
-
-select roles.create_ability(
-	'create',
-	'Crear Administradores',
-	1
-);
-
-select roles.create_ability(
-	'kill',
-	'Eliminar Administradores',
-	1
-);
-
--- Módulo Gestión de Usuarios (2)
-select roles.create_ability(
-	'find',
-	'Ver Usuarios',
-	2
-);
-
-select roles.create_ability(
-	'update',
-	'Actualizar Usuarios',
-	2
-);
-
-select roles.create_ability(
-	'create',
-	'Crear Usuarios',
-	2
-);
-
-select roles.create_ability(
-	'kill',
-	'Eliminar Usuarios',
-	2
-);
-
--- Módulos de Gestión de Categorías de Proyectos (3)
-select roles.create_ability(
-	'find',
-	'Ver Categorías',
-	3
-);
-
-select roles.create_ability(
-	'update',
-	'Actualizar Categorías',
-	3
-);
-
-select roles.create_ability(
-	'create',
-	'Crear Categorías',
-	3
-);
-
-select roles.create_ability(
-	'kill',
-	'Eliminar Categorías',
-	3
-);
-
--- Módulo de Gestión de Proyectos (4)
-select roles.create_ability(
-	'read',
-	'Ver Proyectos',
-	4
-);
-
-select roles.create_ability(
-	'approve',
-	'Aprobar Proyectos',
-	4
-);
-
-select roles.create_ability(
-	'reject',
-	'Rechazar Proyectos',
-	4
-);
-
-select roles.create_ability(
-	'observe',
-	'Observar proyectos',
-	3
-);
-
--- Módulo de Estadísticas (5)
-select roles.create_ability(
-	'check',
-	'Ver Estadísticas',
-	5
-);
-
-select roles.create_ability(
-	'export',
-	'Exportar Estadísticas',
-	5
-);
-
--- Módulo de Mis Proyectos (6)
-select roles.create_ability(
-	'find',
-	'Ver Mis Proyectos',
-	6
-);
-
-select roles.create_ability(
-	'update',
-	'Actualizar Mis Proyectos',
-	6
-);
-
-select roles.create_ability(
-	'create',
-	'Crear Proyecto',
-	6
-);
-
-select roles.create_ability(
-	'kill',
-	'Eliminar Campaña',
-	6
-);
-
--- Módulo Donaciones (7)
-select roles.create_ability(
-	'view',
-	'Ver Donaciones',
-	7
-);
-
-select roles.create_ability(
-	'donate',
-	'Donar',
-	7
-);
-
-select roles.create_ability(
-	'refund',
-	'Reembolsar',
-	7
-);
-
--- Módulo Perfil (8)
-select roles.create_ability(
-	'view',
-	'Ver Perfil',
-	8
-);
-
-select roles.create_ability(
-	'update',
-	'Editar Perfil',
-	8
-);
-
--- Módulo de Comentarios (9)
-select roles.create_ability(
-	'comment',
-	'Comentar',
-	9
-);
-
-select roles.create_ability(
-	'find',
-	'Leer Comentarios',
-	9
-);
-
-select roles.create_ability(
-	'update',
-	'Actualizar Comentario',
-	9
-);
-
--- Módulo de Favoritos (10)
-select roles.create_ability(
-	'find',
-	'Ver Mis Favoritos',
-	10
-);
-
-select roles.create_ability(
-	'add',
-	'Agregar a Mis Favoritos',
-	10
-);
-
-select roles.create_ability(
-	'remove',
-	'Borrar de Mis Favoritos',
-	10
-);
-
-select * from roles.ability a
-
--- =====================================================
---                     4. ROLES
--- =====================================================
-
-select roles.create_role(
-	'Administrador'
-);
-
-select roles.create_role(
-	'Usuario'
-);
-
-select * from roles."role" r 
-
--- =====================================================
---            5. ASIGNAR PERMISO A UN ROL
--- =====================================================
-
-select * from roles.ability a;
-select * from roles."role" r ;
-
-
--- Asignar los Permisos al rol Administrador (1)
-select roles.assign_ability_to_role(1, 1, TRUE);
-select roles.assign_ability_to_role(1, 2, TRUE);
-select roles.assign_ability_to_role(1, 3, TRUE);
-select roles.assign_ability_to_role(1, 4, TRUE);
-select roles.assign_ability_to_role(1, 5, TRUE);
-select roles.assign_ability_to_role(1, 6, TRUE);
-select roles.assign_ability_to_role(1, 7, TRUE);
-select roles.assign_ability_to_role(1, 8, TRUE);
-select roles.assign_ability_to_role(1, 9, TRUE);
-select roles.assign_ability_to_role(1, 10, TRUE);
-select roles.assign_ability_to_role(1, 11, TRUE);
-select roles.assign_ability_to_role(1, 12, TRUE);
-select roles.assign_ability_to_role(1, 13, TRUE);
-select roles.assign_ability_to_role(1, 14, TRUE);
-select roles.assign_ability_to_role(1, 15, TRUE);
-select roles.assign_ability_to_role(1, 16, TRUE);
-select roles.assign_ability_to_role(1, 17, TRUE);
-select roles.assign_ability_to_role(1, 18, TRUE);
-select roles.assign_ability_to_role(1, 19, FALSE);
-select roles.assign_ability_to_role(1, 20, FALSE);
-select roles.assign_ability_to_role(1, 21, FALSE);
-select roles.assign_ability_to_role(1, 22, FALSE);
-select roles.assign_ability_to_role(1, 23, FALSE);
-select roles.assign_ability_to_role(1, 24, FALSE);
-select roles.assign_ability_to_role(1, 25, FALSE);
-select roles.assign_ability_to_role(1, 26, FALSE);
-select roles.assign_ability_to_role(1, 27, FALSE);
-select roles.assign_ability_to_role(1, 28, TRUE);
-select roles.assign_ability_to_role(1, 29, TRUE);
-select roles.assign_ability_to_role(1, 30, TRUE);
-select roles.assign_ability_to_role(1, 31, TRUE);
-select roles.assign_ability_to_role(1, 32, TRUE);
-select roles.assign_ability_to_role(1, 33, TRUE);
-
--- Asignar permisos al rol Usuario (2)
-select roles.assign_ability_to_role(2, 1, FALSE);
-select roles.assign_ability_to_role(2, 2, FALSE);
-select roles.assign_ability_to_role(2, 3, FALSE);
-select roles.assign_ability_to_role(2, 4, FALSE);
-select roles.assign_ability_to_role(2, 5, FALSE);
-select roles.assign_ability_to_role(2, 6, FALSE);
-select roles.assign_ability_to_role(2, 7, FALSE);
-select roles.assign_ability_to_role(2, 8, FALSE);
-select roles.assign_ability_to_role(2, 9, FALSE);
-select roles.assign_ability_to_role(2, 10, FALSE);
-select roles.assign_ability_to_role(2, 11, FALSE);
-select roles.assign_ability_to_role(2, 12, FALSE);
-select roles.assign_ability_to_role(2, 13, FALSE);
-select roles.assign_ability_to_role(2, 14, FALSE);
-select roles.assign_ability_to_role(2, 15, FALSE);
-select roles.assign_ability_to_role(2, 16, FALSE);
-select roles.assign_ability_to_role(2, 17, FALSE);
-select roles.assign_ability_to_role(2, 18, FALSE);
-select roles.assign_ability_to_role(2, 19, TRUE);
-select roles.assign_ability_to_role(2, 20, TRUE);
-select roles.assign_ability_to_role(2, 21, TRUE);
-select roles.assign_ability_to_role(2, 22, TRUE);
-select roles.assign_ability_to_role(2, 23, TRUE);
-select roles.assign_ability_to_role(2, 24, TRUE);
-select roles.assign_ability_to_role(2, 25, TRUE);
-select roles.assign_ability_to_role(2, 26, TRUE);
-select roles.assign_ability_to_role(2, 27, TRUE);
-select roles.assign_ability_to_role(2, 28, FALSE);
-select roles.assign_ability_to_role(2, 29, FALSE);
-select roles.assign_ability_to_role(2, 30, FALSE);
-select roles.assign_ability_to_role(2, 31, FALSE);
-select roles.assign_ability_to_role(2, 32, FALSE);
-select roles.assign_ability_to_role(2, 33, FALSE);
-
-select * from roles.role_ability ra
-
--- =====================================================
---               6. CREAR IMÁGENES
--- =====================================================
-
--- Imagen del Avatar del Administrador
-select files.create_image(
-	'admin_avatar',
-	'/uploads/avatar/admin_avatar.png',
-	'Super Avatar',
-	FALSE
-);
-
-select * from files.image i;
-
--- Imagen de Avatar de un creador
-select files.create_image(
-	'juan',
-	'/uploads/avatar/juan.png',
-	'Avatar de Juan',
-	FALSE
-);
-
-select files.create_image(
-	'maria',
-	'/uploads/avatar/maria.png',
-	'Avatar de María',
-	FALSE
-);
-
--- 9c2812d5-776c-4ea4-82c0-11cfd1aa9695
-
--- Imágenes de proyectos
-select files.create_image(
-	'mochila',
-	'uploads/projects/mochila.png',
-	'Mochila Solar',
-	FALSE
-);
-
-select files.create_image(
-	'comedor',
-	'/uploads/projects/comedor.png',
-	'Comedor Comunitario',
-	FALSE
-);
-
-select files.create_image(
-	'medibot',
-	'/uploads/projects/medibot.png',
-	'Médico Robot',
-	FALSE
-);
-
--- =====================================================
---               7. CREAR ADMINISTRADOR
--- =====================================================
-
-select users.create_admin(
-	'Super',
-	'',
-	'Admin',
-	'',
-	'admin@aportaya.com',
-	'12345678',
-	'M',
-	'2001-11-26',
-	'9c2812d5-776c-4ea4-82c0-11cfd1aa9695',
-	1
-);
-
-select users.login_user(
-	'admin@aportaya.com',
-	'12345678'
-);
-
--- =====================================================
---               8. CREAR USUARIOS
--- =====================================================
-select users.register_user(
-	'Juan',
-	'David',
-	'Pérez',
-	'López',
-	'jperez@gmail.com',
-	'12345678',
-	'M',
-	'2001-11-26',
-	'43685d89-ca59-4f40-8868-ee84c63a6dd7',
-	2
-);
-
-select users.register_user(
-	'María',
-	'',
-	'Rocha',
-	'',
-	'mrocha@gmail.com',
-	'12345678',
-	'M',
-	'1994-03-31',
-	'22939073-6f8c-4320-9674-1c13a36a0b6f',
-	2
-);
-
-select * from users."user" u;
-
--- =====================================================
---          8. CREAR CATEGORÍA DE PROYECTO
--- =====================================================
-select projects.create_category(
-	'Tecnología',
-	'tecnologia',
-	'Para proyectos innovadores'
-);
-
-select projects.create_category(
-	'Salud',
-	'salud',
-	'Para realizar proyectos en el área de salud'
-);
-
-select projects.create_category(
-	'Social',
-	'social',
-	'Impacto comunitario'
-);
-
-select projects.create_category(
-	'Arte',
-	'arte',
-	'Expresión artística'
-);
-
-select * from projects.category c;
-
--- =====================================================
---                 9. CREAR PROYECTOS
--- =====================================================
-select projects.create_project(
-	'ad6489ee-fe94-4610-99c1-9c3aa9561bc2',
-	'Mochila Solar',
-	'Una mochila con paneles solares para cargar dispositivos móviles en zonas rurales.',
-	30000.00,
-	'2025-01-01',
-	'2025-12-31',
-	1,
-	'Santa Cruz de la Sierra, Bolivia',
-	NULL,
-	NULL,
-	'BOB'
-);
+DO $$ 
+DECLARE
+    -- --- VARIABLES PARA CAPTURAR IDs ---
+    
+    -- Categorías y Roles
+    v_cat_role_admin INT; v_cat_role_platform INT;
+    v_role_admin_id INT; v_role_user_id INT;
+
+    -- Módulos
+    v_mod_admin INT; v_mod_users INT; v_mod_proj_cat INT; v_mod_proj_manage INT; v_mod_stats INT;
+    v_mod_my_proj INT; v_mod_donations INT; v_mod_profile INT; v_mod_comments INT; v_mod_favorites INT;
+
+    -- Imágenes (Usuarios y Proyectos Base)
+    v_img_admin_id UUID; v_img_marcelo_id UUID; v_img_melissa_id UUID; v_img_carlos_id UUID; v_img_ana_id UUID;
+    v_img_p_tech1 UUID; v_img_p_tech2 UUID; v_img_p_social1 UUID; v_img_p_social2 UUID; v_img_p_art1 UUID; v_img_p_health1 UUID;
+
+    -- Usuarios
+    v_user_admin_id UUID;
+    v_user_marcelo_id UUID; v_user_carlos_id UUID; v_user_ana_id UUID; v_user_melissa_id UUID;
+
+    -- Categorías de Proyectos
+    v_cat_proj_tech_id INT; v_cat_proj_health_id INT; v_cat_proj_social_id INT; v_cat_proj_art_id INT; v_cat_proj_env_id INT;
+    
+    -- Proyectos (Capturamos IDs para asociar imágenes después)
+    v_proj_mochila_id UUID; v_proj_dron_id UUID; v_proj_comedor_id UUID; v_proj_clinica_id UUID; v_proj_murales_id UUID;
+    v_proj_limpieza_id UUID; v_proj_impresora_id UUID; v_proj_biblioteca_id UUID; v_proj_telemed_id UUID; v_proj_festival_id UUID;
+    v_proj_iot_id UUID; v_proj_reciclaje_id UUID; v_proj_taller_id UUID; v_proj_motor_id UUID; v_proj_ayuda_id UUID;
+
+BEGIN
+    RAISE NOTICE '--- INICIANDO SEED MASIVO (CORREGIDO) ---';
+
+    -- =====================================================
+    -- 2 - 6. CONFIGURACIÓN DE ROLES Y PERMISOS (Igual que antes)
+    -- =====================================================
+    -- ... (Este bloque permanece idéntico al anterior, lo omito para brevedad pero DEBE ESTAR) ...
+    -- INICIO DEL BLOQUE OMITIDO
+    SELECT roles.create_role_category('Administración', 'Funciones exclusivas para administradores') INTO v_cat_role_admin;
+    SELECT roles.create_role_category('Plataforma', 'Funcionalidades para usuarios') INTO v_cat_role_platform;
+
+    SELECT roles.create_module('Administradores', v_cat_role_admin) INTO v_mod_admin;
+    SELECT roles.create_module('Gestión de Usuarios', v_cat_role_admin) INTO v_mod_users;
+    SELECT roles.create_module('Gestión de Categorías de Proyectos', v_cat_role_admin) INTO v_mod_proj_cat;
+    SELECT roles.create_module('Gestión de Proyectos', v_cat_role_admin) INTO v_mod_proj_manage;
+    SELECT roles.create_module('Estadísticas', v_cat_role_admin) INTO v_mod_stats;
+
+    SELECT roles.create_module('Mis Proyectos', v_cat_role_platform) INTO v_mod_my_proj;
+    SELECT roles.create_module('Donaciones', v_cat_role_platform) INTO v_mod_donations;
+    SELECT roles.create_module('Perfil', v_cat_role_platform) INTO v_mod_profile;
+    SELECT roles.create_module('Comentarios', v_cat_role_platform) INTO v_mod_comments;
+    SELECT roles.create_module('Favoritos', v_cat_role_platform) INTO v_mod_favorites;
+
+    PERFORM roles.create_ability('find', 'Ver Administradores', v_mod_admin);
+    PERFORM roles.create_ability('update', 'Actualizar Administradores', v_mod_admin);
+    PERFORM roles.create_ability('create', 'Crear Administradores', v_mod_admin);
+    PERFORM roles.create_ability('kill', 'Eliminar Administradores', v_mod_admin);
+
+    PERFORM roles.create_ability('find', 'Ver Usuarios', v_mod_users);
+    PERFORM roles.create_ability('update', 'Actualizar Usuarios', v_mod_users);
+    PERFORM roles.create_ability('create', 'Crear Usuarios', v_mod_users);
+    PERFORM roles.create_ability('kill', 'Eliminar Usuarios', v_mod_users);
+    PERFORM roles.create_ability('suspend', 'Suspender Usuarios', v_mod_users);
+
+    PERFORM roles.create_ability('find', 'Ver Categorías', v_mod_proj_cat);
+    PERFORM roles.create_ability('update', 'Actualizar Categorías', v_mod_proj_cat);
+    PERFORM roles.create_ability('create', 'Crear Categorías', v_mod_proj_cat);
+    PERFORM roles.create_ability('kill', 'Eliminar Categorías', v_mod_proj_cat);
+
+    PERFORM roles.create_ability('read', 'Ver Proyectos', v_mod_proj_manage);
+    PERFORM roles.create_ability('approve', 'Aprobar Proyectos', v_mod_proj_manage);
+    PERFORM roles.create_ability('reject', 'Rechazar Proyectos', v_mod_proj_manage);
+    PERFORM roles.create_ability('observe', 'Observar proyectos', v_mod_proj_manage);
+
+    PERFORM roles.create_ability('check', 'Ver Estadísticas', v_mod_stats);
+    PERFORM roles.create_ability('export', 'Exportar Estadísticas', v_mod_stats);
+
+    PERFORM roles.create_ability('find', 'Ver Mis Proyectos', v_mod_my_proj);
+    PERFORM roles.create_ability('update', 'Actualizar Mis Proyectos', v_mod_my_proj);
+    PERFORM roles.create_ability('create', 'Crear Proyecto', v_mod_my_proj);
+    PERFORM roles.create_ability('manage_campaign', 'Gestionar Campaña', v_mod_my_proj);
+
+    PERFORM roles.create_ability('view', 'Ver Donaciones', v_mod_donations);
+    PERFORM roles.create_ability('donate', 'Donar', v_mod_donations);
+    
+    PERFORM roles.create_ability('view', 'Ver Perfil', v_mod_profile);
+    PERFORM roles.create_ability('update', 'Editar Perfil', v_mod_profile);
+
+    PERFORM roles.create_ability('comment', 'Comentar', v_mod_comments);
+    
+    PERFORM roles.create_ability('add', 'Agregar a Mis Favoritos', v_mod_favorites);
+    PERFORM roles.create_ability('remove', 'Borrar de Mis Favoritos', v_mod_favorites);
+
+    SELECT roles.create_role('Administrador') INTO v_role_admin_id;
+    SELECT roles.create_role('Usuario') INTO v_role_user_id;
+
+    INSERT INTO roles.role_ability (role_id, ability_id)
+    SELECT v_role_admin_id, id FROM roles.ability;
+
+    INSERT INTO roles.role_ability (role_id, ability_id)
+    SELECT v_role_user_id, a.id
+    FROM roles.ability a
+    JOIN roles.module m ON a.module_id = m.id
+    WHERE m.category_id = v_cat_role_platform;
+
+    RAISE NOTICE 'Sistema de Roles y Permisos configurado.';
+    -- FIN DEL BLOQUE OMITIDO
+
+    -- =====================================================
+    -- 7. CREAR IMÁGENES BASE
+    -- =====================================================
+    -- Avatares
+    SELECT files.create_image('admin_av', '/uploads/avatar/admin.png', 'Admin', FALSE) INTO v_img_admin_id;
+    SELECT files.create_image('marcelo_av', '/uploads/avatar/marcelo.png', 'Marcelo', FALSE) INTO v_img_marcelo_id;
+    SELECT files.create_image('melissa_av', '/uploads/avatar/melissa.png', 'Melissa', FALSE) INTO v_img_melissa_id;
+    SELECT files.create_image('carlos_av', '/uploads/avatar/carlos.png', 'Carlos', FALSE) INTO v_img_carlos_id;
+    SELECT files.create_image('ana_av', '/uploads/avatar/ana.png', 'Ana', FALSE) INTO v_img_ana_id;
+
+    -- Portadas de Proyectos
+    SELECT files.create_image('p_tech1', '/uploads/projects/tech1.png', 'Tech 1', FALSE) INTO v_img_p_tech1;
+    SELECT files.create_image('p_tech2', '/uploads/projects/tech2.png', 'Tech 2', FALSE) INTO v_img_p_tech2;
+    SELECT files.create_image('p_social1', '/uploads/projects/social1.png', 'Social 1', FALSE) INTO v_img_p_social1;
+    SELECT files.create_image('p_social2', '/uploads/projects/social2.png', 'Social 2', FALSE) INTO v_img_p_social2;
+    SELECT files.create_image('p_art1', '/uploads/projects/art1.png', 'Art 1', FALSE) INTO v_img_p_art1;
+    SELECT files.create_image('p_health1', '/uploads/projects/health1.png', 'Health 1', FALSE) INTO v_img_p_health1;
+
+    -- =====================================================
+    -- 8. CREAR USUARIOS
+    -- =====================================================
+    -- Admin
+    SELECT users.create_admin('Super', '', 'Admin', '', 'admin@aportaya.com', '12345678', 'M', '1990-01-01', v_img_admin_id, v_role_admin_id) INTO v_user_admin_id;
+    
+    -- Creadores y Donantes
+    SELECT users.register_user('Danny', 'Marcelo', 'Dávila', 'Barrancos', 'marcelo@gmail.com', '12345678', 'M', '1995-05-20', v_img_marcelo_id, v_role_user_id) INTO v_user_marcelo_id;
+    SELECT users.register_user('Carlos', '', 'López', 'Sánchez', 'carlos@gmail.com', '12345678', 'M', '1992-08-15', v_img_carlos_id, v_role_user_id) INTO v_user_carlos_id;
+    SELECT users.register_user('Ana', '', 'García', '', 'ana@gmail.com', '12345678', 'F', '1998-03-10', v_img_ana_id, v_role_user_id) INTO v_user_ana_id;
+    SELECT users.register_user('Alejandra', 'Melissa', 'Rocha', 'Villegas', 'melissa@gmail.com', '12345678', 'F', '1994-03-31', v_img_melissa_id, v_role_user_id) INTO v_user_melissa_id;
+
+    -- Activar usuarios
+    UPDATE users.user SET status = 'active' WHERE id IN (v_user_marcelo_id, v_user_carlos_id, v_user_ana_id, v_user_melissa_id);
+
+    RAISE NOTICE 'Usuarios creados y activados.';
+
+    -- =====================================================
+    -- 9. CATEGORÍAS DE PROYECTO Y REQUISITOS
+    -- =====================================================
+    SELECT projects.create_category('Tecnología', 'tecnologia', 'Innovación y desarrollo') INTO v_cat_proj_tech_id;
+    SELECT projects.create_category('Salud', 'salud', 'Proyectos médicos y bienestar') INTO v_cat_proj_health_id;
+    SELECT projects.create_category('Social', 'social', 'Impacto comunitario') INTO v_cat_proj_social_id;
+    SELECT projects.create_category('Arte', 'arte', 'Expresión creativa') INTO v_cat_proj_art_id;
+    SELECT projects.create_category('Medio Ambiente', 'medio_ambiente', 'Sostenibilidad') INTO v_cat_proj_env_id;
+
+    INSERT INTO projects.category_requirements (category_id, requirement_name, requirement_value) VALUES
+    (v_cat_proj_tech_id, 'Prototipo Funcional', 'Se requiere video demostrativo.'),
+    (v_cat_proj_tech_id, 'Plan Técnico', 'Documento de arquitectura técnica.'),
+    (v_cat_proj_health_id, 'Certificación Profesional', 'Aval de una institución de salud reconocida.'),
+    (v_cat_proj_social_id, 'Población Objetivo', 'Definición clara de la comunidad beneficiada.'),
+    (v_cat_proj_art_id, 'Portafolio', 'Muestra de trabajos previos del artista.'),
+    (v_cat_proj_env_id, 'Estudio de Impacto Ambiental', 'Documento aprobado.');
+
+    RAISE NOTICE 'Categorías y requisitos configurados.';
+
+    -- =====================================================
+    -- 10. CREACIÓN MASIVA DE PROYECTOS (CORREGIDO)
+    -- =====================================================
+    -- IMPORTANTE: No se usa 'cover_image_id'. Se inserta el proyecto, se captura su ID,
+    -- y luego se inserta la relación en 'projects.project_image'.
+
+    -- --- GRUPO 1: PROYECTOS PUBLICADOS (APROBADOS) ---
+    
+    -- 1. Tecnología (Marcelo)
+    INSERT INTO projects.project (creator_id, category_id, title, slug, description, summary, financial_goal, start_date, end_date, approval_status, campaign_status, location) 
+    VALUES (v_user_marcelo_id, v_cat_proj_tech_id, 'Mochila Solar Pro', 'mochila-solar-pro', 'Carga todo.', 'Mochila con paneles.', 5000.00, NOW(), NOW() + INTERVAL '60 days', 'published', 'in_progress', 'La Paz') RETURNING id INTO v_proj_mochila_id;
+    INSERT INTO projects.project_image (project_id, image_id, is_cover) VALUES (v_proj_mochila_id, v_img_p_tech1, TRUE);
+    
+    -- 2. Tecnología (Ana)
+    INSERT INTO projects.project (creator_id, category_id, title, slug, description, summary, financial_goal, start_date, end_date, approval_status, campaign_status, location) 
+    VALUES (v_user_ana_id, v_cat_proj_tech_id, 'Dron de Reforestación', 'dron-reforestacion', 'Planta árboles.', 'Drones autónomos.', 15000.00, NOW() - INTERVAL '10 days', NOW() + INTERVAL '20 days', 'published', 'in_progress', 'Cochabamba') RETURNING id INTO v_proj_dron_id;
+    INSERT INTO projects.project_image (project_id, image_id, is_cover) VALUES (v_proj_dron_id, v_img_p_tech2, TRUE);
+
+    -- 3. Social (Carlos)
+    INSERT INTO projects.project (creator_id, category_id, title, slug, description, summary, financial_goal, start_date, end_date, approval_status, campaign_status, location) 
+    VALUES (v_user_carlos_id, v_cat_proj_social_id, 'Comedor Los Niños', 'comedor-los-ninos', 'Alimento diario.', 'Comedor gratuito.', 3000.00, NOW(), NOW() + INTERVAL '45 days', 'published', 'in_progress', 'El Alto') RETURNING id INTO v_proj_comedor_id;
+    INSERT INTO projects.project_image (project_id, image_id, is_cover) VALUES (v_proj_comedor_id, v_img_p_social1, TRUE);
+
+    -- 4. Salud (Ana)
+    INSERT INTO projects.project (creator_id, category_id, title, slug, description, summary, financial_goal, start_date, end_date, approval_status, campaign_status, location) 
+    VALUES (v_user_ana_id, v_cat_proj_health_id, 'Clínica Móvil Rural', 'clinica-movil-rural', 'Salud accesible.', 'Atención médica rural.', 20000.00, NOW() - INTERVAL '20 days', NOW() + INTERVAL '10 days', 'published', 'in_progress', 'Potosí') RETURNING id INTO v_proj_clinica_id;
+    INSERT INTO projects.project_image (project_id, image_id, is_cover) VALUES (v_proj_clinica_id, v_img_p_health1, TRUE);
+
+    -- 5. Arte (Marcelo)
+    INSERT INTO projects.project (creator_id, category_id, title, slug, description, summary, financial_goal, start_date, end_date, approval_status, campaign_status, location) 
+    VALUES (v_user_marcelo_id, v_cat_proj_art_id, 'Murales Urbanos', 'murales-urbanos', 'Color en la ciudad.', 'Embellecimiento urbano.', 1500.00, NOW(), NOW() + INTERVAL '30 days', 'published', 'in_progress', 'Sucre') RETURNING id INTO v_proj_murales_id;
+    INSERT INTO projects.project_image (project_id, image_id, is_cover) VALUES (v_proj_murales_id, v_img_p_art1, TRUE);
+
+    -- 6. Medio Ambiente (Carlos) - Finalizado exitoso
+    INSERT INTO projects.project (creator_id, category_id, title, slug, description, summary, financial_goal, raised_amount, start_date, end_date, approval_status, campaign_status, location) 
+    VALUES (v_user_carlos_id, v_cat_proj_env_id, 'Limpieza Lago Uru Uru', 'limpieza-uru-uru', 'Recuperemos el lago.', 'Limpieza de plásticos.', 8000.00, 8500.00, NOW() - INTERVAL '60 days', NOW() - INTERVAL '1 day', 'published', 'finished', 'Oruro') RETURNING id INTO v_proj_limpieza_id;
+    INSERT INTO projects.project_image (project_id, image_id, is_cover) VALUES (v_proj_limpieza_id, v_img_p_social2, TRUE);
+
+    -- 7. Tecnología (Ana) - Pausado
+    INSERT INTO projects.project (creator_id, category_id, title, slug, description, summary, financial_goal, start_date, end_date, approval_status, campaign_status, location) 
+    VALUES (v_user_ana_id, v_cat_proj_tech_id, 'Impresora 3D Educativa', 'impresora-3d-edu', 'Para escuelas.', 'Kit de impresora 3D.', 4000.00, NOW() - INTERVAL '15 days', NOW() + INTERVAL '30 days', 'published', 'paused', 'Tarija') RETURNING id INTO v_proj_impresora_id;
+    INSERT INTO projects.project_image (project_id, image_id, is_cover) VALUES (v_proj_impresora_id, v_img_p_tech1, TRUE);
+
+    -- 8. Social (Marcelo)
+    INSERT INTO projects.project (creator_id, category_id, title, slug, description, summary, financial_goal, start_date, end_date, approval_status, campaign_status, location) 
+    VALUES (v_user_marcelo_id, v_cat_proj_social_id, 'Biblioteca Barrial', 'biblioteca-barrial', 'Libros para todos.', 'Espacio de lectura.', 2500.00, NOW(), NOW() + INTERVAL '90 days', 'published', 'in_progress', 'Santa Cruz') RETURNING id INTO v_proj_biblioteca_id;
+    INSERT INTO projects.project_image (project_id, image_id, is_cover) VALUES (v_proj_biblioteca_id, v_img_p_social1, TRUE);
+
+
+    -- --- GRUPO 2: OTROS ESTADOS ---
+
+    -- 9. En Revisión (Carlos)
+    INSERT INTO projects.project (creator_id, category_id, title, slug, description, summary, financial_goal, start_date, end_date, approval_status, campaign_status) 
+    VALUES (v_user_carlos_id, v_cat_proj_health_id, 'App de Telemedicina', 'app-telemedicina', 'Consultas online.', 'Conectando doctores.', 10000.00, NOW() + INTERVAL '1 day', NOW() + INTERVAL '60 days', 'in_review', 'not_started') RETURNING id INTO v_proj_telemed_id;
+    INSERT INTO projects.project_image (project_id, image_id, is_cover) VALUES (v_proj_telemed_id, v_img_p_health1, TRUE);
+
+    -- 10. En Revisión (Ana)
+    INSERT INTO projects.project (creator_id, category_id, title, slug, description, summary, financial_goal, start_date, end_date, approval_status, campaign_status) 
+    VALUES (v_user_ana_id, v_cat_proj_art_id, 'Festival de Cortometrajes', 'festival-cortos', 'Cine independiente.', 'Apoyo a directores.', 5000.00, NOW() + INTERVAL '5 days', NOW() + INTERVAL '35 days', 'in_review', 'not_started') RETURNING id INTO v_proj_festival_id;
+    INSERT INTO projects.project_image (project_id, image_id, is_cover) VALUES (v_proj_festival_id, v_img_p_art1, TRUE);
+
+    -- 11. Borrador (Marcelo)
+    INSERT INTO projects.project (creator_id, category_id, title, slug, description, summary, financial_goal, start_date, end_date, approval_status, campaign_status)
+    VALUES (v_user_marcelo_id, v_cat_proj_tech_id, 'Gadget IoT Hogar (Borrador)', 'gadget-iot-draft', '', 'Idea inicial.', 500.00, NOW(), NOW() + INTERVAL '30 days', 'draft', 'not_started') RETURNING id INTO v_proj_iot_id;
+    INSERT INTO projects.project_image (project_id, image_id, is_cover) VALUES (v_proj_iot_id, v_img_p_tech2, TRUE);
+
+    -- 12. Borrador (Carlos)
+    INSERT INTO projects.project (creator_id, category_id, title, slug, description, summary, financial_goal, start_date, end_date, approval_status, campaign_status)
+    VALUES (v_user_carlos_id, v_cat_proj_env_id, 'Campaña Reciclaje (Draft)', 'reciclaje-draft', '', 'Planificando...', 500.00, NOW(), NOW() + INTERVAL '30 days', 'draft', 'not_started') RETURNING id INTO v_proj_reciclaje_id;
+
+    -- 13. Borrador (Ana)
+    INSERT INTO projects.project (creator_id, category_id, title, slug, description, summary, financial_goal, start_date, end_date, approval_status, campaign_status)
+    VALUES (v_user_ana_id, v_cat_proj_social_id, 'Taller de Oficios (Draft)', 'taller-oficios-draft', 'Falta completar...', 'Capacitación.', 3000.00, NOW(), NOW() + INTERVAL '30 days', 'draft', 'not_started') RETURNING id INTO v_proj_taller_id;
+
+    -- 14. Rechazado (Marcelo)
+    INSERT INTO projects.project (creator_id, category_id, title, slug, description, summary, financial_goal, start_date, end_date, approval_status, campaign_status) 
+    VALUES (v_user_marcelo_id, v_cat_proj_tech_id, 'Motor de Agua Perpetuo', 'motor-agua', 'Energía infinita.', 'Dispositivo imposible.', 50000.00, NOW(), NOW() + INTERVAL '30 days', 'rejected', 'not_started') RETURNING id INTO v_proj_motor_id;
+    INSERT INTO projects.project_image (project_id, image_id, is_cover) VALUES (v_proj_motor_id, v_img_p_tech1, TRUE);
+    INSERT INTO projects.project_observation (project_id, admin_id, note) VALUES (v_proj_motor_id, v_user_admin_id, 'Proyecto inviable físicamente.');
+
+    -- 15. Observado (Carlos)
+    INSERT INTO projects.project (creator_id, category_id, title, slug, description, summary, financial_goal, start_date, end_date, approval_status, campaign_status) 
+    VALUES (v_user_carlos_id, v_cat_proj_social_id, 'Ayuda Genérica', 'ayuda-generica', 'Queremos ayudar.', 'Sin detalles.', 1000.00, NOW(), NOW() + INTERVAL '30 days', 'observed', 'not_started') RETURNING id INTO v_proj_ayuda_id;
+    INSERT INTO projects.project_image (project_id, image_id, is_cover) VALUES (v_proj_ayuda_id, v_img_p_social1, TRUE);
+    INSERT INTO projects.project_observation (project_id, admin_id, note) VALUES (v_proj_ayuda_id, v_user_admin_id, 'Por favor, especificar beneficiarios.');
+
+    RAISE NOTICE 'Creación masiva de 15 proyectos completada (8 aprobados).';
+
+    -- =====================================================
+    -- 11. INTERACCIONES (Donaciones)
+    -- =====================================================
+    INSERT INTO payments.donation (project_id, user_id, amount, payment_status, payment_method) VALUES
+    (v_proj_mochila_id, v_user_melissa_id, 150.00, 'completed', 'credit_card');
+
+    INSERT INTO payments.donation (project_id, user_id, amount, payment_status, payment_method) VALUES
+    (v_proj_dron_id, v_user_marcelo_id, 50.00, 'completed', 'bank_transfer');
+
+    RAISE NOTICE '--- SEED MASIVO COMPLETADO EXITOSAMENTE ---';
+END $$;
+
+select * from projects.project p 

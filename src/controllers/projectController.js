@@ -79,7 +79,29 @@ const getProjects = async (req, res) => {
     }
 };
 
+const getProjectDetail = async (req, res) => {
+    const { slug } = req.params;
+    try {
+        const project = await projectRepository.getProjectDetail(slug);
+        if (!project) {
+            return res.status(404).json({
+                message: 'Proyecto no encontrado'
+            });
+        }
+        res.status(200).json({
+            message: 'Proyecto obtenido exitosamente',
+            data: project
+        });
+    } catch (error) {
+        console.error('Error obteniendo proyecto:', error);
+        res.status(500).json({
+            message: error.message || 'Error al obtener el proyecto'
+        });
+    }
+}
+
 module.exports = {
     createProject,
-    getProjects
+    getProjects,
+    getProjectDetail
 };
