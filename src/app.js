@@ -6,6 +6,7 @@ const unatuhRoutes = require('./routes/unauthRoutes/unauthRoutes');
 const imageRouter = require('./routes/imageRouter');
 const documentRouter = require('./routes/documentRouter');
 const projectRoutes = require('./routes/projectRoutes');
+const adminRoutes = require('./routes/adminRoutes');
 
 const path = require('node:path');
 require('dotenv').config({ path: path.resolve(__dirname, '..', '.env') });
@@ -23,6 +24,7 @@ app.use('/api', unatuhRoutes);
 app.use('/api', projectRoutes);
 app.use('/api/image', imageRouter);
 app.use('/api/document', documentRouter);
+app.use('/api/admin', adminRoutes);
 
 const PORT = process.env.PORT || 3000;
 
@@ -31,10 +33,10 @@ app.get('/api', (req, res) => {
 });
 
 const startServer = async () => {
-    await testConnection();
-    app.listen(PORT, () => {
-        console.log(`Servidor corriendo en el puerto http://localhost:${PORT}`);
-    });
+  await testConnection();
+  app.listen(PORT, () => {
+    console.log(`Servidor corriendo en el puerto http://localhost:${PORT}`);
+  });
 };
 
 startServer();

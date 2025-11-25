@@ -13,16 +13,21 @@ const loginUser = async (email, password) => {
         }
 
         const userDetails = await dbPool.query(
-            `SELECT u.id, u.email, u.first_name, u.middle_name, u.last_name, u.mother_last_name
+            `SELECT 
+                u.id, 
+                u.email, 
+                u.first_name, 
+                u.middle_name, 
+                u.last_name, 
+                u.mother_last_name,
+                r.name as role
              FROM users."user" u
-             INNER JOIN roles.user_role ur
-                 ON u.id = ur.user_id
-            INNER JOIN roles."role" r
-                 ON ur.role_id = r.id
+             INNER JOIN roles.user_role ur ON u.id = ur.user_id
+             INNER JOIN roles."role" r ON ur.role_id = r.id
              WHERE u.id = $1`,
-             [user_id]
+            [user_id]
         );
-        
+
         return userDetails.rows[0];
 
     } catch (error) {

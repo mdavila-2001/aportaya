@@ -41,7 +41,7 @@ async function getUserRoleAndRedirect(token) {
         const userRole = meData.data.role;
         
         const redirectUrl = userRole === 'Administrador' 
-            ? '/pages/admin/users/admins.html' 
+            ? '/pages/admin/dashboard.html' 
             : '/pages/user/dashboard.html';
         
         globalThis.location.href = redirectUrl;
@@ -75,7 +75,7 @@ async function loginUser() {
         const data = await response.json();
 
         if (response.ok && data.success) {
-            localStorage.setItem('token', data.data.auth_token);
+            localStorage.setItem('authToken', data.data.auth_token);
             await getUserRoleAndRedirect(data.data.auth_token);
         } else {
             document.getElementById('password_error_msg').textContent = data.message || 'Credenciales incorrectas.';
