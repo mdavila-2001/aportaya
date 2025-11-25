@@ -1,4 +1,4 @@
-const projectService = require('../services/projectService');
+const projectRepository = require('../repositories/projectRepository');
 const documentRepository = require('../repositories/documentRepository');
 
 const createProject = async (req, res) => {
@@ -17,7 +17,7 @@ const createProject = async (req, res) => {
             proofDocumentId: req.body.proofDocumentId
         };
 
-        const projectId = await projectService.createProject(projectData, userId);
+        const projectId = await projectRepository.createProject(projectData, userId);
         
         // Si hay documento de prueba, marcarlo como permanente
         if (projectData.proofDocumentId) {
@@ -45,15 +45,17 @@ const getProjects = async (req, res) => {
         // Parsear el parámetro filterBy si viene como JSON
         const filters = filterBy ? JSON.parse(filterBy) : null;
 
-        const projects = await projectService.getProjects(searchBy, filters); // Pasar los parámetros al servicio
+        const categories = await projectRepository.getProjectCategories();
+
+        const projects = await projectRepository.getProjects(searchBy, filters); // Pasar los parámetros al servicio
 
         res.status(200).json({
             message: 'Proyectos obtenidos exitosamente',
             extraData: {
                 totalProjects: projects.length,
-                categories: projects.map(project => ({
-                    id: project.category_id,
-                    name: project.name,
+                categories: categories.map(category => ({
+                    id: category.id,
+                    name: category.name,
                 })),
             },
             data: {
@@ -65,7 +67,7 @@ const getProjects = async (req, res) => {
                     goal_amount: project.financial_goal,
                     raised_amount: project.raised_amount,
                     description: project.description,
-                    cover_image_url: project.cover_image_url,
+                    cover_image_url: project.file_path,
                 })),
             }
         });

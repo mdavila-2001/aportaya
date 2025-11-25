@@ -1,5 +1,20 @@
 const { dbPool } = require('../config/dbConnection');
 
+const getProjectCategories = async () => {
+    const client = await dbPool.connect();
+    try {
+        const query = `
+            SELECT id, name FROM projects.category;
+        `;
+        const { rows } = await client.query(query);
+        return rows;
+    } catch (error) {
+        console.error('Error obteniendo categorías de proyectos:', error);
+    } finally {
+        client.release();
+    }
+}
+
 
 const getProjects = async (searchBy, filterBy) => {
     const client = await dbPool.connect();
@@ -97,5 +112,6 @@ const createProject = async(projectData, userId) => {
 
 module.exports = {
     createProject,
-    getProjects
-}
+    getProjects,
+    getProjectCategories
+};

@@ -144,6 +144,19 @@ async function loadProjects() {
     }
 }
 
+async function fetchProjects() {
+    try {
+        const response = await fetch('/api/projects');
+        if (!response.ok) {
+            throw new Error('Error al cargar los proyectos');
+        }
+        const projects = await response.json();
+        renderProjects(projects.data.projects);
+    } catch (error) {
+        console.error('Error al obtener proyectos:', error);
+    }
+}
+
 function updateExtraInfo(extraData) {
     const totalProjects = extraData.totalProjects;
     const currentPage = extraData.page;
@@ -163,4 +176,7 @@ function showErrorMessage() {
     }
 }
 
-document.addEventListener('DOMContentLoaded', loadProjects);
+document.addEventListener('DOMContentLoaded', () => {
+    loadProjects();
+    fetchProjects();
+});
