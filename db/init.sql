@@ -86,4 +86,4 @@ CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 \i db/schemas/tables/90_indexes.sql
 
 -- Seeds (opcional)
--- \i db/seeds/seed.sql
+\i db/seed.sql

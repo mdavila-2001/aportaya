@@ -5,5 +5,6 @@ const authMiddleware = require('../middleware/authMiddleware');
 
 router.get('/projects', projectController.getProjects); // Soporta búsqueda con ?searchBy=nombre y filtros avanzados con ?filterBy={...}
 router.post('/projects', authMiddleware.authenticate, projectController.createProject);
+router.get('/projects/:slug', projectController.getProjectDetail);
 
 module.exports = router;

@@ -40,6 +40,13 @@
     }
 }
 
+/* Soporte para table-layout component */
+.admin-main > main > .table-layout {
+    flex: 1;
+    min-height: 0;
+}
+
+/* Compatibilidad con versiones anteriores sin table-layout */
 .admin-main > main > .table-search {
     flex-shrink: 0;
 }

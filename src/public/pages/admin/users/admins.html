@@ -20,6 +20,7 @@
         <link rel="stylesheet" href="../../../styles/components/sidebar.css">
         <link rel="stylesheet" href="../../../styles/components/progress.css">
         <link rel="stylesheet" href="../../../styles/components/table.css">
+        <link rel="stylesheet" href="../../../styles/components/table-layout.css">
 
         <link rel="stylesheet" href="../../../styles/pages/admin/layout.css">
         
@@ -164,11 +165,15 @@
                             <span>Agregar Administrador</span>
                         </button>
                     </div>
-                    <div class="table-search">
-                        <span class="material-symbols-outlined table-search-icon">search</span>
-                        <input type="search" placeholder="Buscar por nombre, correo...">
-                    </div>
-                    <div class="table-container">
+                    <div class="table-layout">
+                        <div class="table-layout-search">
+                            <div class="table-search">
+                                <span class="material-symbols-outlined table-search-icon">search</span>
+                                <input type="search" placeholder="Buscar por nombre, correo...">
+                            </div>
+                        </div>
+                        <div class="table-layout-content">
+                            <div class="table-container">
                         <table class="table">
                             <thead class="table-header">
                                 <tr>
@@ -265,22 +270,25 @@
                                 </tr>
                             </tbody>
                         </table>
-                    </div>
-
-                    <nav class="table-pagination" aria-label="Paginación de tabla">
-                        <span class="table-pagination-info">
-                            Mostrando <span>1-6</span> de <span>10</span>
-                        </span>
-                        <div class="table-pagination-controls">
-                            <button class="table-pagination-btn" disabled>Anterior</button>
-                            <button class="table-pagination-btn active">1</button>
-                            <button class="table-pagination-btn">2</button>
-                            <button class="table-pagination-btn">Siguiente</button>
+                            </div>
                         </div>
-                    </nav>
+                        <div class="table-layout-footer">
+                            <nav class="table-pagination" aria-label="Paginación de tabla">
+                                <span class="table-pagination-info">
+                                    Mostrando <span>1-6</span> de <span>10</span>
+                                </span>
+                                <div class="table-pagination-controls">
+                                    <button class="table-pagination-btn" disabled>Anterior</button>
+                                    <button class="table-pagination-btn active">1</button>
+                                    <button class="table-pagination-btn">2</button>
+                                    <button class="table-pagination-btn">Siguiente</button>
+                                </div>
+                            </nav>
+                        </div>
+                    </div>
                 </main>
             </section>
         </main>
-        <script src="/scripts/user-header.js"></script>
+        <script src="../../../scripts/user-header.js"></script>
     </body>
 </html>

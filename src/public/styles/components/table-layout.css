@@ -1,0 +1,113 @@
+/**
+ * Componente de Layout de Tabla con Altura Fija
+ * 
+ * Este componente maneja la altura de las tablas y mantiene la paginación
+ * siempre en el fondo. Es reutilizable en cualquier pantalla que use tablas.
+ * 
+ * Estructura HTML requerida:
+ * <div class="table-layout">
+ *   <div class="table-layout-search">
+ *     <!-- Input de búsqueda -->
+ *   </div>
+ *   <div class="table-layout-content">
+ *     <div class="table-container">
+ *       <table class="table">...</table>
+ *     </div>
+ *   </div>
+ *   <div class="table-layout-footer">
+ *     <nav class="table-pagination">...</nav>
+ *   </div>
+ * </div>
+ */
+
+.table-layout {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+    gap: var(--spM);
+}
+
+.table-layout-search {
+    flex-shrink: 0;
+}
+
+.table-layout-content {
+    flex: 1;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    min-height: 0; /* Importante para que flex funcione correctamente */
+    background: var(--dark-bg-2);
+    border-radius: var(--border-radius-lg);
+    border: 1px solid color-mix(in srgb, var(--primary) 20%, transparent);
+}
+
+.table-layout-content .table-container {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: auto;
+    margin-bottom: 0;
+    min-height: 200px; /* Altura mínima para evitar colapso */
+    background: transparent;
+    border: none;
+    border-radius: 0;
+}
+
+.table-layout-footer {
+    flex-shrink: 0;
+    padding-top: var(--spM);
+}
+
+.table-layout-footer .table-pagination {
+    padding: var(--spM) 0;
+}
+
+/* Variante compacta */
+.table-layout-compact .table-layout-content .table-container {
+    min-height: 150px;
+}
+
+/* Variante con altura fija específica */
+.table-layout-fixed-sm .table-layout-content .table-container {
+    max-height: 300px;
+}
+
+.table-layout-fixed-md .table-layout-content .table-container {
+    max-height: 400px;
+}
+
+.table-layout-fixed-lg .table-layout-content .table-container {
+    max-height: 500px;
+}
+
+.table-layout-fixed-xl .table-layout-content .table-container {
+    max-height: 600px;
+}
+
+/* Responsive */
+@media (max-width: 767px) {
+    .table-layout {
+        gap: var(--spS);
+    }
+    
+    .table-layout-content .table-container {
+        min-height: 250px;
+    }
+    
+    .table-layout-footer {
+        padding-top: var(--spS);
+    }
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+    .table-layout-content .table-container {
+        min-height: 300px;
+    }
+}
+
+@media (min-width: 992px) {
+    .table-layout-content .table-container {
+        min-height: 350px;
+    }
+}

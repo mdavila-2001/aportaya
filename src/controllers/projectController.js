@@ -83,6 +83,7 @@ const getProjectDetail = async (req, res) => {
     const { slug } = req.params;
     try {
         const project = await projectRepository.getProjectDetail(slug);
+        const categories = await projectRepository.getProjectCategories();
         if (!project) {
             return res.status(404).json({
                 message: 'Proyecto no encontrado'
@@ -90,7 +91,24 @@ const getProjectDetail = async (req, res) => {
         }
         res.status(200).json({
             message: 'Proyecto obtenido exitosamente',
-            data: project
+            extraData: {
+                categories: categories.map(category => ({
+                    id: category.id,
+                    name: category.name,
+                })),
+            },
+            data: {
+                project: {
+                    id: project.id,
+                    title: project.title,
+                    category_id: project.category_id,
+                    category_name: project.name,
+                    goal_amount: project.financial_goal,
+                    raised_amount: project.raised_amount,
+                    description: project.description,
+                    cover_image_url: project.cover_image_url,
+                }
+            }
         });
     } catch (error) {
         console.error('Error obteniendo proyecto:', error);

@@ -12,6 +12,8 @@ Esta guía te muestra cómo usar los componentes CSS creados en tus páginas HTM
 4. **progress.css** - Barras de progreso
 5. **animations.css** - Animaciones (estrellas, loaders, etc.)
 6. **cards.css** - Tarjetas de contenido
+7. **table.css** - Tablas de datos
+8. **table-layout.css** - Layout de tablas con altura fija y paginación (Nuevo ✨)
 
 ---
 
@@ -457,6 +459,85 @@ Si necesitas una variante específica, créala en tu archivo de página:
 | **progress.css** | Barras de progreso, financiamiento |
 | **cards.css** | Tarjetas de proyectos, contenedores |
 | **animations.css** | Estrellas, loaders, transiciones |
+| **table.css** | Tablas de datos, listados |
+| **table-layout.css** | Tablas con altura fija y paginación al fondo |
+
+---
+
+## 🆕 Componente Table Layout
+
+El componente **table-layout.css** es una solución reutilizable para manejar tablas con altura controlada y paginación fija en el fondo.
+
+### Características
+✅ La tabla se ajusta automáticamente al espacio disponible  
+✅ La paginación siempre permanece visible en la parte inferior  
+✅ Scroll independiente en el contenido de la tabla  
+✅ Totalmente responsive  
+
+### Uso Básico
+
+```html
+<head>
+    <link rel="stylesheet" href="../../styles/components/table.css">
+    <link rel="stylesheet" href="../../styles/components/table-layout.css">
+</head>
+
+<body>
+    <div class="table-layout">
+        <!-- Búsqueda (opcional) -->
+        <div class="table-layout-search">
+            <div class="table-search">
+                <span class="material-symbols-outlined table-search-icon">search</span>
+                <input type="search" placeholder="Buscar...">
+            </div>
+        </div>
+        
+        <!-- Contenido de la tabla -->
+        <div class="table-layout-content">
+            <div class="table-container">
+                <table class="table">
+                    <!-- Contenido de la tabla -->
+                </table>
+            </div>
+        </div>
+        
+        <!-- Paginación (opcional) -->
+        <div class="table-layout-footer">
+            <nav class="table-pagination">
+                <!-- Controles de paginación -->
+            </nav>
+        </div>
+    </div>
+</body>
+```
+
+### Variantes de Altura
+
+```html
+<!-- Sin altura máxima (crece hasta llenar el espacio) -->
+<div class="table-layout">...</div>
+
+<!-- Altura máxima 300px -->
+<div class="table-layout table-layout-fixed-sm">...</div>
+
+<!-- Altura máxima 400px -->
+<div class="table-layout table-layout-fixed-md">...</div>
+
+<!-- Altura máxima 500px -->
+<div class="table-layout table-layout-fixed-lg">...</div>
+
+<!-- Altura máxima 600px -->
+<div class="table-layout table-layout-fixed-xl">...</div>
+
+<!-- Variante compacta -->
+<div class="table-layout table-layout-compact">...</div>
+```
+
+### Ejemplos Implementados
+- ✅ `pages/admin/users/admins.html`
+- ✅ `pages/admin/users/users.html`
+
+Para más detalles, consulta **COMPONENTE-TABLE-LAYOUT.md**
 
 ---
 
