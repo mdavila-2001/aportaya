@@ -3,7 +3,7 @@ const router = express.Router();
 const projectController = require('../controllers/projectController');
 const authMiddleware = require('../middleware/authMiddleware');
 
-router.get('/projects', projectController.getProjects); // Soporta búsqueda con ?searchBy=nombre y filtros avanzados con ?filterBy={...}
+router.get('/projects', projectController.getProjects);
 router.post('/projects', authMiddleware.authenticate, projectController.createProject);
 router.get('/projects/:slug', projectController.getProjectDetail);
 

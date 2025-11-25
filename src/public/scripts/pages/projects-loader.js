@@ -11,7 +11,6 @@ function createProjectCard(project) {
     card.style.cursor = 'pointer';
     card.addEventListener('click', (e) => {
         if (!e.target.closest('.project-fav')) {
-            // Usar slug si está disponible, sino usar id como fallback
             const identifier = project.slug || project.id;
             window.location.href = `details.html?slug=${identifier}`;
         }
