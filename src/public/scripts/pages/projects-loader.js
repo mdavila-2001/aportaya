@@ -1,5 +1,3 @@
-const PROJECTS_JSON_URL = '../../json/projects/projectList.json';
-
 function createProjectCard(project) {
     const card = document.createElement('article');
     card.className = 'project-card';
@@ -124,9 +122,6 @@ function renderCategories(categories) {
 }
 
 async function loadProjects() {
-    // Esta función cargaba del JSON estático, ahora usaremos fetchProjects para datos reales
-    // Mantenemos la carga de categorías si es necesario, o la movemos a fetchProjects
-    // Por ahora, llamamos a fetchProjects directamente
     await fetchProjects();
 }
 
