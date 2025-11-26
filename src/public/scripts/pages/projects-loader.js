@@ -56,6 +56,15 @@ function renderProjects(projects) {
 
     projectsGrid.innerHTML = '';
 
+    if (projects.length === 0) {
+        projectsGrid.innerHTML = `
+            <div style="grid-column: 1 / -1; text-align: center; padding: var(--sp2XL); color: var(--text-light);">
+                <p>No se encontraron proyectos que coincidan con tu búsqueda.</p>
+            </div>
+        `;
+        return;
+    }
+
     projects.forEach(project => {
         const card = createProjectCard(project);
         projectsGrid.appendChild(card);
@@ -115,54 +124,55 @@ function renderCategories(categories) {
 }
 
 async function loadProjects() {
+    // Esta función cargaba del JSON estático, ahora usaremos fetchProjects para datos reales
+    // Mantenemos la carga de categorías si es necesario, o la movemos a fetchProjects
+    // Por ahora, llamamos a fetchProjects directamente
+    await fetchProjects();
+}
+
+async function fetchProjects(searchBy = '') {
     try {
-        const response = await fetch(PROJECTS_JSON_URL);
+        let url = '/api/projects';
+        const params = new URLSearchParams();
+        
+        if (searchBy) {
+            params.append('searchBy', searchBy);
+        }
 
+        if (params.toString()) {
+            url += `?${params.toString()}`;
+        }
+
+        const response = await fetch(url);
         if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+            throw new Error('Error al cargar los proyectos');
+        }
+        const result = await response.json();
+        
+        // Manejar la estructura de respuesta del backend
+        const projects = result.data ? result.data.projects : [];
+        const extraData = result.extraData || {};
+
+        renderProjects(projects);
+        
+        if (extraData.categories) {
+            renderCategories(extraData.categories);
         }
 
-        const data = await response.json();
-
-        // Renderizar proyectos
-        if (data.data && data.data.projects) {
-            renderProjects(data.data.projects);
+        if (extraData) {
+            updateExtraInfo(extraData);
         }
-
-        // Renderizar categorías
-        if (data.extraData && data.extraData.categories) {
-            renderCategories(data.extraData.categories);
-        }
-
-        // Actualizar información extra
-        if (data.extraData) {
-            updateExtraInfo(data.extraData);
-        }
-
     } catch (error) {
-        console.error('Error al cargar proyectos:', error);
+        console.error('Error al obtener proyectos:', error);
         showErrorMessage();
     }
 }
 
-async function fetchProjects() {
-    try {
-        const response = await fetch('/api/projects');
-        if (!response.ok) {
-            throw new Error('Error al cargar los proyectos');
-        }
-        const projects = await response.json();
-        renderProjects(projects.data.projects);
-    } catch (error) {
-        console.error('Error al obtener proyectos:', error);
-    }
-}
-
 function updateExtraInfo(extraData) {
-    const totalProjects = extraData.totalProjects;
-    const currentPage = extraData.page;
-
-    console.log(`Mostrando página ${currentPage} de ${totalProjects} proyectos`);
+    // Implementar si hay paginación u otra info extra
+    if (extraData.totalProjects !== undefined) {
+         console.log(`Total proyectos: ${extraData.totalProjects}`);
+    }
 }
 
 function showErrorMessage() {
@@ -177,7 +187,31 @@ function showErrorMessage() {
     }
 }
 
+function setupSearch() {
+    const searchInput = document.getElementById('search-projects');
+    const searchForm = document.querySelector('.sidebar-search');
+    let debounceTimer;
+
+    if (searchInput) {
+        searchInput.addEventListener('input', (e) => {
+            clearTimeout(debounceTimer);
+            debounceTimer = setTimeout(() => {
+                fetchProjects(e.target.value);
+            }, 300); // 300ms debounce
+        });
+    }
+
+    if (searchForm) {
+        searchForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            if (searchInput) {
+                fetchProjects(searchInput.value);
+            }
+        });
+    }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
-    loadProjects();
-    fetchProjects();
+    fetchProjects(); // Carga inicial
+    setupSearch();   // Configurar buscador
 });
