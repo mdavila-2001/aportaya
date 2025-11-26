@@ -11,3 +11,7 @@ const checkPermissions = async (userId, moduleName, abilityName) => {
         return false;
     }
 }
+
+module.exports = {
+    checkPermissions
+}
