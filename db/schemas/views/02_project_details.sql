@@ -30,7 +30,7 @@ SELECT
   -- Days remaining
   CASE 
     WHEN p.end_date > now() THEN 
-      (p.end_date - now())::int
+      EXTRACT(day FROM (p.end_date - now()))::int
     ELSE 0 
   END as days_remaining,
   -- Donor count

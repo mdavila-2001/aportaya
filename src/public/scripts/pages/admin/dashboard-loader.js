@@ -1,11 +1,11 @@
 (function () {
     'use strict';
 
-    const API_BASE_URL = '/api/admin/stats';
+    const API_BASE_URL = '/api/admin';
 
     async function loadDashboardStats() {
         try {
-            const token = localStorage.getItem('authToken');
+            const token = localStorage.getItem('token');
             console.log('Token encontrado:', token ? 'Sí' : 'No');
 
             if (!token) {
@@ -30,7 +30,7 @@
 
                 if (response.status === 401 || response.status === 403) {
                     console.error('No autorizado, redirigiendo al login');
-                    localStorage.removeItem('authToken');
+                    localStorage.removeItem('token');
                     window.location.href = '../auth/login.html';
                     return;
                 }

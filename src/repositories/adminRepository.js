@@ -49,6 +49,7 @@ const getUsers = async (filters = {}) => {
                 u.mother_last_name,
                 u.email,
                 u.status,
+                ur.role_id,
                 u.registration_date,
                 u.updated_at,
                 i.file_path as profile_image_url,
@@ -57,7 +58,7 @@ const getUsers = async (filters = {}) => {
             LEFT JOIN files.image i ON u.profile_image_id = i.id
             LEFT JOIN roles.user_role ur ON u.id = ur.user_id
             LEFT JOIN roles.role r ON ur.role_id = r.id
-            WHERE 1=1
+            WHERE 1=1 and ur.role_id = 2
         `;
 
         const params = [];

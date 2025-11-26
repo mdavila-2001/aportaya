@@ -1,5 +1,5 @@
 -- Admin dashboard view with key metrics
-CREATE OR REPLACE VIEW admin.dashboard_stats AS
+CREATE OR REPLACE VIEW audit.dashboard_stats AS
 SELECT 
   -- User statistics
   (SELECT COUNT(*) FROM users.user WHERE deleted_at IS NULL) as total_users,

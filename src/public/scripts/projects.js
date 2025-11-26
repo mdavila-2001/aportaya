@@ -1,5 +1,3 @@
-const DATA_URL = '../json/dashboard/dashboard.json';
-
 async function loadProjects() {
     try {
         const res = await fetch(DATA_URL);

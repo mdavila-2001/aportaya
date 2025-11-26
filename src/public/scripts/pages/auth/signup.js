@@ -2,6 +2,7 @@ let profileUploader;
 
 document.addEventListener('DOMContentLoaded', () => {
     initializeStars();
+    initializePasswordToggles();
 
     profileUploader = new ImageUploader('profile-picture-input', '.profile-label', {
         imageType: 'avatar'
@@ -24,7 +25,7 @@ async function signupUser() {
     const birthdateElement = document.getElementById('birthdate');
     const genderElement = document.getElementById('gender');
 
-    if (!emailElement || !passwordElement || !confirmPasswordElement || 
+    if (!emailElement || !passwordElement || !confirmPasswordElement ||
         !firstNameElement || !lastNameElement || !birthdateElement || !genderElement) {
         console.error('Error: No se encontraron todos los elementos del formulario');
         return false;
@@ -107,15 +108,15 @@ async function signupUser() {
         genderError.style.display = 'block';
         isValid = false;
     }
-    
+
     if (!isValid) {
         return false;
     }
-    
+
     console.log('Formulario válido - Iniciando proceso...');
     const btnSubmit = document.querySelector('.btn-submit');
     const originalText = btnSubmit.textContent;
-    
+
     btnSubmit.textContent = 'Procesando...';
     btnSubmit.disabled = true;
 
@@ -161,7 +162,7 @@ async function signupUser() {
 
         // Si el backend devuelve un link de Ethereal, mostrarlo
         const etherealLink = result.etherealLink;
-        
+
         if (etherealLink) {
             Notification.success(
                 'Registro exitoso. Revisa tu correo de verificación.',
@@ -182,24 +183,24 @@ async function signupUser() {
         btnSubmit.textContent = originalText;
         btnSubmit.disabled = false;
     }
-    
+
     return true;
 }
 
 function initializeStars() {
     const stars = document.querySelectorAll('.star');
-    
+
     const randomRange = (min, max) => {
         return Math.random() * (max - min) + min;
     };
-    
+
     for (const star of stars) {
         const tailLength = randomRange(5, 7.5).toFixed(2);
         const topOffset = randomRange(-20, 100).toFixed(2);
         const leftOffset = randomRange(0, 100).toFixed(2);
         const fallDuration = randomRange(6, 12).toFixed(2);
         const fallDelay = randomRange(0, 10).toFixed(2);
-        
+
         star.style.setProperty('--star-tail-length', `${tailLength}em`);
         star.style.setProperty('--top-offset', `${topOffset}vh`);
         star.style.setProperty('--left-offset', `${leftOffset}vw`);
@@ -207,4 +208,26 @@ function initializeStars() {
         star.style.setProperty('--fall-delay', `${fallDelay}s`);
         star.style.setProperty('--tail-fade-duration', `${fallDuration}s`);
     };
+}
+
+function initializePasswordToggles() {
+    // Toggle para contraseña
+    const togglePassword = document.getElementById('toggle-password');
+    const passwordInput = document.getElementById('password');
+
+    if (togglePassword && passwordInput) {
+        togglePassword.addEventListener('change', () => {
+            passwordInput.type = togglePassword.checked ? 'text' : 'password';
+        });
+    }
+
+    // Toggle para confirmar contraseña
+    const toggleConfirm = document.getElementById('toggle-confirm');
+    const confirmPasswordInput = document.getElementById('confirm-password');
+
+    if (toggleConfirm && confirmPasswordInput) {
+        toggleConfirm.addEventListener('change', () => {
+            confirmPasswordInput.type = toggleConfirm.checked ? 'text' : 'password';
+        });
+    }
 }

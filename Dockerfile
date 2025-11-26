@@ -1,29 +1,22 @@
-# Etapa de construcción
-FROM node:18-alpine AS builder
-
-# Crear directorio de la aplicación
-WORKDIR /usr/src/app
-
-# Copiar archivos de configuración
-COPY package*.json ./
-
-# Instalar dependencias
-RUN npm ci --only=production
-
-# Etapa de producción
 FROM node:18-alpine
 
-# Crear directorio de la aplicación
-WORKDIR /usr/src/app
+# Directorio de trabajo
+WORKDIR /app
 
-# Copiar dependencias de la etapa de construcción
-COPY --from=builder /usr/src/app/node_modules ./node_modules
+# Copiar package.json de src
+COPY src/package*.json ./
 
-# Copiar el código fuente
-COPY . .
+# Instalar dependencias
+RUN npm install --legacy-peer-deps
 
-# Puerto de la aplicación
-EXPOSE 3000
+# Copiar el código de src
+COPY src/ ./
+
+# Crear directorio de uploads
+RUN mkdir -p /app/uploads
+
+# Exponer el puerto
+EXPOSE 3001
 
 # Comando para iniciar la aplicación
-CMD ["node", "src/app.js"]
+CMD ["npm", "start"]

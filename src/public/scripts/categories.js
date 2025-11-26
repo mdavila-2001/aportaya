@@ -1,5 +1,3 @@
-const DATA_URL = '../json/dashboard/dashboard.json';
-
 async function loadCategories() {
   try {
     const res = await fetch(DATA_URL);

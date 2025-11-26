@@ -24,7 +24,7 @@ BEGIN
   VALUES (
     v_user_id, p_first_name, p_middle_name, p_last_name, p_mother_last_name, p_email,
     crypt(p_password, gen_salt('bf')), p_gender, p_birth_date, p_profile_image_id,
-    'pending_verification', now(), now()
+    'active', now(), now()
   );
 
   INSERT INTO roles.user_role (user_id, role_id) VALUES (v_user_id, p_role_id);

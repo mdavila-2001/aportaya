@@ -9,13 +9,13 @@ function validateEmail(email) {
         document.getElementById('email_error_msg').textContent = 'Por favor, ingresa tu correo electrónico.';
         return false;
     }
-    
+
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
         document.getElementById('email_error_msg').textContent = 'Por favor, ingresa un correo electrónico válido.';
         return false;
     }
-    
+
     return true;
 }
 
@@ -39,11 +39,11 @@ async function getUserRoleAndRedirect(token) {
     if (meResponse.ok) {
         const meData = await meResponse.json();
         const userRole = meData.data.role;
-        
-        const redirectUrl = userRole === 'Administrador' 
-            ? '/pages/admin/dashboard.html' 
+
+        const redirectUrl = userRole === 'Administrador'
+            ? '/pages/admin/dashboard.html'
             : '/pages/user/dashboard.html';
-        
+
         globalThis.location.href = redirectUrl;
     } else {
         globalThis.location.href = '/pages/user/dashboard.html';
@@ -88,18 +88,18 @@ async function loginUser() {
 
 function initializeStars() {
     const stars = document.querySelectorAll('.star');
-    
+
     const randomRange = (min, max) => {
         return Math.random() * (max - min) + min;
     };
-    
+
     for (const star of stars) {
         const tailLength = randomRange(5, 7.5).toFixed(2);
         const topOffset = randomRange(-20, 100).toFixed(2);
         const leftOffset = randomRange(0, 100).toFixed(2);
         const fallDuration = randomRange(6, 12).toFixed(2);
         const fallDelay = randomRange(0, 10).toFixed(2);
-        
+
         star.style.setProperty('--star-tail-length', `${tailLength}em`);
         star.style.setProperty('--top-offset', `${topOffset}vh`);
         star.style.setProperty('--left-offset', `${leftOffset}vw`);
@@ -109,4 +109,24 @@ function initializeStars() {
     };
 }
 
-document.addEventListener('DOMContentLoaded', initializeStars);
+function initializePasswordToggle() {
+    const toggleButton = document.querySelector('[data-toggle="password"]');
+    const passwordInput = document.getElementById('password');
+
+    if (toggleButton && passwordInput) {
+        toggleButton.addEventListener('click', () => {
+            const isPassword = passwordInput.type === 'password';
+            passwordInput.type = isPassword ? 'text' : 'password';
+
+            const icon = toggleButton.querySelector('.material-symbols-outlined');
+            if (icon) {
+                icon.textContent = isPassword ? 'visibility_off' : 'visibility';
+            }
+        });
+    }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    initializeStars();
+    initializePasswordToggle();
+});

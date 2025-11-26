@@ -7,7 +7,7 @@
 
     async function loadUsers(page = 1, filters = {}) {
         try {
-            const token = localStorage.getItem('authToken');
+            const token = localStorage.getItem('token');
             if (!token) {
                 window.location.href = '../../auth/login.html';
                 return;
@@ -29,7 +29,7 @@
 
             if (!response.ok) {
                 if (response.status === 401 || response.status === 403) {
-                    localStorage.removeItem('authToken');
+                    localStorage.removeItem('token');
                     window.location.href = '../../auth/login.html';
                     return;
                 }
@@ -140,7 +140,7 @@
 
     async function changeUserStatus(userId, newStatus, reason = null) {
         try {
-            const token = localStorage.getItem('authToken');
+            const token = localStorage.getItem('token');
 
             const response = await fetch(`${API_BASE_URL}/users/${userId}/status`, {
                 method: 'PUT',
@@ -228,7 +228,7 @@
 
     async function showUserHistory(userId) {
         try {
-            const token = localStorage.getItem('authToken');
+            const token = localStorage.getItem('token');
 
             const response = await fetch(`${API_BASE_URL}/users/${userId}/history`, {
                 headers: {

@@ -10,7 +10,7 @@ BEGIN
       TG_TABLE_NAME,
       NEW.id,
       'INSERT',
-      row_to_json(NEW),
+      to_jsonb(NEW),
       NULL
     );
     RETURN NEW;
@@ -20,7 +20,7 @@ BEGIN
       TG_TABLE_NAME,
       NEW.id,
       'UPDATE',
-      jsonb_build_object('old', row_to_json(OLD), 'new', row_to_json(NEW)),
+      jsonb_build_object('old', to_jsonb(OLD), 'new', to_jsonb(NEW)),
       NULL
     );
     RETURN NEW;
@@ -30,7 +30,7 @@ BEGIN
       TG_TABLE_NAME,
       OLD.id,
       'DELETE',
-      row_to_json(OLD),
+      to_jsonb(OLD),
       NULL
     );
     RETURN OLD;
