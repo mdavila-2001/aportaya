@@ -563,7 +563,7 @@
                 {
                     maxSize: 5 * 1024 * 1024,
                     endpoint: '/api/image',
-                    imageType: 'profile'
+                    imageType: 'avatar'
                 }
             );
         });
@@ -578,7 +578,7 @@
             {
                 maxSize: 5 * 1024 * 1024,
                 endpoint: '/api/image',
-                imageType: 'profile'
+                imageType: 'avatar'
             }
         );
     }
