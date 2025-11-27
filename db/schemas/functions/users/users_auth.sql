@@ -92,6 +92,49 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+-- Verify user email
+CREATE OR REPLACE FUNCTION users.verify_user_email(p_token UUID)
+RETURNS BOOLEAN AS $$
+DECLARE
+  v_user_id UUID;
+  v_expires_at TIMESTAMPTZ;
+  v_used_at TIMESTAMPTZ;
+BEGIN
+  -- Check if token exists and is valid
+  SELECT user_id, expires_at, used_at 
+  INTO v_user_id, v_expires_at, v_used_at
+  FROM users.email_verification_token
+  WHERE token = p_token;
+  
+  -- Token doesn't exist
+  IF v_user_id IS NULL THEN
+    RETURN FALSE;
+  END IF;
+  
+  -- Token already used
+  IF v_used_at IS NOT NULL THEN
+    RETURN FALSE;
+  END IF;
+  
+  -- Token expired
+  IF v_expires_at < now() THEN
+    RETURN FALSE;
+  END IF;
+  
+  -- Mark token as used
+  UPDATE users.email_verification_token
+  SET used_at = now()
+  WHERE token = p_token;
+  
+  -- Activate user
+  UPDATE users.user
+  SET status = 'active'
+  WHERE id = v_user_id AND status = 'pending_verification';
+  
+  RETURN TRUE;
+END;
+$$ LANGUAGE plpgsql;
+
 -- Change password
 CREATE OR REPLACE FUNCTION users.change_password(
   p_user_id UUID,
