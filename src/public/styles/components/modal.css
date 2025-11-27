@@ -112,7 +112,7 @@
     margin-bottom: var(--spM);
 }
 
-.modal-form .form-row > * {
+.modal-form .form-row>* {
     flex: 1;
     min-width: 0;
 }

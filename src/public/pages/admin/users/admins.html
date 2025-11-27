@@ -376,6 +376,26 @@
             <button class="btn btn-primary" id="submit-admin-btn">Crear Administrador</button>
         </div>
     </div>
+    </div>
+
+    <!-- Confirmation Modal for Delete -->
+    <div class="modal modal-small" id="delete-confirm-modal" popover="manual">
+        <div class="modal-header">
+            <h2 class="modal-title">Confirmar Eliminación</h2>
+            <button class="modal-close" commandfor="delete-confirm-modal" command="hide-popover">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <p class="delete-confirm-message">
+                ¿Estás seguro de eliminar este administrador? Esta acción no se puede deshacer.
+            </p>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" commandfor="delete-confirm-modal" command="hide-popover">Cancelar</button>
+            <button class="btn btn-danger" id="confirm-delete-btn">Eliminar</button>
+        </div>
+    </div>
 
     <script src="../../../scripts/user-header.js"></script>
     <script src="../../../scripts/components/imageLoader.js"></script>

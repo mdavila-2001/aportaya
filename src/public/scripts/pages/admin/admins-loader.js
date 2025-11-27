@@ -366,6 +366,8 @@
 
     // ==================== DELETE ADMINISTRATOR ====================
 
+    let adminToDelete = null;
+
     async function deleteAdministrator(adminId) {
         try {
             const token = localStorage.getItem('token');
@@ -417,17 +419,22 @@
 
         // Populate gender
         const genderSelect = document.getElementById('admin-gender');
-        if (genderSelect) {
+        if (genderSelect && admin.gender) {
+            // Try direct assignment first (e.g. "M", "F")
             genderSelect.value = admin.gender;
-            // If value didn't stick, try mapping
-            if (!genderSelect.value && admin.gender) {
+
+            // If that didn't work (value is still empty), try mapping common variations
+            if (!genderSelect.value) {
                 const genderMap = {
-                    'male': 'M', 'Masculino': 'M',
-                    'female': 'F', 'Femenino': 'F',
-                    'other': 'O', 'Otro': 'O'
+                    'male': 'M', 'Masculino': 'M', 'masculino': 'M', 'm': 'M',
+                    'female': 'F', 'Femenino': 'F', 'femenino': 'F', 'f': 'F',
+                    'other': 'O', 'Otro': 'O', 'otro': 'O', 'o': 'O',
+                    'U': 'U', 'u': 'U'
                 };
-                if (genderMap[admin.gender]) {
-                    genderSelect.value = genderMap[admin.gender];
+                // Try exact match or lowercase match
+                const mappedValue = genderMap[admin.gender] || genderMap[admin.gender.toString().toLowerCase()];
+                if (mappedValue) {
+                    genderSelect.value = mappedValue;
                 }
             }
         }
@@ -458,6 +465,21 @@
             submitButton.addEventListener('click', handleFormSubmit);
         }
 
+        // Confirm delete button
+        const confirmDeleteBtn = document.getElementById('confirm-delete-btn');
+        if (confirmDeleteBtn) {
+            confirmDeleteBtn.addEventListener('click', async () => {
+                if (adminToDelete) {
+                    const deleteModal = document.getElementById('delete-confirm-modal');
+                    if (deleteModal) {
+                        deleteModal.hidePopover();
+                    }
+                    await deleteAdministrator(adminToDelete);
+                    adminToDelete = null;
+                }
+            });
+        }
+
         document.addEventListener('click', async (e) => {
             const actionLink = e.target.closest('[data-action]');
             if (!actionLink) return;
@@ -476,8 +498,11 @@
                     break;
                 case 'delete':
                     e.preventDefault();
-                    if (confirm('¿Estás seguro de eliminar este administrador? Esta acción no se puede deshacer.')) {
-                        await deleteAdministrator(adminId);
+                    // Store admin ID and open confirmation modal
+                    adminToDelete = adminId;
+                    const deleteModal = document.getElementById('delete-confirm-modal');
+                    if (deleteModal) {
+                        deleteModal.showPopover();
                     }
                     break;
             }
