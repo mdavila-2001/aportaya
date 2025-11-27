@@ -181,6 +181,8 @@ const getAdministrators = async () => {
                 u.mother_last_name,
                 u.email,
                 u.status,
+                u.gender,
+                u.birth_date,
                 u.registration_date,
                 i.file_path as profile_image_url
             FROM users.user u
@@ -249,6 +251,80 @@ const createAdministrator = async (adminData) => {
     }
 };
 
+const updateAdministrator = async (adminId, adminData) => {
+    const client = await dbPool.connect();
+    try {
+        await client.query('BEGIN');
+
+        // Build dynamic update query
+        const updateFields = [];
+        const values = [];
+        let paramCount = 1;
+
+        // Always update these fields
+        updateFields.push(`first_name = $${paramCount++}`);
+        values.push(adminData.firstName);
+
+        updateFields.push(`middle_name = $${paramCount++}`);
+        values.push(adminData.middleName || '');
+
+        updateFields.push(`last_name = $${paramCount++}`);
+        values.push(adminData.lastName);
+
+        updateFields.push(`mother_last_name = $${paramCount++}`);
+        values.push(adminData.motherLastName || '');
+
+        updateFields.push(`email = $${paramCount++}`);
+        values.push(adminData.email);
+
+        updateFields.push(`gender = $${paramCount++}`);
+        values.push(adminData.gender || 'U');
+
+        updateFields.push(`birth_date = $${paramCount++}`);
+        values.push(adminData.birthDate);
+
+        if (adminData.profileImageId) {
+            updateFields.push(`profile_image_id = $${paramCount++}`);
+            values.push(adminData.profileImageId);
+        }
+
+        // Password is optional for updates
+        if (adminData.password) {
+            const bcrypt = require('bcrypt');
+            const hashedPassword = await bcrypt.hash(adminData.password, 10);
+            updateFields.push(`password = $${paramCount++}`);
+            values.push(hashedPassword);
+        }
+
+        updateFields.push(`updated_at = NOW()`);
+
+        // Add adminId as the last parameter
+        values.push(adminId);
+
+        const updateQuery = `
+            UPDATE users.user 
+            SET ${updateFields.join(', ')}
+            WHERE id = $${paramCount}
+            RETURNING id
+        `;
+
+        const { rows } = await client.query(updateQuery, values);
+
+        if (rows.length === 0) {
+            throw new Error('Administrador no encontrado');
+        }
+
+        await client.query('COMMIT');
+        return rows[0].id;
+    } catch (error) {
+        await client.query('ROLLBACK');
+        console.error('Error actualizando administrador:', error);
+        throw error;
+    } finally {
+        client.release();
+    }
+};
+
 const deleteAdministrator = async (adminId) => {
     const client = await dbPool.connect();
     try {
@@ -295,5 +371,6 @@ module.exports = {
     getUserHistory,
     getAdministrators,
     createAdministrator,
+    updateAdministrator,
     deleteAdministrator
 };

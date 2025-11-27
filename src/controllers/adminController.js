@@ -157,8 +157,14 @@ const getAdministrators = async (req, res) => {
             data: {
                 administrators: admins.map(admin => ({
                     id: admin.id,
+                    first_name: admin.first_name,
+                    middle_name: admin.middle_name,
+                    last_name: admin.last_name,
+                    mother_last_name: admin.mother_last_name,
                     full_name: `${admin.first_name} ${admin.middle_name || ''} ${admin.last_name} ${admin.mother_last_name || ''}`.trim(),
                     email: admin.email,
+                    gender: admin.gender,
+                    birth_date: admin.birth_date,
                     status: admin.status,
                     registration_date: admin.registration_date,
                     profile_image_url: admin.profile_image_url
@@ -206,6 +212,36 @@ const createAdministrator = async (req, res) => {
     }
 };
 
+const updateAdministrator = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const adminData = {
+            firstName: req.body.firstName,
+            middleName: req.body.middleName,
+            lastName: req.body.lastName,
+            motherLastName: req.body.motherLastName,
+            email: req.body.email,
+            gender: req.body.gender,
+            birthDate: req.body.birthDate,
+            profileImageId: req.body.profileImageId,
+            password: req.body.password // Optional
+        };
+
+        await adminRepository.updateAdministrator(id, adminData);
+
+        res.status(200).json({
+            success: true,
+            message: 'Administrador actualizado exitosamente'
+        });
+    } catch (error) {
+        console.error('Error actualizando administrador:', error);
+        res.status(500).json({
+            success: false,
+            message: error.message || 'Error actualizando administrador'
+        });
+    }
+};
+
 const deleteAdministrator = async (req, res) => {
     try {
         const { id } = req.params;
@@ -240,5 +276,6 @@ module.exports = {
     getUserHistory,
     getAdministrators,
     createAdministrator,
+    updateAdministrator,
     deleteAdministrator
 };

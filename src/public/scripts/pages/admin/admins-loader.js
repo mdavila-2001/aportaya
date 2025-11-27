@@ -30,10 +30,89 @@
             form.reset();
             clearErrorMessages();
 
-            // Reset profile picture preview
             const profileLabel = document.querySelector('.profile-label');
             if (profileLabel) {
                 profileLabel.style.backgroundImage = '';
+            }
+
+            // Reset edit state
+            isEditing = false;
+            editingAdminId = null;
+            document.querySelector('.modal-title').textContent = 'Agregar Nuevo Administrador';
+            document.getElementById('submit-admin-btn').textContent = 'Crear Administrador';
+
+            // Show password field for creation
+            const passwordContainer = document.getElementById('password-container');
+            if (passwordContainer) {
+                passwordContainer.style.display = 'flex';
+                const passwordInput = document.getElementById('admin-password');
+                if (passwordInput) {
+                    passwordInput.required = true;
+                    passwordInput.value = '';
+                }
+            }
+        }
+    }
+
+    function populateForm(admin) {
+        isEditing = true;
+        editingAdminId = admin.id;
+
+        document.querySelector('.modal-title').textContent = 'Editar Administrador';
+        document.getElementById('submit-admin-btn').textContent = 'Guardar Cambios';
+
+        // Use camelCase properties as snake_case resulted in undefined
+        document.getElementById('admin-email').value = admin.email;
+        document.getElementById('admin-first-name').value = admin.firstName || admin.first_name; // Try both just in case
+        document.getElementById('admin-middle-name').value = admin.middleName || admin.middle_name || '';
+        document.getElementById('admin-last-name').value = admin.lastName || admin.last_name;
+        document.getElementById('admin-mother-last-name').value = admin.motherLastName || admin.mother_last_name || '';
+
+        // Format date for input type="date" (YYYY-MM-DD)
+        const birthDate = admin.birthDate || admin.birth_date;
+        if (birthDate) {
+            const date = new Date(birthDate);
+            const formattedDate = date.toISOString().split('T')[0];
+            document.getElementById('admin-birthdate').value = formattedDate;
+        }
+        // Populate gender
+        const genderSelect = document.getElementById('admin-gender');
+        if (genderSelect && admin.gender) {
+            // Try direct assignment first (e.g. "M", "F")
+            genderSelect.value = admin.gender;
+
+            // If that didn't work (value is still empty), try mapping common variations
+            if (!genderSelect.value) {
+                const genderMap = {
+                    'male': 'M', 'Masculino': 'M', 'masculino': 'M', 'm': 'M',
+                    'female': 'F', 'Femenino': 'F', 'femenino': 'F', 'f': 'F',
+                    'other': 'O', 'Otro': 'O', 'otro': 'O', 'o': 'O',
+                    'U': 'U', 'u': 'U'
+                };
+                // Try exact match or lowercase match
+                const mappedValue = genderMap[admin.gender] || genderMap[admin.gender.toString().toLowerCase()];
+                if (mappedValue) {
+                    genderSelect.value = mappedValue;
+                }
+            }
+        }
+
+        // Hide password field for editing
+        const passwordContainer = document.getElementById('password-container');
+        if (passwordContainer) {
+            passwordContainer.style.display = 'none';
+            const passwordInput = document.getElementById('admin-password');
+            if (passwordInput) {
+                passwordInput.required = false;
+            }
+        }
+
+        // Handle profile image if URL exists
+        const profileImageUrl = admin.profileImageUrl || admin.profile_image_url;
+        if (profileImageUrl) {
+            const profileLabel = document.querySelector('.profile-label');
+            if (profileLabel) {
+                profileLabel.style.backgroundImage = `url('${profileImageUrl}')`;
             }
         }
     }
@@ -148,14 +227,19 @@
         const activeAdminsCount = currentAdmins.filter(a => a.status === 'active').length;
         const canDelete = activeAdminsCount > 1 || admin.status !== 'active';
 
-        let buttons = '';
+        // Button styled as a link to match design
+        let buttons = `
+            <button class="table-link" style="background:none; border:none; padding:0; font:inherit; cursor:pointer;" commandfor="add-admin-modal" command="show-popover" data-action="edit" data-admin-id="${admin.id}">Editar</button>
+        `;
 
         if (canDelete) {
             buttons += `
+                <span class="table-link-separator">|</span>
                 <a href="#" class="table-link table-link-danger" data-action="delete" data-admin-id="${admin.id}">Eliminar</a>
             `;
         } else {
             buttons += `
+                <span class="table-link-separator">|</span>
                 <span class="table-link" style="opacity: 0.5; cursor: not-allowed;" title="No se puede eliminar el último administrador activo">Eliminar</span>
             `;
         }
@@ -163,14 +247,19 @@
         return buttons;
     }
 
-    // ==================== CREATE ADMINISTRATOR ====================
+    // ==================== CREATE & EDIT ADMINISTRATOR ====================
 
-    async function createAdministrator(formData) {
+    let isEditing = false;
+    let editingAdminId = null;
+
+    async function saveAdministrator(formData) {
         try {
             const token = localStorage.getItem('token');
+            const url = isEditing ? `${API_BASE_URL}/administrators/${editingAdminId}` : `${API_BASE_URL}/administrators`;
+            const method = isEditing ? 'PUT' : 'POST';
 
-            const response = await fetch(`${API_BASE_URL}/administrators`, {
-                method: 'POST',
+            const response = await fetch(url, {
+                method: method,
                 headers: {
                     'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json'
@@ -180,17 +269,21 @@
 
             if (!response.ok) {
                 const errorData = await response.json();
-                throw new Error(errorData.message || 'Error al crear administrador');
+                throw new Error(errorData.message || `Error al ${isEditing ? 'actualizar' : 'crear'} administrador`);
             }
 
             const result = await response.json();
-            showSuccess('Administrador creado exitosamente');
-            closeModal();
+            showSuccess(`Administrador ${isEditing ? 'actualizado' : 'creado'} exitosamente`);
+
+            // Close popover
+            const modal = document.getElementById('add-admin-modal');
+            if (modal) modal.hidePopover();
+
             loadAdministrators();
 
         } catch (error) {
-            console.error('Error creando administrador:', error);
-            showError(error.message || 'Error al crear el administrador');
+            console.error(`Error ${isEditing ? 'actualizando' : 'creando'} administrador:`, error);
+            showError(error.message || `Error al ${isEditing ? 'actualizar' : 'crear'} el administrador`);
         }
     }
 
@@ -225,7 +318,8 @@
             hasErrors = true;
         }
 
-        if (!password || password.length < 8) {
+        // Password validation: Required only for creation
+        if (!isEditing && (!password || password.length < 8)) {
             document.getElementById('admin_password_error_msg').textContent = 'La contraseña debe tener al menos 8 caracteres';
             hasErrors = true;
         }
@@ -257,13 +351,17 @@
             middleName,
             lastName,
             motherLastName,
-            password,
             birthDate,
             gender,
             profileImageId
         };
 
-        await createAdministrator(adminData);
+        // Only include password if it's set (for edit) or required (for create)
+        if (password) {
+            adminData.password = password;
+        }
+
+        await saveAdministrator(adminData);
     }
 
     // ==================== DELETE ADMINISTRATOR ====================
@@ -295,27 +393,89 @@
         }
     }
 
-    // ==================== EVENT LISTENERS ====================
+    function populateForm(admin) {
+        isEditing = true;
+        editingAdminId = admin.id;
+
+        document.querySelector('.modal-title').textContent = 'Editar Administrador';
+        document.getElementById('submit-admin-btn').textContent = 'Guardar Cambios';
+
+        // Use camelCase properties as snake_case resulted in undefined
+        document.getElementById('admin-email').value = admin.email;
+        document.getElementById('admin-first-name').value = admin.firstName || admin.first_name;
+        document.getElementById('admin-middle-name').value = admin.middleName || admin.middle_name || '';
+        document.getElementById('admin-last-name').value = admin.lastName || admin.last_name;
+        document.getElementById('admin-mother-last-name').value = admin.motherLastName || admin.mother_last_name || '';
+
+        // Format date for input type="date" (YYYY-MM-DD)
+        const birthDate = admin.birthDate || admin.birth_date;
+        if (birthDate) {
+            const date = new Date(birthDate);
+            const formattedDate = date.toISOString().split('T')[0];
+            document.getElementById('admin-birthdate').value = formattedDate;
+        }
+
+        // Populate gender
+        const genderSelect = document.getElementById('admin-gender');
+        if (genderSelect) {
+            genderSelect.value = admin.gender;
+            // If value didn't stick, try mapping
+            if (!genderSelect.value && admin.gender) {
+                const genderMap = {
+                    'male': 'M', 'Masculino': 'M',
+                    'female': 'F', 'Femenino': 'F',
+                    'other': 'O', 'Otro': 'O'
+                };
+                if (genderMap[admin.gender]) {
+                    genderSelect.value = genderMap[admin.gender];
+                }
+            }
+        }
+
+        // Hide password field for editing
+        const passwordContainer = document.getElementById('password-container');
+        if (passwordContainer) {
+            passwordContainer.style.display = 'none';
+            const passwordInput = document.getElementById('admin-password');
+            if (passwordInput) {
+                passwordInput.required = false;
+            }
+        }
+
+        // Handle profile image if URL exists
+        const profileImageUrl = admin.profileImageUrl || admin.profile_image_url;
+        if (profileImageUrl) {
+            const profileLabel = document.querySelector('.profile-label');
+            if (profileLabel) {
+                profileLabel.style.backgroundImage = `url('${profileImageUrl}')`;
+            }
+        }
+    }
 
     function attachEventListeners() {
-        // Form submit
         const submitButton = document.getElementById('submit-admin-btn');
         if (submitButton) {
             submitButton.addEventListener('click', handleFormSubmit);
         }
 
-        // Table actions (delete)
         document.addEventListener('click', async (e) => {
             const actionLink = e.target.closest('[data-action]');
             if (!actionLink) return;
-
-            e.preventDefault();
 
             const action = actionLink.dataset.action;
             const adminId = actionLink.dataset.adminId;
 
             switch (action) {
+                case 'edit':
+                    const admin = currentAdmins.find(a => a.id == adminId);
+                    if (admin) {
+                        populateForm(admin);
+                    } else {
+                        console.error('Admin not found for ID:', adminId);
+                    }
+                    break;
                 case 'delete':
+                    e.preventDefault();
                     if (confirm('¿Estás seguro de eliminar este administrador? Esta acción no se puede deshacer.')) {
                         await deleteAdministrator(adminId);
                     }
@@ -323,7 +483,6 @@
             }
         });
 
-        // Search
         const searchInput = document.querySelector('.table-search input');
         if (searchInput) {
             searchInput.addEventListener('input', (e) => {
@@ -339,7 +498,6 @@
             });
         }
 
-        // Password toggle
         const togglePassword = document.getElementById('toggle-password');
         const passwordInput = document.getElementById('admin-password');
         if (togglePassword && passwordInput) {
@@ -349,19 +507,23 @@
         }
     }
 
-    // ==================== UTILITIES ====================
-
     function showSuccess(message) {
         console.log('Success:', message);
-        alert(message);
+        if (typeof Notification !== 'undefined') {
+            Notification.success(message);
+        } else {
+            alert(message);
+        }
     }
 
     function showError(message) {
         console.error('Error:', message);
-        alert(message);
+        if (typeof Notification !== 'undefined') {
+            Notification.error(message);
+        } else {
+            alert(message);
+        }
     }
-
-    // ==================== INITIALIZATION ====================
 
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', () => {

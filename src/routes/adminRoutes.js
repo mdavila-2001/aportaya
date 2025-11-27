@@ -15,6 +15,7 @@ router.get('/users/:id/history', adminController.getUserHistory);
 
 router.get('/administrators', adminController.getAdministrators);
 router.post('/administrators', adminController.createAdministrator);
+router.put('/administrators/:id', adminController.updateAdministrator);
 router.delete('/administrators/:id', adminController.deleteAdministrator);
 
 module.exports = router;
