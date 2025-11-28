@@ -27,14 +27,14 @@ class Notification {
         
         container.appendChild(notification);
         
-        // Animación de entrada
+        
         setTimeout(() => notification.classList.add('show'), 10);
         
-        // Botón de cerrar
+        
         const closeBtn = notification.querySelector('.notification-close');
         closeBtn.addEventListener('click', () => this.hide(notification));
         
-        // Auto-cerrar
+        
         if (duration > 0) {
             setTimeout(() => this.hide(notification), duration);
         }
@@ -49,7 +49,7 @@ class Notification {
         setTimeout(() => {
             notification.remove();
             
-            // Limpiar contenedor si está vacío
+            
             const container = document.querySelector('.notification-container');
             if (container && container.children.length === 0) {
                 container.remove();
@@ -67,7 +67,7 @@ class Notification {
         return icons[type] || icons.info;
     }
     
-    // Métodos helper
+    
     static success(message, duration, link) {
         return this.show(message, 'success', duration, link);
     }

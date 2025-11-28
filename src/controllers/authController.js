@@ -69,7 +69,7 @@ const getMe = async (req, res) => {
 };
 
 const register = async (req, res) => {
-    console.log('BODY REGISTER:', req.body); // DEBUG
+    console.log('BODY REGISTER:', req.body); 
     try {
         const data = {
             firstName: req.body['first-name'],

@@ -8,7 +8,6 @@
     function initializeModalEvents() {
         const modal = document.getElementById('add-admin-modal');
         if (modal) {
-            // Reset form when modal closes (popover toggle event)
             modal.addEventListener('toggle', (event) => {
                 if (event.newState === 'closed') {
                     resetForm();
@@ -35,13 +34,11 @@
                 profileLabel.style.backgroundImage = '';
             }
 
-            // Reset edit state
             isEditing = false;
             editingAdminId = null;
             document.querySelector('.modal-title').textContent = 'Agregar Nuevo Administrador';
             document.getElementById('submit-admin-btn').textContent = 'Crear Administrador';
 
-            // Show password field for creation
             const passwordContainer = document.getElementById('password-container');
             if (passwordContainer) {
                 passwordContainer.style.display = 'flex';
@@ -61,27 +58,23 @@
         document.querySelector('.modal-title').textContent = 'Editar Administrador';
         document.getElementById('submit-admin-btn').textContent = 'Guardar Cambios';
 
-        // Use camelCase properties as snake_case resulted in undefined
         document.getElementById('admin-email').value = admin.email;
-        document.getElementById('admin-first-name').value = admin.firstName || admin.first_name; // Try both just in case
+        document.getElementById('admin-first-name').value = admin.firstName || admin.first_name;
         document.getElementById('admin-middle-name').value = admin.middleName || admin.middle_name || '';
         document.getElementById('admin-last-name').value = admin.lastName || admin.last_name;
         document.getElementById('admin-mother-last-name').value = admin.motherLastName || admin.mother_last_name || '';
 
-        // Format date for input type="date" (YYYY-MM-DD)
         const birthDate = admin.birthDate || admin.birth_date;
         if (birthDate) {
             const date = new Date(birthDate);
             const formattedDate = date.toISOString().split('T')[0];
             document.getElementById('admin-birthdate').value = formattedDate;
         }
-        // Populate gender
+
         const genderSelect = document.getElementById('admin-gender');
         if (genderSelect && admin.gender) {
-            // Try direct assignment first (e.g. "M", "F")
             genderSelect.value = admin.gender;
 
-            // If that didn't work (value is still empty), try mapping common variations
             if (!genderSelect.value) {
                 const genderMap = {
                     'male': 'M', 'Masculino': 'M', 'masculino': 'M', 'm': 'M',
@@ -89,7 +82,6 @@
                     'other': 'O', 'Otro': 'O', 'otro': 'O', 'o': 'O',
                     'U': 'U', 'u': 'U'
                 };
-                // Try exact match or lowercase match
                 const mappedValue = genderMap[admin.gender] || genderMap[admin.gender.toString().toLowerCase()];
                 if (mappedValue) {
                     genderSelect.value = mappedValue;
@@ -97,7 +89,6 @@
             }
         }
 
-        // Hide password field for editing
         const passwordContainer = document.getElementById('password-container');
         if (passwordContainer) {
             passwordContainer.style.display = 'none';
@@ -107,7 +98,6 @@
             }
         }
 
-        // Handle profile image if URL exists
         const profileImageUrl = admin.profileImageUrl || admin.profile_image_url;
         if (profileImageUrl) {
             const profileLabel = document.querySelector('.profile-label');
@@ -121,8 +111,6 @@
         const errorMessages = document.querySelectorAll('.error_msg');
         errorMessages.forEach(msg => msg.textContent = '');
     }
-
-    // ==================== LOAD ADMINISTRATORS ====================
 
     async function loadAdministrators() {
         try {
@@ -227,7 +215,6 @@
         const activeAdminsCount = currentAdmins.filter(a => a.status === 'active').length;
         const canDelete = activeAdminsCount > 1 || admin.status !== 'active';
 
-        // Button styled as a link to match design
         let buttons = `
             <button class="table-link" style="background:none; border:none; padding:0; font:inherit; cursor:pointer;" commandfor="add-admin-modal" command="show-popover" data-action="edit" data-admin-id="${admin.id}">Editar</button>
         `;
@@ -246,8 +233,6 @@
 
         return buttons;
     }
-
-    // ==================== CREATE & EDIT ADMINISTRATOR ====================
 
     let isEditing = false;
     let editingAdminId = null;
@@ -275,7 +260,6 @@
             const result = await response.json();
             showSuccess(`Administrador ${isEditing ? 'actualizado' : 'creado'} exitosamente`);
 
-            // Close popover
             const modal = document.getElementById('add-admin-modal');
             if (modal) modal.hidePopover();
 
@@ -290,7 +274,6 @@
     async function handleFormSubmit() {
         clearErrorMessages();
 
-        // Get form values
         const email = document.getElementById('admin-email').value.trim();
         const firstName = document.getElementById('admin-first-name').value.trim();
         const middleName = document.getElementById('admin-middle-name').value.trim();
@@ -300,7 +283,6 @@
         const birthDate = document.getElementById('admin-birthdate').value;
         const gender = document.getElementById('admin-gender').value;
 
-        // Validate
         let hasErrors = false;
 
         if (!email || !email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
@@ -318,7 +300,6 @@
             hasErrors = true;
         }
 
-        // Password validation: Required only for creation
         if (!isEditing && (!password || password.length < 8)) {
             document.getElementById('admin_password_error_msg').textContent = 'La contraseña debe tener al menos 8 caracteres';
             hasErrors = true;
@@ -338,13 +319,11 @@
             return;
         }
 
-        // Upload profile image if exists
         let profileImageId = null;
         if (profileImageUploader && profileImageUploader.hasFile()) {
             profileImageId = await profileImageUploader.upload();
         }
 
-        // Prepare data
         const adminData = {
             email,
             firstName,
@@ -356,15 +335,12 @@
             profileImageId
         };
 
-        // Only include password if it's set (for edit) or required (for create)
         if (password) {
             adminData.password = password;
         }
 
         await saveAdministrator(adminData);
     }
-
-    // ==================== DELETE ADMINISTRATOR ====================
 
     let adminToDelete = null;
 
@@ -402,14 +378,14 @@
         document.querySelector('.modal-title').textContent = 'Editar Administrador';
         document.getElementById('submit-admin-btn').textContent = 'Guardar Cambios';
 
-        // Use camelCase properties as snake_case resulted in undefined
+        
         document.getElementById('admin-email').value = admin.email;
         document.getElementById('admin-first-name').value = admin.firstName || admin.first_name;
         document.getElementById('admin-middle-name').value = admin.middleName || admin.middle_name || '';
         document.getElementById('admin-last-name').value = admin.lastName || admin.last_name;
         document.getElementById('admin-mother-last-name').value = admin.motherLastName || admin.mother_last_name || '';
 
-        // Format date for input type="date" (YYYY-MM-DD)
+        
         const birthDate = admin.birthDate || admin.birth_date;
         if (birthDate) {
             const date = new Date(birthDate);
@@ -417,13 +393,13 @@
             document.getElementById('admin-birthdate').value = formattedDate;
         }
 
-        // Populate gender
+        
         const genderSelect = document.getElementById('admin-gender');
         if (genderSelect && admin.gender) {
-            // Try direct assignment first (e.g. "M", "F")
+            
             genderSelect.value = admin.gender;
 
-            // If that didn't work (value is still empty), try mapping common variations
+            
             if (!genderSelect.value) {
                 const genderMap = {
                     'male': 'M', 'Masculino': 'M', 'masculino': 'M', 'm': 'M',
@@ -431,7 +407,7 @@
                     'other': 'O', 'Otro': 'O', 'otro': 'O', 'o': 'O',
                     'U': 'U', 'u': 'U'
                 };
-                // Try exact match or lowercase match
+                
                 const mappedValue = genderMap[admin.gender] || genderMap[admin.gender.toString().toLowerCase()];
                 if (mappedValue) {
                     genderSelect.value = mappedValue;
@@ -439,7 +415,7 @@
             }
         }
 
-        // Hide password field for editing
+        
         const passwordContainer = document.getElementById('password-container');
         if (passwordContainer) {
             passwordContainer.style.display = 'none';
@@ -449,7 +425,7 @@
             }
         }
 
-        // Handle profile image if URL exists
+        
         const profileImageUrl = admin.profileImageUrl || admin.profile_image_url;
         if (profileImageUrl) {
             const profileLabel = document.querySelector('.profile-label');
@@ -465,7 +441,6 @@
             submitButton.addEventListener('click', handleFormSubmit);
         }
 
-        // Confirm delete button
         const confirmDeleteBtn = document.getElementById('confirm-delete-btn');
         if (confirmDeleteBtn) {
             confirmDeleteBtn.addEventListener('click', async () => {
@@ -498,7 +473,6 @@
                     break;
                 case 'delete':
                     e.preventDefault();
-                    // Store admin ID and open confirmation modal
                     adminToDelete = adminId;
                     const deleteModal = document.getElementById('delete-confirm-modal');
                     if (deleteModal) {
@@ -556,7 +530,6 @@
             loadAdministrators();
             attachEventListeners();
 
-            // Initialize image uploader
             profileImageUploader = new ImageUploader(
                 'profile-picture-input',
                 document.querySelector('.profile-label'),

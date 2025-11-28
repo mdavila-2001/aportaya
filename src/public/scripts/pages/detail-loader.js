@@ -87,7 +87,7 @@
         return;
       }
 
-      // Extraer datos del proyecto
+      
       const title = project.title || '';
       const cover = project.cover_image_url || '';
       const description = project.description || '';
@@ -99,13 +99,13 @@
       const raised = Number(project.raised_amount || 0);
       const percent = goal > 0 ? Math.round((raised / goal) * 100) : 0;
 
-      // Calcular días restantes
+      
       const daysLeft = calculateDaysLeft(project.end_date);
 
-      // TODO: Obtener número de patrocinadores de la API cuando esté disponible
+      
       const sponsors = project.sponsors_count || 0;
 
-      // Inyectar en DOM
+      
       setText('project-title', title);
       setImage('project-cover', cover, title || 'Portada del proyecto');
 
@@ -125,7 +125,7 @@
       setText('project-sponsors', sponsors || '0');
       setText('project-days', daysLeft !== null ? daysLeft : '—');
 
-      // Actualizar el título de la página
+      
       document.title = `${title} - AportaYa`;
 
     } catch (err) {

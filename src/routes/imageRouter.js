@@ -10,14 +10,14 @@ const uploadDirectory = path.isAbsolute(uploadsPath)
     ? uploadsPath
     : path.join(__dirname, '../../', uploadsPath);
 
-// Ensure subdirectories exist
+
 const ensureDirectoryExists = (dirPath) => {
     if (!fs.existsSync(dirPath)) {
         fs.mkdirSync(dirPath, { recursive: true });
     }
 };
 
-// Create subdirectories on startup
+
 ensureDirectoryExists(uploadDirectory);
 ensureDirectoryExists(path.join(uploadDirectory, 'avatar'));
 ensureDirectoryExists(path.join(uploadDirectory, 'projects'));

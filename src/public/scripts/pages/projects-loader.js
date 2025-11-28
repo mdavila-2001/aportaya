@@ -79,7 +79,7 @@ function attachFavoriteListeners() {
             e.stopPropagation();
             const icon = button.querySelector('.material-symbols-outlined');
 
-            // Toggle entre favorite y favorite_border
+            
             if (icon.textContent === 'favorite_border') {
                 icon.textContent = 'favorite';
                 button.setAttribute('aria-label', 'Quitar de favoritos');
@@ -109,7 +109,7 @@ function renderCategories(categories) {
         chip.dataset.categoryId = category.id;
         chip.textContent = category.name;
 
-        // Event listener para filtrar
+        
         chip.addEventListener('click', () => {
             const isPressed = chip.getAttribute('aria-pressed') === 'true';
             chip.setAttribute('aria-pressed', !isPressed);
@@ -144,7 +144,7 @@ async function fetchProjects(searchBy = '') {
         }
         const result = await response.json();
         
-        // Manejar la estructura de respuesta del backend
+        
         const projects = result.data ? result.data.projects : [];
         const extraData = result.extraData || {};
 
@@ -164,7 +164,7 @@ async function fetchProjects(searchBy = '') {
 }
 
 function updateExtraInfo(extraData) {
-    // Implementar si hay paginación u otra info extra
+    
     if (extraData.totalProjects !== undefined) {
          console.log(`Total proyectos: ${extraData.totalProjects}`);
     }
@@ -192,7 +192,7 @@ function setupSearch() {
             clearTimeout(debounceTimer);
             debounceTimer = setTimeout(() => {
                 fetchProjects(e.target.value);
-            }, 300); // 300ms debounce
+            }, 300); 
         });
     }
 
@@ -207,6 +207,6 @@ function setupSearch() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    fetchProjects(); // Carga inicial
-    setupSearch();   // Configurar buscador
+    fetchProjects(); 
+    setupSearch();   
 });

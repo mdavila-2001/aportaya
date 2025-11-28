@@ -11,7 +11,7 @@ const uploadDirectory = path.isAbsolute(uploadsPath)
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        // Determinar el subdirectorio según el tipo de documento
+        
         const documentType = req.body.documentType || req.query.documentType || 'general';
         let subDir = 'documents';
         
@@ -30,7 +30,7 @@ const storage = multer.diskStorage({
 });
 
 const fileFilter = (req, file, cb) => {
-    // Solo permitir PDFs
+    
     if (file.mimetype === 'application/pdf') {
         cb(null, true);
     } else {
@@ -42,7 +42,7 @@ const upload = multer({
     storage: storage,
     fileFilter: fileFilter,
     limits: {
-        fileSize: 10 * 1024 * 1024 // 10MB máximo para PDFs
+        fileSize: 10 * 1024 * 1024 
     }
 });
 

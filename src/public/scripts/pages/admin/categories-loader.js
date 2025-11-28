@@ -5,7 +5,7 @@
     let currentEditingId = null;
     let categoriesData = [];
 
-    // Elementos del DOM
+    
     const tbody = document.getElementById('categories-tbody');
     const searchInput = document.getElementById('search-input');
     const btnCreate = document.getElementById('btn-create-category');
@@ -17,7 +17,7 @@
     const btnSave = document.getElementById('btn-save-category');
     const paginationInfo = document.getElementById('pagination-info');
 
-    // Cargar categorías
+    
     async function loadCategories() {
         try {
             const token = localStorage.getItem('token');
@@ -51,7 +51,7 @@
         }
     }
 
-    // Renderizar categorías en la tabla
+    
     function renderCategories(categories) {
         tbody.innerHTML = '';
 
@@ -86,11 +86,11 @@
 
         paginationInfo.textContent = `Mostrando ${categories.length} de ${categories.length}`;
 
-        // Attach event listeners
+        
         attachActionListeners();
     }
 
-    // Adjuntar listeners a los botones de acción
+    
     function attachActionListeners() {
         const editButtons = document.querySelectorAll('[data-action="edit"]');
         const deleteButtons = document.querySelectorAll('[data-action="delete"]');
@@ -112,7 +112,7 @@
         });
     }
 
-    // Abrir modal para crear
+    
     function openCreateModal() {
         currentEditingId = null;
         modalTitle.textContent = 'Nueva Categoría';
@@ -122,7 +122,7 @@
         modal.showPopover();
     }
 
-    // Abrir modal para editar
+    
     function openEditModal(id) {
         const category = categoriesData.find(c => c.id === parseInt(id));
         if (!category) return;
@@ -136,7 +136,7 @@
         modal.showPopover();
     }
 
-    // Cerrar modal
+    
     function closeModal() {
         modal.hidePopover();
         categoryForm.reset();
@@ -144,11 +144,11 @@
         currentEditingId = null;
     }
 
-    // Guardar categoría (crear o actualizar)
+    
     async function saveCategory(e) {
         e.preventDefault();
 
-        // Usar validador externo
+        
         if (!window.categoryModalValidator.validateAll()) {
             return;
         }
@@ -179,7 +179,7 @@
             const result = await response.json();
 
             if (!response.ok) {
-                // Mostrar error en el campo correspondiente usando el validador
+                
                 if (result.message && result.message.includes('slug')) {
                     window.categoryModalValidator.showCustomError('slug', result.message);
                 } else {
@@ -196,7 +196,7 @@
         }
     }
 
-    // Eliminar categoría
+    
     async function deleteCategory(id) {
         const category = categoriesData.find(c => c.id === parseInt(id));
         if (!category) return;
@@ -229,7 +229,7 @@
         }
     }
 
-    // Búsqueda
+    
     function filterCategories() {
         const searchTerm = searchInput.value.toLowerCase().trim();
 
@@ -247,7 +247,7 @@
         renderCategories(filtered);
     }
 
-    // Escape HTML para prevenir XSS
+    
     function escapeHtml(text) {
         if (!text) return '';
         const div = document.createElement('div');
@@ -255,7 +255,7 @@
         return div.innerHTML;
     }
 
-    // Mostrar error
+    
     function showError(message) {
         tbody.innerHTML = `
             <tr>
@@ -266,21 +266,21 @@
         `;
     }
 
-    // Event listeners
+    
     btnCreate.addEventListener('click', openCreateModal);
     btnCancel.addEventListener('click', closeModal);
     btnCloseModal.addEventListener('click', closeModal);
     btnSave.addEventListener('click', saveCategory);
     searchInput.addEventListener('input', filterCategories);
 
-    // Cerrar modal al hacer clic fuera
+    
     modal.addEventListener('click', (e) => {
         if (e.target === modal) {
             closeModal();
         }
     });
 
-    // Cargar categorías al inicio
+    
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', loadCategories);
     } else {

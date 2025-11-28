@@ -1,11 +1,8 @@
-/**
- * Script de validación para el modal de administradores
- * Maneja validaciones en tiempo real y mensajes de error
- */
+
 (function () {
     'use strict';
 
-    // === ELEMENTOS DEL DOM ===
+    
     const form = document.getElementById('admin-form');
     const emailInput = document.getElementById('admin-email');
     const firstNameInput = document.getElementById('admin-first-name');
@@ -23,14 +20,12 @@
     const birthdateError = document.getElementById('admin_birthdate_error_msg');
     const genderError = document.getElementById('admin_gender_error_msg');
 
-    // Estado de edición
+    
     let isEditMode = false;
 
-    // === FUNCIONES DE VALIDACIÓN ===
+    
 
-    /**
-     * Validar campo de email
-     */
+    
     function validateEmail() {
         const value = emailInput.value.trim();
         const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -52,9 +47,7 @@
         return true;
     }
 
-    /**
-     * Validar campo de nombre
-     */
+    
     function validateFirstName() {
         const value = firstNameInput.value.trim();
 
@@ -81,9 +74,7 @@
         return true;
     }
 
-    /**
-     * Validar campo de apellido paterno
-     */
+    
     function validateLastName() {
         const value = lastNameInput.value.trim();
 
@@ -110,11 +101,9 @@
         return true;
     }
 
-    /**
-     * Validar campo de contraseña
-     */
+    
     function validatePassword() {
-        // Si estamos en modo edición, la contraseña no es requerida
+        
         if (isEditMode && !passwordInput.value) {
             passwordError.textContent = '';
             passwordInput.classList.remove('input-error');
@@ -146,9 +135,7 @@
         return true;
     }
 
-    /**
-     * Validar fecha de nacimiento
-     */
+    
     function validateBirthdate() {
         const value = birthdateInput.value;
 
@@ -158,7 +145,7 @@
             return false;
         }
 
-        // Validar que sea mayor de edad (18 años)
+        
         const birthDate = new Date(value);
         const today = new Date();
         const age = today.getFullYear() - birthDate.getFullYear();
@@ -185,9 +172,7 @@
         return true;
     }
 
-    /**
-     * Validar género
-     */
+    
     function validateGender() {
         const value = genderInput.value;
 
@@ -202,9 +187,7 @@
         return true;
     }
 
-    /**
-     * Validar todo el formulario
-     */
+    
     function validateAll() {
         const isEmailValid = validateEmail();
         const isFirstNameValid = validateFirstName();
@@ -216,9 +199,7 @@
         return isEmailValid && isFirstNameValid && isLastNameValid && isPasswordValid && isBirthdateValid && isGenderValid;
     }
 
-    /**
-     * Limpiar todos los errores
-     */
+    
     function clearAllErrors() {
         emailError.textContent = '';
         firstNameError.textContent = '';
@@ -235,9 +216,7 @@
         genderInput.classList.remove('input-error');
     }
 
-    /**
-     * Mostrar error personalizado en un campo específico
-     */
+    
     function showCustomError(field, message) {
         const errorFields = {
             'email': { input: emailInput, error: emailError },
@@ -254,16 +233,14 @@
         }
     }
 
-    /**
-     * Establecer modo edición
-     */
+    
     function setEditMode(editing) {
         isEditMode = editing;
     }
 
-    // === EVENT LISTENERS ===
+    
 
-    // Validar en blur (cuando el campo pierde el foco)
+    
     emailInput.addEventListener('blur', validateEmail);
     firstNameInput.addEventListener('blur', validateFirstName);
     lastNameInput.addEventListener('blur', validateLastName);
@@ -271,7 +248,7 @@
     birthdateInput.addEventListener('blur', validateBirthdate);
     genderInput.addEventListener('blur', validateGender);
 
-    // Limpiar errores cuando el usuario empieza a escribir
+    
     emailInput.addEventListener('input', function () {
         if (emailError.textContent) {
             emailError.textContent = '';
@@ -314,7 +291,7 @@
         }
     });
 
-    // === EXPORTAR FUNCIONES PARA USO EXTERNO ===
+    
     window.adminModalValidator = {
         validateAll: validateAll,
         clearAllErrors: clearAllErrors,

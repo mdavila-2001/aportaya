@@ -40,23 +40,23 @@
             const result = await response.json();
             const stats = result.data;
 
-            // Actualizar estadísticas de usuarios
+            
             updateStat('total-users', stats.users.total);
             updateStat('active-users', stats.users.active);
             updateStat('pending-users', stats.users.pending);
             updateStat('suspended-users', stats.users.suspended);
 
-            // Actualizar estadísticas de proyectos
+            
             updateStat('total-projects', stats.projects.total);
             updateStat('published-projects', stats.projects.published);
             updateStat('pending-projects', stats.projects.pending);
             updateStat('draft-projects', stats.projects.draft);
 
-            // Actualizar estadísticas de donaciones
+            
             updateStat('total-donations', stats.donations.total);
             updateStat('total-donated', formatCurrency(stats.donations.total_amount));
 
-            // Actualizar categorías
+            
             updateStat('total-categories', stats.categories.total);
 
         } catch (error) {
@@ -80,11 +80,11 @@
     }
 
     function showError(message) {
-        // TODO: Implementar sistema de notificaciones
+        
         console.error(message);
     }
 
-    // Cargar estadísticas al cargar la página
+    
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', loadDashboardStats);
     } else {

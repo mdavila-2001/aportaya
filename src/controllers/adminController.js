@@ -1,6 +1,6 @@
 const adminRepository = require('../repositories/adminRepository');
 
-// ==================== ESTADÍSTICAS ====================
+
 
 const getDashboardStats = async (req, res) => {
     try {
@@ -42,7 +42,7 @@ const getDashboardStats = async (req, res) => {
     }
 };
 
-// ==================== USUARIOS ====================
+
 
 const getUsers = async (req, res) => {
     try {
@@ -93,7 +93,7 @@ const updateUserStatus = async (req, res) => {
         const { status, reason } = req.body;
         const adminId = req.user.id;
 
-        // Validar estado
+        
         const validStatuses = ['active', 'suspended', 'banned', 'pending_verification'];
         if (!validStatuses.includes(status)) {
             return res.status(400).json({
@@ -145,7 +145,7 @@ const getUserHistory = async (req, res) => {
     }
 };
 
-// ==================== ADMINISTRADORES ====================
+
 
 const getAdministrators = async (req, res) => {
     try {
@@ -224,7 +224,7 @@ const updateAdministrator = async (req, res) => {
             gender: req.body.gender,
             birthDate: req.body.birthDate,
             profileImageId: req.body.profileImageId,
-            password: req.body.password // Optional
+            password: req.body.password 
         };
 
         await adminRepository.updateAdministrator(id, adminData);
@@ -246,7 +246,7 @@ const deleteAdministrator = async (req, res) => {
     try {
         const { id } = req.params;
 
-        // Verificar que no se esté eliminando a sí mismo
+        
         if (id === req.user.id) {
             return res.status(400).json({
                 success: false,
@@ -269,7 +269,7 @@ const deleteAdministrator = async (req, res) => {
     }
 };
 
-// ==================== CATEGORÍAS ====================
+
 
 const getCategories = async (req, res) => {
     try {
@@ -307,7 +307,7 @@ const createCategory = async (req, res) => {
             parentId: req.body.parentId
         };
 
-        // Validaciones
+        
         if (!categoryData.name || !categoryData.slug) {
             return res.status(400).json({
                 success: false,

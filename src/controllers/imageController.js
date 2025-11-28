@@ -71,17 +71,17 @@ exports.uploadImage = async (req, res) => {
         const file = req.file;
         const fileName = file.filename;
 
-        // Convert absolute path to relative path for database storage
-        // file.path is absolute (e.g., /app/uploads/avatar/123.jpg)
-        // We need to store it as /uploads/avatar/123.jpg for the static server
+        
+        
+        
         let relativePath = file.path;
 
-        // Remove the base upload directory to get the relative path
+        
         if (path.isAbsolute(uploadsPath)) {
-            // If UPLOADS_PATH is absolute (e.g., /app/uploads), replace it with /uploads
+            
             relativePath = file.path.replace(uploadsPath, '/uploads');
         } else {
-            // If UPLOADS_PATH is relative (e.g., uploads), construct the path
+            
             const pathParts = file.path.split(path.sep);
             const uploadsIndex = pathParts.indexOf('uploads');
             if (uploadsIndex !== -1) {

@@ -17,10 +17,10 @@ exports.getDocumentById = async (req, res) => {
             return res.status(404).json({ error: 'Documento no encontrado' });
         }
 
-        // Convert relative path from DB to absolute filesystem path
+        
         let absolutePath = document.file_path;
         if (!path.isAbsolute(absolutePath)) {
-            // If path starts with /uploads, replace with actual upload directory
+            
             if (absolutePath.startsWith('/uploads')) {
                 absolutePath = absolutePath.replace('/uploads', uploadDirectory);
             }
@@ -54,15 +54,15 @@ exports.uploadDocument = async (req, res) => {
         const file = req.file;
         const fileName = file.filename;
 
-        // Convert absolute path to relative path for database storage
+        
         let relativePath = file.path;
 
-        // Remove the base upload directory to get the relative path
+        
         if (path.isAbsolute(uploadsPath)) {
-            // If UPLOADS_PATH is absolute (e.g., /app/uploads), replace it with /uploads
+            
             relativePath = file.path.replace(uploadsPath, '/uploads');
         } else {
-            // If UPLOADS_PATH is relative (e.g., uploads), construct the path
+            
             const pathParts = file.path.split(path.sep);
             const uploadsIndex = pathParts.indexOf('uploads');
             if (uploadsIndex !== -1) {

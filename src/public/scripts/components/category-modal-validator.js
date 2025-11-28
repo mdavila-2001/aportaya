@@ -1,11 +1,8 @@
-/**
- * Script de validación para el modal de categorías
- * Maneja validaciones en tiempo real y mensajes de error
- */
+
 (function () {
     'use strict';
 
-    // === ELEMENTOS DEL DOM ===
+    
     const form = document.getElementById('category-form');
     const nameInput = document.getElementById('category-name');
     const slugInput = document.getElementById('category-slug');
@@ -15,11 +12,9 @@
     const slugError = document.getElementById('category_slug_error_msg');
     const descriptionError = document.getElementById('category_description_error_msg');
 
-    // === FUNCIONES DE VALIDACIÓN ===
+    
 
-    /**
-     * Validar campo de nombre
-     */
+    
     function validateName() {
         const value = nameInput.value.trim();
 
@@ -46,9 +41,7 @@
         return true;
     }
 
-    /**
-     * Validar campo de slug
-     */
+    
     function validateSlug() {
         const value = slugInput.value.trim();
 
@@ -82,9 +75,7 @@
         return true;
     }
 
-    /**
-     * Validar campo de descripción (opcional)
-     */
+    
     function validateDescription() {
         const value = descriptionInput.value.trim();
 
@@ -99,9 +90,7 @@
         return true;
     }
 
-    /**
-     * Validar todo el formulario
-     */
+    
     function validateAll() {
         const isNameValid = validateName();
         const isSlugValid = validateSlug();
@@ -110,9 +99,7 @@
         return isNameValid && isSlugValid && isDescValid;
     }
 
-    /**
-     * Limpiar todos los errores
-     */
+    
     function clearAllErrors() {
         nameError.textContent = '';
         slugError.textContent = '';
@@ -123,9 +110,7 @@
         descriptionInput.classList.remove('input-error');
     }
 
-    /**
-     * Mostrar error personalizado en un campo específico
-     */
+    
     function showCustomError(field, message) {
         const errorFields = {
             'name': { input: nameInput, error: nameError },
@@ -139,9 +124,7 @@
         }
     }
 
-    /**
-     * Auto-generar slug desde el nombre
-     */
+    
     function autoGenerateSlug() {
         const name = nameInput.value;
         const slug = name
@@ -158,14 +141,14 @@
         return slug;
     }
 
-    // === EVENT LISTENERS ===
+    
 
-    // Validar en blur (cuando el campo pierde el foco)
+    
     nameInput.addEventListener('blur', validateName);
     slugInput.addEventListener('blur', validateSlug);
     descriptionInput.addEventListener('blur', validateDescription);
 
-    // Limpiar errores cuando el usuario empieza a escribir
+    
     nameInput.addEventListener('input', function () {
         if (nameError.textContent) {
             nameError.textContent = '';
@@ -187,7 +170,7 @@
         }
     });
 
-    // Auto-generar slug al escribir nombre (solo si el slug está vacío o no ha sido editado manualmente)
+    
     let slugManuallyEdited = false;
 
     slugInput.addEventListener('focus', function () {
@@ -195,14 +178,14 @@
     });
 
     nameInput.addEventListener('input', function () {
-        // Solo auto-generar si el usuario no ha tocado el slug
+        
         if (!slugManuallyEdited || !slugInput.value) {
             const generatedSlug = autoGenerateSlug();
             slugInput.value = generatedSlug;
         }
     });
 
-    // === EXPORTAR FUNCIONES PARA USO EXTERNO ===
+    
     window.categoryModalValidator = {
         validateAll: validateAll,
         clearAllErrors: clearAllErrors,

@@ -160,7 +160,7 @@ async function signupUser() {
             throw new Error(result.message || 'Error al registrar el usuario.');
         }
 
-        // Si el backend devuelve un link de Ethereal, mostrarlo
+        
         const etherealLink = result.etherealLink;
 
         if (etherealLink) {
@@ -211,7 +211,7 @@ function initializeStars() {
 }
 
 function initializePasswordToggles() {
-    // Toggle para contraseña
+    
     const togglePassword = document.getElementById('toggle-password');
     const passwordInput = document.getElementById('password');
 
@@ -221,7 +221,7 @@ function initializePasswordToggles() {
         });
     }
 
-    // Toggle para confirmar contraseña
+    
     const toggleConfirm = document.getElementById('toggle-confirm');
     const confirmPasswordInput = document.getElementById('confirm-password');
 

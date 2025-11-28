@@ -14,17 +14,17 @@ async function testDatabaseConnection() {
         console.log('DB_NAME:', process.env.DB_NAME);
         console.log('=== Iniciando prueba de conexión ===\n');
         
-        // 1. Probar conexión básica
+        
         const client = await dbPool.connect();
         console.log('✓ Conexión establecida exitosamente\n');
         
-        // 2. Verificar base de datos actual y usuario conectado
+        
         const dbInfo = await client.query('SELECT current_database() AS database, current_user AS user');
         console.log('Base de datos actual:', dbInfo.rows[0].database);
         console.log('Usuario conectado:', dbInfo.rows[0].user);
         console.log('\n');
         
-        // 3. Listar todos los esquemas
+        
         const schemasResult = await client.query(`
             SELECT schema_name 
             FROM information_schema.schemata 
@@ -41,7 +41,7 @@ async function testDatabaseConnection() {
         }
         console.log('\n');
         
-        // 4. Verificar permisos del usuario
+        
         const permissionsResult = await client.query(`
             SELECT grantee, privilege_type
             FROM information_schema.role_table_grants
@@ -52,7 +52,7 @@ async function testDatabaseConnection() {
             console.log('⚠️  El usuario no tiene permisos sobre ninguna tabla');
         } else {
             permissionsResult.rows.forEach(row => {
-                //console.log(`  - Permiso: ${row.privilege_type}`);
+                
             });
         }
         console.log('\n');

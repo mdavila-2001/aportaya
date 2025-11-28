@@ -1,6 +1,6 @@
 const { dbPool } = require('../config/dbConnection');
 
-// ==================== ESTADÍSTICAS ====================
+
 
 const getStats = async () => {
     const client = await dbPool.connect();
@@ -35,7 +35,7 @@ const getStats = async () => {
     }
 };
 
-// ==================== USUARIOS ====================
+
 
 const getUsers = async (filters = {}) => {
     const client = await dbPool.connect();
@@ -109,7 +109,7 @@ const updateUserStatus = async (userId, newStatus, reason = null, changedBy = nu
     try {
         await client.query('BEGIN');
 
-        // Actualizar estado del usuario
+        
         const updateQuery = `
             UPDATE users.user 
             SET status = $1, updated_at = NOW()
@@ -122,7 +122,7 @@ const updateUserStatus = async (userId, newStatus, reason = null, changedBy = nu
             throw new Error('Usuario no encontrado');
         }
 
-        // Registrar en historial
+        
         const historyQuery = `
             INSERT INTO users.user_status_history (user_id, old_status, new_status, changed_by, reason)
             VALUES ($1, $2, $3, $4, $5)
@@ -167,7 +167,7 @@ const getUserHistory = async (userId) => {
     }
 };
 
-// ==================== ADMINISTRADORES ====================
+
 
 const getAdministrators = async () => {
     const client = await dbPool.connect();
@@ -208,7 +208,7 @@ const createAdministrator = async (adminData) => {
     try {
         await client.query('BEGIN');
 
-        // Obtener el ID del rol de administrador
+        
         const roleQuery = `SELECT id FROM roles.role WHERE name = 'Administrador'`;
         const roleResult = await client.query(roleQuery);
 
@@ -218,7 +218,7 @@ const createAdministrator = async (adminData) => {
 
         const adminRoleId = roleResult.rows[0].id;
 
-        // Crear el usuario admin usando la función de la BD
+        
         const createQuery = `
             SELECT users.create_admin(
                 $1, $2, $3, $4, $5, $6, $7, $8, $9, $10
@@ -256,12 +256,12 @@ const updateAdministrator = async (adminId, adminData) => {
     try {
         await client.query('BEGIN');
 
-        // Build dynamic update query
+        
         const updateFields = [];
         const values = [];
         let paramCount = 1;
 
-        // Always update these fields
+        
         updateFields.push(`first_name = $${paramCount++}`);
         values.push(adminData.firstName);
 
@@ -288,7 +288,7 @@ const updateAdministrator = async (adminId, adminData) => {
             values.push(adminData.profileImageId);
         }
 
-        // Password is optional for updates
+        
         if (adminData.password) {
             const bcrypt = require('bcrypt');
             const hashedPassword = await bcrypt.hash(adminData.password, 10);
@@ -298,7 +298,7 @@ const updateAdministrator = async (adminId, adminData) => {
 
         updateFields.push(`updated_at = NOW()`);
 
-        // Add adminId as the last parameter
+        
         values.push(adminId);
 
         const updateQuery = `
@@ -328,7 +328,7 @@ const updateAdministrator = async (adminId, adminData) => {
 const deleteAdministrator = async (adminId) => {
     const client = await dbPool.connect();
     try {
-        // Verificar que no sea el último admin
+        
         const countQuery = `
             SELECT COUNT(*) as count
             FROM roles.user_role ur
@@ -341,7 +341,7 @@ const deleteAdministrator = async (adminId) => {
             throw new Error('No se puede eliminar el último administrador del sistema');
         }
 
-        // Eliminar el usuario (esto eliminará en cascada el rol)
+        
         const deleteQuery = `
             UPDATE users.user 
             SET status = 'deleted', deleted_at = NOW()
@@ -364,7 +364,7 @@ const deleteAdministrator = async (adminId) => {
     }
 };
 
-// ==================== CATEGORÍAS ====================
+
 
 const getCategories = async () => {
     const client = await dbPool.connect();
@@ -409,7 +409,7 @@ const createCategory = async (categoryData) => {
         return rows[0].category_id;
     } catch (error) {
         console.error('Error creando categoría:', error);
-        if (error.code === '23505') { // Unique violation
+        if (error.code === '23505') { 
             throw new Error('El slug de la categoría ya existe');
         }
         throw error;
@@ -467,7 +467,7 @@ const updateCategory = async (categoryId, categoryData) => {
         return rows[0].id;
     } catch (error) {
         console.error('Error actualizando categoría:', error);
-        if (error.code === '23505') { // Unique violation
+        if (error.code === '23505') { 
             throw new Error('El slug de la categoría ya existe');
         }
         throw error;
@@ -479,7 +479,7 @@ const updateCategory = async (categoryId, categoryData) => {
 const deleteCategory = async (categoryId) => {
     const client = await dbPool.connect();
     try {
-        // Verificar si la categoría tiene proyectos asociados
+        
         const checkQuery = `
             SELECT COUNT(*) as count
             FROM projects.project
@@ -491,7 +491,7 @@ const deleteCategory = async (categoryId) => {
             throw new Error('No se puede eliminar la categoría porque tiene proyectos asociados');
         }
 
-        // Verificar si tiene categorías hijas
+        
         const childrenQuery = `
             SELECT COUNT(*) as count
             FROM projects.category

@@ -1,20 +1,20 @@
-// Ejemplo de integración en createProject.js
+
 
 let coverImageUploader;
 let proofDocumentUploader;
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Inicializar el uploader de imagen de portada
+    
     coverImageUploader = new ImageUploader('cover-image-input', '#cover-preview', {
         imageType: 'project'
     });
 
-    // Inicializar el uploader de documento de prueba
+    
     proofDocumentUploader = new DocumentUploader('proof-document-input', '#proof-file-name', {
         documentType: 'proof'
     });
 
-    // Manejar el submit del formulario
+    
     const form = document.getElementById('create-project-form');
     form.addEventListener('submit', handleCreateProject);
 });
@@ -28,7 +28,7 @@ async function handleCreateProject(e) {
     submitBtn.textContent = 'Creando proyecto...';
 
     try {
-        // 1. Subir imagen de portada si existe
+        
         let coverImageId = null;
         if (coverImageUploader.hasFile()) {
             coverImageId = await coverImageUploader.upload();
@@ -37,7 +37,7 @@ async function handleCreateProject(e) {
             }
         }
 
-        // 2. Subir documento de prueba si existe
+        
         let proofDocumentId = null;
         if (proofDocumentUploader.hasFile()) {
             proofDocumentId = await proofDocumentUploader.upload();
@@ -46,7 +46,7 @@ async function handleCreateProject(e) {
             }
         }
 
-        // 3. Preparar datos del proyecto
+        
         const projectData = {
             title: document.getElementById('title').value,
             description: document.getElementById('description').value,
@@ -59,7 +59,7 @@ async function handleCreateProject(e) {
             proofDocumentId: proofDocumentId
         };
 
-        // 4. Enviar al backend
+        
         const token = localStorage.getItem('auth_token');
         const response = await fetch('/api/projects', {
             method: 'POST',
@@ -78,7 +78,7 @@ async function handleCreateProject(e) {
 
         Notification.success('¡Proyecto creado exitosamente!');
         
-        // Redirigir al detalle del proyecto o a mis proyectos
+        
         setTimeout(() => {
             window.location.href = `/pages/projects/details.html?id=${result.projectId}`;
         }, 2000);

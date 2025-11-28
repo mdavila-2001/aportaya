@@ -8,7 +8,7 @@ class DocumentUploader {
             this.preview = previewElementOrId;
         }
 
-        this.maxSize = options.maxSize || 10 * 1024 * 1024; // 10MB por defecto
+        this.maxSize = options.maxSize || 10 * 1024 * 1024; 
         this.endpoint = options.endpoint || '/api/document';
         this.documentType = options.documentType || 'proof';
         
@@ -28,7 +28,7 @@ class DocumentUploader {
         const file = e.target.files[0];
         if (!file) return;
 
-        // Validar que sea PDF
+        
         if (file.type !== 'application/pdf') {
             Notification.error('Por favor, selecciona un archivo PDF válido.');
             this.input.value = '';
@@ -41,7 +41,7 @@ class DocumentUploader {
             return;
         }
 
-        // Mostrar nombre del archivo en el preview
+        
         if (this.preview) {
             if (this.preview.tagName === 'SPAN' || this.preview.tagName === 'DIV') {
                 this.preview.textContent = file.name;

@@ -1,8 +1,6 @@
 const { dbPool } = require('../config/dbConnection');
 
-/**
- * Obtener información básica de un usuario
- */
+
 const getUserById = async (userId) => {
     const client = await dbPool.connect();
     try {

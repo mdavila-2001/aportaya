@@ -13,7 +13,7 @@
                 return;
             }
 
-            // Construir query params
+            
             const params = new URLSearchParams({
                 page: page,
                 limit: 10,
@@ -158,7 +158,7 @@
             const result = await response.json();
             showSuccess('Estado del usuario actualizado exitosamente');
 
-            // Recargar la lista
+            
             loadUsers(currentPage, currentFilters);
 
         } catch (error) {
@@ -179,7 +179,7 @@
     }
 
     function attachEventListeners() {
-        // Event delegation para las acciones de la tabla
+        
         document.addEventListener('click', async (e) => {
             const actionLink = e.target.closest('[data-action]');
             if (!actionLink) return;
@@ -211,7 +211,7 @@
             }
         });
 
-        // Búsqueda
+        
         const searchInput = document.querySelector('.table-search input');
         if (searchInput) {
             let searchTimeout;
@@ -251,22 +251,22 @@
     }
 
     function displayHistory(history) {
-        // TODO: Implementar modal o vista para mostrar historial
+        
         console.log('Historial:', history);
         alert('Historial del usuario:\n' + JSON.stringify(history, null, 2));
     }
 
     function showSuccess(message) {
-        // TODO: Implementar sistema de notificaciones
+        
         console.log('Success:', message);
     }
 
     function showError(message) {
-        // TODO: Implementar sistema de notificaciones
+        
         console.error('Error:', message);
     }
 
-    // Inicializar
+    
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', () => {
             loadUsers();

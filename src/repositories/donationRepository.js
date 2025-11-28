@@ -1,8 +1,6 @@
 const { dbPool } = require('../config/dbConnection');
 
-/**
- * Crear una donación para un proyecto
- */
+
 const createDonation = async (donationData) => {
     const client = await dbPool.connect();
     try {
@@ -36,9 +34,7 @@ const createDonation = async (donationData) => {
     }
 };
 
-/**
- * Obtener donaciones de un usuario
- */
+
 const getUserDonations = async (userId) => {
     const client = await dbPool.connect();
     try {
@@ -70,9 +66,7 @@ const getUserDonations = async (userId) => {
     }
 };
 
-/**
- * Obtener donaciones de un proyecto
- */
+
 const getProjectDonations = async (projectId) => {
     const client = await dbPool.connect();
     try {
@@ -104,9 +98,7 @@ const getProjectDonations = async (projectId) => {
     }
 };
 
-/**
- * Actualizar estado de pago de una donación
- */
+
 const updateDonationStatus = async (donationId, status) => {
     const client = await dbPool.connect();
     try {
@@ -124,9 +116,7 @@ const updateDonationStatus = async (donationId, status) => {
     }
 };
 
-/**
- * Registrar evento de webhook
- */
+
 const logWebhookEvent = async (source, eventType, payload) => {
     const client = await dbPool.connect();
     try {

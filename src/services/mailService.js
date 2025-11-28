@@ -1,6 +1,6 @@
 const nodemailer = require('nodemailer');
 
-// URL base del servidor
+
 const BASE_URL = process.env.BASE_URL || `http://localhost:${process.env.PORT || 3000}`;
 
 let testAccount = null;
@@ -85,7 +85,7 @@ const sendVerificationEmail = async (toEmail, token) => {
         console.log(previewUrl);
         console.log("----------------------------------------------------------");
 
-        // Devolver el link de vista previa para mostrarlo en el frontend
+        
         return {
             success: true,
             previewUrl: previewUrl

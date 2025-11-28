@@ -154,8 +154,8 @@ const createProject = async (projectData, userId) => {
             projectData.title,
             projectData.description,
             projectData.financialGoal,
-            new Date(), // Fecha de inicio (hoy)
-            projectData.endDate, // Fecha de fin
+            new Date(), 
+            projectData.endDate, 
             projectData.categoryId,
             projectData.location || null,
             projectData.coverImageId || null,

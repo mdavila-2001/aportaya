@@ -3,7 +3,7 @@ const documentRepository = require('../repositories/documentRepository');
 
 const createProject = async (req, res) => {
     try {
-        const userId = req.user.id; // Del middleware de autenticación
+        const userId = req.user.id; 
 
         const projectData = {
             title: req.body.title,
@@ -19,7 +19,7 @@ const createProject = async (req, res) => {
 
         const projectId = await projectRepository.createProject(projectData, userId);
 
-        // Si hay documento de prueba, marcarlo como permanente
+        
         if (projectData.proofDocumentId) {
             await documentRepository.markDocumentAsPermanent(projectData.proofDocumentId);
         }
@@ -46,7 +46,7 @@ const getProjects = async (req, res) => {
 
         const categories = await projectRepository.getProjectCategories();
 
-        const projects = await projectRepository.getProjects(searchBy, filters); // Pasar los parámetros al servicio
+        const projects = await projectRepository.getProjects(searchBy, filters); 
 
         res.status(200).json({
             message: 'Proyectos obtenidos exitosamente',
