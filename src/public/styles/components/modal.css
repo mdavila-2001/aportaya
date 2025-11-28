@@ -1,7 +1,6 @@
 [popover].modal {
-    background: var(--clrNeutral100);
+    background: rgba(19, 26, 23, 0.95);
     border-radius: var(--br);
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
     width: 95%;
     max-height: 95vh;
     border: none;
@@ -11,7 +10,9 @@
     left: 50%;
     transform: translate(-50%, -50%) scale(0.9);
     opacity: 0;
-    transition: opacity 0.3s ease, transform 0.3s ease, display 0.3s allow-discrete, overlay 0.3s allow-discrete;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
 }
 
 [popover].modal:popover-open {
@@ -23,7 +24,6 @@
     background-color: rgba(0, 0, 0, 0.6);
     backdrop-filter: blur(4px);
     opacity: 0;
-    transition: opacity 0.3s ease, display 0.3s allow-discrete, overlay 0.3s allow-discrete;
 }
 
 [popover].modal:popover-open::backdrop {
@@ -52,7 +52,7 @@
 .modal-title {
     font-size: var(--fsL);
     font-weight: var(--fwBold);
-    color: var(--clrNeutral900);
+    color: var(--text-light);
     margin: 0;
 }
 
@@ -61,7 +61,7 @@
     border: none;
     cursor: pointer;
     padding: var(--spXS);
-    color: var(--clrNeutral600);
+    color: var(--text-light);
     transition: color 0.2s ease;
     display: flex;
     align-items: center;
@@ -69,7 +69,7 @@
 }
 
 .modal-close:hover {
-    color: var(--clrNeutral900);
+    color: var(--primary);
 }
 
 .modal-close .material-symbols-outlined {
@@ -79,7 +79,8 @@
 .modal-body {
     padding: var(--spM);
     overflow-y: auto;
-    max-height: calc(95vh - 130px);
+    flex: 1;
+    min-height: 0;
 }
 
 .modal-footer {
@@ -144,8 +145,6 @@
 .modal-form select {
     appearance: none;
     cursor: pointer;
-    background-image: url('../../../images/arrow-down.svg');
-    background-repeat: no-repeat;
     background-position: right 16px center;
     background-size: 24px 24px;
     padding-right: 40px;
@@ -269,6 +268,17 @@
     -webkit-text-security: none;
 }
 
+.modal-form .error_msg {
+    margin: 0 8px;
+    border-radius: var(--border-radius-md);
+    padding: 0 var(--spXS);
+    font-size: var(--sfM);
+    margin-top: var(--spXS);
+    width: max-content;
+    background-color: var(--color-error);
+    color: var(--text-light);
+}
+
 @media (min-width: 768px) {
     [popover].modal {
         max-width: 600px;
@@ -286,7 +296,6 @@
 
     .modal-body {
         padding: var(--spXL);
-        max-height: calc(90vh - 140px);
     }
 
     .modal-footer {
