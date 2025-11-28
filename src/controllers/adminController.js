@@ -269,6 +269,117 @@ const deleteAdministrator = async (req, res) => {
     }
 };
 
+// ==================== CATEGORÍAS ====================
+
+const getCategories = async (req, res) => {
+    try {
+        const categories = await adminRepository.getCategories();
+
+        res.status(200).json({
+            success: true,
+            message: 'Categorías obtenidas exitosamente',
+            data: {
+                categories: categories.map(cat => ({
+                    id: cat.id,
+                    name: cat.name,
+                    slug: cat.slug,
+                    description: cat.description,
+                    parent_id: cat.parent_id,
+                    parent_name: cat.parent_name
+                }))
+            }
+        });
+    } catch (error) {
+        console.error('Error obteniendo categorías:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Error obteniendo categorías'
+        });
+    }
+};
+
+const createCategory = async (req, res) => {
+    try {
+        const categoryData = {
+            name: req.body.name,
+            slug: req.body.slug,
+            description: req.body.description,
+            parentId: req.body.parentId
+        };
+
+        // Validaciones
+        if (!categoryData.name || !categoryData.slug) {
+            return res.status(400).json({
+                success: false,
+                message: 'Nombre y slug son requeridos'
+            });
+        }
+
+        const categoryId = await adminRepository.createCategory(categoryData);
+
+        res.status(201).json({
+            success: true,
+            message: 'Categoría creada exitosamente',
+            data: {
+                id: categoryId
+            }
+        });
+    } catch (error) {
+        console.error('Error creando categoría:', error);
+        res.status(500).json({
+            success: false,
+            message: error.message || 'Error creando categoría'
+        });
+    }
+};
+
+const updateCategory = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const categoryData = {
+            name: req.body.name,
+            slug: req.body.slug,
+            description: req.body.description,
+            parentId: req.body.parentId
+        };
+
+        const categoryId = await adminRepository.updateCategory(id, categoryData);
+
+        res.status(200).json({
+            success: true,
+            message: 'Categoría actualizada exitosamente',
+            data: {
+                id: categoryId
+            }
+        });
+    } catch (error) {
+        console.error('Error actualizando categoría:', error);
+        res.status(500).json({
+            success: false,
+            message: error.message || 'Error actualizando categoría'
+        });
+    }
+};
+
+const deleteCategory = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        await adminRepository.deleteCategory(id);
+
+        res.status(200).json({
+            success: true,
+            message: 'Categoría eliminada exitosamente'
+        });
+    } catch (error) {
+        console.error('Error eliminando categoría:', error);
+        res.status(500).json({
+            success: false,
+            message: error.message || 'Error eliminando categoría'
+        });
+    }
+};
+
 module.exports = {
     getDashboardStats,
     getUsers,
@@ -277,5 +388,9 @@ module.exports = {
     getAdministrators,
     createAdministrator,
     updateAdministrator,
-    deleteAdministrator
+    deleteAdministrator,
+    getCategories,
+    createCategory,
+    updateCategory,
+    deleteCategory
 };

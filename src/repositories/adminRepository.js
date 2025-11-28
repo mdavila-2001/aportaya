@@ -364,6 +364,166 @@ const deleteAdministrator = async (adminId) => {
     }
 };
 
+// ==================== CATEGORÍAS ====================
+
+const getCategories = async () => {
+    const client = await dbPool.connect();
+    try {
+        const query = `
+            SELECT 
+                id,
+                name,
+                slug,
+                description,
+                parent_id,
+                (SELECT name FROM projects.category WHERE id = c.parent_id) as parent_name
+            FROM projects.category c
+            ORDER BY name ASC
+        `;
+
+        const { rows } = await client.query(query);
+        return rows;
+    } catch (error) {
+        console.error('Error obteniendo categorías:', error);
+        throw error;
+    } finally {
+        client.release();
+    }
+};
+
+const createCategory = async (categoryData) => {
+    const client = await dbPool.connect();
+    try {
+        const query = `
+            SELECT projects.create_category($1, $2, $3, $4) as category_id
+        `;
+
+        const values = [
+            categoryData.name,
+            categoryData.slug,
+            categoryData.description || null,
+            categoryData.parentId || null
+        ];
+
+        const { rows } = await client.query(query, values);
+        return rows[0].category_id;
+    } catch (error) {
+        console.error('Error creando categoría:', error);
+        if (error.code === '23505') { // Unique violation
+            throw new Error('El slug de la categoría ya existe');
+        }
+        throw error;
+    } finally {
+        client.release();
+    }
+};
+
+const updateCategory = async (categoryId, categoryData) => {
+    const client = await dbPool.connect();
+    try {
+        const updateFields = [];
+        const values = [];
+        let paramCount = 1;
+
+        if (categoryData.name) {
+            updateFields.push(`name = $${paramCount++}`);
+            values.push(categoryData.name);
+        }
+
+        if (categoryData.slug) {
+            updateFields.push(`slug = $${paramCount++}`);
+            values.push(categoryData.slug);
+        }
+
+        if (categoryData.description !== undefined) {
+            updateFields.push(`description = $${paramCount++}`);
+            values.push(categoryData.description);
+        }
+
+        if (categoryData.parentId !== undefined) {
+            updateFields.push(`parent_id = $${paramCount++}`);
+            values.push(categoryData.parentId);
+        }
+
+        if (updateFields.length === 0) {
+            throw new Error('No hay campos para actualizar');
+        }
+
+        values.push(categoryId);
+
+        const updateQuery = `
+            UPDATE projects.category
+            SET ${updateFields.join(', ')}
+            WHERE id = $${paramCount}
+            RETURNING id
+        `;
+
+        const { rows } = await client.query(updateQuery, values);
+
+        if (rows.length === 0) {
+            throw new Error('Categoría no encontrada');
+        }
+
+        return rows[0].id;
+    } catch (error) {
+        console.error('Error actualizando categoría:', error);
+        if (error.code === '23505') { // Unique violation
+            throw new Error('El slug de la categoría ya existe');
+        }
+        throw error;
+    } finally {
+        client.release();
+    }
+};
+
+const deleteCategory = async (categoryId) => {
+    const client = await dbPool.connect();
+    try {
+        // Verificar si la categoría tiene proyectos asociados
+        const checkQuery = `
+            SELECT COUNT(*) as count
+            FROM projects.project
+            WHERE category_id = $1
+        `;
+        const checkResult = await client.query(checkQuery, [categoryId]);
+
+        if (parseInt(checkResult.rows[0].count) > 0) {
+            throw new Error('No se puede eliminar la categoría porque tiene proyectos asociados');
+        }
+
+        // Verificar si tiene categorías hijas
+        const childrenQuery = `
+            SELECT COUNT(*) as count
+            FROM projects.category
+            WHERE parent_id = $1
+        `;
+        const childrenResult = await client.query(childrenQuery, [categoryId]);
+
+        if (parseInt(childrenResult.rows[0].count) > 0) {
+            throw new Error('No se puede eliminar la categoría porque tiene subcategorías');
+        }
+
+        const deleteQuery = `
+            DELETE FROM projects.category
+            WHERE id = $1
+            RETURNING id
+        `;
+
+        const { rows } = await client.query(deleteQuery, [categoryId]);
+
+        if (rows.length === 0) {
+            throw new Error('Categoría no encontrada');
+        }
+
+        return true;
+    } catch (error) {
+        console.error('Error eliminando categoría:', error);
+        throw error;
+    } finally {
+        client.release();
+    }
+};
+
 module.exports = {
     getStats,
     getUsers,
@@ -372,5 +532,9 @@ module.exports = {
     getAdministrators,
     createAdministrator,
     updateAdministrator,
-    deleteAdministrator
+    deleteAdministrator,
+    getCategories,
+    createCategory,
+    updateCategory,
+    deleteCategory
 };

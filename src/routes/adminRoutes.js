@@ -18,4 +18,9 @@ router.post('/administrators', adminController.createAdministrator);
 router.put('/administrators/:id', adminController.updateAdministrator);
 router.delete('/administrators/:id', adminController.deleteAdministrator);
 
+router.get('/categories', adminController.getCategories);
+router.post('/categories', adminController.createCategory);
+router.put('/categories/:id', adminController.updateCategory);
+router.delete('/categories/:id', adminController.deleteCategory);
+
 module.exports = router;
