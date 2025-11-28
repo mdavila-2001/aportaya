@@ -13,6 +13,8 @@
     const modalTitle = document.getElementById('modal-title');
     const categoryForm = document.getElementById('category-form');
     const btnCancel = document.getElementById('btn-cancel-modal');
+    const btnCloseModal = document.getElementById('btn-close-modal');
+    const btnSave = document.getElementById('btn-save-category');
     const paginationInfo = document.getElementById('pagination-info');
 
     // Cargar categorías
@@ -115,7 +117,9 @@
         currentEditingId = null;
         modalTitle.textContent = 'Nueva Categoría';
         categoryForm.reset();
-        modal.style.display = 'flex';
+        window.categoryModalValidator.clearAllErrors();
+        window.categoryModalValidator.resetSlugGeneration();
+        modal.showPopover();
     }
 
     // Abrir modal para editar
@@ -128,13 +132,15 @@
         document.getElementById('category-name').value = category.name;
         document.getElementById('category-slug').value = category.slug;
         document.getElementById('category-description').value = category.description || '';
-        modal.style.display = 'flex';
+        window.categoryModalValidator.clearAllErrors();
+        modal.showPopover();
     }
 
     // Cerrar modal
     function closeModal() {
-        modal.style.display = 'none';
+        modal.hidePopover();
         categoryForm.reset();
+        window.categoryModalValidator.clearAllErrors();
         currentEditingId = null;
     }
 
@@ -142,16 +148,16 @@
     async function saveCategory(e) {
         e.preventDefault();
 
+        // Usar validador externo
+        if (!window.categoryModalValidator.validateAll()) {
+            return;
+        }
+
         const categoryData = {
             name: document.getElementById('category-name').value.trim(),
             slug: document.getElementById('category-slug').value.trim(),
             description: document.getElementById('category-description').value.trim()
         };
-
-        if (!categoryData.name || !categoryData.slug) {
-            alert('Nombre y slug son requeridos');
-            return;
-        }
 
         try {
             const token = localStorage.getItem('token');
@@ -173,10 +179,15 @@
             const result = await response.json();
 
             if (!response.ok) {
-                throw new Error(result.message || 'Error al guardar categoría');
+                // Mostrar error en el campo correspondiente usando el validador
+                if (result.message && result.message.includes('slug')) {
+                    window.categoryModalValidator.showCustomError('slug', result.message);
+                } else {
+                    alert(result.message || 'Error al guardar categoría');
+                }
+                return;
             }
 
-            alert(result.message);
             closeModal();
             loadCategories();
         } catch (error) {
@@ -255,29 +266,11 @@
         `;
     }
 
-    // Auto-generar slug desde el nombre
-    document.getElementById('category-name').addEventListener('input', (e) => {
-        const name = e.target.value;
-        const slug = name.toLowerCase()
-            .replace(/[áàäâ]/g, 'a')
-            .replace(/[éèëê]/g, 'e')
-            .replace(/[íìïî]/g, 'i')
-            .replace(/[óòöô]/g, 'o')
-            .replace(/[úùüû]/g, 'u')
-            .replace(/ñ/g, 'n')
-            .replace(/[^a-z0-9]+/g, '_')
-            .replace(/^_|_$/g, '');
-
-        // Solo auto-llenar si estamos creando (no editando)
-        if (!currentEditingId) {
-            document.getElementById('category-slug').value = slug;
-        }
-    });
-
     // Event listeners
     btnCreate.addEventListener('click', openCreateModal);
     btnCancel.addEventListener('click', closeModal);
-    categoryForm.addEventListener('submit', saveCategory);
+    btnCloseModal.addEventListener('click', closeModal);
+    btnSave.addEventListener('click', saveCategory);
     searchInput.addEventListener('input', filterCategories);
 
     // Cerrar modal al hacer clic fuera

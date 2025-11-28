@@ -22,6 +22,7 @@
     <link rel="stylesheet" href="../../../styles/components/progress.css">
     <link rel="stylesheet" href="../../../styles/components/table.css">
     <link rel="stylesheet" href="../../../styles/components/table-layout.css">
+    <link rel="stylesheet" href="../../../styles/components/modal.css">
 
     <link rel="stylesheet" href="../../../styles/pages/admin/layout.css">
 
@@ -203,33 +204,40 @@
     </main>
 
     <!-- Modal para crear/editar categoría -->
-    <div id="category-modal"
-        style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center;">
-        <div
-            style="background: white; padding: var(--spXL); border-radius: var(--radius-M); max-width: 500px; width: 90%;">
-            <h2 id="modal-title">Nueva Categoría</h2>
-            <form id="category-form">
-                <div class="form-group" style="margin-bottom: var(--spM);">
-                    <label for="category-name">Nombre *</label>
-                    <input type="text" id="category-name" class="form-control" required>
+    <div class="modal" id="category-modal" popover="manual">
+        <div class="modal-header">
+            <h2 class="modal-title" id="modal-title">Nueva Categoría</h2>
+            <button class="modal-close" id="btn-close-modal">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <form class="modal-form" id="category-form">
+                <div class="form-field">
+                    <input type="text" id="category-name" class="form-input" placeholder="Nombre de la categoría"
+                        required>
+                    <div class="error_msg" id="category_name_error_msg"></div>
                 </div>
-                <div class="form-group" style="margin-bottom: var(--spM);">
-                    <label for="category-slug">Slug *</label>
-                    <input type="text" id="category-slug" class="form-control" required>
+                <div class="form-field">
+                    <input type="text" id="category-slug" class="form-input" placeholder="slug-de-la-categoria" required
+                        pattern="[a-z0-9_-]+">
+                    <div class="error_msg" id="category_slug_error_msg"></div>
                 </div>
-                <div class="form-group" style="margin-bottom: var(--spM);">
-                    <label for="category-description">Descripción</label>
-                    <textarea id="category-description" class="form-control" rows="3"></textarea>
-                </div>
-                <div style="display: flex; gap: var(--spM); justify-content: flex-end;">
-                    <button type="button" class="btn btn-secondary" id="btn-cancel-modal">Cancelar</button>
-                    <button type="submit" class="btn btn-primary" id="btn-save-category">Guardar</button>
+                <div class="form-field">
+                    <textarea id="category-description" class="form-input" rows="3"
+                        placeholder="Descripción (opcional)"></textarea>
+                    <div class="error_msg" id="category_description_error_msg"></div>
                 </div>
             </form>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" id="btn-cancel-modal">Cancelar</button>
+            <button class="btn btn-primary" id="btn-save-category">Guardar</button>
         </div>
     </div>
 
     <script src="/scripts/user-header.js"></script>
+    <script src="/scripts/components/category-modal-validator.js"></script>
     <script src="/scripts/pages/admin/categories-loader.js"></script>
 </body>
 
