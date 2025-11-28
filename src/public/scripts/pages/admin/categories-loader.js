@@ -4,8 +4,9 @@
     const API_BASE_URL = '/api/admin';
     let currentEditingId = null;
     let categoriesData = [];
+    let categoryToDelete = null;
 
-    
+
     const tbody = document.getElementById('categories-tbody');
     const searchInput = document.getElementById('search-input');
     const btnCreate = document.getElementById('btn-create-category');
@@ -16,8 +17,10 @@
     const btnCloseModal = document.getElementById('btn-close-modal');
     const btnSave = document.getElementById('btn-save-category');
     const paginationInfo = document.getElementById('pagination-info');
+    const deleteModal = document.getElementById('delete-confirm-modal');
+    const btnConfirmDelete = document.getElementById('confirm-delete-btn');
 
-    
+
     async function loadCategories() {
         try {
             const token = localStorage.getItem('token');
@@ -51,7 +54,7 @@
         }
     }
 
-    
+
     function renderCategories(categories) {
         tbody.innerHTML = '';
 
@@ -86,11 +89,11 @@
 
         paginationInfo.textContent = `Mostrando ${categories.length} de ${categories.length}`;
 
-        
+
         attachActionListeners();
     }
 
-    
+
     function attachActionListeners() {
         const editButtons = document.querySelectorAll('[data-action="edit"]');
         const deleteButtons = document.querySelectorAll('[data-action="delete"]');
@@ -107,12 +110,12 @@
             btn.addEventListener('click', (e) => {
                 e.preventDefault();
                 const id = btn.dataset.id;
-                deleteCategory(id);
+                openDeleteModal(id);
             });
         });
     }
 
-    
+
     function openCreateModal() {
         currentEditingId = null;
         modalTitle.textContent = 'Nueva Categoría';
@@ -122,7 +125,7 @@
         modal.showPopover();
     }
 
-    
+
     function openEditModal(id) {
         const category = categoriesData.find(c => c.id === parseInt(id));
         if (!category) return;
@@ -136,7 +139,7 @@
         modal.showPopover();
     }
 
-    
+
     function closeModal() {
         modal.hidePopover();
         categoryForm.reset();
@@ -144,11 +147,11 @@
         currentEditingId = null;
     }
 
-    
+
     async function saveCategory(e) {
         e.preventDefault();
 
-        
+
         if (!window.categoryModalValidator.validateAll()) {
             return;
         }
@@ -179,35 +182,40 @@
             const result = await response.json();
 
             if (!response.ok) {
-                
                 if (result.message && result.message.includes('slug')) {
                     window.categoryModalValidator.showCustomError('slug', result.message);
                 } else {
-                    alert(result.message || 'Error al guardar categoría');
+                    Notification.error(result.message || 'Error al guardar categoría');
                 }
                 return;
             }
 
+            Notification.success(currentEditingId ? 'Categoría actualizada exitosamente' : 'Categoría creada exitosamente');
             closeModal();
             loadCategories();
         } catch (error) {
             console.error('Error guardando categoría:', error);
-            alert(error.message || 'Error al guardar la categoría');
+            Notification.error(error.message || 'Error al guardar la categoría');
         }
     }
 
-    
-    async function deleteCategory(id) {
+    function openDeleteModal(id) {
         const category = categoriesData.find(c => c.id === parseInt(id));
         if (!category) return;
 
-        if (!confirm(`¿Estás seguro de eliminar la categoría "${category.name}"?\n\nEsta acción no se puede deshacer.`)) {
-            return;
+        categoryToDelete = id;
+        if (deleteModal) {
+            deleteModal.showPopover();
         }
+    }
+
+
+    async function deleteCategory() {
+        if (!categoryToDelete) return;
 
         try {
             const token = localStorage.getItem('token');
-            const response = await fetch(`${API_BASE_URL}/categories/${id}`, {
+            const response = await fetch(`${API_BASE_URL}/categories/${categoryToDelete}`, {
                 method: 'DELETE',
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -221,15 +229,17 @@
                 throw new Error(result.message || 'Error al eliminar categoría');
             }
 
-            alert(result.message);
+            Notification.success('Categoría eliminada exitosamente');
             loadCategories();
         } catch (error) {
             console.error('Error eliminando categoría:', error);
-            alert(error.message || 'Error al eliminar la categoría');
+            Notification.error(error.message || 'Error al eliminar la categoría');
+        } finally {
+            categoryToDelete = null;
         }
     }
 
-    
+
     function filterCategories() {
         const searchTerm = searchInput.value.toLowerCase().trim();
 
@@ -247,7 +257,7 @@
         renderCategories(filtered);
     }
 
-    
+
     function escapeHtml(text) {
         if (!text) return '';
         const div = document.createElement('div');
@@ -255,7 +265,7 @@
         return div.innerHTML;
     }
 
-    
+
     function showError(message) {
         tbody.innerHTML = `
             <tr>
@@ -266,21 +276,30 @@
         `;
     }
 
-    
+
     btnCreate.addEventListener('click', openCreateModal);
     btnCancel.addEventListener('click', closeModal);
     btnCloseModal.addEventListener('click', closeModal);
     btnSave.addEventListener('click', saveCategory);
     searchInput.addEventListener('input', filterCategories);
 
-    
+    if (btnConfirmDelete) {
+        btnConfirmDelete.addEventListener('click', async () => {
+            if (deleteModal) {
+                deleteModal.hidePopover();
+            }
+            await deleteCategory();
+        });
+    }
+
+
     modal.addEventListener('click', (e) => {
         if (e.target === modal) {
             closeModal();
         }
     });
 
-    
+
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', loadCategories);
     } else {
