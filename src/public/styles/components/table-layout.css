@@ -1,25 +1,3 @@
-/**
- * Componente de Layout de Tabla con Altura Fija
- * 
- * Este componente maneja la altura de las tablas y mantiene la paginación
- * siempre en el fondo. Es reutilizable en cualquier pantalla que use tablas.
- * 
- * Estructura HTML requerida:
- * <div class="table-layout">
- *   <div class="table-layout-search">
- *     <!-- Input de búsqueda -->
- *   </div>
- *   <div class="table-layout-content">
- *     <div class="table-container">
- *       <table class="table">...</table>
- *     </div>
- *   </div>
- *   <div class="table-layout-footer">
- *     <nav class="table-pagination">...</nav>
- *   </div>
- * </div>
- */
-
 .table-layout {
     display: flex;
     flex-direction: column;
@@ -37,7 +15,7 @@
     overflow: hidden;
     display: flex;
     flex-direction: column;
-    min-height: 0; /* Importante para que flex funcione correctamente */
+    min-height: 0;
     background: var(--dark-bg-2);
     border-radius: var(--border-radius-lg);
     border: 1px solid color-mix(in srgb, var(--primary) 20%, transparent);
@@ -48,7 +26,7 @@
     overflow-y: auto;
     overflow-x: auto;
     margin-bottom: 0;
-    min-height: 200px; /* Altura mínima para evitar colapso */
+    min-height: 200px;
     background: transparent;
     border: none;
     border-radius: 0;
@@ -63,12 +41,9 @@
     padding: var(--spM) 0;
 }
 
-/* Variante compacta */
 .table-layout-compact .table-layout-content .table-container {
     min-height: 150px;
 }
-
-/* Variante con altura fija específica */
 .table-layout-fixed-sm .table-layout-content .table-container {
     max-height: 300px;
 }
@@ -85,7 +60,6 @@
     max-height: 600px;
 }
 
-/* Responsive */
 @media (max-width: 767px) {
     .table-layout {
         gap: var(--spS);

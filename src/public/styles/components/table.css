@@ -63,11 +63,22 @@
     color: var(--text-light-muted);
 }
 
+.table td.cell-status,
+.table td.cell-actions {
+    text-align: center;
+}
+
+.table th.header-status,
+.table th.header-actions {
+    text-align: center;
+}
+
 .table-actions {
     display: flex;
     align-items: center;
     gap: var(--spXS);
     flex-wrap: wrap;
+    justify-content: center;
 }
 
 .table-actions .btn {
@@ -113,7 +124,6 @@
     color: color-mix(in srgb, var(--text-light) 20%, transparent);
 }
 
-/* Table Badges */
 .table-badge {
     display: inline-flex;
     align-items: center;
@@ -333,6 +343,7 @@
 }
 
 @media (min-width: 992px) {
+
     .table-header th:last-child,
     .table tbody td:last-child {
         text-align: center;
