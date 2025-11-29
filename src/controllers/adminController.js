@@ -435,6 +435,58 @@ const getProjects = async (req, res) => {
     }
 };
 
+const getProjectById = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        const project = await adminRepository.getProjectById(id);
+
+        if (!project) {
+            return res.status(404).json({
+                success: false,
+                message: 'Proyecto no encontrado'
+            });
+        }
+
+        res.status(200).json({
+            success: true,
+            message: 'Proyecto obtenido exitosamente',
+            data: {
+                project: {
+                    id: project.id,
+                    title: project.title,
+                    slug: project.slug,
+                    description: project.description,
+                    summary: project.summary,
+                    financial_goal: parseFloat(project.financial_goal),
+                    raised_amount: parseFloat(project.raised_amount),
+                    start_date: project.start_date,
+                    end_date: project.end_date,
+                    approval_status: project.approval_status,
+                    campaign_status: project.campaign_status,
+                    location: project.location,
+                    video_url: project.video_url,
+                    created_at: project.created_at,
+                    updated_at: project.updated_at,
+                    creator_name: project.creator_name,
+                    creator_id: project.creator_id,
+                    category_name: project.category_name,
+                    category_id: project.category_id,
+                    cover_image_url: project.cover_image_url,
+                    images: project.images || [],
+                    proof_document_url: project.proof_document_url
+                }
+            }
+        });
+    } catch (error) {
+        console.error('Error obteniendo proyecto:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Error obteniendo proyecto'
+        });
+    }
+};
+
 module.exports = {
     getDashboardStats,
     getUsers,
@@ -448,5 +500,6 @@ module.exports = {
     createCategory,
     updateCategory,
     deleteCategory,
-    getProjects
+    getProjects,
+    getProjectById
 };

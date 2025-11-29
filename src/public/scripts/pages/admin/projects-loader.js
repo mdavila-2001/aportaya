@@ -152,7 +152,7 @@
 
         switch (action) {
             case 'review':
-                console.log('Review project:', projectId);
+                window.location.href = `projectMod.html?id=${projectId}`;
                 break;
             case 'approve':
                 console.log('Approve project:', projectId);

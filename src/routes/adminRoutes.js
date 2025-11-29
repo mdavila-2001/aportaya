@@ -24,5 +24,6 @@ router.put('/categories/:id', adminController.updateCategory);
 router.delete('/categories/:id', adminController.deleteCategory);
 
 router.get('/projects', adminController.getProjects);
+router.get('/projects/:id', adminController.getProjectById);
 
 module.exports = router;

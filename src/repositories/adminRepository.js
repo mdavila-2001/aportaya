@@ -594,6 +594,66 @@ const getProjects = async (filters = {}) => {
     }
 };
 
+const getProjectById = async (projectId) => {
+    const client = await dbPool.connect();
+    try {
+        const query = `
+            SELECT 
+                p.id,
+                p.title,
+                p.slug,
+                p.description,
+                p.summary,
+                p.financial_goal,
+                p.raised_amount,
+                p.start_date,
+                p.end_date,
+                p.approval_status,
+                p.campaign_status,
+                p.location,
+                p.video_url,
+                p.created_at,
+                p.updated_at,
+                u.first_name || ' ' || COALESCE(u.middle_name || ' ', '') || u.last_name || ' ' || COALESCE(u.mother_last_name, '') as creator_name,
+                u.id as creator_id,
+                c.name as category_name,
+                c.id as category_id,
+                d.file_path as proof_document_url
+            FROM projects.project p
+            INNER JOIN users.user u ON p.creator_id = u.id
+            LEFT JOIN projects.category c ON p.category_id = c.id
+            LEFT JOIN files.document d ON p.proof_document_id = d.id
+            WHERE p.id = $1
+        `;
+
+        const { rows } = await client.query(query, [projectId]);
+
+        if (rows.length === 0) {
+            return null;
+        }
+
+        // Obtener imágenes del proyecto
+        const imagesQuery = `
+            SELECT img.file_path, pi.is_cover, pi.display_order
+            FROM projects.project_image pi
+            INNER JOIN files.image img ON pi.image_id = img.id
+            WHERE pi.project_id = $1
+            ORDER BY pi.is_cover DESC, pi.display_order ASC
+        `;
+
+        const imagesResult = await client.query(imagesQuery, [projectId]);
+        rows[0].images = imagesResult.rows.map(img => img.file_path);
+        rows[0].cover_image_url = rows[0].images[0] || null;
+
+        return rows[0];
+    } catch (error) {
+        console.error('Error obteniendo proyecto por ID:', error);
+        throw error;
+    } finally {
+        client.release();
+    }
+};
+
 module.exports = {
     getStats,
     getUsers,
@@ -607,5 +667,6 @@ module.exports = {
     createCategory,
     updateCategory,
     deleteCategory,
-    getProjects
+    getProjects,
+    getProjectById
 };
