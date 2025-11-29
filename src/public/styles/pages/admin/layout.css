@@ -17,6 +17,10 @@
     flex-shrink: 0;
 }
 
+.user-name {
+    color: var(--text-light);
+}
+
 .admin-main > main {
     flex: 1;
     display: flex;

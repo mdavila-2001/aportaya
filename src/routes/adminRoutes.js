@@ -23,4 +23,6 @@ router.post('/categories', adminController.createCategory);
 router.put('/categories/:id', adminController.updateCategory);
 router.delete('/categories/:id', adminController.deleteCategory);
 
+router.get('/projects', adminController.getProjects);
+
 module.exports = router;

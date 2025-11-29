@@ -109,7 +109,7 @@ const updateUserStatus = async (userId, newStatus, reason = null, changedBy = nu
     try {
         await client.query('BEGIN');
 
-        
+
         const updateQuery = `
             UPDATE users.user 
             SET status = $1, updated_at = NOW()
@@ -122,7 +122,7 @@ const updateUserStatus = async (userId, newStatus, reason = null, changedBy = nu
             throw new Error('Usuario no encontrado');
         }
 
-        
+
         const historyQuery = `
             INSERT INTO users.user_status_history (user_id, old_status, new_status, changed_by, reason)
             VALUES ($1, $2, $3, $4, $5)
@@ -208,7 +208,7 @@ const createAdministrator = async (adminData) => {
     try {
         await client.query('BEGIN');
 
-        
+
         const roleQuery = `SELECT id FROM roles.role WHERE name = 'Administrador'`;
         const roleResult = await client.query(roleQuery);
 
@@ -218,7 +218,7 @@ const createAdministrator = async (adminData) => {
 
         const adminRoleId = roleResult.rows[0].id;
 
-        
+
         const createQuery = `
             SELECT users.create_admin(
                 $1, $2, $3, $4, $5, $6, $7, $8, $9, $10
@@ -256,12 +256,12 @@ const updateAdministrator = async (adminId, adminData) => {
     try {
         await client.query('BEGIN');
 
-        
+
         const updateFields = [];
         const values = [];
         let paramCount = 1;
 
-        
+
         updateFields.push(`first_name = $${paramCount++}`);
         values.push(adminData.firstName);
 
@@ -288,7 +288,7 @@ const updateAdministrator = async (adminId, adminData) => {
             values.push(adminData.profileImageId);
         }
 
-        
+
         if (adminData.password) {
             const bcrypt = require('bcrypt');
             const hashedPassword = await bcrypt.hash(adminData.password, 10);
@@ -298,7 +298,7 @@ const updateAdministrator = async (adminId, adminData) => {
 
         updateFields.push(`updated_at = NOW()`);
 
-        
+
         values.push(adminId);
 
         const updateQuery = `
@@ -328,7 +328,7 @@ const updateAdministrator = async (adminId, adminData) => {
 const deleteAdministrator = async (adminId) => {
     const client = await dbPool.connect();
     try {
-        
+
         const countQuery = `
             SELECT COUNT(*) as count
             FROM roles.user_role ur
@@ -341,7 +341,7 @@ const deleteAdministrator = async (adminId) => {
             throw new Error('No se puede eliminar el último administrador del sistema');
         }
 
-        
+
         const deleteQuery = `
             UPDATE users.user 
             SET status = 'deleted', deleted_at = NOW()
@@ -409,7 +409,7 @@ const createCategory = async (categoryData) => {
         return rows[0].category_id;
     } catch (error) {
         console.error('Error creando categoría:', error);
-        if (error.code === '23505') { 
+        if (error.code === '23505') {
             throw new Error('El slug de la categoría ya existe');
         }
         throw error;
@@ -467,7 +467,7 @@ const updateCategory = async (categoryId, categoryData) => {
         return rows[0].id;
     } catch (error) {
         console.error('Error actualizando categoría:', error);
-        if (error.code === '23505') { 
+        if (error.code === '23505') {
             throw new Error('El slug de la categoría ya existe');
         }
         throw error;
@@ -479,7 +479,7 @@ const updateCategory = async (categoryId, categoryData) => {
 const deleteCategory = async (categoryId) => {
     const client = await dbPool.connect();
     try {
-        
+
         const checkQuery = `
             SELECT COUNT(*) as count
             FROM projects.project
@@ -491,7 +491,7 @@ const deleteCategory = async (categoryId) => {
             throw new Error('No se puede eliminar la categoría porque tiene proyectos asociados');
         }
 
-        
+
         const childrenQuery = `
             SELECT COUNT(*) as count
             FROM projects.category
@@ -524,6 +524,76 @@ const deleteCategory = async (categoryId) => {
     }
 };
 
+const getProjects = async (filters = {}) => {
+    const client = await dbPool.connect();
+    try {
+        let query = `
+            SELECT 
+                p.id,
+                p.title,
+                p.slug,
+                p.description,
+                p.summary,
+                p.financial_goal,
+                p.raised_amount,
+                p.start_date,
+                p.end_date,
+                p.approval_status,
+                p.campaign_status,
+                p.location,
+                p.video_url,
+                p.created_at,
+                p.updated_at,
+                u.first_name || ' ' || COALESCE(u.middle_name || ' ', '') || u.last_name || ' ' || COALESCE(u.mother_last_name, '') as creator_name,
+                u.id as creator_id,
+                c.name as category_name,
+                c.id as category_id,
+                img.file_path as cover_image_url
+            FROM projects.project p
+            INNER JOIN users.user u ON p.creator_id = u.id
+            LEFT JOIN projects.category c ON p.category_id = c.id
+            LEFT JOIN projects.project_image pi ON p.id = pi.project_id AND pi.is_cover = TRUE
+            LEFT JOIN files.image img ON pi.image_id = img.id
+            WHERE 1=1
+        `;
+
+        const params = [];
+
+        if (filters.approval_status) {
+            params.push(filters.approval_status);
+            query += ` AND p.approval_status = $${params.length}`;
+        }
+
+        if (filters.searchBy) {
+            params.push(`%${filters.searchBy}%`);
+            query += ` AND (
+                public.normalize_search_text(p.title) LIKE public.normalize_search_text($${params.length}) OR
+                public.normalize_search_text(u.first_name || ' ' || COALESCE(u.middle_name, '') || ' ' || u.last_name || ' ' || COALESCE(u.mother_last_name, '')) LIKE public.normalize_search_text($${params.length})
+            )`;
+        }
+
+        query += ` ORDER BY p.created_at DESC`;
+
+        if (filters.limit) {
+            params.push(filters.limit);
+            query += ` LIMIT $${params.length}`;
+        }
+
+        if (filters.offset) {
+            params.push(filters.offset);
+            query += ` OFFSET $${params.length}`;
+        }
+
+        const { rows } = await client.query(query, params);
+        return rows;
+    } catch (error) {
+        console.error('Error obteniendo proyectos:', error);
+        throw error;
+    } finally {
+        client.release();
+    }
+};
+
 module.exports = {
     getStats,
     getUsers,
@@ -536,5 +606,6 @@ module.exports = {
     getCategories,
     createCategory,
     updateCategory,
-    deleteCategory
+    deleteCategory,
+    getProjects
 };

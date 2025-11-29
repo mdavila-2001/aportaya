@@ -93,7 +93,7 @@ const updateUserStatus = async (req, res) => {
         const { status, reason } = req.body;
         const adminId = req.user.id;
 
-        
+
         const validStatuses = ['active', 'suspended', 'banned', 'pending_verification'];
         if (!validStatuses.includes(status)) {
             return res.status(400).json({
@@ -224,7 +224,7 @@ const updateAdministrator = async (req, res) => {
             gender: req.body.gender,
             birthDate: req.body.birthDate,
             profileImageId: req.body.profileImageId,
-            password: req.body.password 
+            password: req.body.password
         };
 
         await adminRepository.updateAdministrator(id, adminData);
@@ -246,7 +246,7 @@ const deleteAdministrator = async (req, res) => {
     try {
         const { id } = req.params;
 
-        
+
         if (id === req.user.id) {
             return res.status(400).json({
                 success: false,
@@ -307,7 +307,7 @@ const createCategory = async (req, res) => {
             parentId: req.body.parentId
         };
 
-        
+
         if (!categoryData.name || !categoryData.slug) {
             return res.status(400).json({
                 success: false,
@@ -380,6 +380,61 @@ const deleteCategory = async (req, res) => {
     }
 };
 
+const getProjects = async (req, res) => {
+    try {
+        const { approval_status, searchBy, page = 1, limit = 50 } = req.query;
+
+        const filters = {
+            approval_status,
+            searchBy,
+            limit: parseInt(limit),
+            offset: (parseInt(page) - 1) * parseInt(limit)
+        };
+
+        const projects = await adminRepository.getProjects(filters);
+
+        res.status(200).json({
+            success: true,
+            message: 'Proyectos obtenidos exitosamente',
+            data: {
+                projects: projects.map(project => ({
+                    id: project.id,
+                    title: project.title,
+                    slug: project.slug,
+                    description: project.description,
+                    summary: project.summary,
+                    financial_goal: parseFloat(project.financial_goal),
+                    raised_amount: parseFloat(project.raised_amount),
+                    start_date: project.start_date,
+                    end_date: project.end_date,
+                    approval_status: project.approval_status,
+                    campaign_status: project.campaign_status,
+                    location: project.location,
+                    video_url: project.video_url,
+                    created_at: project.created_at,
+                    updated_at: project.updated_at,
+                    creator_name: project.creator_name,
+                    creator_id: project.creator_id,
+                    category_name: project.category_name,
+                    category_id: project.category_id,
+                    cover_image_url: project.cover_image_url
+                })),
+                pagination: {
+                    page: parseInt(page),
+                    limit: parseInt(limit),
+                    total: projects.length
+                }
+            }
+        });
+    } catch (error) {
+        console.error('Error obteniendo proyectos:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Error obteniendo lista de proyectos'
+        });
+    }
+};
+
 module.exports = {
     getDashboardStats,
     getUsers,
@@ -392,5 +447,6 @@ module.exports = {
     getCategories,
     createCategory,
     updateCategory,
-    deleteCategory
+    deleteCategory,
+    getProjects
 };
