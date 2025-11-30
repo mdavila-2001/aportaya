@@ -1,187 +1,144 @@
-(function () {
-    'use strict';
+// Dashboard Loader - Simple JavaScript sin cosas extravagantes
 
-    const API_BASE_URL = '/api/admin';
+const API_BASE = '/api/admin';
 
-    async function loadDashboardStats() {
-        try {
-            const token = localStorage.getItem('token');
-            console.log('Token encontrado:', token ? 'Sí' : 'No');
+// Función simple para actualizar un elemento
+function updateElement(id, value) {
+    const el = document.getElementById(id);
+    if (el) el.textContent = value;
+}
 
-            if (!token) {
-                console.error('No hay token, redirigiendo al login');
-                window.location.href = '../auth/login.html';
-                return;
-            }
+// Formatear moneda simple
+function formatMoney(amount) {
+    return `Bs. ${amount.toLocaleString('es-BO', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+}
 
-            console.log('Haciendo petición a /api/admin/stats...');
-            const response = await fetch(`${API_BASE_URL}/stats`, {
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                    'Content-Type': 'application/json'
-                }
-            });
-
-            console.log('Respuesta recibida:', response.status, response.statusText);
-
-            if (!response.ok) {
-                const errorText = await response.text();
-                console.error('Error en la respuesta:', errorText);
-
-                if (response.status === 401 || response.status === 403) {
-                    console.error('No autorizado, redirigiendo al login');
-                    localStorage.removeItem('token');
-                    window.location.href = '../auth/login.html';
-                    return;
-                }
-                throw new Error('Error al cargar estadísticas: ' + response.status);
-            }
-
-            const result = await response.json();
-            const stats = result.data;
-
-            // Update stat cards
-            updateStat('total-users', stats.users.total);
-            updateStat('active-users', stats.users.active);
-            updateStat('pending-users', stats.users.pending);
-            updateStat('suspended-users', stats.users.suspended);
-
-            updateStat('total-projects', stats.projects.total);
-            updateStat('published-projects', stats.projects.published);
-            updateStat('pending-projects', stats.projects.pending);
-            updateStat('draft-projects', stats.projects.draft);
-
-            updateStat('total-donations', stats.donations.total);
-            updateStat('total-donated', formatCurrency(stats.donations.total_amount));
-
-            updateStat('total-categories', stats.categories.total);
-
-            // Update charts
-            updateProjectsChart(stats.projects);
-            updateUsersChart(stats.users);
-
-            // Load categories
-            await loadCategories(token);
-
-        } catch (error) {
-            console.error('Error cargando estadísticas:', error);
-            showError('Error al cargar las estadísticas del dashboard');
-        }
-    }
-
-    function updateStat(elementId, value) {
-        const element = document.getElementById(elementId);
-        if (element) {
-            element.textContent = value;
-        }
-    }
-
-    function formatCurrency(amount) {
-        return new Intl.NumberFormat('es-BO', {
-            style: 'currency',
-            currency: 'BOB'
-        }).format(amount);
-    }
-
-    function updateProjectsChart(projectsData) {
-        const totalProjects = projectsData.total || 1;
-        updateBar('projects-chart', 0, projectsData.published, totalProjects);
-        updateBar('projects-chart', 1, projectsData.pending, totalProjects);
-        updateBar('projects-chart', 2, projectsData.draft, totalProjects);
-        updateBar('projects-chart', 3, projectsData.rejected, totalProjects);
-    }
-
-    function updateUsersChart(usersData) {
-        const totalUsers = usersData.total || 1;
-        updateBar('users-chart', 0, usersData.active, totalUsers);
-        updateBar('users-chart', 1, usersData.pending, totalUsers);
-        updateBar('users-chart', 2, usersData.suspended, totalUsers);
-        updateBar('users-chart', 3, usersData.banned, totalUsers);
-    }
-
-    function updateBar(chartId, index, value, total) {
-        const chart = document.getElementById(chartId);
-        if (!chart) return;
-
-        const barItems = chart.querySelectorAll('.bar-item');
-        if (!barItems[index]) return;
-
-        const bar = barItems[index].querySelector('.bar');
-        const valueSpan = barItems[index].querySelector('.bar-value');
-
-        if (bar && valueSpan) {
-            const percentage = total > 0 ? (value / total) * 100 : 0;
-            bar.style.width = `${percentage}%`;
-            valueSpan.textContent = value;
-        }
-    }
-
-    async function loadCategories(token) {
-        try {
-            const response = await fetch(`${API_BASE_URL}/categories`, {
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                    'Content-Type': 'application/json'
-                }
-            });
-
-            if (!response.ok) {
-                throw new Error('Error al cargar categorías');
-            }
-
-            const result = await response.json();
-            renderCategories(result.data.categories);
-
-        } catch (error) {
-            console.error('Error cargando categorías:', error);
-            const categoriesList = document.getElementById('categories-list');
-            if (categoriesList) {
-                categoriesList.innerHTML = '<p class="loading-msg">Error al cargar categorías</p>';
-            }
-        }
-    }
-
-    function renderCategories(categories) {
-        const categoriesList = document.getElementById('categories-list');
-        if (!categoriesList) return;
-
-        if (categories.length === 0) {
-            categoriesList.innerHTML = '<p class="loading-msg">No hay categorías disponibles</p>';
+// Cargar estadísticas del dashboard
+async function loadDashboardStats() {
+    try {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            window.location.href = '../auth/login.html';
             return;
         }
 
-        categoriesList.innerHTML = '';
-
-        categories.forEach(category => {
-            const item = document.createElement('div');
-            item.className = 'category-item';
-
-            const nameDiv = document.createElement('div');
-            const name = document.createElement('span');
-            name.className = 'category-name';
-            name.textContent = category.name;
-            nameDiv.appendChild(name);
-
-            const slug = document.createElement('span');
-            slug.className = 'category-slug';
-            slug.textContent = category.slug;
-
-            item.appendChild(nameDiv);
-            item.appendChild(slug);
-
-            categoriesList.appendChild(item);
+        const response = await fetch(`${API_BASE}/stats`, {
+            headers: { 'Authorization': `Bearer ${token}` }
         });
+
+        if (!response.ok) {
+            if (response.status === 401) {
+                window.location.href = '../auth/login.html';
+            }
+            return;
+        }
+
+        const result = await response.json();
+        const stats = result.data;
+
+        // Actualizar tarjetas de stats
+        updateElement('total-projects', stats.projects.total || 0);
+        updateElement('total-amount', formatMoney(stats.donations.total_amount || 0));
+        updateElement('total-users', stats.users.total || 0);
+        updateElement('total-donations', stats.donations.total || 0);
+
+        // Actualizar gráfico de proyectos
+        updateProjectsChart(stats.projects);
+
+        // Actualizar gráfico de usuarios
+        updateUsersChart(stats.users);
+
+        // Cargar categorías
+        await loadCategories(token);
+
+    } catch (error) {
+        console.error('Error loading dashboard stats:', error);
+    }
+}
+
+// Actualizar gráfico de proyectos
+function updateProjectsChart(projects) {
+    const total = projects.total || 1;
+    const chart = document.getElementById('projects-chart');
+    if (!chart) return;
+
+    // Publicados
+    updateBar(chart, 0, projects.published || 0, total);
+    // Pendientes
+    updateBar(chart, 1, projects.pending || 0, total);
+    // Borradores
+    updateBar(chart, 2, projects.draft || 0, total);
+    // Rechazados
+    updateBar(chart, 3, projects.rejected || 0, total);
+}
+
+// Actualizar gráfico de usuarios
+function updateUsersChart(users) {
+    const total = users.total || 1;
+    const chart = document.getElementById('users-chart');
+    if (!chart) return;
+
+    // Activos
+    updateBar(chart, 0, users.active || 0, total);
+    // Pendientes
+    updateBar(chart, 1, users.pending || 0, total);
+    // Suspendidos
+    updateBar(chart, 2, users.suspended || 0, total);
+    // Baneados
+    updateBar(chart, 3, users.banned || 0, total);
+}
+
+// Actualizar barra individual
+function updateBar(container, index, value, total) {
+    const rows = container.querySelectorAll('.bar-row');
+    if (!rows[index]) return;
+
+    const bar = rows[index].querySelector('.bar-fill');
+    const valueSpan = rows[index].querySelector('.bar-value');
+
+    if (bar && valueSpan) {
+        const percentage = total > 0 ? (value / total * 100) : 0;
+        bar.style.width = percentage + '%';
+        valueSpan.textContent = value;
+    }
+}
+
+// Cargar categorías
+async function loadCategories(token) {
+    try {
+        const response = await fetch(`${API_BASE}/categories`, {
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
+
+        if (!response.ok) return;
+
+        const result = await response.json();
+        renderCategories(result.data.categories || []);
+
+    } catch (error) {
+        console.error('Error loading categories:', error);
+    }
+}
+
+// Renderizar categorías
+function renderCategories(categories) {
+    const container = document.getElementById('categories-list');
+    if (!container) return;
+
+    if (categories.length === 0) {
+        container.innerHTML = '<p class="loading-text">No hay categorías disponibles</p>';
+        return;
     }
 
-    function showError(message) {
-        console.error(message);
-    }
+    container.innerHTML = categories.map(cat => `
+        <div class="category-item">
+            <span class="category-name">${cat.name}</span>
+            <span class="category-slug">${cat.slug}</span>
+        </div>
+    `).join('');
+}
 
-    // Initialize
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', loadDashboardStats);
-    } else {
-        loadDashboardStats();
-    }
-
-})();
+// Inicializar cuando carga la página
+document.addEventListener('DOMContentLoaded', () => {
+    loadDashboardStats();
+});

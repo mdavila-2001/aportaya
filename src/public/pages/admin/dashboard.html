@@ -13,15 +13,12 @@
 
     <link rel="stylesheet" href="../../styles/styles.css">
     <link rel="stylesheet" href="../../styles/fonts.css">
-
     <link rel="stylesheet" href="../../styles/components/buttons.css">
-    <link rel="stylesheet" href="../../styles/components/cards.css">
     <link rel="stylesheet" href="../../styles/components/chips.css">
-    <link rel="stylesheet" href="../../styles/components/forms.css">
-    <link rel="stylesheet" href="../../styles/components/progress.css">
-    <link rel="stylesheet" href="../../styles/components/sidebar.css">
     <link rel="stylesheet" href="../../styles/components/header.css">
+    <link rel="stylesheet" href="../../styles/components/sidebar.css">
     <link rel="stylesheet" href="../../styles/pages/admin/layout.css">
+    <link rel="stylesheet" href="../../styles/pages/admin/dashboard.css">
 
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
 
@@ -58,8 +55,8 @@
                     </li>
                     <li class="sidebar-item">
                         <a href="projects/projects.html">
-                            <span class="material-symbols-outlined">folder</span>
-                            <span>Proyectos</span>
+                            <span class="material-symbols-outlined filled">verified_user</span>
+                            <span>Moderación</span>
                         </a>
                     </li>
                     <li class="sidebar-item">
@@ -99,26 +96,26 @@
                         <div class="floating-menu">
                             <nav class="user-menu" aria-label="User Menu">
                                 <ul class="mobile-sidebar-items">
-                                    <li class="mobile-sidebar-item">
-                                        <a href="../dashboard.html">
+                                    <li class="mobile-sidebar-item active">
+                                        <a href="dashboard.html">
                                             <span class="material-symbols-outlined">dashboard</span>
                                             <span>Dashboard</span>
                                         </a>
                                     </li>
-                                    <li class="mobile-sidebar-item active">
-                                        <a href="categories.html">
-                                            <span class="material-symbols-outlined filled">category</span>
+                                    <li class="mobile-sidebar-item">
+                                        <a href="projects/categories.html">
+                                            <span class="material-symbols-outlined">category</span>
                                             <span>Categorías</span>
                                         </a>
                                     </li>
                                     <li class="mobile-sidebar-item">
-                                        <a href="projects.html">
-                                            <span class="material-symbols-outlined">folder</span>
-                                            <span>Proyectos</span>
+                                        <a href="projects/projects.html">
+                                            <span class="material-symbols-outlined filled">verified_user</span>
+                                            <span>Moderación</span>
                                         </a>
                                     </li>
                                     <li class="mobile-sidebar-item">
-                                        <a href="../users/admins.html">
+                                        <a href="users/admins.html">
                                             <span class="material-symbols-outlined">admin_panel_settings</span>
                                             <span>Administradores</span>
                                         </a>
@@ -160,84 +157,122 @@
             </header>
 
             <main>
-                <div class="title">
-                    <h1>Dashboard</h1>
+                <div class="dashboard-header">
+                    <h1>Panel de Estadísticas</h1>
                 </div>
 
-                <div
-                    style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: var(--spL); margin-bottom: var(--spXL);">
-                    <div class="card">
-                        <div class="card-body">
-                            <h3 style="margin-bottom: var(--spM); color: var(--text-light);">Usuarios</h3>
-                            <div style="display: flex; flex-direction: column; gap: var(--spS);">
-                                <div style="display: flex; justify-content: space-between;">
-                                    <span>Total:</span>
-                                    <strong id="total-users">0</strong>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-card-header">
+                            <p>Proyectos Totales</p>
+                            <span class="material-symbols-outlined">folder</span>
+                        </div>
+                        <p class="stat-value" id="total-projects">0</p>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-card-header">
+                            <p>Monto Recaudado</p>
+                            <span class="material-symbols-outlined">payments</span>
+                        </div>
+                        <p class="stat-value" id="total-amount">Bs. 0</p>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-card-header">
+                            <p>Usuarios Registrados</p>
+                            <span class="material-symbols-outlined">group</span>
+                        </div>
+                        <p class="stat-value" id="total-users">0</p>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-card-header">
+                            <p>Donaciones Realizadas</p>
+                            <span class="material-symbols-outlined">volunteer_activism</span>
+                        </div>
+                        <p class="stat-value" id="total-donations">0</p>
+                    </div>
+                </div>
+
+                <!-- Charts Grid -->
+                <div class="charts-grid">
+                    <!-- Projects Chart -->
+                    <div class="chart-card">
+                        <h3>Estado de Proyectos</h3>
+                        <div class="horizontal-bars" id="projects-chart">
+                            <div class="bar-row">
+                                <span class="bar-label">Publicados</span>
+                                <div class="bar-track">
+                                    <div class="bar-fill bar-success" style="width: 0%"></div>
+                                    <span class="bar-value">0</span>
                                 </div>
-                                <div style="display: flex; justify-content: space-between;">
-                                    <span>Activos:</span>
-                                    <strong id="active-users" style="color: var(--success);">0</strong>
+                            </div>
+                            <div class="bar-row">
+                                <span class="bar-label">Pendientes</span>
+                                <div class="bar-track">
+                                    <div class="bar-fill bar-warning" style="width: 0%"></div>
+                                    <span class="bar-value">0</span>
                                 </div>
-                                <div style="display: flex; justify-content: space-between;">
-                                    <span>Pendientes:</span>
-                                    <strong id="pending-users" style="color: var(--warning);">0</strong>
+                            </div>
+                            <div class="bar-row">
+                                <span class="bar-label">Borradores</span>
+                                <div class="bar-track">
+                                    <div class="bar-fill bar-info" style="width: 0%"></div>
+                                    <span class="bar-value">0</span>
                                 </div>
-                                <div style="display: flex; justify-content: space-between;">
-                                    <span>Suspendidos:</span>
-                                    <strong id="suspended-users" style="color: var(--error);">0</strong>
+                            </div>
+                            <div class="bar-row">
+                                <span class="bar-label">Rechazados</span>
+                                <div class="bar-track">
+                                    <div class="bar-fill bar-error" style="width: 0%"></div>
+                                    <span class="bar-value">0</span>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="card">
-                        <div class="card-body">
-                            <h3 style="margin-bottom: var(--spM); color: var(--text-light);">Proyectos</h3>
-                            <div style="display: flex; flex-direction: column; gap: var(--spS);">
-                                <div style="display: flex; justify-content: space-between;">
-                                    <span>Total:</span>
-                                    <strong id="total-projects">0</strong>
+                    <!-- Users Chart -->
+                    <div class="chart-card">
+                        <h3>Estado de Usuarios</h3>
+                        <div class="horizontal-bars" id="users-chart">
+                            <div class="bar-row">
+                                <span class="bar-label">Activos</span>
+                                <div class="bar-track">
+                                    <div class="bar-fill bar-success" style="width: 0%"></div>
+                                    <span class="bar-value">0</span>
                                 </div>
-                                <div style="display: flex; justify-content: space-between;">
-                                    <span>Publicados:</span>
-                                    <strong id="published-projects" style="color: var(--success);">0</strong>
+                            </div>
+                            <div class="bar-row">
+                                <span class="bar-label">Pendientes</span>
+                                <div class="bar-track">
+                                    <div class="bar-fill bar-warning" style="width: 0%"></div>
+                                    <span class="bar-value">0</span>
                                 </div>
-                                <div style="display: flex; justify-content: space-between;">
-                                    <span>Pendientes:</span>
-                                    <strong id="pending-projects" style="color: var(--warning);">0</strong>
+                            </div>
+                            <div class="bar-row">
+                                <span class="bar-label">Suspendidos</span>
+                                <div class="bar-track">
+                                    <div class="bar-fill bar-error" style="width: 0%"></div>
+                                    <span class="bar-value">0</span>
                                 </div>
-                                <div style="display: flex; justify-content: space-between;">
-                                    <span>Borradores:</span>
-                                    <strong id="draft-projects">0</strong>
+                            </div>
+                            <div class="bar-row">
+                                <span class="bar-label">Baneados</span>
+                                <div class="bar-track">
+                                    <div class="bar-fill bar-dark" style="width: 0%"></div>
+                                    <span class="bar-value">0</span>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="card">
-                        <div class="card-body">
-                            <h3 style="margin-bottom: var(--spM); color: var(--text-light);">Donaciones</h3>
-                            <div style="display: flex; flex-direction: column; gap: var(--spS);">
-                                <div style="display: flex; justify-content: space-between;">
-                                    <span>Total:</span>
-                                    <strong id="total-donations">0</strong>
-                                </div>
-                                <div style="display: flex; justify-content: space-between;">
-                                    <span>Recaudado:</span>
-                                    <strong id="total-donated" style="color: var(--primary);">Bs. 0</strong>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <div class="card-body">
-                            <h3 style="margin-bottom: var(--spM); color: var(--text-light);">Categorías</h3>
-                            <div style="display: flex; flex-direction: column; gap: var(--spS);">
-                                <div style="display: flex; justify-content: space-between;">
-                                    <span>Total:</span>
-                                    <strong id="total-categories">0</strong>
-                                </div>
-                            </div>
-                        </div>
+                </div>
+
+                <!-- Categories List -->
+                <div class="categories-section">
+                    <h3>Categorías Disponibles</h3>
+                    <div class="categories-grid" id="categories-list">
+                        <p class="loading-text">Cargando categorías...</p>
                     </div>
                 </div>
             </main>
