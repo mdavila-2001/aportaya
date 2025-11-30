@@ -8,6 +8,7 @@ const documentRouter = require('./routes/documentRouter');
 const projectRoutes = require('./routes/projectRoutes');
 const adminRoutes = require('./routes/adminRoutes');
 const donationRoutes = require('./routes/donationRoutes');
+const paymentRoutes = require('./routes/paymentRoutes');
 
 const path = require('node:path');
 require('dotenv').config({ path: path.resolve(__dirname, '..', '.env') });
@@ -27,6 +28,7 @@ app.use('/api/image', imageRouter);
 app.use('/api/document', documentRouter);
 app.use('/api/admin', adminRoutes);
 app.use('/api', donationRoutes);
+app.use('/api', paymentRoutes);
 
 const PORT = process.env.PORT || 3000;
 
