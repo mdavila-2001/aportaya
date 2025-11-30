@@ -1,62 +1,156 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - AportaYa</title>
-    <link rel="stylesheet" href="../../styles/components/header.css">
-    <link rel="stylesheet" href="../../styles/components/footer.css">
-    <link rel="stylesheet" href="../../styles/components/sidebar.css">
+    <meta name="author" content="Danny Marcelo Dávila Barrancos">
+    <meta name="description" content="Dashboard de usuario - AportaYa">
+    <meta property="og:title" content="Mi Dashboard - AportaYa">
+    <meta property="og:author" content="Danny Marcelo Dávila Barrancos">
+    <meta property="og:description" content="Dashboard de usuario - AportaYa">
+    <link rel="shortcut icon" href="../../images/favicon.ico" type="image/x-icon">
 
     <link rel="stylesheet" href="../../styles/styles.css">
+    <link rel="stylesheet" href="../../styles/fonts.css">
+    <link rel="stylesheet" href="../../styles/components/buttons.css">
+    <link rel="stylesheet" href="../../styles/components/header.css">
+    <link rel="stylesheet" href="../../styles/components/sidebar.css">
+    <link rel="stylesheet" href="../../styles/components/progress.css">
+    <link rel="stylesheet" href="../../styles/pages/user/layout.css">
+    <link rel="stylesheet" href="../../styles/pages/user/dashboard.css">
 
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+
+    <title>Mi Dashboard - AportaYa</title>
 </head>
+
 <body>
-    <header class="header">
-        <div class="header__container">
-            <a href="/" class="header__logo">AportaYa</a>
-            <nav class="header__nav">
-                <a href="/pages/projects/projects.html" class="header__link">Proyectos</a>
-                <a href="/pages/user/dashboard.html" class="header__link header__link--active">Mi Dashboard</a>
-                <div class="header__user-info">
-                    <img src="/uploads/avatar/default.png" alt="Usuario" class="user-avatar" width="40" height="40">
-                    <span class="user-name">Cargando...</span>
+    <main class="user-content">
+        <aside class="sidebar user-sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-brand">
+                    <div class="brand-icon">
+                        <span class="material-symbols-outlined">volunteer_activism</span>
+                    </div>
+                    <div class="brand-text">
+                        <h1>AportaYa</h1>
+                        <p>Mi Cuenta</p>
+                    </div>
                 </div>
-                <button id="logout-btn" class="header__link">Cerrar Sesión</button>
+            </div>
+            <nav class="sidebar-nav" aria-label="Menú de navegación principal">
+                <ul class="sidebar-items">
+                    <li class="sidebar-item active">
+                        <a href="dashboard.html">
+                            <span class="material-symbols-outlined filled">dashboard</span>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a href="../projects/projects.html">
+                            <span class="material-symbols-outlined">explore</span>
+                            <span>Proyectos</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a href="my-projects.html">
+                            <span class="material-symbols-outlined">folder</span>
+                            <span>Mis Proyectos</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a href="favorites.html">
+                            <span class="material-symbols-outlined">bookmark</span>
+                            <span>Favoritos</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a href="settings.html">
+                            <span class="material-symbols-outlined">settings</span>
+                            <span>Configuración</span>
+                        </a>
+                    </li>
+                </ul>
             </nav>
-        </div>
-    </header>
+            <div class="sidebar-footer">
+                <ul class="sidebar-items">
+                    <li class="sidebar-item logout-item">
+                        <a href="#" class="logout-btn">
+                            <span class="material-symbols-outlined">logout</span>
+                            <span>Cerrar Sesión</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </aside>
 
-    <main class="main">
-        <div class="container">
-            <h1>Bienvenido a tu Dashboard</h1>
-            <p>Esta es tu área personal de usuario autenticado.</p>
-            
-            <section class="dashboard-section">
-                <h2>Mis Proyectos</h2>
-                <p>Aquí podrás ver tus proyectos favoritos y contribuciones.</p>
-            </section>
+        <section class="user-main">
+            <header class="header-logged">
+                <div class="logged-in-content">
+                    <div class="header-menu">
+                        <input type="checkbox" name="mobile-menu-switch" id="mobile-menu-switch">
+                        <label for="mobile-menu-switch" class="mobile-menu-label">
+                            <span class="material-symbols-outlined mobile-menu">menu</span>
+                        </label>
+                    </div>
+                    <div>
+                        <a class="logo">
+                            <img src="../../images/aporta-ya-icon.webp" alt="AportaYa Logo" width="48" height="48">
+                            <img src="../../images/aporta-ya-letters.webp" alt="AportaYa" width="100" class="letters">
+                        </a>
+                    </div>
+                    <div>
+                        <div class="user-info">
+                            <img src="/uploads/avatar/default.png" alt="Avatar" class="user-avatar" width="48"
+                                height="48" style="border-radius: 999px;">
+                            <span class="user-name">Cargando...</span>
+                        </div>
+                    </div>
+                </div>
+            </header>
 
-            <section class="dashboard-section">
-                <h2>Mis Contribuciones</h2>
-                <p>Historial de tus aportes realizados.</p>
-            </section>
-        </div>
+            <main>
+                <div class="dashboard-welcome">
+                    <h1 id="welcome-title">¡Hola!</h1>
+                    <p id="welcome-subtitle">Bienvenido a tu dashboard</p>
+                </div>
+
+                <!-- Mis Proyectos Activos -->
+                <section class="dashboard-section">
+                    <div class="section-header">
+                        <h2>Mis Proyectos Activos</h2>
+                        <button class="btn btn-primary" onclick="location.href='my-projects.html'">
+                            <span class="material-symbols-outlined">add_circle</span>
+                            Crear Proyecto
+                        </button>
+                    </div>
+                    <div class="projects-grid" id="active-projects">
+                        <p class="loading-text">Cargando proyectos...</p>
+                    </div>
+                </section>
+
+                <!-- Actividad Reciente -->
+                <section class="dashboard-section">
+                    <h2>Actividad Reciente</h2>
+                    <div class="activity-list" id="recent-activity">
+                        <p class="loading-text">Cargando actividad...</p>
+                    </div>
+                </section>
+
+                <!-- Proyectos Recomendados -->
+                <section class="dashboard-section">
+                    <h2>Proyectos Recomendados</h2>
+                    <div class="recommendations-list" id="recommended-projects">
+                        <p class="loading-text">Cargando recomendaciones...</p>
+                    </div>
+                </section>
+            </main>
+        </section>
     </main>
 
-    <footer class="footer">
-        <div class="footer__container">
-            <p class="footer__text">&copy; 2025 AportaYa. Todos los derechos reservados.</p>
-        </div>
-    </footer>
-
-    <script src="/scripts/user-header.js"></script>
-    <script>
-        document.getElementById('logout-btn').addEventListener('click', () => {
-            localStorage.removeItem('token');
-            globalThis.location.href = '/';
-        });
-    </script>
+    <script src="../../scripts/user-header.js"></script>
+    <script src="../../scripts/pages/user/dashboard-loader.js"></script>
 </body>
+
 </html>

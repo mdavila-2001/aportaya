@@ -14,11 +14,11 @@ services:
       - postgres_data:/var/lib/postgresql/data
       - ./db:/docker-entrypoint-initdb.d
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      test: [ "CMD-SHELL", "pg_isready -U postgres -d aporta_ya_db" ]
       interval: 10s
-      timeout: 10s
-      retries: 10
-      start_period: 30s
+      timeout: 20s
+      retries: 20
+      start_period: 60s
 
   # Aplicación Node.js
   app:
