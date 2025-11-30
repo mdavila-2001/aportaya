@@ -260,6 +260,7 @@ body {
     }
 
     .login-wrapper {
+        overflow-y: auto;
         padding: var(--spL);
         justify-content: center;
         gap: var(--sp2XL);
