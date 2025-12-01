@@ -70,7 +70,7 @@ header {
     z-index: 1000;
 }
 
-#mobile-menu-switch:checked ~ .mobile-menu-label ~ .floating-menu {
+#mobile-menu-switch:checked~.mobile-menu-label~.floating-menu {
     max-height: 500px;
 }
 
@@ -220,6 +220,37 @@ li.menu-item {
     color: var(--color-error);
 }
 
+.logout-item button {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: none;
+    border: none;
+    padding: var(--spS) 12px;
+    font: inherit;
+    font-size: var(--sfM);
+    cursor: pointer;
+    width: 100%;
+    text-align: left;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+    color: var(--color-error);
+}
+
+.logout-item button:hover {
+    background-color: rgba(239, 68, 68, 0.1);
+}
+
+.logout-item button .material-symbols-outlined {
+    font-size: 24px;
+    flex-shrink: 0;
+}
+
+.logout-item button span:last-child {
+    font-size: var(--sfM);
+    font-weight: 500;
+}
+
 .user-info {
     display: flex;
     align-items: center;
@@ -277,6 +308,7 @@ li.menu-item {
         display: flex;
         align-items: center;
         gap: var(--spS);
+
         img.letters {
             margin-top: 4px;
         }

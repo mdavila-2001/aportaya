@@ -1,259 +1,275 @@
 <!DOCTYPE html>
 <html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="author" content="Danny Marcelo Dávila Barrancos">
+        <meta name="description" content="Detalle de Proyecto - Moderación - AportaYa">
+        <link rel="shortcut icon" href="../../../images/favicon.ico" type="image/x-icon">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="author" content="Danny Marcelo Dávila Barrancos">
-    <meta name="description" content="Detalle de Proyecto - Moderación - AportaYa">
-    <link rel="shortcut icon" href="../../../images/favicon.ico" type="image/x-icon">
+        <link rel="stylesheet" href="../../../styles/styles.css">
+        <link rel="stylesheet" href="../../../styles/fonts.css">
+        <link rel="stylesheet" href="../../../styles/components/buttons.css">
+        <link rel="stylesheet" href="../../../styles/components/header.css">
+        <link rel="stylesheet" href="../../../styles/components/modal.css">
+        <link rel="stylesheet" href="../../../styles/components/sidebar.css">
+        <link rel="stylesheet" href="../../../styles/components/notification.css">
+        <link rel="stylesheet" href="../../../styles/pages/admin/layout.css">
+        <link rel="stylesheet" href="../../../styles/pages/admin/projects/projectMod.css">
 
-    <link rel="stylesheet" href="../../../styles/styles.css">
-    <link rel="stylesheet" href="../../../styles/fonts.css">
-    <link rel="stylesheet" href="../../../styles/components/buttons.css">
-    <link rel="stylesheet" href="../../../styles/components/header.css">
-    <link rel="stylesheet" href="../../../styles/components/sidebar.css">
-    <link rel="stylesheet" href="../../../styles/components/notification.css">
-    <link rel="stylesheet" href="../../../styles/pages/admin/layout.css">
-    <link rel="stylesheet" href="../../../styles/pages/admin/projects/projectMod.css">
+        <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
 
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+        <title>Detalle de Proyecto - Moderación</title>
+    </head>
 
-    <title>Detalle de Proyecto - Moderación</title>
-</head>
-
-<body>
-    <main class="admin-content">
-        <aside class="sidebar admin-sidebar">
-            <div class="sidebar-header">
-                <div class="sidebar-brand">
-                    <div class="brand-icon">
-                        <span class="material-symbols-outlined">volunteer_activism</span>
-                    </div>
-                    <div class="brand-text">
-                        <h1>AportaYa</h1>
-                        <p>Panel de Admin</p>
+    <body>
+        <main class="admin-content">
+            <aside class="sidebar admin-sidebar">
+                <div class="sidebar-header">
+                    <div class="sidebar-brand">
+                        <div class="brand-icon">
+                            <span class="material-symbols-outlined">volunteer_activism</span>
+                        </div>
+                        <div class="brand-text">
+                            <h1>AportaYa</h1>
+                            <p>Panel de Admin</p>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <nav class="sidebar-nav" aria-label="Menú de navegación principal">
-                <ul class="sidebar-items">
-                    <li class="sidebar-item">
-                        <a href="../dashboard.html">
-                            <span class="material-symbols-outlined">dashboard</span>
-                            <span>Dashboard</span>
-                        </a>
-                    </li>
-                    <li class="sidebar-item">
-                        <a href="categories.html">
-                            <span class="material-symbols-outlined">category</span>
-                            <span>Categorías</span>
-                        </a>
-                    </li>
-                    <li class="sidebar-item active">
+                <nav class="sidebar-nav" aria-label="Menú de navegación principal">
+                    <ul class="sidebar-items">
+                        <li class="sidebar-item">
+                            <a href="../dashboard.html">
+                                <span class="material-symbols-outlined">dashboard</span>
+                                <span>Dashboard</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a href="categories.html">
+                                <span class="material-symbols-outlined">category</span>
+                                <span>Categorías</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item active">
+                            <a href="projects.html">
+                                <span class="material-symbols-outlined filled">verified_user</span>
+                                <span>Moderación</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a href="../users/admins.html">
+                                <span class="material-symbols-outlined">admin_panel_settings</span>
+                                <span>Administradores</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a href="../users/users.html">
+                                <span class="material-symbols-outlined">group</span>
+                                <span>Usuarios</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+                <div class="sidebar-footer">
+                    <ul class="sidebar-items">
+                        <li class="sidebar-item logout-item">
+                            <button commandfor="logout-modal" command="show-popover" class="logout-btn">
+                                <span class="material-symbols-outlined">logout</span>
+                                <span>Cerrar Sesión</span>
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+            </aside>
+
+            <section class="admin-main">
+                <header class="header-logged">
+                    <div class="logged-in-content">
+                        <div class="header-menu">
+                            <input type="checkbox" name="mobile-menu-switch" id="mobile-menu-switch">
+                            <label for="mobile-menu-switch" class="mobile-menu-label">
+                                <span class="material-symbols-outlined mobile-menu">menu</span>
+                            </label>
+                            <div class="floating-menu">
+                                <nav class="user-menu" aria-label="User Menu">
+                                    <ul class="mobile-sidebar-items">
+                                        <li class="mobile-sidebar-item">
+                                            <a href="../dashboard.html">
+                                                <span class="material-symbols-outlined">dashboard</span>
+                                                <span>Dashboard</span>
+                                            </a>
+                                        </li>
+                                        <li class="mobile-sidebar-item">
+                                            <a href="categories.html">
+                                                <span class="material-symbols-outlined">category</span>
+                                                <span>Categorías</span>
+                                            </a>
+                                        </li>
+                                        <li class="mobile-sidebar-item active">
+                                            <a href="projects.html">
+                                                <span class="material-symbols-outlined filled">verified_user</span>
+                                                <span>Moderación</span>
+                                            </a>
+                                        </li>
+                                        <li class="mobile-sidebar-item">
+                                            <a href="../users/admins.html">
+                                                <span class="material-symbols-outlined">admin_panel_settings</span>
+                                                <span>Administradores</span>
+                                            </a>
+                                        </li>
+                                        <li class="mobile-sidebar-item">
+                                            <a href="../users/users.html">
+                                                <span class="material-symbols-outlined">group</span>
+                                                <span>Usuarios</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </nav>
+                                <div class="mobile-sidebar-footer">
+                                    <ul class="mobile-sidebar-items">
+                                        <li class="mobile-sidebar-item logout-item">
+                                            <button commandfor="logout-modal" command="show-popover" class="logout-btn">
+                                                <span class="material-symbols-outlined">logout</span>
+                                                <span>Cerrar Sesión</span>
+                                            </button>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <a class="logo">
+                                <img src="../../../images/aporta-ya-icon.webp" alt="AportaYa Logo" width="48" height="48">
+                                <img src="../../../images/aporta-ya-letters.webp" alt="AportaYa" width="100"
+                                    class="letters">
+                            </a>
+                        </div>
+                        <div>
+                            <div class="user-info">
+                                <img src="/uploads/avatar/admin.png" alt="Avatar Default" class="user-avatar" width="48"
+                                    height="48" style="border-radius: 999px;">
+                                <span class="user-name">Cargando...</span>
+                            </div>
+                        </div>
+                    </div>
+                </header>
+
+                <main class="project-detail-container">
+                    <div class="back-link">
                         <a href="projects.html">
-                            <span class="material-symbols-outlined filled">verified_user</span>
-                            <span>Moderación</span>
+                            <span class="material-symbols-outlined">arrow_back</span>
+                            <span>Volver a Moderación</span>
                         </a>
-                    </li>
-                    <li class="sidebar-item">
-                        <a href="../users/admins.html">
-                            <span class="material-symbols-outlined">admin_panel_settings</span>
-                            <span>Administradores</span>
-                        </a>
-                    </li>
-                    <li class="sidebar-item">
-                        <a href="../users/users.html">
-                            <span class="material-symbols-outlined">group</span>
-                            <span>Usuarios</span>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
-            <div class="sidebar-footer">
-                <ul class="sidebar-items">
-                    <li class="sidebar-item logout-item">
-                        <a href="#" class="logout-btn">
-                            <span class="material-symbols-outlined">logout</span>
-                            <span>Cerrar Sesión</span>
-                        </a>
-                    </li>
-                </ul>
+                    </div>
+
+                    <div class="project-detail-grid">
+                        <aside class="project-sidebar">
+                            <div class="project-info-card">
+                                <h2 class="project-title" id="project-title">Cargando...</h2>
+                                <p class="project-author">Por: <span id="project-author">-</span></p>
+
+                                <div class="project-status-row">
+                                    <p class="status-label">Estado:</p>
+                                    <span class="project-status-badge" id="project-status">-</span>
+                                </div>
+
+                                <p class="project-date">Fecha de Solicitud: <span id="project-date">-</span></p>
+
+                                <div class="action-buttons">
+                                    <button class="btn btn-success btn-full" id="btn-approve">
+                                        <span class="material-symbols-outlined">check_circle</span>
+                                        Aprobar Proyecto
+                                    </button>
+                                    <button class="btn btn-warning btn-full" id="btn-observe">
+                                        <span class="material-symbols-outlined">visibility</span>
+                                        Observar
+                                    </button>
+                                    <button class="btn btn-danger btn-full" id="btn-reject">
+                                        <span class="material-symbols-outlined">cancel</span>
+                                        Rechazar
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="history-card">
+                                <h3 class="history-title">Historial de Moderación</h3>
+                                <div class="history-list" id="history-list">
+                                    <p class="empty-history">No hay acciones registradas</p>
+                                </div>
+                            </div>
+                        </aside>
+
+                        <div class="project-main-content">
+                            <div class="image-carousel">
+                                <div class="carousel-container">
+                                    <div class="carousel-image" id="carousel-image">
+                                    </div>
+                                    <button class="carousel-btn carousel-prev" id="carousel-prev">
+                                        <span class="material-symbols-outlined">chevron_left</span>
+                                    </button>
+                                    <button class="carousel-btn carousel-next" id="carousel-next">
+                                        <span class="material-symbols-outlined">chevron_right</span>
+                                    </button>
+                                </div>
+                                <div class="carousel-counter" id="carousel-counter">1 / 1</div>
+                            </div>
+
+                            <div class="project-content">
+                                <h1 class="content-title" id="content-title">Cargando...</h1>
+                                <div class="content-description" id="content-description">
+                                    <p>Cargando descripción...</p>
+                                </div>
+
+                                <div class="project-metrics">
+                                    <div class="metric-card">
+                                        <p class="metric-label">Monto Meta</p>
+                                        <p class="metric-value" id="metric-goal">$0</p>
+                                    </div>
+                                    <div class="metric-card">
+                                        <p class="metric-label">Categoría</p>
+                                        <p class="metric-value" id="metric-category">-</p>
+                                    </div>
+                                    <div class="metric-card">
+                                        <p class="metric-label">Ubicación</p>
+                                        <p class="metric-value" id="metric-location">-</p>
+                                    </div>
+                                </div>
+
+                                <div class="document-preview" id="document-preview" style="display: none;">
+                                    <h3 class="document-title">
+                                        <span class="material-symbols-outlined">description</span>
+                                        Documentación del Proyecto
+                                    </h3>
+                                    <div class="document-frame-container">
+                                        <iframe id="document-frame" class="document-frame"></iframe>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+            </section>
+        </main>
+
+        <div class="modal modal-small" id="logout-modal" popover="manual">
+            <div class="modal-header">
+                <h2 class="modal-title">Cerrar sesión</h2>
+                <button class="modal-close" commandfor="logout-modal" command="hide-popover">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
             </div>
-        </aside>
+            <div class="modal-body">
+                <p>¿Estás seguro de que deseas cerrar sesión?</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" commandfor="logout-modal" command="hide-popover">Cancelar</button>
+                <button class="btn btn-primary" id="confirm-logout">Cerrar sesión</button>
+            </div>
+        </div>
 
-        <section class="admin-main">
-            <header class="header-logged">
-                <div class="logged-in-content">
-                    <div class="header-menu">
-                        <input type="checkbox" name="mobile-menu-switch" id="mobile-menu-switch">
-                        <label for="mobile-menu-switch" class="mobile-menu-label">
-                            <span class="material-symbols-outlined mobile-menu">menu</span>
-                        </label>
-                        <div class="floating-menu">
-                            <nav class="user-menu" aria-label="User Menu">
-                                <ul class="mobile-sidebar-items">
-                                    <li class="mobile-sidebar-item">
-                                        <a href="../dashboard.html">
-                                            <span class="material-symbols-outlined">dashboard</span>
-                                            <span>Dashboard</span>
-                                        </a>
-                                    </li>
-                                    <li class="mobile-sidebar-item">
-                                        <a href="categories.html">
-                                            <span class="material-symbols-outlined">category</span>
-                                            <span>Categorías</span>
-                                        </a>
-                                    </li>
-                                    <li class="mobile-sidebar-item active">
-                                        <a href="projects.html">
-                                            <span class="material-symbols-outlined filled">verified_user</span>
-                                            <span>Moderación</span>
-                                        </a>
-                                    </li>
-                                    <li class="mobile-sidebar-item">
-                                        <a href="../users/admins.html">
-                                            <span class="material-symbols-outlined">admin_panel_settings</span>
-                                            <span>Administradores</span>
-                                        </a>
-                                    </li>
-                                    <li class="mobile-sidebar-item">
-                                        <a href="../users/users.html">
-                                            <span class="material-symbols-outlined">group</span>
-                                            <span>Usuarios</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </nav>
-                            <div class="mobile-sidebar-footer">
-                                <ul class="mobile-sidebar-items">
-                                    <li class="mobile-sidebar-item logout-item">
-                                        <a href="#" class="logout-btn">
-                                            <span class="material-symbols-outlined">logout</span>
-                                            <span>Cerrar Sesión</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <div>
-                        <a class="logo">
-                            <img src="../../../images/aporta-ya-icon.webp" alt="AportaYa Logo" width="48" height="48">
-                            <img src="../../../images/aporta-ya-letters.webp" alt="AportaYa" width="100"
-                                class="letters">
-                        </a>
-                    </div>
-                    <div>
-                        <div class="user-info">
-                            <img src="/uploads/avatar/admin.png" alt="Avatar Default" class="user-avatar" width="48"
-                                height="48" style="border-radius: 999px;">
-                            <span class="user-name">Cargando...</span>
-                        </div>
-                    </div>
-                </div>
-            </header>
-
-            <main class="project-detail-container">
-                <div class="back-link">
-                    <a href="projects.html">
-                        <span class="material-symbols-outlined">arrow_back</span>
-                        <span>Volver a Moderación</span>
-                    </a>
-                </div>
-
-                <div class="project-detail-grid">
-                    <aside class="project-sidebar">
-                        <div class="project-info-card">
-                            <h2 class="project-title" id="project-title">Cargando...</h2>
-                            <p class="project-author">Por: <span id="project-author">-</span></p>
-
-                            <div class="project-status-row">
-                                <p class="status-label">Estado:</p>
-                                <span class="project-status-badge" id="project-status">-</span>
-                            </div>
-
-                            <p class="project-date">Fecha de Solicitud: <span id="project-date">-</span></p>
-
-                            <div class="action-buttons">
-                                <button class="btn btn-success btn-full" id="btn-approve">
-                                    <span class="material-symbols-outlined">check_circle</span>
-                                    Aprobar Proyecto
-                                </button>
-                                <button class="btn btn-warning btn-full" id="btn-observe">
-                                    <span class="material-symbols-outlined">visibility</span>
-                                    Observar
-                                </button>
-                                <button class="btn btn-danger btn-full" id="btn-reject">
-                                    <span class="material-symbols-outlined">cancel</span>
-                                    Rechazar
-                                </button>
-                            </div>
-                        </div>
-
-                        <div class="history-card">
-                            <h3 class="history-title">Historial de Moderación</h3>
-                            <div class="history-list" id="history-list">
-                                <p class="empty-history">No hay acciones registradas</p>
-                            </div>
-                        </div>
-                    </aside>
-
-                    <div class="project-main-content">
-                        <div class="image-carousel">
-                            <div class="carousel-container">
-                                <div class="carousel-image" id="carousel-image">
-                                </div>
-                                <button class="carousel-btn carousel-prev" id="carousel-prev">
-                                    <span class="material-symbols-outlined">chevron_left</span>
-                                </button>
-                                <button class="carousel-btn carousel-next" id="carousel-next">
-                                    <span class="material-symbols-outlined">chevron_right</span>
-                                </button>
-                            </div>
-                            <div class="carousel-counter" id="carousel-counter">1 / 1</div>
-                        </div>
-
-                        <div class="project-content">
-                            <h1 class="content-title" id="content-title">Cargando...</h1>
-                            <div class="content-description" id="content-description">
-                                <p>Cargando descripción...</p>
-                            </div>
-
-                            <div class="project-metrics">
-                                <div class="metric-card">
-                                    <p class="metric-label">Monto Meta</p>
-                                    <p class="metric-value" id="metric-goal">$0</p>
-                                </div>
-                                <div class="metric-card">
-                                    <p class="metric-label">Categoría</p>
-                                    <p class="metric-value" id="metric-category">-</p>
-                                </div>
-                                <div class="metric-card">
-                                    <p class="metric-label">Ubicación</p>
-                                    <p class="metric-value" id="metric-location">-</p>
-                                </div>
-                            </div>
-
-                            <div class="document-preview" id="document-preview" style="display: none;">
-                                <h3 class="document-title">
-                                    <span class="material-symbols-outlined">description</span>
-                                    Documentación del Proyecto
-                                </h3>
-                                <div class="document-frame-container">
-                                    <iframe id="document-frame" class="document-frame"></iframe>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </main>
-        </section>
-    </main>
-
-    <script src="/scripts/user-header.js"></script>
-    <script src="/scripts/components/notification.js"></script>
-    <script src="/scripts/pages/admin/projectMod-loader.js"></script>
-</body>
-
+        <script src="/scripts/user-header.js"></script>
+        <script src="../../../scripts/components/logout-modal.js"></script>
+        <script src="/scripts/components/notification.js"></script>
+        <script src="/scripts/pages/admin/projectMod-loader.js"></script>
+    </body>
 </html>

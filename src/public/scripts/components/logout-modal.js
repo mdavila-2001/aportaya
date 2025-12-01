@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (confirmBtn) {
         confirmBtn.addEventListener('click', () => {
             localStorage.removeItem('token');
-            window.location.href = '../auth/login.html';
+            window.location.href = '/pages/auth/login.html';
         });
     }
 });

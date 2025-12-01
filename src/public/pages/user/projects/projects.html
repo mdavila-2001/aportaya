@@ -3,35 +3,31 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="author" content="Danny Marcelo Dávila Barrancos">
-        <meta name="description" content="Moderación de Proyectos - AportaYa">
-        <meta property="og:title" content="Moderación de Proyectos - AportaYa">
+        <meta name="description" content="Proyectos - AportaYa">
+        <meta property="og:title" content="Proyectos - AportaYa">
         <meta property="og:author" content="Danny Marcelo Dávila Barrancos">
-        <meta property="og:description" content="Moderación de Proyectos - AportaYa">
+        <meta property="og:description" content="Proyectos - AportaYa">
         <link rel="shortcut icon" href="../../../images/favicon.ico" type="image/x-icon">
 
         <link rel="stylesheet" href="../../../styles/styles.css">
         <link rel="stylesheet" href="../../../styles/fonts.css">
-
         <link rel="stylesheet" href="../../../styles/components/buttons.css">
-        <link rel="stylesheet" href="../../../styles/components/chips.css">
         <link rel="stylesheet" href="../../../styles/components/header.css">
-        <link rel="stylesheet" href="../../../styles/components/modal.css">
         <link rel="stylesheet" href="../../../styles/components/sidebar.css">
-        <link rel="stylesheet" href="../../../styles/components/notification.css">
-        <link rel="stylesheet" href="../../../styles/components/table.css">
-        <link rel="stylesheet" href="../../../styles/components/table-layout.css">
-        <link rel="stylesheet" href="../../../styles/pages/admin/layout.css">
-        <link rel="stylesheet" href="../../../styles/pages/admin/projects/projects.css">
+        <link rel="stylesheet" href="../../../styles/components/progress.css">
+        <link rel="stylesheet" href="../../../styles/components/modal.css">
+        <link rel="stylesheet" href="../../../styles/pages/user/layout.css">
+        <link rel="stylesheet" href="../../../styles/pages/user/projects.css">
 
         <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
 
-        <title>Moderación de Proyectos</title>
+        <title>Proyectos - AportaYa</title>
     </head>
-
     <body>
-        <main class="admin-content">
-            <aside class="sidebar admin-sidebar">
+        <main class="user-content">
+            <aside class="sidebar user-sidebar">
                 <div class="sidebar-header">
                     <div class="sidebar-brand">
                         <div class="brand-icon">
@@ -39,7 +35,7 @@
                         </div>
                         <div class="brand-text">
                             <h1>AportaYa</h1>
-                            <p>Panel de Admin</p>
+                            <p>Mi Cuenta</p>
                         </div>
                     </div>
                 </div>
@@ -47,32 +43,32 @@
                     <ul class="sidebar-items">
                         <li class="sidebar-item">
                             <a href="../dashboard.html">
-                                <span class="material-symbols-outlined">dashboard</span>
+                                <span class="material-symbols-outlined filled">dashboard</span>
                                 <span>Dashboard</span>
-                            </a>
-                        </li>
-                        <li class="sidebar-item">
-                            <a href="categories.html">
-                                <span class="material-symbols-outlined">category</span>
-                                <span>Categorías</span>
                             </a>
                         </li>
                         <li class="sidebar-item active">
                             <a href="projects.html">
-                                <span class="material-symbols-outlined filled">verified_user</span>
-                                <span>Moderación</span>
+                                <span class="material-symbols-outlined">explore</span>
+                                <span>Proyectos</span>
                             </a>
                         </li>
                         <li class="sidebar-item">
-                            <a href="../users/admins.html">
-                                <span class="material-symbols-outlined">admin_panel_settings</span>
-                                <span>Administradores</span>
+                            <a href="myProjects.html">
+                                <span class="material-symbols-outlined">folder</span>
+                                <span>Mis Proyectos</span>
                             </a>
                         </li>
                         <li class="sidebar-item">
-                            <a href="../users/users.html">
-                                <span class="material-symbols-outlined">group</span>
-                                <span>Usuarios</span>
+                            <a href="favorites.html">
+                                <span class="material-symbols-outlined">bookmark</span>
+                                <span>Favoritos</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a href="../settings.html">
+                                <span class="material-symbols-outlined">settings</span>
+                                <span>Configuración</span>
                             </a>
                         </li>
                     </ul>
@@ -88,7 +84,7 @@
                     </ul>
                 </div>
             </aside>
-            <section class="admin-main">
+            <section class="user-main">
                 <header class="header-logged">
                     <div class="logged-in-content">
                         <div class="header-menu">
@@ -101,32 +97,32 @@
                                     <ul class="mobile-sidebar-items">
                                         <li class="mobile-sidebar-item">
                                             <a href="../dashboard.html">
-                                                <span class="material-symbols-outlined">dashboard</span>
+                                                <span class="material-symbols-outlined filled">dashboard</span>
                                                 <span>Dashboard</span>
-                                            </a>
-                                        </li>
-                                        <li class="mobile-sidebar-item">
-                                            <a href="categories.html">
-                                                <span class="material-symbols-outlined">category</span>
-                                                <span>Categorías</span>
                                             </a>
                                         </li>
                                         <li class="mobile-sidebar-item active">
                                             <a href="projects.html">
-                                                <span class="material-symbols-outlined filled">verified_user</span>
-                                                <span>Moderación</span>
+                                                <span class="material-symbols-outlined">explore</span>
+                                                <span>Proyectos</span>
                                             </a>
                                         </li>
                                         <li class="mobile-sidebar-item">
-                                            <a href="../users/admins.html">
-                                                <span class="material-symbols-outlined">admin_panel_settings</span>
-                                                <span>Administradores</span>
+                                            <a href="myProjects.html">
+                                                <span class="material-symbols-outlined">folder</span>
+                                                <span>Mis Proyectos</span>
                                             </a>
                                         </li>
                                         <li class="mobile-sidebar-item">
-                                            <a href="../users/users.html">
-                                                <span class="material-symbols-outlined">group</span>
-                                                <span>Usuarios</span>
+                                            <a href="favorites.html">
+                                                <span class="material-symbols-outlined">bookmark</span>
+                                                <span>Favoritos</span>
+                                            </a>
+                                        </li>
+                                        <li class="mobile-sidebar-item">
+                                            <a href="../settings.html">
+                                                <span class="material-symbols-outlined">settings</span>
+                                                <span>Configuración</span>
                                             </a>
                                         </li>
                                     </ul>
@@ -146,49 +142,21 @@
                         <div>
                             <a class="logo">
                                 <img src="../../../images/aporta-ya-icon.webp" alt="AportaYa Logo" width="48" height="48">
-                                <img src="../../../images/aporta-ya-letters.webp" alt="AportaYa" width="100"
-                                    class="letters">
+                                <img src="../../../images/aporta-ya-letters.webp" alt="AportaYa" width="100" class="letters">
                             </a>
                         </div>
                         <div>
                             <div class="user-info">
-                                <img src="/uploads/avatar/admin.png" alt="Avatar Default" class="user-avatar" width="48"
+                                <img src="/uploads/avatar/default.png" alt="Avatar" class="user-avatar" width="48"
                                     height="48" style="border-radius: 999px;">
                                 <span class="user-name">Cargando...</span>
                             </div>
                         </div>
                     </div>
                 </header>
-                <main>
-                    <div class="title">
-                        <div>
-                            <h1>Proyectos para Moderación</h1>
-                            <p class="subtitle">Revisa los proyectos pendientes y gestiona su estado.</p>
-                        </div>
-                    </div>
-
-                    <div class="table-layout-search">
-                        <div class="table-search">
-                            <span class="material-symbols-outlined table-search-icon">search</span>
-                            <input type="search" placeholder="Buscar por nombre de proyecto o creador..." id="search-input">
-                        </div>
-                    </div>
-
-                    <div class="filter-chips">
-                        <button class="chip chip-active" data-filter="all">Todos</button>
-                        <button class="chip" data-filter="in_review">En Revisión</button>
-                        <button class="chip" data-filter="observed">Observados</button>
-                        <button class="chip" data-filter="rejected">Rechazados</button>
-                        <button class="chip" data-filter="published">Activos</button>
-                    </div>
-
-                    <div class="projects-grid" id="projects-grid">
-                        <p class="loading-message">Cargando proyectos...</p>
-                    </div>
-                </main>
+                <main class="user-projects"></main>
             </section>
         </main>
-
         <div class="modal modal-small" id="logout-modal" popover="manual">
             <div class="modal-header">
                 <h2 class="modal-title">Cerrar sesión</h2>
@@ -205,9 +173,7 @@
             </div>
         </div>
 
-        <script src="/scripts/user-header.js"></script>
-        <script src="/scripts/components/logout-modal.js"></script>
-        <script src="/scripts/components/notification.js"></script>
-        <script src="/scripts/pages/admin/projects-loader.js"></script>
+        <script src="../../../scripts/user-header.js"></script>
+        <script src="../../../scripts/components/logout-modal.js"></script>
     </body>
 </html>

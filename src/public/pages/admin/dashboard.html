@@ -1,286 +1,301 @@
 <!DOCTYPE html>
 <html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="author" content="Danny Marcelo Dávila Barrancos">
+        <meta name="description" content="Dashboard administrativo de AportaYa">
+        <meta property="og:title" content="Dashboard - AportaYa">
+        <meta property="og:author" content="Danny Marcelo Dávila Barrancos">
+        <meta property="og:description" content="Dashboard administrativo de AportaYa">
+        <link rel="shortcut icon" href="../../images/favicon.ico" type="image/x-icon">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="author" content="Danny Marcelo Dávila Barrancos">
-    <meta name="description" content="Dashboard administrativo de AportaYa">
-    <meta property="og:title" content="Dashboard - AportaYa">
-    <meta property="og:author" content="Danny Marcelo Dávila Barrancos">
-    <meta property="og:description" content="Dashboard administrativo de AportaYa">
-    <link rel="shortcut icon" href="../../images/favicon.ico" type="image/x-icon">
+        <link rel="stylesheet" href="../../styles/styles.css">
+        <link rel="stylesheet" href="../../styles/fonts.css">
+        <link rel="stylesheet" href="../../styles/components/modal.css">
+        <link rel="stylesheet" href="../../styles/components/buttons.css">
+        <link rel="stylesheet" href="../../styles/components/chips.css">
+        <link rel="stylesheet" href="../../styles/components/header.css">
+        <link rel="stylesheet" href="../../styles/components/sidebar.css">
+        <link rel="stylesheet" href="../../styles/pages/admin/layout.css">
+        <link rel="stylesheet" href="../../styles/pages/admin/dashboard.css">
 
-    <link rel="stylesheet" href="../../styles/styles.css">
-    <link rel="stylesheet" href="../../styles/fonts.css">
-    <link rel="stylesheet" href="../../styles/components/buttons.css">
-    <link rel="stylesheet" href="../../styles/components/chips.css">
-    <link rel="stylesheet" href="../../styles/components/header.css">
-    <link rel="stylesheet" href="../../styles/components/sidebar.css">
-    <link rel="stylesheet" href="../../styles/pages/admin/layout.css">
-    <link rel="stylesheet" href="../../styles/pages/admin/dashboard.css">
+        <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
 
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+        <title>Dashboard - AportaYa</title>
+    </head>
 
-    <title>Dashboard - AportaYa</title>
-</head>
-
-<body>
-    <main class="admin-content">
-        <aside class="sidebar admin-sidebar">
-            <div class="sidebar-header">
-                <div class="sidebar-brand">
-                    <div class="brand-icon">
-                        <span class="material-symbols-outlined">volunteer_activism</span>
-                    </div>
-                    <div class="brand-text">
-                        <h1>AportaYa</h1>
-                        <p>Panel de Admin</p>
-                    </div>
-                </div>
-            </div>
-            <nav class="sidebar-nav" aria-label="Menú de navegación principal">
-                <ul class="sidebar-items">
-                    <li class="sidebar-item active">
-                        <a href="dashboard.html">
-                            <span class="material-symbols-outlined filled">dashboard</span>
-                            <span>Dashboard</span>
-                        </a>
-                    </li>
-                    <li class="sidebar-item">
-                        <a href="projects/categories.html">
-                            <span class="material-symbols-outlined">category</span>
-                            <span>Categorías</span>
-                        </a>
-                    </li>
-                    <li class="sidebar-item">
-                        <a href="projects/projects.html">
-                            <span class="material-symbols-outlined filled">verified_user</span>
-                            <span>Moderación</span>
-                        </a>
-                    </li>
-                    <li class="sidebar-item">
-                        <a href="users/admins.html">
-                            <span class="material-symbols-outlined">admin_panel_settings</span>
-                            <span>Administradores</span>
-                        </a>
-                    </li>
-                    <li class="sidebar-item">
-                        <a href="users/users.html">
-                            <span class="material-symbols-outlined">group</span>
-                            <span>Usuarios</span>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
-            <div class="sidebar-footer">
-                <ul class="sidebar-items">
-                    <li class="sidebar-item logout-item">
-                        <a href="#" class="logout-btn">
-                            <span class="material-symbols-outlined">logout</span>
-                            <span>Cerrar Sesión</span>
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </aside>
-
-        <section class="admin-main">
-            <header class="header-logged">
-                <div class="logged-in-content">
-                    <div class="header-menu">
-                        <input type="checkbox" name="mobile-menu-switch" id="mobile-menu-switch">
-                        <label for="mobile-menu-switch" class="mobile-menu-label">
-                            <span class="material-symbols-outlined mobile-menu">menu</span>
-                        </label>
-                        <div class="floating-menu">
-                            <nav class="user-menu" aria-label="User Menu">
-                                <ul class="mobile-sidebar-items">
-                                    <li class="mobile-sidebar-item active">
-                                        <a href="dashboard.html">
-                                            <span class="material-symbols-outlined">dashboard</span>
-                                            <span>Dashboard</span>
-                                        </a>
-                                    </li>
-                                    <li class="mobile-sidebar-item">
-                                        <a href="projects/categories.html">
-                                            <span class="material-symbols-outlined">category</span>
-                                            <span>Categorías</span>
-                                        </a>
-                                    </li>
-                                    <li class="mobile-sidebar-item">
-                                        <a href="projects/projects.html">
-                                            <span class="material-symbols-outlined filled">verified_user</span>
-                                            <span>Moderación</span>
-                                        </a>
-                                    </li>
-                                    <li class="mobile-sidebar-item">
-                                        <a href="users/admins.html">
-                                            <span class="material-symbols-outlined">admin_panel_settings</span>
-                                            <span>Administradores</span>
-                                        </a>
-                                    </li>
-                                    <li class="mobile-sidebar-item">
-                                        <a href="../users/users.html">
-                                            <span class="material-symbols-outlined">group</span>
-                                            <span>Usuarios</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </nav>
-                            <div class="mobile-sidebar-footer">
-                                <ul class="mobile-sidebar-items">
-                                    <li class="mobile-sidebar-item logout-item">
-                                        <a href="#" class="logout-btn">
-                                            <span class="material-symbols-outlined">logout</span>
-                                            <span>Cerrar Sesión</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <div>
-                        <a class="logo">
-                            <img src="../../images/aporta-ya-icon.webp" alt="AportaYa Logo" width="48" height="48">
-                            <img src="../../images/aporta-ya-letters.webp" alt="AportaYa" width="100" class="letters">
-                        </a>
-                    </div>
-                    <div>
-                        <div class="user-info">
-                            <img src="/uploads/avatar/admin.png" alt="Avatar" class="user-avatar" width="48" height="48"
-                                style="border-radius: 999px;">
-                            <span class="user-name">Cargando...</span>
-                        </div>
-                    </div>
-                </div>
-            </header>
-
-            <main>
-                <div class="dashboard-header">
-                    <h1>Panel de Estadísticas</h1>
-                </div>
-
-                <div class="stats-grid">
-                    <div class="stat-card">
-                        <div class="stat-card-header">
-                            <p>Proyectos Totales</p>
-                            <span class="material-symbols-outlined">folder</span>
-                        </div>
-                        <p class="stat-value" id="total-projects">0</p>
-                    </div>
-
-                    <div class="stat-card">
-                        <div class="stat-card-header">
-                            <p>Monto Recaudado</p>
-                            <span class="material-symbols-outlined">payments</span>
-                        </div>
-                        <p class="stat-value" id="total-amount">Bs. 0</p>
-                    </div>
-
-                    <div class="stat-card">
-                        <div class="stat-card-header">
-                            <p>Usuarios Registrados</p>
-                            <span class="material-symbols-outlined">group</span>
-                        </div>
-                        <p class="stat-value" id="total-users">0</p>
-                    </div>
-
-                    <div class="stat-card">
-                        <div class="stat-card-header">
-                            <p>Donaciones Realizadas</p>
+    <body>
+        <main class="admin-content">
+            <aside class="sidebar admin-sidebar">
+                <div class="sidebar-header">
+                    <div class="sidebar-brand">
+                        <div class="brand-icon">
                             <span class="material-symbols-outlined">volunteer_activism</span>
                         </div>
-                        <p class="stat-value" id="total-donations">0</p>
+                        <div class="brand-text">
+                            <h1>AportaYa</h1>
+                            <p>Panel de Admin</p>
+                        </div>
                     </div>
                 </div>
+                <nav class="sidebar-nav" aria-label="Menú de navegación principal">
+                    <ul class="sidebar-items">
+                        <li class="sidebar-item active">
+                            <a href="dashboard.html">
+                                <span class="material-symbols-outlined filled">dashboard</span>
+                                <span>Dashboard</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a href="projects/categories.html">
+                                <span class="material-symbols-outlined">category</span>
+                                <span>Categorías</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a href="projects/projects.html">
+                                <span class="material-symbols-outlined filled">verified_user</span>
+                                <span>Moderación</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a href="users/admins.html">
+                                <span class="material-symbols-outlined">admin_panel_settings</span>
+                                <span>Administradores</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a href="users/users.html">
+                                <span class="material-symbols-outlined">group</span>
+                                <span>Usuarios</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+                <div class="sidebar-footer">
+                    <ul class="sidebar-items">
+                        <li class="sidebar-item logout-item">
+                            <button commandfor="logout-modal" command="show-popover" class="logout-btn">
+                                <span class="material-symbols-outlined">logout</span>
+                                <span>Cerrar Sesión</span>
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+            </aside>
 
-                <!-- Charts Grid -->
-                <div class="charts-grid">
-                    <!-- Projects Chart -->
-                    <div class="chart-card">
-                        <h3>Estado de Proyectos</h3>
-                        <div class="horizontal-bars" id="projects-chart">
-                            <div class="bar-row">
-                                <span class="bar-label">Publicados</span>
-                                <div class="bar-track">
-                                    <div class="bar-fill bar-success" style="width: 0%"></div>
-                                    <span class="bar-value">0</span>
+            <section class="admin-main">
+                <header class="header-logged">
+                    <div class="logged-in-content">
+                        <div class="header-menu">
+                            <input type="checkbox" name="mobile-menu-switch" id="mobile-menu-switch">
+                            <label for="mobile-menu-switch" class="mobile-menu-label">
+                                <span class="material-symbols-outlined mobile-menu">menu</span>
+                            </label>
+                            <div class="floating-menu">
+                                <nav class="user-menu" aria-label="User Menu">
+                                    <ul class="mobile-sidebar-items">
+                                        <li class="mobile-sidebar-item active">
+                                            <a href="dashboard.html">
+                                                <span class="material-symbols-outlined">dashboard</span>
+                                                <span>Dashboard</span>
+                                            </a>
+                                        </li>
+                                        <li class="mobile-sidebar-item">
+                                            <a href="projects/categories.html">
+                                                <span class="material-symbols-outlined">category</span>
+                                                <span>Categorías</span>
+                                            </a>
+                                        </li>
+                                        <li class="mobile-sidebar-item">
+                                            <a href="projects/projects.html">
+                                                <span class="material-symbols-outlined filled">verified_user</span>
+                                                <span>Moderación</span>
+                                            </a>
+                                        </li>
+                                        <li class="mobile-sidebar-item">
+                                            <a href="users/admins.html">
+                                                <span class="material-symbols-outlined">admin_panel_settings</span>
+                                                <span>Administradores</span>
+                                            </a>
+                                        </li>
+                                        <li class="mobile-sidebar-item">
+                                            <a href="../users/users.html">
+                                                <span class="material-symbols-outlined">group</span>
+                                                <span>Usuarios</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </nav>
+                                <div class="mobile-sidebar-footer">
+                                    <ul class="mobile-sidebar-items">
+                                        <li class="mobile-sidebar-item logout-item">
+                                            <button commandfor="logout-modal" command="show-popover" class="logout-btn">
+                                                <span class="material-symbols-outlined">logout</span>
+                                                <span>Cerrar Sesión</span>
+                                            </button>
+                                        </li>
+                                    </ul>
                                 </div>
                             </div>
-                            <div class="bar-row">
-                                <span class="bar-label">Pendientes</span>
-                                <div class="bar-track">
-                                    <div class="bar-fill bar-warning" style="width: 0%"></div>
-                                    <span class="bar-value">0</span>
+                        </div>
+                        <div>
+                            <a class="logo">
+                                <img src="../../images/aporta-ya-icon.webp" alt="AportaYa Logo" width="48" height="48">
+                                <img src="../../images/aporta-ya-letters.webp" alt="AportaYa" width="100" class="letters">
+                            </a>
+                        </div>
+                        <div>
+                            <div class="user-info">
+                                <img src="/uploads/avatar/admin.png" alt="Avatar" class="user-avatar" width="48" height="48"
+                                    style="border-radius: 999px;">
+                                <span class="user-name">Cargando...</span>
+                            </div>
+                        </div>
+                    </div>
+                </header>
+
+                <main>
+                    <div class="dashboard-header">
+                        <h1>Panel de Estadísticas</h1>
+                    </div>
+
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-card-header">
+                                <p>Proyectos Totales</p>
+                                <span class="material-symbols-outlined">folder</span>
+                            </div>
+                            <p class="stat-value" id="total-projects">0</p>
+                        </div>
+
+                        <div class="stat-card">
+                            <div class="stat-card-header">
+                                <p>Monto Recaudado</p>
+                                <span class="material-symbols-outlined">payments</span>
+                            </div>
+                            <p class="stat-value" id="total-amount">Bs. 0</p>
+                        </div>
+
+                        <div class="stat-card">
+                            <div class="stat-card-header">
+                                <p>Usuarios Registrados</p>
+                                <span class="material-symbols-outlined">group</span>
+                            </div>
+                            <p class="stat-value" id="total-users">0</p>
+                        </div>
+
+                        <div class="stat-card">
+                            <div class="stat-card-header">
+                                <p>Donaciones Realizadas</p>
+                                <span class="material-symbols-outlined">volunteer_activism</span>
+                            </div>
+                            <p class="stat-value" id="total-donations">0</p>
+                        </div>
+                    </div>
+
+                    <!-- Charts Grid -->
+                    <div class="charts-grid">
+                        <!-- Projects Chart -->
+                        <div class="chart-card">
+                            <h3>Estado de Proyectos</h3>
+                            <div class="horizontal-bars" id="projects-chart">
+                                <div class="bar-row">
+                                    <span class="bar-label">Publicados</span>
+                                    <div class="bar-track">
+                                        <div class="bar-fill bar-success" style="width: 0%"></div>
+                                        <span class="bar-value">0</span>
+                                    </div>
+                                </div>
+                                <div class="bar-row">
+                                    <span class="bar-label">Pendientes</span>
+                                    <div class="bar-track">
+                                        <div class="bar-fill bar-warning" style="width: 0%"></div>
+                                        <span class="bar-value">0</span>
+                                    </div>
+                                </div>
+                                <div class="bar-row">
+                                    <span class="bar-label">Borradores</span>
+                                    <div class="bar-track">
+                                        <div class="bar-fill bar-info" style="width: 0%"></div>
+                                        <span class="bar-value">0</span>
+                                    </div>
+                                </div>
+                                <div class="bar-row">
+                                    <span class="bar-label">Rechazados</span>
+                                    <div class="bar-track">
+                                        <div class="bar-fill bar-error" style="width: 0%"></div>
+                                        <span class="bar-value">0</span>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="bar-row">
-                                <span class="bar-label">Borradores</span>
-                                <div class="bar-track">
-                                    <div class="bar-fill bar-info" style="width: 0%"></div>
-                                    <span class="bar-value">0</span>
+                        </div>
+
+                        <!-- Users Chart -->
+                        <div class="chart-card">
+                            <h3>Estado de Usuarios</h3>
+                            <div class="horizontal-bars" id="users-chart">
+                                <div class="bar-row">
+                                    <span class="bar-label">Activos</span>
+                                    <div class="bar-track">
+                                        <div class="bar-fill bar-success" style="width: 0%"></div>
+                                        <span class="bar-value">0</span>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="bar-row">
-                                <span class="bar-label">Rechazados</span>
-                                <div class="bar-track">
-                                    <div class="bar-fill bar-error" style="width: 0%"></div>
-                                    <span class="bar-value">0</span>
+                                <div class="bar-row">
+                                    <span class="bar-label">Pendientes</span>
+                                    <div class="bar-track">
+                                        <div class="bar-fill bar-warning" style="width: 0%"></div>
+                                        <span class="bar-value">0</span>
+                                    </div>
+                                </div>
+                                <div class="bar-row">
+                                    <span class="bar-label">Suspendidos</span>
+                                    <div class="bar-track">
+                                        <div class="bar-fill bar-error" style="width: 0%"></div>
+                                        <span class="bar-value">0</span>
+                                    </div>
+                                </div>
+                                <div class="bar-row">
+                                    <span class="bar-label">Baneados</span>
+                                    <div class="bar-track">
+                                        <div class="bar-fill bar-dark" style="width: 0%"></div>
+                                        <span class="bar-value">0</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Users Chart -->
-                    <div class="chart-card">
-                        <h3>Estado de Usuarios</h3>
-                        <div class="horizontal-bars" id="users-chart">
-                            <div class="bar-row">
-                                <span class="bar-label">Activos</span>
-                                <div class="bar-track">
-                                    <div class="bar-fill bar-success" style="width: 0%"></div>
-                                    <span class="bar-value">0</span>
-                                </div>
-                            </div>
-                            <div class="bar-row">
-                                <span class="bar-label">Pendientes</span>
-                                <div class="bar-track">
-                                    <div class="bar-fill bar-warning" style="width: 0%"></div>
-                                    <span class="bar-value">0</span>
-                                </div>
-                            </div>
-                            <div class="bar-row">
-                                <span class="bar-label">Suspendidos</span>
-                                <div class="bar-track">
-                                    <div class="bar-fill bar-error" style="width: 0%"></div>
-                                    <span class="bar-value">0</span>
-                                </div>
-                            </div>
-                            <div class="bar-row">
-                                <span class="bar-label">Baneados</span>
-                                <div class="bar-track">
-                                    <div class="bar-fill bar-dark" style="width: 0%"></div>
-                                    <span class="bar-value">0</span>
-                                </div>
-                            </div>
+                    <div class="categories-section">
+                        <h3>Categorías Disponibles</h3>
+                        <div class="categories-grid" id="categories-list">
+                            <p class="loading-text">Cargando categorías...</p>
                         </div>
                     </div>
-                </div>
+                </main>
+            </section>
+        </main>
 
-                <!-- Categories List -->
-                <div class="categories-section">
-                    <h3>Categorías Disponibles</h3>
-                    <div class="categories-grid" id="categories-list">
-                        <p class="loading-text">Cargando categorías...</p>
-                    </div>
-                </div>
-            </main>
-        </section>
-    </main>
+        <div class="modal modal-small" id="logout-modal" popover="manual">
+            <div class="modal-header">
+                <h2 class="modal-title">Cerrar sesión</h2>
+                <button class="modal-close" commandfor="logout-modal" command="hide-popover">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>¿Estás seguro de que deseas cerrar sesión?</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" commandfor="logout-modal" command="hide-popover">Cancelar</button>
+                <button class="btn btn-primary" id="confirm-logout">Cerrar sesión</button>
+            </div>
+        </div>
 
-    <script src="../../scripts/user-header.js"></script>
-    <script src="../../scripts/pages/admin/dashboard-loader.js"></script>
-</body>
-
+        <script src="../../scripts/user-header.js"></script>
+        <script src="../../../scripts/components/logout-modal.js"></script>
+        <script src="../../scripts/pages/admin/dashboard-loader.js"></script>
+    </body>
 </html>

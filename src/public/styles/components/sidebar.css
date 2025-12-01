@@ -120,7 +120,35 @@
         gap: var(--sp2XS);
     }
 
-    .logout-item a {
+    .logout-item * {
         color: var(--color-error);
+    }
+
+    .logout-item button {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        background: none;
+        border: none;
+        padding: var(--spS) var(--spM);
+        font: inherit;
+        font-size: var(--sfM);
+        cursor: pointer;
+        width: 100%;
+        border-radius: 8px;
+        transition: all 0.2s ease;
+    }
+
+    .logout-item button:hover {
+        background-color: rgba(239, 68, 68, 0.1);
+    }
+
+    .logout-item button .material-symbols-outlined {
+        font-size: 24px;
+    }
+
+    .logout-item button span:last-child {
+        font-size: var(--sfS);
+        font-weight: 500;
     }
 }
