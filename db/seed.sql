@@ -275,6 +275,17 @@ BEGIN
     INSERT INTO payments.donation (project_id, user_id, amount, payment_status, payment_method) VALUES
     (v_proj_dron_id, v_user_marcelo_id, 50.00, 'completed', 'bank_transfer');
 
+    INSERT INTO payments.donation (project_id, user_id, amount, payment_status, payment_method) VALUES
+    (v_proj_comedor_id, v_user_ana_id, 300.00, 'completed', 'credit_card');
+
+    INSERT INTO payments.donation (project_id, user_id, amount, payment_status, payment_method) VALUES
+    (v_proj_clinica_id, v_user_carlos_id, 500.00, 'completed', 'bank_transfer');
+
+    INSERT INTO payments.donation (project_id, user_id, amount, payment_status, payment_method) VALUES
+    (v_proj_murales_id, v_user_melissa_id, 100.00, 'completed', 'credit_card');
+
+    RAISE NOTICE 'Donaciones creadas. El raised_amount se actualiza automáticamente por trigger.';
+
     RAISE NOTICE '--- SEED MASIVO COMPLETADO EXITOSAMENTE ---';
 END $$;
 

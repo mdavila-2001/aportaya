@@ -10,6 +10,11 @@ header {
     backdrop-filter: blur(10px);
 }
 
+.user-name {
+    color: var(--text-light);
+    font-weight: 600;
+}
+
 .header-logged {
     padding: 0;
     background-color: transparent;

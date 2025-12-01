@@ -1,6 +1,6 @@
 async function loadUserHeader() {
     const token = localStorage.getItem('token');
-    
+
     if (!token) {
         globalThis.location.href = '/pages/auth/login.html';
         return;
@@ -51,41 +51,6 @@ async function loadUserHeader() {
     }
 }
 
-function setupLogout() {
-    const logoutButton = document.querySelector('.logout-btn');
-    if (logoutButton) {
-        logoutButton.addEventListener('click', async (e) => {
-            e.preventDefault();
-            
-            const token = localStorage.getItem('token');
-
-            if (token) {
-                try {
-                    await fetch('/api/logout', {
-                        method: 'POST',
-                        headers: {
-                            'Authorization': `Bearer ${token}`,
-                            'Content-Type': 'application/json'
-                        }
-                    });
-                } catch (error) {
-                    console.error('Error al cerrar sesión:', error);
-                    Notification.error({
-                        message: 'Error al cerrar sesión',
-                        duration: 3000
-                    });
-                }
-
-                localStorage.removeItem('token');
-                localStorage.removeItem('user');
-
-                globalThis.location.href = '/pages/auth/login.html';
-            }
-        });
-    }
-};
-
 document.addEventListener('DOMContentLoaded', () => {
     loadUserHeader();
-    setupLogout();
 });

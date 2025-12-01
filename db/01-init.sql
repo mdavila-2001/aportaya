@@ -66,6 +66,7 @@ CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 -- Triggers
 \i /docker-entrypoint-initdb.d/schemas/triggers/00_updated_at_triggers.sql
 \i /docker-entrypoint-initdb.d/schemas/triggers/01_payment_transaction_index.sql
+\i /docker-entrypoint-initdb.d/schemas/triggers/02_donation_raised_amount_trigger.sql
 \i /docker-entrypoint-initdb.d/schemas/triggers/audit_triggers.sql
 \i /docker-entrypoint-initdb.d/schemas/triggers/status_history_triggers.sql
 

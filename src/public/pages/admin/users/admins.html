@@ -17,6 +17,7 @@
     <link rel="stylesheet" href="../../../styles/components/buttons.css">
     <link rel="stylesheet" href="../../../styles/components/chips.css">
     <link rel="stylesheet" href="../../../styles/components/header.css">
+    <link rel="stylesheet" href="../../../styles/components/forms.css">
     <link rel="stylesheet" href="../../../styles/components/sidebar.css">
     <link rel="stylesheet" href="../../../styles/components/modal.css">
     <link rel="stylesheet" href="../../../styles/components/notification.css">
@@ -296,7 +297,8 @@
         </section>
     </main>
 
-    <div class="modal" id="add-admin-modal" popover="manual">
+    <!-- Modal Agregar Administrador -->
+    <div class="modal modal-large" id="add-admin-modal" popover="manual">
         <div class="modal-header">
             <h2 class="modal-title">Agregar Nuevo Administrador</h2>
             <button class="modal-close" commandfor="add-admin-modal" command="hide-popover">
@@ -376,200 +378,7 @@
             <button class="btn btn-primary" id="submit-admin-btn">Crear Administrador</button>
         </div>
     </div>
-    </div>
-    <div class="modal modal-small" id="delete-confirm-modal" popover="manual">
-        <div class="modal-header">
-            <h2 class="modal-title">Confirmar Eliminación</h2>
-            <button class="modal-close" commandfor="delete-confirm-modal" command="hide-popover">
-                <span class="material-symbols-outlined">close</span>
-            </button>
-        </div>
-        <div class="modal-body">
-            <p class="delete-confirm-message">
-                ¿Estás seguro de eliminar este administrador? Esta acción no se puede deshacer.
-            </p>
-        </div>
-        <div class="modal-footer">
-            <div class="table-actions">
-                <a href="#" class="table-link">Editar</a>
-                <span class="table-link-separator">|</span>
-                <a href="#" class="table-link table-link-danger">Desactivar</a>
-            </div>
-            </td>
-            </tr>
-            <tr>
-                <td class="cell-name">Olivia Bennett</td>
-                <td class="cell-secondary">olivia.bennett@email.com</td>
-                <td>
-                    <span class="status-badge status-active">Activo</span>
-                </td>
-                <td>
-                    <div class="table-actions">
-                        <a href="#" class="table-link">Editar</a>
-                        <span class="table-link-separator">|</span>
-                        <a href="#" class="table-link table-link-danger">Desactivar</a>
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td class="cell-name">Noah Thompson</td>
-                <td class="cell-secondary">noah.thompson@email.com</td>
-                <td>
-                    <span class="status-badge status-inactive">Inactivo</span>
-                </td>
-                <td>
-                    <div class="table-actions">
-                        <a href="#" class="table-link">Editar</a>
-                        <span class="table-link-separator">|</span>
-                        <a href="#" class="table-link table-link-success">Activar</a>
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td class="cell-name">Ava Martinez</td>
-                <td class="cell-secondary">ava.martinez@email.com</td>
-                <td>
-                    <span class="status-badge status-active">Activo</span>
-                </td>
-                <td>
-                    <div class="table-actions">
-                        <a href="#" class="table-link">Editar</a>
-                        <span class="table-link-separator">|</span>
-                        <a href="#" class="table-link table-link-danger">Desactivar</a>
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td class="cell-name">Ethan Harris</td>
-                <td class="cell-secondary">ethan.harris@email.com</td>
-                <td>
-                    <span class="status-badge status-active">Activo</span>
-                </td>
-                <td>
-                    <div class="table-actions">
-                        <a href="#" class="table-link">Editar</a>
-                        <span class="table-link-separator">|</span>
-                        <a href="#" class="table-link table-link-danger">Desactivar</a>
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td class="cell-name">Sophia Clark</td>
-                <td class="cell-secondary">sophia.clark@email.com</td>
-                <td>
-                    <span class="status-badge status-inactive">Inactivo</span>
-                </td>
-                <td>
-                    <div class="table-actions">
-                        <a href="#" class="table-link">Editar</a>
-                        <span class="table-link-separator">|</span>
-                        <a href="#" class="table-link table-link-success">Activar</a>
-                    </div>
-                </td>
-            </tr>
-            </tbody>
-            </table>
-        </div>
-    </div>
-    <div class="table-layout-footer">
-        <nav class="table-pagination" aria-label="Paginación de tabla">
-            <span class="table-pagination-info">
-                Mostrando <span>1-6</span> de <span>10</span>
-            </span>
-            <div class="table-pagination-controls">
-                <button class="table-pagination-btn" disabled>Anterior</button>
-                <button class="table-pagination-btn active">1</button>
-                <button class="table-pagination-btn">2</button>
-                <button class="table-pagination-btn">Siguiente</button>
-            </div>
-        </nav>
-    </div>
-    </div>
-    </main>
-    </section>
-    </main>
 
-    <div class="modal" id="add-admin-modal" popover="manual">
-        <div class="modal-header">
-            <h2 class="modal-title">Agregar Nuevo Administrador</h2>
-            <button class="modal-close" commandfor="add-admin-modal" command="hide-popover">
-                <span class="material-symbols-outlined">close</span>
-            </button>
-        </div>
-        <div class="modal-body">
-            <form class="modal-form" id="admin-form">
-                <div class="profile-picture-container">
-                    <label for="profile-picture-input" class="profile-label">
-                        <span class="material-symbols-outlined camera-icon">photo_camera</span>
-                        <input type="file" id="profile-picture-input" name="profile-picture" accept="image/*"
-                            class="profile-picture-input">
-                    </label>
-                </div>
-
-                <div class="form-field">
-                    <input type="email" name="email" id="admin-email" placeholder="Correo electrónico"
-                        class="form-input" required>
-                    <div class="error_msg" id="admin_email_error_msg"></div>
-                </div>
-
-                <div class="form-row">
-                    <div>
-                        <input type="text" name="first-name" id="admin-first-name" placeholder="Nombre"
-                            class="form-input" required>
-                        <div class="error_msg" id="admin_first_name_error_msg"></div>
-                    </div>
-                    <input type="text" name="middle-name" id="admin-middle-name" placeholder="Segundo Nombre"
-                        class="form-input">
-                </div>
-
-                <div class="form-row">
-                    <div>
-                        <input type="text" name="last-name" id="admin-last-name" placeholder="Apellido Paterno"
-                            class="form-input" required>
-                        <div class="error_msg" id="admin_last_name_error_msg"></div>
-                    </div>
-                    <input type="text" name="mother-last-name" id="admin-mother-last-name"
-                        placeholder="Apellido Materno" class="form-input">
-                </div>
-
-                <div class="form-field password-field" id="password-container">
-                    <div>
-                        <input type="password" name="password" id="admin-password" placeholder="Contraseña"
-                            class="form-input" required>
-                        <div class="error_msg" id="admin_password_error_msg"></div>
-                    </div>
-                    <input type="checkbox" id="toggle-password" class="toggle-checkbox">
-                    <label for="toggle-password" class="toggle-label" aria-label="Mostrar/ocultar contraseña">
-                        <span class="material-symbols-outlined icon-show">visibility</span>
-                        <span class="material-symbols-outlined icon-hide">visibility_off</span>
-                    </label>
-                </div>
-
-                <div class="form-row">
-                    <div>
-                        <input type="date" name="birthdate" id="admin-birthdate" placeholder="Fecha de Nacimiento"
-                            class="form-input" required>
-                        <div class="error_msg" id="admin_birthdate_error_msg"></div>
-                    </div>
-                    <div>
-                        <select name="gender" id="admin-gender" class="form-input" required>
-                            <option value="" disabled selected>Género</option>
-                            <option value="M">Masculino</option>
-                            <option value="F">Femenino</option>
-                            <option value="O">Otro</option>
-                            <option value="U">Prefiero no decirlo</option>
-                        </select>
-                        <div class="error_msg" id="admin_gender_error_msg"></div>
-                    </div>
-                </div>
-            </form>
-        </div>
-        <div class="modal-footer">
-            <button class="btn btn-secondary" commandfor="add-admin-modal" command="hide-popover">Cancelar</button>
-            <button class="btn btn-primary" id="submit-admin-btn">Crear Administrador</button>
-        </div>
-    </div>
-    </div>
     <div class="modal modal-small" id="delete-confirm-modal" popover="manual">
         <div class="modal-header">
             <h2 class="modal-title">Confirmar Eliminación</h2>

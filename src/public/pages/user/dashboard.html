@@ -17,6 +17,7 @@
     <link rel="stylesheet" href="../../styles/components/header.css">
     <link rel="stylesheet" href="../../styles/components/sidebar.css">
     <link rel="stylesheet" href="../../styles/components/progress.css">
+    <link rel="stylesheet" href="../../styles/components/modal.css">
     <link rel="stylesheet" href="../../styles/pages/user/layout.css">
     <link rel="stylesheet" href="../../styles/pages/user/dashboard.css">
 
@@ -76,10 +77,11 @@
             <div class="sidebar-footer">
                 <ul class="sidebar-items">
                     <li class="sidebar-item logout-item">
-                        <a href="#" class="logout-btn">
+                        <button commandfor="logout-modal" command="show-popover" class="logout-btn"
+                            style="background:none; border:none; padding:0; font:inherit; cursor:pointer; width:100%; text-align:left;">
                             <span class="material-symbols-outlined">logout</span>
                             <span>Cerrar Sesión</span>
-                        </a>
+                        </button>
                     </li>
                 </ul>
             </div>
@@ -138,7 +140,6 @@
                     </div>
                 </section>
 
-                <!-- Proyectos Recomendados -->
                 <section class="dashboard-section">
                     <h2>Proyectos Recomendados</h2>
                     <div class="recommendations-list" id="recommended-projects">
@@ -149,7 +150,24 @@
         </section>
     </main>
 
+    <div class="modal modal-small" id="logout-modal" popover="manual">
+        <div class="modal-header">
+            <h2 class="modal-title">Cerrar sesión</h2>
+            <button class="modal-close" commandfor="logout-modal" command="hide-popover">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <p>¿Estás seguro de que deseas cerrar sesión?</p>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" commandfor="logout-modal" command="hide-popover">Cancelar</button>
+            <button class="btn btn-primary" id="confirm-logout">Cerrar sesión</button>
+        </div>
+    </div>
+
     <script src="../../scripts/user-header.js"></script>
+    <script src="../../scripts/components/logout-modal.js"></script>
     <script src="../../scripts/pages/user/dashboard-loader.js"></script>
 </body>
 
