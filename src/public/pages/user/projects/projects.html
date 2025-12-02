@@ -13,6 +13,8 @@
 
         <link rel="stylesheet" href="../../../styles/styles.css">
         <link rel="stylesheet" href="../../../styles/fonts.css">
+        
+        <link rel="stylesheet" href="../../../styles/components/chips.css">
         <link rel="stylesheet" href="../../../styles/components/buttons.css">
         <link rel="stylesheet" href="../../../styles/components/header.css">
         <link rel="stylesheet" href="../../../styles/components/sidebar.css">
@@ -25,6 +27,7 @@
 
         <title>Proyectos - AportaYa</title>
     </head>
+
     <body>
         <main class="user-content">
             <aside class="sidebar user-sidebar">
@@ -142,7 +145,8 @@
                         <div>
                             <a class="logo">
                                 <img src="../../../images/aporta-ya-icon.webp" alt="AportaYa Logo" width="48" height="48">
-                                <img src="../../../images/aporta-ya-letters.webp" alt="AportaYa" width="100" class="letters">
+                                <img src="../../../images/aporta-ya-letters.webp" alt="AportaYa" width="100"
+                                    class="letters">
                             </a>
                         </div>
                         <div>
@@ -154,7 +158,45 @@
                         </div>
                     </div>
                 </header>
-                <main class="user-projects"></main>
+                <main class="user-projects">
+                    <!-- Header: Título + Ordenamiento -->
+                    <div class="projects-header">
+                        <h1 class="projects-title">Explora Proyectos</h1>
+                        <div class="projects-sort">
+                            <select class="sort-select">
+                                <option value="recent">Más Recientes</option>
+                                <option value="popular">Más Populares</option>
+                                <option value="funded">Casi Financiados</option>
+                                <option value="ending">Finalizando Pronto</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Búsqueda y Filtros -->
+                    <div class="projects-filters">
+                        <!-- Barra de búsqueda -->
+                        <div class="search-wrapper">
+                            <span class="material-symbols-outlined search-icon">search</span>
+                            <input type="search" placeholder="Buscar proyectos por nombre o creador..." class="search-input"
+                                id="search-projects" />
+                        </div>
+
+                        <!-- Chips de categorías -->
+                        <div class="category-chips">
+                            <button class="chip chip-default" data-category="all">Todos</button>
+                            <button class="chip chip-default" data-category="technology">Tecnología</button>
+                            <button class="chip chip-default" data-category="art">Arte</button>
+                            <button class="chip chip-default" data-category="social">Social</button>
+                            <button class="chip chip-default" data-category="music">Música</button>
+                            <button class="chip chip-default" data-category="games">Videojuegos</button>
+                        </div>
+                    </div>
+
+                    <!-- Grid de proyectos (por ahora vacío) -->
+                    <div class="projects-grid">
+                        <p class="loading-text">Cargando proyectos...</p>
+                    </div>
+                </main>
             </section>
         </main>
         <div class="modal modal-small" id="logout-modal" popover="manual">
