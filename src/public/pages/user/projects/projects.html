@@ -1,376 +1,367 @@
 <!DOCTYPE html>
 <html lang="es">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="author" content="Danny Marcelo Dávila Barrancos">
-        <meta name="description" content="Proyectos - AportaYa">
-        <meta property="og:title" content="Proyectos - AportaYa">
-        <meta property="og:author" content="Danny Marcelo Dávila Barrancos">
-        <meta property="og:description" content="Proyectos - AportaYa">
-        <link rel="shortcut icon" href="../../../images/favicon.ico" type="image/x-icon">
 
-        <link rel="stylesheet" href="../../../styles/styles.css">
-        <link rel="stylesheet" href="../../../styles/fonts.css">
-        
-        <link rel="stylesheet" href="../../../styles/components/chips.css">
-        <link rel="stylesheet" href="../../../styles/components/buttons.css">
-        <link rel="stylesheet" href="../../../styles/components/header.css">
-        <link rel="stylesheet" href="../../../styles/components/sidebar.css">
-        <link rel="stylesheet" href="../../../styles/components/progress.css">
-        <link rel="stylesheet" href="../../../styles/components/project-card.css">
-        <link rel="stylesheet" href="../../../styles/components/modal.css">
-        <link rel="stylesheet" href="../../../styles/pages/user/layout.css">
-        <link rel="stylesheet" href="../../../styles/pages/user/projects.css">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Danny Marcelo Dávila Barrancos">
+    <meta name="description" content="Proyectos - AportaYa">
+    <meta property="og:title" content="Proyectos - AportaYa">
+    <meta property="og:author" content="Danny Marcelo Dávila Barrancos">
+    <meta property="og:description" content="Proyectos - AportaYa">
+    <link rel="shortcut icon" href="../../../images/favicon.ico" type="image/x-icon">
 
-        <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+    <link rel="stylesheet" href="../../../styles/styles.css">
+    <link rel="stylesheet" href="../../../styles/fonts.css">
 
-        <title>Proyectos - AportaYa</title>
-    </head>
+    <link rel="stylesheet" href="../../../styles/components/chips.css">
+    <link rel="stylesheet" href="../../../styles/components/buttons.css">
+    <link rel="stylesheet" href="../../../styles/components/header.css">
+    <link rel="stylesheet" href="../../../styles/components/sidebar.css">
+    <link rel="stylesheet" href="../../../styles/components/progress.css">
+    <link rel="stylesheet" href="../../../styles/components/project-card.css">
+    <link rel="stylesheet" href="../../../styles/components/modal.css">
+    <link rel="stylesheet" href="../../../styles/pages/user/layout.css">
+    <link rel="stylesheet" href="../../../styles/pages/user/projects.css">
 
-    <body>
-        <main class="user-content">
-            <aside class="sidebar user-sidebar">
-                <div class="sidebar-header">
-                    <div class="sidebar-brand">
-                        <div class="brand-icon">
-                            <span class="material-symbols-outlined">volunteer_activism</span>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+
+    <title>Proyectos - AportaYa</title>
+</head>
+
+<body>
+    <main class="user-content">
+        <aside class="sidebar user-sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-brand">
+                    <div class="brand-icon">
+                        <span class="material-symbols-outlined">volunteer_activism</span>
+                    </div>
+                    <div class="brand-text">
+                        <h1>AportaYa</h1>
+                        <p>Mi Cuenta</p>
+                    </div>
+                </div>
+            </div>
+            <nav class="sidebar-nav" aria-label="Menú de navegación principal">
+                <ul class="sidebar-items">
+                    <li class="sidebar-item">
+                        <a href="../dashboard.html">
+                            <span class="material-symbols-outlined filled">dashboard</span>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-item active">
+                        <a href="projects.html">
+                            <span class="material-symbols-outlined">explore</span>
+                            <span>Proyectos</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a href="myProjects.html">
+                            <span class="material-symbols-outlined">folder</span>
+                            <span>Mis Proyectos</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a href="favorites.html">
+                            <span class="material-symbols-outlined">bookmark</span>
+                            <span>Favoritos</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a href="../settings.html">
+                            <span class="material-symbols-outlined">settings</span>
+                            <span>Configuración</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            <div class="sidebar-footer">
+                <ul class="sidebar-items">
+                    <li class="sidebar-item logout-item">
+                        <button commandfor="logout-modal" command="show-popover" class="logout-btn">
+                            <span class="material-symbols-outlined">logout</span>
+                            <span>Cerrar Sesión</span>
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </aside>
+        <section class="user-main">
+            <header class="header-logged">
+                <div class="logged-in-content">
+                    <div class="header-menu">
+                        <input type="checkbox" name="mobile-menu-switch" id="mobile-menu-switch">
+                        <label for="mobile-menu-switch" class="mobile-menu-label">
+                            <span class="material-symbols-outlined mobile-menu">menu</span>
+                        </label>
+                        <div class="floating-menu">
+                            <nav class="user-menu" aria-label="User Menu">
+                                <ul class="mobile-sidebar-items">
+                                    <li class="mobile-sidebar-item">
+                                        <a href="../dashboard.html">
+                                            <span class="material-symbols-outlined filled">dashboard</span>
+                                            <span>Dashboard</span>
+                                        </a>
+                                    </li>
+                                    <li class="mobile-sidebar-item active">
+                                        <a href="projects.html">
+                                            <span class="material-symbols-outlined">explore</span>
+                                            <span>Proyectos</span>
+                                        </a>
+                                    </li>
+                                    <li class="mobile-sidebar-item">
+                                        <a href="myProjects.html">
+                                            <span class="material-symbols-outlined">folder</span>
+                                            <span>Mis Proyectos</span>
+                                        </a>
+                                    </li>
+                                    <li class="mobile-sidebar-item">
+                                        <a href="favorites.html">
+                                            <span class="material-symbols-outlined">bookmark</span>
+                                            <span>Favoritos</span>
+                                        </a>
+                                    </li>
+                                    <li class="mobile-sidebar-item">
+                                        <a href="../settings.html">
+                                            <span class="material-symbols-outlined">settings</span>
+                                            <span>Configuración</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </nav>
+                            <div class="mobile-sidebar-footer">
+                                <ul class="mobile-sidebar-items">
+                                    <li class="mobile-sidebar-item logout-item">
+                                        <button commandfor="logout-modal" command="show-popover" class="logout-btn">
+                                            <span class="material-symbols-outlined">logout</span>
+                                            <span>Cerrar Sesión</span>
+                                        </button>
+                                    </li>
+                                </ul>
+                            </div>
                         </div>
-                        <div class="brand-text">
-                            <h1>AportaYa</h1>
-                            <p>Mi Cuenta</p>
+                    </div>
+                    <div>
+                        <a class="logo">
+                            <img src="../../../images/aporta-ya-icon.webp" alt="AportaYa Logo" width="48" height="48">
+                            <img src="../../../images/aporta-ya-letters.webp" alt="AportaYa" width="100"
+                                class="letters">
+                        </a>
+                    </div>
+                    <div>
+                        <div class="user-info">
+                            <img src="/uploads/avatar/default.png" alt="Avatar" class="user-avatar" width="48"
+                                height="48" style="border-radius: 999px;">
+                            <span class="user-name">Cargando...</span>
                         </div>
                     </div>
                 </div>
-                <nav class="sidebar-nav" aria-label="Menú de navegación principal">
-                    <ul class="sidebar-items">
-                        <li class="sidebar-item">
-                            <a href="../dashboard.html">
-                                <span class="material-symbols-outlined filled">dashboard</span>
-                                <span>Dashboard</span>
-                            </a>
-                        </li>
-                        <li class="sidebar-item active">
-                            <a href="projects.html">
-                                <span class="material-symbols-outlined">explore</span>
-                                <span>Proyectos</span>
-                            </a>
-                        </li>
-                        <li class="sidebar-item">
-                            <a href="myProjects.html">
-                                <span class="material-symbols-outlined">folder</span>
-                                <span>Mis Proyectos</span>
-                            </a>
-                        </li>
-                        <li class="sidebar-item">
-                            <a href="favorites.html">
-                                <span class="material-symbols-outlined">bookmark</span>
-                                <span>Favoritos</span>
-                            </a>
-                        </li>
-                        <li class="sidebar-item">
-                            <a href="../settings.html">
-                                <span class="material-symbols-outlined">settings</span>
-                                <span>Configuración</span>
-                            </a>
-                        </li>
-                    </ul>
-                </nav>
-                <div class="sidebar-footer">
-                    <ul class="sidebar-items">
-                        <li class="sidebar-item logout-item">
-                            <button commandfor="logout-modal" command="show-popover" class="logout-btn">
-                                <span class="material-symbols-outlined">logout</span>
-                                <span>Cerrar Sesión</span>
+            </header>
+            <main class="user-projects">
+                <!-- Header: Título + Ordenamiento -->
+                <div class="projects-header">
+                    <h1 class="projects-title">Explora Proyectos</h1>
+                    <div class="projects-sort">
+                        <select class="sort-select">
+                            <option value="recent">Más Recientes</option>
+                            <option value="popular">Más Populares</option>
+                            <option value="funded">Casi Financiados</option>
+                            <option value="ending">Finalizando Pronto</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Búsqueda y Filtros -->
+                <div class="projects-filters">
+                    <!-- Barra de búsqueda -->
+                    <div class="search-wrapper">
+                        <span class="material-symbols-outlined search-icon">search</span>
+                        <input type="search" placeholder="Buscar proyectos por nombre o creador..." class="search-input"
+                            id="search-projects" />
+                    </div>
+
+                    <!-- Chips de categorías -->
+                    <div class="category-chips">
+                        <button class="chip chip-default" data-category="all">Todos</button>
+                        <button class="chip chip-default" data-category="technology">Tecnología</button>
+                        <button class="chip chip-default" data-category="art">Arte</button>
+                        <button class="chip chip-default" data-category="social">Social</button>
+                        <button class="chip chip-default" data-category="music">Música</button>
+                        <button class="chip chip-default" data-category="games">Videojuegos</button>
+                    </div>
+                </div>
+
+                <!-- Grid de proyectos (por ahora vacío) -->
+                <div class="projects-grid">
+                    <article class="project-card">
+                        <div class="project-image-container">
+                            <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuBixKxN8yUkbuBUzcdr32FX5WQHxGIqp4Gnhs5fajgv3Q8xb1viUYSODvuPoezeYKKdkAmObkAQ7P25auZ_IMwpGXeWq18BVWCXV9kaKi8t4yGCXelvrR5IXCFRPcAwFCjRlgKO0et4wy6mbe1Uyg6EJyg0qb1G1xS3APaCYH3T-hYHimtngq_Sb3896FYysC2lc0NHyhaA037B_vayCEt2F-OgTpFlgFfJncoOXM8ivXj4U705FVWFb5oXqtyvhrxF93eJV0p4YPNr"
+                                alt="Proyecto de restauración de murales históricos" />
+                            <button class="project-fav" aria-label="Agregar a favoritos">
+                                <span class="material-symbols-outlined">favorite_border</span>
                             </button>
-                        </li>
-                    </ul>
+                        </div>
+                        <div class="project-details">
+                            <h3 class="project-title">Proyecto de restauración de murales históricos</h3>
+                            <p class="project-description">Apoya la conservación del patrimonio cultural</p>
+                        </div>
+                        <div class="project-statistics">
+                            <div class="progress-info">
+                                <span class="goal-percentage">75%</span>
+                                <span class="raised-amount">$7,500</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 75%"></div>
+                            </div>
+                            <span class="project-goal">Meta: $10,000</span>
+                        </div>
+                    </article>
+
+                    <article class="project-card">
+                        <div class="project-image-container">
+                            <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCo-EEJwrIm9i5uOWbEpXVEyB8Au-icHxflwDtWH3OOLDp5aZE4g2G_Yl-Xm2G-pYT_-VsJT5t2qnm2LrkjkVoSbhalqpduoDqBH30Yw5udAyunb8vBPKu9MN0b6MxqUv92qLGgFIAzlDNSGdx9r_zcxYYcfEl6toMdfHdnKgsMiq_vGrphQx22Kd8--YTD2ksyQ0vssSl4WbL-1D9R1pABdDZCp9O4OaRyL7yal7vEtO631km_LwCL_-A6ioPC2R2ZmpWsDktjaq4v"
+                                alt="Desarrollo de aplicación móvil para aprendizaje de idiomas" />
+                            <button class="project-fav" aria-label="Agregar a favoritos">
+                                <span class="material-symbols-outlined">favorite_border</span>
+                            </button>
+                        </div>
+                        <div class="project-details">
+                            <h3 class="project-title">Desarrollo de aplicación móvil para aprendizaje de idiomas</h3>
+                            <p class="project-description">Aprende un nuevo idioma de forma interactiva</p>
+                        </div>
+                        <div class="project-statistics">
+                            <div class="progress-info">
+                                <span class="goal-percentage">45%</span>
+                                <span class="raised-amount">$2,250</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 45%"></div>
+                            </div>
+                            <span class="project-goal">Meta: $5,000</span>
+                        </div>
+                    </article>
+
+                    <article class="project-card">
+                        <div class="project-image-container">
+                            <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuD2qR9VgpJpn6wCUp9V9iivaYtNZAed2F43JtuaOVVhBq-FvkhwL-RtY0HQQuWoLp9r34hIPaW37K7ygsXrOMuQYJnhaizVAUbF6AP4kBx8PuPsv26jH1QP9vQowjsZsmHFgFttD0D6i977Ij9ismV5jXIs3gUkn3hyoqx69WxOv2Lxz9B2h4cWilO67koP9qeTTPnub5duddv0gHDHwKgEIAPj05jyMzI98Oc1erY-j3sJgMJzbkBCHQpN9l_RVBzqXhQQs7RZ9XPL"
+                                alt="Producción de álbum musical independiente" />
+                            <button class="project-fav" aria-label="Quitar de favoritos">
+                                <span class="material-symbols-outlined">favorite</span>
+                            </button>
+                        </div>
+                        <div class="project-details">
+                            <h3 class="project-title">Producción de álbum musical independiente</h3>
+                            <p class="project-description">Financia la grabación de un nuevo disco</p>
+                        </div>
+                        <div class="project-statistics">
+                            <div class="progress-info">
+                                <span class="goal-percentage">90%</span>
+                                <span class="raised-amount">$13,500</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 90%"></div>
+                            </div>
+                            <span class="project-goal">Meta: $15,000</span>
+                        </div>
+                    </article>
+
+                    <article class="project-card">
+                        <div class="project-image-container">
+                            <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuBo-eqknBXYVGI0RpuE16D8v8D-i-sebJlI1BUP7bfC-l1gWQLz13PTYvc0v4uPY7DwODbJzhliDHRJO7gB1uCx3zt0y5qmOiYrSiBDXT0WF1iElJgfnHaJ23pVw8NnTxGBcRi3DW4ow_51BIMv0brCOtTaKMEDpn-PBiYc-6bo2HdKX8KmtbiUmZbSGVfXsFnOZFDxf8zAR6MkKyWIVLUv_jyNwSEghUgHFopS8uqa89ePdEFWN49hfVzlCM4UPUxwILxzejJvef6J"
+                                alt="Cortometraje documental sobre la vida silvestre local" />
+                            <button class="project-fav" aria-label="Agregar a favoritos">
+                                <span class="material-symbols-outlined">favorite_border</span>
+                            </button>
+                        </div>
+                        <div class="project-details">
+                            <h3 class="project-title">Cortometraje documental sobre la vida silvestre local</h3>
+                            <p class="project-description">Conoce la fauna de tu región</p>
+                        </div>
+                        <div class="project-statistics">
+                            <div class="progress-info">
+                                <span class="goal-percentage">60%</span>
+                                <span class="raised-amount">$6,000</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 60%"></div>
+                            </div>
+                            <span class="project-goal">Meta: $10,000</span>
+                        </div>
+                    </article>
+
+                    <article class="project-card">
+                        <div class="project-image-container">
+                            <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuD4RQBw2-q9OA1MzN5cigv9Y3LmWxwnZDSp0HfzIwzCjdOJysaFPoC7QnQPKqd7SI7VBk6egIbQdfoDzUkBkmWTA3z4lPjProQug7PolxCR6ok_6h-F79wpS44jqxnGESgqQstbj7OomlI8ObcvzP4JBJRvmv0d8ls3nLmuiW8Ep4upZvrJZKFrV7jRi7EQGkxKEtkAuxGHpCR9W_HozKjswqnCwGtExHsEC1Z9fZoW8Ddxtt3XW8SqgwnMDB8qhilZ9ovt9s-w1fdT"
+                                alt="Diseño de mobiliario urbano sostenible" />
+                            <button class="project-fav" aria-label="Agregar a favoritos">
+                                <span class="material-symbols-outlined">favorite_border</span>
+                            </button>
+                        </div>
+                        <div class="project-details">
+                            <h3 class="project-title">Diseño de mobiliario urbano sostenible</h3>
+                            <p class="project-description">Mobiliario ecológico para tu ciudad</p>
+                        </div>
+                        <div class="project-statistics">
+                            <div class="progress-info">
+                                <span class="goal-percentage">35%</span>
+                                <span class="raised-amount">$3,500</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 35%"></div>
+                            </div>
+                            <span class="project-goal">Meta: $10,000</span>
+                        </div>
+                    </article>
+
+                    <article class="project-card">
+                        <div class="project-image-container">
+                            <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCxwtjhZ2UVIhP-qbF5xtExwExONxngpp8vF5i7fd_C84iI30IPUkLNiZUIm5Z7s5CruEO-CqgmBg5KTaklf450BCQ8nGZcJKsaTIL90dqQKOKe9xSkcnoz7evmD1C08h-wIBDsOThTAY7DPZNWhMItTddtIHNM-2wnz0A4SBAUXcuNhjT9riu9Q24tMHMoZF-WmtdLDF0ICoM6yvRGTRlps9dFFs92dNuuR_KgvNQASvAsYBm37jPn1-HF8mGAEj_FTwJzVlqgDWL_"
+                                alt="Creación de un espacio gastronómico innovador" />
+                            <button class="project-fav" aria-label="Agregar a favoritos">
+                                <span class="material-symbols-outlined">favorite_border</span>
+                            </button>
+                        </div>
+                        <div class="project-details">
+                            <h3 class="project-title">Creación de un espacio gastronómico innovador</h3>
+                            <p class="project-description">Un nuevo concepto culinario en tu comunidad</p>
+                        </div>
+                        <div class="project-statistics">
+                            <div class="progress-info">
+                                <span class="goal-percentage">55%</span>
+                                <span class="raised-amount">$11,000</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 55%"></div>
+                            </div>
+                            <span class="project-goal">Meta: $20,000</span>
+                        </div>
+                    </article>
                 </div>
-            </aside>
-            <section class="user-main">
-                <header class="header-logged">
-                    <div class="logged-in-content">
-                        <div class="header-menu">
-                            <input type="checkbox" name="mobile-menu-switch" id="mobile-menu-switch">
-                            <label for="mobile-menu-switch" class="mobile-menu-label">
-                                <span class="material-symbols-outlined mobile-menu">menu</span>
-                            </label>
-                            <div class="floating-menu">
-                                <nav class="user-menu" aria-label="User Menu">
-                                    <ul class="mobile-sidebar-items">
-                                        <li class="mobile-sidebar-item">
-                                            <a href="../dashboard.html">
-                                                <span class="material-symbols-outlined filled">dashboard</span>
-                                                <span>Dashboard</span>
-                                            </a>
-                                        </li>
-                                        <li class="mobile-sidebar-item active">
-                                            <a href="projects.html">
-                                                <span class="material-symbols-outlined">explore</span>
-                                                <span>Proyectos</span>
-                                            </a>
-                                        </li>
-                                        <li class="mobile-sidebar-item">
-                                            <a href="myProjects.html">
-                                                <span class="material-symbols-outlined">folder</span>
-                                                <span>Mis Proyectos</span>
-                                            </a>
-                                        </li>
-                                        <li class="mobile-sidebar-item">
-                                            <a href="favorites.html">
-                                                <span class="material-symbols-outlined">bookmark</span>
-                                                <span>Favoritos</span>
-                                            </a>
-                                        </li>
-                                        <li class="mobile-sidebar-item">
-                                            <a href="../settings.html">
-                                                <span class="material-symbols-outlined">settings</span>
-                                                <span>Configuración</span>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </nav>
-                                <div class="mobile-sidebar-footer">
-                                    <ul class="mobile-sidebar-items">
-                                        <li class="mobile-sidebar-item logout-item">
-                                            <button commandfor="logout-modal" command="show-popover" class="logout-btn">
-                                                <span class="material-symbols-outlined">logout</span>
-                                                <span>Cerrar Sesión</span>
-                                            </button>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <div>
-                            <a class="logo">
-                                <img src="../../../images/aporta-ya-icon.webp" alt="AportaYa Logo" width="48" height="48">
-                                <img src="../../../images/aporta-ya-letters.webp" alt="AportaYa" width="100"
-                                    class="letters">
-                            </a>
-                        </div>
-                        <div>
-                            <div class="user-info">
-                                <img src="/uploads/avatar/default.png" alt="Avatar" class="user-avatar" width="48"
-                                    height="48" style="border-radius: 999px;">
-                                <span class="user-name">Cargando...</span>
-                            </div>
-                        </div>
-                    </div>
-                </header>
-                <main class="user-projects">
-                    <!-- Header: Título + Ordenamiento -->
-                    <div class="projects-header">
-                        <h1 class="projects-title">Explora Proyectos</h1>
-                        <div class="projects-sort">
-                            <select class="sort-select">
-                                <option value="recent">Más Recientes</option>
-                                <option value="popular">Más Populares</option>
-                                <option value="funded">Casi Financiados</option>
-                                <option value="ending">Finalizando Pronto</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <!-- Búsqueda y Filtros -->
-                    <div class="projects-filters">
-                        <!-- Barra de búsqueda -->
-                        <div class="search-wrapper">
-                            <span class="material-symbols-outlined search-icon">search</span>
-                            <input type="search" placeholder="Buscar proyectos por nombre o creador..." class="search-input"
-                                id="search-projects" />
-                        </div>
-
-                        <!-- Chips de categorías -->
-                        <div class="category-chips">
-                            <button class="chip chip-default" data-category="all">Todos</button>
-                            <button class="chip chip-default" data-category="technology">Tecnología</button>
-                            <button class="chip chip-default" data-category="art">Arte</button>
-                            <button class="chip chip-default" data-category="social">Social</button>
-                            <button class="chip chip-default" data-category="music">Música</button>
-                            <button class="chip chip-default" data-category="games">Videojuegos</button>
-                        </div>
-                    </div>
-
-                    <!-- Grid de proyectos (por ahora vacío) -->
-                    <div class="projects-grid">
-                        <article class="project-card">
-                            <div class="project-image-container">
-                                <img 
-                                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuBixKxN8yUkbuBUzcdr32FX5WQHxGIqp4Gnhs5fajgv3Q8xb1viUYSODvuPoezeYKKdkAmObkAQ7P25auZ_IMwpGXeWq18BVWCXV9kaKi8t4yGCXelvrR5IXCFRPcAwFCjRlgKO0et4wy6mbe1Uyg6EJyg0qb1G1xS3APaCYH3T-hYHimtngq_Sb3896FYysC2lc0NHyhaA037B_vayCEt2F-OgTpFlgFfJncoOXM8ivXj4U705FVWFb5oXqtyvhrxF93eJV0p4YPNr" 
-                                    alt="Proyecto de restauración de murales históricos"
-                                />
-                                <button class="project-fav" aria-label="Agregar a favoritos">
-                                    <span class="material-symbols-outlined">favorite_border</span>
-                                </button>
-                            </div>
-                            <div class="project-details">
-                                <h3 class="project-title">Proyecto de restauración de murales históricos</h3>
-                                <p class="project-description">Apoya la conservación del patrimonio cultural</p>
-                            </div>
-                            <div class="project-statistics">
-                                <div class="progress-info">
-                                    <span class="goal-percentage">75%</span>
-                                    <span class="raised-amount">$7,500</span>
-                                </div>
-                                <div class="progress-bar">
-                                    <div class="progress-fill" style="width: 75%"></div>
-                                </div>
-                                <span class="project-goal">Meta: $10,000</span>
-                            </div>
-                        </article>
-
-                        <article class="project-card">
-                            <div class="project-image-container">
-                                <img 
-                                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuCo-EEJwrIm9i5uOWbEpXVEyB8Au-icHxflwDtWH3OOLDp5aZE4g2G_Yl-Xm2G-pYT_-VsJT5t2qnm2LrkjkVoSbhalqpduoDqBH30Yw5udAyunb8vBPKu9MN0b6MxqUv92qLGgFIAzlDNSGdx9r_zcxYYcfEl6toMdfHdnKgsMiq_vGrphQx22Kd8--YTD2ksyQ0vssSl4WbL-1D9R1pABdDZCp9O4OaRyL7yal7vEtO631km_LwCL_-A6ioPC2R2ZmpWsDktjaq4v" 
-                                    alt="Desarrollo de aplicación móvil para aprendizaje de idiomas"
-                                />
-                                <button class="project-fav" aria-label="Agregar a favoritos">
-                                    <span class="material-symbols-outlined">favorite_border</span>
-                                </button>
-                            </div>
-                            <div class="project-details">
-                                <h3 class="project-title">Desarrollo de aplicación móvil para aprendizaje de idiomas</h3>
-                                <p class="project-description">Aprende un nuevo idioma de forma interactiva</p>
-                            </div>
-                            <div class="project-statistics">
-                                <div class="progress-info">
-                                    <span class="goal-percentage">45%</span>
-                                    <span class="raised-amount">$2,250</span>
-                                </div>
-                                <div class="progress-bar">
-                                    <div class="progress-fill" style="width: 45%"></div>
-                                </div>
-                                <span class="project-goal">Meta: $5,000</span>
-                            </div>
-                        </article>
-
-                        <article class="project-card">
-                            <div class="project-image-container">
-                                <img 
-                                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuD2qR9VgpJpn6wCUp9V9iivaYtNZAed2F43JtuaOVVhBq-FvkhwL-RtY0HQQuWoLp9r34hIPaW37K7ygsXrOMuQYJnhaizVAUbF6AP4kBx8PuPsv26jH1QP9vQowjsZsmHFgFttD0D6i977Ij9ismV5jXIs3gUkn3hyoqx69WxOv2Lxz9B2h4cWilO67koP9qeTTPnub5duddv0gHDHwKgEIAPj05jyMzI98Oc1erY-j3sJgMJzbkBCHQpN9l_RVBzqXhQQs7RZ9XPL" 
-                                    alt="Producción de álbum musical independiente"
-                                />
-                                <button class="project-fav" aria-label="Quitar de favoritos">
-                                    <span class="material-symbols-outlined">favorite</span>
-                                </button>
-                            </div>
-                            <div class="project-details">
-                                <h3 class="project-title">Producción de álbum musical independiente</h3>
-                                <p class="project-description">Financia la grabación de un nuevo disco</p>
-                            </div>
-                            <div class="project-statistics">
-                                <div class="progress-info">
-                                    <span class="goal-percentage">90%</span>
-                                    <span class="raised-amount">$13,500</span>
-                                </div>
-                                <div class="progress-bar">
-                                    <div class="progress-fill" style="width: 90%"></div>
-                                </div>
-                                <span class="project-goal">Meta: $15,000</span>
-                            </div>
-                        </article>
-
-                        <article class="project-card">
-                            <div class="project-image-container">
-                                <img 
-                                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuBo-eqknBXYVGI0RpuE16D8v8D-i-sebJlI1BUP7bfC-l1gWQLz13PTYvc0v4uPY7DwODbJzhliDHRJO7gB1uCx3zt0y5qmOiYrSiBDXT0WF1iElJgfnHaJ23pVw8NnTxGBcRi3DW4ow_51BIMv0brCOtTaKMEDpn-PBiYc-6bo2HdKX8KmtbiUmZbSGVfXsFnOZFDxf8zAR6MkKyWIVLUv_jyNwSEghUgHFopS8uqa89ePdEFWN49hfVzlCM4UPUxwILxzejJvef6J" 
-                                    alt="Cortometraje documental sobre la vida silvestre local"
-                                />
-                                <button class="project-fav" aria-label="Agregar a favoritos">
-                                    <span class="material-symbols-outlined">favorite_border</span>
-                                </button>
-                            </div>
-                            <div class="project-details">
-                                <h3 class="project-title">Cortometraje documental sobre la vida silvestre local</h3>
-                                <p class="project-description">Conoce la fauna de tu región</p>
-                            </div>
-                            <div class="project-statistics">
-                                <div class="progress-info">
-                                    <span class="goal-percentage">60%</span>
-                                    <span class="raised-amount">$6,000</span>
-                                </div>
-                                <div class="progress-bar">
-                                    <div class="progress-fill" style="width: 60%"></div>
-                                </div>
-                                <span class="project-goal">Meta: $10,000</span>
-                            </div>
-                        </article>
-
-                        <article class="project-card">
-                            <div class="project-image-container">
-                                <img 
-                                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuD4RQBw2-q9OA1MzN5cigv9Y3LmWxwnZDSp0HfzIwzCjdOJysaFPoC7QnQPKqd7SI7VBk6egIbQdfoDzUkBkmWTA3z4lPjProQug7PolxCR6ok_6h-F79wpS44jqxnGESgqQstbj7OomlI8ObcvzP4JBJRvmv0d8ls3nLmuiW8Ep4upZvrJZKFrV7jRi7EQGkxKEtkAuxGHpCR9W_HozKjswqnCwGtExHsEC1Z9fZoW8Ddxtt3XW8SqgwnMDB8qhilZ9ovt9s-w1fdT" 
-                                    alt="Diseño de mobiliario urbano sostenible"
-                                />
-                                <button class="project-fav" aria-label="Agregar a favoritos">
-                                    <span class="material-symbols-outlined">favorite_border</span>
-                                </button>
-                            </div>
-                            <div class="project-details">
-                                <h3 class="project-title">Diseño de mobiliario urbano sostenible</h3>
-                                <p class="project-description">Mobiliario ecológico para tu ciudad</p>
-                            </div>
-                            <div class="project-statistics">
-                                <div class="progress-info">
-                                    <span class="goal-percentage">35%</span>
-                                    <span class="raised-amount">$3,500</span>
-                                </div>
-                                <div class="progress-bar">
-                                    <div class="progress-fill" style="width: 35%"></div>
-                                </div>
-                                <span class="project-goal">Meta: $10,000</span>
-                            </div>
-                        </article>
-
-                        <article class="project-card">
-                            <div class="project-image-container">
-                                <img 
-                                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuCxwtjhZ2UVIhP-qbF5xtExwExONxngpp8vF5i7fd_C84iI30IPUkLNiZUIm5Z7s5CruEO-CqgmBg5KTaklf450BCQ8nGZcJKsaTIL90dqQKOKe9xSkcnoz7evmD1C08h-wIBDsOThTAY7DPZNWhMItTddtIHNM-2wnz0A4SBAUXcuNhjT9riu9Q24tMHMoZF-WmtdLDF0ICoM6yvRGTRlps9dFFs92dNuuR_KgvNQASvAsYBm37jPn1-HF8mGAEj_FTwJzVlqgDWL_" 
-                                    alt="Creación de un espacio gastronómico innovador"
-                                />
-                                <button class="project-fav" aria-label="Agregar a favoritos">
-                                    <span class="material-symbols-outlined">favorite_border</span>
-                                </button>
-                            </div>
-                            <div class="project-details">
-                                <h3 class="project-title">Creación de un espacio gastronómico innovador</h3>
-                                <p class="project-description">Un nuevo concepto culinario en tu comunidad</p>
-                            </div>
-                            <div class="project-statistics">
-                                <div class="progress-info">
-                                    <span class="goal-percentage">55%</span>
-                                    <span class="raised-amount">$11,000</span>
-                                </div>
-                                <div class="progress-bar">
-                                    <div class="progress-fill" style="width: 55%"></div>
-                                </div>
-                                <span class="project-goal">Meta: $20,000</span>
-                            </div>
-                        </article>
-                    </div>
-                </main>
-            </section>
-        </main>
-        <div class="modal modal-small" id="logout-modal" popover="manual">
-            <div class="modal-header">
-                <h2 class="modal-title">Cerrar sesión</h2>
-                <button class="modal-close" commandfor="logout-modal" command="hide-popover">
-                    <span class="material-symbols-outlined">close</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <p>¿Estás seguro de que deseas cerrar sesión?</p>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary" commandfor="logout-modal" command="hide-popover">Cancelar</button>
-                <button class="btn btn-primary" id="confirm-logout">Cerrar sesión</button>
-            </div>
+            </main>
+        </section>
+    </main>
+    <div class="modal modal-small" id="logout-modal" popover="manual">
+        <div class="modal-header">
+            <h2 class="modal-title">Cerrar sesión</h2>
+            <button class="modal-close" commandfor="logout-modal" command="hide-popover">
+                <span class="material-symbols-outlined">close</span>
+            </button>
         </div>
+        <div class="modal-body">
+            <p>¿Estás seguro de que deseas cerrar sesión?</p>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" commandfor="logout-modal" command="hide-popover">Cancelar</button>
+            <button class="btn btn-primary" id="confirm-logout">Cerrar sesión</button>
+        </div>
+    </div>
 
-        <script src="../../../scripts/user-header.js"></script>
-        <script src="../../../scripts/components/logout-modal.js"></script>
-    </body>
+    <script src="../../../scripts/user-header.js"></script>
+    <script src="../../../scripts/components/logout-modal.js"></script>
+    <script src="../../../scripts/pages/user/projects-loader.js"></script>
+</body>
+
 </html>
