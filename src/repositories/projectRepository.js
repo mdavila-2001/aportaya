@@ -205,7 +205,12 @@ const getProjectComments = async (projectId) => {
                 c.id,
                 c.content,
                 c.created_at,
-                u.first_name || ' ' || u.last_name as author_name,
+                TRIM(CONCAT_WS(' ', 
+                    u.first_name, 
+                    u.middle_name, 
+                    u.last_name, 
+                    u.mother_last_name
+                )) as author_name,
                 avatar.file_path as author_avatar
             FROM social.comment c
             JOIN users.user u ON c.user_id = u.id
@@ -246,6 +251,44 @@ const getProjectUpdates = async (projectId) => {
     }
 };
 
+const createComment = async (projectId, userId, content) => {
+    const client = await dbPool.connect();
+    try {
+        // Llamar a la función de BD para crear el comentario
+        const createQuery = `
+            SELECT social.create_comment($1, $2, $3) as comment_id;
+        `;
+        const createResult = await client.query(createQuery, [projectId, userId, content]);
+        const commentId = createResult.rows[0].comment_id;
+
+        // Obtener el comentario creado con información del autor
+        const getQuery = `
+            SELECT 
+                c.id,
+                c.content,
+                c.created_at,
+                TRIM(CONCAT_WS(' ', 
+                    u.first_name, 
+                    u.middle_name, 
+                    u.last_name, 
+                    u.mother_last_name
+                )) as author_name,
+                avatar.file_path as author_avatar
+            FROM social.comment c
+            JOIN users.user u ON c.user_id = u.id
+            LEFT JOIN files.image avatar ON u.profile_image_id = avatar.id
+            WHERE c.id = $1;
+        `;
+        const getResult = await client.query(getQuery, [commentId]);
+        return getResult.rows[0];
+    } catch (error) {
+        console.error('Error creando comentario:', error);
+        throw error;
+    } finally {
+        client.release();
+    }
+};
+
 module.exports = {
     createProject,
     getProjects,
@@ -253,5 +296,6 @@ module.exports = {
     getProjectsBySLUG,
     getProjectDonors,
     getProjectComments,
-    getProjectUpdates
+    getProjectUpdates,
+    createComment
 };

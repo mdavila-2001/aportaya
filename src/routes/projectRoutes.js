@@ -6,5 +6,6 @@ const authMiddleware = require('../middleware/authMiddleware');
 router.get('/projects', projectController.getProjects);
 router.post('/projects', authMiddleware.authenticate, projectController.createProject);
 router.get('/projects/:slug', projectController.getProjectDetail);
+router.post('/projects/:slug/comments', authMiddleware.authenticate, projectController.createComment);
 
 module.exports = router;

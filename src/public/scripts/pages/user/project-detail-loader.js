@@ -194,6 +194,98 @@ async function loadProjectDetail() {
     }
 }
 
+// Enviar comentario
+async function submitComment() {
+    const textarea = document.getElementById('new-comment');
+    const submitButton = document.getElementById('submit-comment');
+    const content = textarea.value.trim();
+
+    // Validar contenido
+    if (!content) {
+        alert('Por favor escribe un comentario');
+        return;
+    }
+
+    if (content.length > 1000) {
+        alert('El comentario no puede exceder 1000 caracteres');
+        return;
+    }
+
+    // Obtener slug del proyecto desde la URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const slug = urlParams.get('slug');
+
+    if (!slug) {
+        alert('Error: No se pudo identificar el proyecto');
+        return;
+    }
+
+    try {
+        // Deshabilitar botón durante el envío
+        submitButton.disabled = true;
+        submitButton.textContent = 'Enviando...';
+
+        const token = localStorage.getItem('token');
+        const response = await fetch(`/api/projects/${slug}/comments`, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ content })
+        });
+
+        const result = await response.json();
+
+        if (response.ok) {
+            // Limpiar textarea
+            textarea.value = '';
+
+            // Agregar comentario a la lista dinámicamente
+            const comment = result.data.comment;
+            const commentsList = document.getElementById('comments-list');
+            const commentsCount = document.getElementById('comments-count');
+
+            // Remover mensaje de "no hay comentarios" si existe
+            const emptyState = commentsList.querySelector('.empty-state');
+            if (emptyState) {
+                emptyState.remove();
+            }
+
+            // Crear elemento del nuevo comentario
+            const commentHTML = `
+                <div class="comment-item">
+                    <img class="comment-avatar" src="${comment.author_avatar || '/uploads/avatar/default.png'}" alt="${comment.author_name}">
+                    <div class="comment-content">
+                        <div class="comment-header">
+                            <p class="comment-author">${comment.author_name}</p>
+                            <p class="comment-date">Justo ahora</p>
+                        </div>
+                        <p class="comment-text">${comment.content}</p>
+                    </div>
+                </div>
+            `;
+
+            // Insertar al inicio de la lista
+            commentsList.insertAdjacentHTML('afterbegin', commentHTML);
+
+            // Actualizar contador
+            const currentCount = parseInt(commentsCount.textContent);
+            commentsCount.textContent = currentCount + 1;
+
+        } else {
+            alert(result.message || 'Error al enviar el comentario');
+        }
+    } catch (error) {
+        console.error('Error enviando comentario:', error);
+        alert('Error al enviar el comentario. Por favor intenta de nuevo.');
+    } finally {
+        // Rehabilitar botón
+        submitButton.disabled = false;
+        submitButton.textContent = 'Comentar';
+    }
+}
+
 // Manejo de tabs
 function setupTabs() {
     const tabLinks = document.querySelectorAll('.tab-link');
@@ -225,4 +317,10 @@ document.addEventListener('DOMContentLoaded', () => {
     setupTabs();
     loadUserAvatar();
     loadProjectDetail();
+
+    // Event listener para enviar comentarios
+    const submitCommentBtn = document.getElementById('submit-comment');
+    if (submitCommentBtn) {
+        submitCommentBtn.addEventListener('click', submitComment);
+    }
 });

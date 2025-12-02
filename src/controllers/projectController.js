@@ -157,8 +157,64 @@ const getProjectDetail = async (req, res) => {
     }
 }
 
+const createComment = async (req, res) => {
+    const { slug } = req.params;
+    const { content } = req.body;
+    const userId = req.user.id;
+
+    try {
+        // Validar contenido
+        if (!content || content.trim().length === 0) {
+            return res.status(400).json({
+                success: false,
+                message: 'El contenido del comentario no puede estar vacío'
+            });
+        }
+
+        if (content.length > 1000) {
+            return res.status(400).json({
+                success: false,
+                message: 'El comentario no puede exceder 1000 caracteres'
+            });
+        }
+
+        // Obtener proyecto por slug
+        const project = await projectRepository.getProjectsBySLUG(slug);
+        if (!project) {
+            return res.status(404).json({
+                success: false,
+                message: 'Proyecto no encontrado'
+            });
+        }
+
+        // Crear comentario
+        const comment = await projectRepository.createComment(project.id, userId, content.trim());
+
+        res.status(201).json({
+            success: true,
+            message: 'Comentario creado exitosamente',
+            data: {
+                comment: {
+                    id: comment.id,
+                    content: comment.content,
+                    author_name: comment.author_name,
+                    author_avatar: comment.author_avatar,
+                    created_at: comment.created_at
+                }
+            }
+        });
+    } catch (error) {
+        console.error('Error creando comentario:', error);
+        res.status(500).json({
+            success: false,
+            message: error.message || 'Error al crear el comentario'
+        });
+    }
+};
+
 module.exports = {
     createProject,
     getProjects,
-    getProjectDetail
+    getProjectDetail,
+    createComment
 };
