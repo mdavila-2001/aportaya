@@ -92,15 +92,12 @@ const getProjectDetail = async (req, res) => {
 
         const categories = await projectRepository.getProjectCategories();
 
-        // Obtener donadores y comentarios (públicos)
         const donors = await projectRepository.getProjectDonors(project.id);
         const comments = await projectRepository.getProjectComments(project.id);
 
-        // Verificar si el usuario autenticado es el dueño
         const userId = req.user?.id;
         const isOwner = userId && project.creator_id === userId;
 
-        // Obtener actualizaciones solo si es el dueño
         const updates = isOwner ? await projectRepository.getProjectUpdates(project.id) : [];
 
         res.status(200).json({
@@ -163,7 +160,6 @@ const createComment = async (req, res) => {
     const userId = req.user.id;
 
     try {
-        // Validar contenido
         if (!content || content.trim().length === 0) {
             return res.status(400).json({
                 success: false,
@@ -178,7 +174,6 @@ const createComment = async (req, res) => {
             });
         }
 
-        // Obtener proyecto por slug
         const project = await projectRepository.getProjectsBySLUG(slug);
         if (!project) {
             return res.status(404).json({
@@ -187,7 +182,6 @@ const createComment = async (req, res) => {
             });
         }
 
-        // Crear comentario
         const comment = await projectRepository.createComment(project.id, userId, content.trim());
 
         res.status(201).json({
