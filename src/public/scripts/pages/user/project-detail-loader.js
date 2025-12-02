@@ -139,7 +139,7 @@ async function loadUserAvatar() {
 
         if (response.ok) {
             const result = await response.json();
-            const userAvatar = result.data.user.profile_image_url || '/uploads/avatar/default.png';
+            const userAvatar = result.data.user.profile_image_url || '/uploads/avatar/admin.png';
 
             // Actualizar avatar en el formulario de comentarios
             const commentFormAvatar = document.querySelector('.comment-form .user-avatar-sm');
