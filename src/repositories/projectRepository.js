@@ -185,7 +185,7 @@ const getProjectDonors = async (projectId, limit = 3) => {
             LEFT JOIN files.image avatar ON u.profile_image_id = avatar.id
             WHERE d.project_id = $1 AND d.status = 'completed'
             ORDER BY d.amount DESC
-            LIMIT $2;
+            LIMIT $3;
         `;
         const { rows } = await client.query(query, [projectId, limit]);
         return rows;

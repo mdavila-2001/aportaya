@@ -40,29 +40,27 @@ function renderProject(project, isOwner) {
     document.getElementById('project-description').textContent = project.description;
     document.getElementById('project-cover').src = project.cover_image_url || '/images/placeholder-project.jpg';
 
-    // Calcular progreso
     const percentage = Math.round((project.raised_amount / project.goal_amount) * 100);
     document.getElementById('funding-percentage').textContent = `${percentage}%`;
     document.getElementById('progress-fill').style.width = `${Math.min(percentage, 100)}%`;
     document.getElementById('funding-amount').textContent =
         `Bs. ${parseFloat(project.raised_amount).toLocaleString()} recaudados de Bs. ${parseFloat(project.goal_amount).toLocaleString()}`;
 
-    // Días restantes
     const daysRemaining = calculateDaysRemaining(project.end_date);
     document.getElementById('days-remaining').textContent = daysRemaining;
 
-    // Mostrar tab de actualizaciones solo para el dueño
     if (isOwner) {
         document.getElementById('updates-tab').style.display = 'block';
     }
+
+    // Actualizar título de la página
+    document.title = `${project.title} - AportaYa`;
 }
 
-// Renderizar donadores
 function renderDonors(donors) {
     const donorsList = document.getElementById('donors-list');
     const backersCount = document.getElementById('backers-count');
 
-    // Aquí deberías obtener el conteo real de todos los donadores, no solo los top 3
     backersCount.textContent = donors.length;
 
     if (donors.length === 0) {
@@ -89,13 +87,17 @@ function renderComments(comments) {
     commentsCount.textContent = comments.length;
 
     if (comments.length === 0) {
-        commentsList.innerHTML = '<p style="text-align: center; color: var(--text-light); padding: var(--spXL);">No hay comentarios aún. ¡Sé el primero en comentar!</p>';
+        commentsList.innerHTML = `
+            <div class="empty-state">
+                <p>No hay comentarios aún. ¡Sé el primero en comentar!</p>
+            </div>
+        `;
         return;
     }
 
     commentsList.innerHTML = comments.map(comment => `
         <div class="comment-item">
-            <img class="user-avatar-sm" src="${comment.author_avatar || '/uploads/avatar/default.png'}" alt="${comment.author_name}">
+            <img class="comment-avatar" src="${comment.author_avatar || '/uploads/avatar/default.png'}" alt="${comment.author_name}">
             <div class="comment-content">
                 <div class="comment-header">
                     <p class="comment-author">${comment.author_name}</p>
@@ -112,12 +114,16 @@ function renderUpdates(updates) {
     const updatesList = document.getElementById('updates-list');
 
     if (updates.length === 0) {
-        updatesList.innerHTML = '<p style="text-align: center; color: var(--text-light); padding: var(--spXL);">No hay actualizaciones aún</p>';
+        updatesList.innerHTML = `
+            <div class="empty-state">
+                <p>No hay actualizaciones aún</p>
+            </div>
+        `;
         return;
     }
 
     updatesList.innerHTML = updates.map(update => `
-        <div class="comment-content" style="margin-bottom: var(--spL);">
+        <div class="comment-content" style="margin-bottom: 1.5rem;">
             <div class="comment-header">
                 <p class="comment-author">${update.title}</p>
                 <p class="comment-date">${formatRelativeTime(update.created_at)}</p>
@@ -127,11 +133,10 @@ function renderUpdates(updates) {
     `).join('');
 }
 
-// Cargar avatar del usuario logueado
 async function loadUserAvatar() {
     try {
         const token = localStorage.getItem('token');
-        const response = await fetch('/api/user/home', {
+        const response = await fetch('/api/me', {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
@@ -139,10 +144,9 @@ async function loadUserAvatar() {
 
         if (response.ok) {
             const result = await response.json();
-            const userAvatar = result.data.user.profile_image_url || '/uploads/avatar/admin.png';
+            const userAvatar = result.data.profile_image_url || '/uploads/avatar/admin.png';
 
-            // Actualizar avatar en el formulario de comentarios
-            const commentFormAvatar = document.querySelector('.comment-form .user-avatar-sm');
+            const commentFormAvatar = document.querySelector('.comment-form .comment-avatar');
             if (commentFormAvatar) {
                 commentFormAvatar.src = userAvatar;
             }
@@ -152,7 +156,6 @@ async function loadUserAvatar() {
     }
 }
 
-// Cargar datos del proyecto
 async function loadProjectDetail() {
     try {
         const token = localStorage.getItem('token');
