@@ -179,13 +179,13 @@ const getProjectDonors = async (projectId, limit = 3) => {
                 u.first_name || ' ' || u.last_name as donor_name,
                 avatar.file_path as donor_avatar,
                 d.amount,
-                d.created_at
+                d.donation_date
             FROM payments.donation d
             JOIN users.user u ON d.user_id = u.id
             LEFT JOIN files.image avatar ON u.profile_image_id = avatar.id
-            WHERE d.project_id = $1 AND d.status = 'completed'
+            WHERE d.project_id = $1 AND d.payment_status = 'completed'
             ORDER BY d.amount DESC
-            LIMIT $3;
+            LIMIT $2;
         `;
         const { rows } = await client.query(query, [projectId, limit]);
         return rows;

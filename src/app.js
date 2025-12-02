@@ -9,6 +9,7 @@ const projectRoutes = require('./routes/projectRoutes');
 const adminRoutes = require('./routes/adminRoutes');
 const donationRoutes = require('./routes/donationRoutes');
 const userRoutes = require('./routes/userRoutes');
+const paymentGatewayRoutes = require('./routes/paymentGatewayRoutes');
 
 const path = require('node:path');
 require('dotenv').config({ path: path.resolve(__dirname, '..', '.env') });
@@ -29,6 +30,7 @@ app.use('/api/document', documentRouter);
 app.use('/api/admin', adminRoutes);
 app.use('/api', donationRoutes);
 app.use('/api/user', userRoutes);
+app.use('/api/gateway', paymentGatewayRoutes);
 
 const PORT = process.env.PORT || 3000;
 
@@ -38,8 +40,20 @@ app.get('/api', (req, res) => {
 
 const startServer = async () => {
   await testConnection();
-  app.listen(PORT, () => {
-    console.log(`Servidor corriendo en el puerto http://localhost:${PORT}`);
+  app.listen(PORT, '0.0.0.0', () => {
+    console.log(`\n🚀 Servidor corriendo!`);
+    console.log(`👉 Local:   http://localhost:${PORT}`);
+
+    const { networkInterfaces } = require('os');
+    const nets = networkInterfaces();
+    for (const name of Object.keys(nets)) {
+      for (const net of nets[name]) {
+        if (net.family === 'IPv4' && !net.internal) {
+          console.log(`👉 Network: http://${net.address}:${PORT} (Usa esto para QR)`);
+        }
+      }
+    }
+    console.log('\n');
   });
 };
 

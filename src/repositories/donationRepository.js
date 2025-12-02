@@ -134,10 +134,35 @@ const logWebhookEvent = async (source, eventType, payload) => {
     }
 };
 
+const getDonationById = async (donationId) => {
+    const client = await dbPool.connect();
+    try {
+        const query = `
+            SELECT 
+                id,
+                project_id,
+                user_id,
+                amount,
+                payment_status,
+                donation_date
+            FROM payments.donation
+            WHERE id = $1;
+        `;
+        const { rows } = await client.query(query, [donationId]);
+        return rows[0] || null;
+    } catch (error) {
+        console.error('Error obteniendo donación por ID:', error);
+        throw error;
+    } finally {
+        client.release();
+    }
+};
+
 module.exports = {
     createDonation,
     getUserDonations,
     getProjectDonations,
     updateDonationStatus,
-    logWebhookEvent
+    logWebhookEvent,
+    getDonationById
 };

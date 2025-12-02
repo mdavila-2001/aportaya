@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test UI - Pasarela de Pagos</title>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        /* ===========================
+           CORE VARIABLES & RESET
+           =========================== */
+        :root {
+            --primary: #11d473;
+            --primary-hover: #0eb361;
+            --dark-bg: #13473d;
+            --dark-bg-2: #083227;
+            --surface: #0f2e26;
+            /* Adjusted for better contrast in dark mode */
+            --text-main: #ffffff;
+            --text-light: #cbd5e1;
+            --text-lighter: #94a3b8;
+            --border-color: rgba(17, 212, 115, 0.2);
+            --border-radius-lg: 16px;
+            --border-radius-md: 8px;
+            --font-base: 'Manrope', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: var(--font-base);
+        }
+
+        body {
+            background-color: var(--dark-bg);
+            color: var(--text-main);
+            min-height: 100vh;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        h2 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        /* ===========================
+           1. DONATION MODAL STYLES
+           =========================== */
+        .modal-overlay {
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(4px);
+            padding: 2rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: var(--border-radius-lg);
+            border: 1px solid var(--border-color);
+            max-width: 500px;
+            width: 100%;
+        }
+
+        .donation-modal {
+            background-color: var(--dark-bg-2);
+            border-radius: var(--border-radius-lg);
+            border: 1px solid var(--border-color);
+            width: 100%;
+            overflow: hidden;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
+        }
+
+        .modal-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            color: var(--text-lighter);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .close-btn:hover {
+            color: var(--primary);
+        }
+
+        .modal-body {
+            padding: 2rem 1.5rem;
+        }
+
+        .amount-input-container {
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+
+        .currency-symbol {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--primary);
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .amount-input {
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 2px solid var(--border-color);
+            border-radius: var(--border-radius-md);
+            padding: 1rem 1rem 1rem 3rem;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-main);
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .amount-input:focus {
+            border-color: var(--primary);
+        }
+
+        .quick-amounts {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .amount-btn {
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius-md);
+            padding: 0.75rem 0.5rem;
+            color: var(--text-light);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .amount-btn:hover {
+            background-color: rgba(17, 212, 115, 0.1);
+            color: var(--primary);
+            border-color: var(--primary);
+        }
+
+        .donation-summary {
+            text-align: center;
+            color: var(--text-lighter);
+            font-size: 0.875rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .project-name-highlight {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .modal-footer {
+            padding: 1.5rem;
+            border-top: 1px solid var(--border-color);
+            background-color: rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-primary {
+            width: 100%;
+            background-color: var(--primary);
+            color: #000000;
+            border: none;
+            padding: 1rem;
+            border-radius: var(--border-radius-md);
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform 0.1s, background-color 0.2s;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-1px);
+        }
+
+        .secure-payment-text {
+            display: block;
+            text-align: center;
+            margin-top: 0.75rem;
+            font-size: 0.75rem;
+            color: var(--text-lighter);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        /* ===========================
+           2. PAYMENT PAGE STYLES
+           =========================== */
+        .payment-card {
+            background-color: var(--dark-bg-2);
+            border-radius: var(--border-radius-lg);
+            border: 1px solid var(--border-color);
+            padding: 2.5rem;
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        .payment-header {
+            margin-bottom: 2rem;
+        }
+
+        .payment-amount {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--primary);
+            margin: 0.5rem 0;
+        }
+
+        .payment-label {
+            color: var(--text-lighter);
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .qr-container {
+            background-color: white;
+            padding: 1rem;
+            border-radius: var(--border-radius-md);
+            width: 200px;
+            height: 200px;
+            margin: 0 auto 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .qr-placeholder {
+            width: 100%;
+            height: 100%;
+            background-color: #f0f0f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #333;
+            font-weight: bold;
+            border: 2px dashed #ccc;
+        }
+
+        .payment-instructions {
+            color: var(--text-light);
+            margin-bottom: 2rem;
+            line-height: 1.5;
+        }
+
+        .payment-status {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            padding: 1rem;
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: var(--border-radius-md);
+            margin-bottom: 1.5rem;
+        }
+
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            background-color: #fbbf24;
+            /* Warning color for pending */
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        .status-text {
+            font-weight: 600;
+            color: #fbbf24;
+        }
+
+        @keyframes pulse {
+            0% {
+                opacity: 1;
+                transform: scale(1);
+            }
+
+            50% {
+                opacity: 0.5;
+                transform: scale(1.2);
+            }
+
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .btn-simulate {
+            background-color: transparent;
+            border: 1px dashed var(--text-lighter);
+            color: var(--text-lighter);
+            padding: 0.75rem;
+            width: 100%;
+            border-radius: var(--border-radius-md);
+            cursor: pointer;
+            font-size: 0.875rem;
+        }
+
+        .btn-simulate:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- SECTION 1: DONATION MODAL -->
+    <div style="width: 100%; display: flex; flex-direction: column; align-items: center;">
+        <h2>1. Modal de Donación</h2>
+        <div class="modal-overlay">
+            <div class="donation-modal">
+                <div class="modal-header">
+                    <h3 class="modal-title">Apoyar este proyecto</h3>
+                    <button class="close-btn">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="amount-input-container">
+                        <span class="currency-symbol">Bs.</span>
+                        <input type="number" class="amount-input" value="100" placeholder="0">
+                    </div>
+
+                    <div class="quick-amounts">
+                        <button class="amount-btn">50</button>
+                        <button class="amount-btn">100</button>
+                        <button class="amount-btn">200</button>
+                        <button class="amount-btn">500</button>
+                    </div>
+
+                    <p class="donation-summary">
+                        Estás donando a <span class="project-name-highlight">Mochila Solar Pro</span>
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn-primary">Continuar al Pago</button>
+                    <span class="secure-payment-text">
+                        🔒 Pago seguro procesado por AportaYa
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SECTION 2: PAYMENT PAGE -->
+    <div style="width: 100%; display: flex; flex-direction: column; align-items: center;">
+        <h2>2. Página de Pago</h2>
+        <div class="payment-card">
+            <div class="payment-header">
+                <div class="payment-label">Total a Pagar</div>
+                <div class="payment-amount">Bs. 100.00</div>
+            </div>
+
+            <div class="qr-container">
+                <div class="qr-placeholder">
+                    [ CÓDIGO QR AQUÍ ]
+                </div>
+            </div>
+
+            <p class="payment-instructions">
+                Escanea el código QR con tu aplicación de banco móvil para completar la donación.
+            </p>
+
+            <div class="payment-status">
+                <div class="status-dot"></div>
+                <span class="status-text">Esperando pago...</span>
+            </div>
+
+            <button class="btn-simulate">
+                ⚡ Simular Pago Exitoso (Dev)
+            </button>
+        </div>
+    </div>
+
+</body>
+
+</html>

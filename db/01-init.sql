@@ -10,6 +10,7 @@ CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 \i /docker-entrypoint-initdb.d/schemas/tables/01_users_tables.sql
 \i /docker-entrypoint-initdb.d/schemas/tables/02_projects_tables.sql
 \i /docker-entrypoint-initdb.d/schemas/tables/03_payments_tables.sql
+\i /docker-entrypoint-initdb.d/schemas/tables/04_gateway_payments.sql
 \i /docker-entrypoint-initdb.d/schemas/tables/04_social_tables.sql
 \i /docker-entrypoint-initdb.d/schemas/tables/05_messaging_tables.sql
 \i /docker-entrypoint-initdb.d/schemas/tables/06_audit_tables.sql

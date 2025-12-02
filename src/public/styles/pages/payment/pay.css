@@ -1,0 +1,435 @@
+/* ===========================
+   PAYMENT PAGE STYLES (NEW DESIGN)
+   =========================== */
+
+body {
+    background-color: #f8fafc;
+    /* Light background for contrast or keep dark if preferred, but user HTML looks like a checkout page */
+    /* Reverting to dark mode based on previous context, but checking if user wants light mode? 
+       The user HTML uses specific classes. I will stick to the project's Dark Mode theme 
+       but adapt the structure. */
+    background-color: var(--dark-bg);
+    color: var(--text-main);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* Header */
+.checkout-header {
+    background-color: var(--dark-bg-2);
+    border-bottom: 1px solid var(--border-color);
+    padding: 1rem 0;
+}
+
+.header-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    text-decoration: none;
+    color: var(--text-main);
+}
+
+.logo-text {
+    font-weight: 700;
+    font-size: 1.25rem;
+}
+
+.secure-badge {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--primary);
+    font-weight: 600;
+    font-size: 0.875rem;
+    background-color: rgba(17, 212, 115, 0.1);
+    padding: 0.5rem 1rem;
+    border-radius: 999px;
+}
+
+.secure-badge .material-symbols-outlined {
+    font-size: 1.25rem;
+}
+
+/* Main Layout */
+.checkout-main {
+    flex: 1;
+    padding: 2rem 1.5rem;
+}
+
+.checkout-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.checkout-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+}
+
+@media (min-width: 1024px) {
+    .checkout-grid {
+        grid-template-columns: 1.5fr 1fr;
+        gap: 4rem;
+    }
+}
+
+/* Typography */
+.page-title {
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    color: var(--text-main);
+}
+
+/* Payment Method Card */
+.payment-method-card {
+    background-color: var(--dark-bg-2);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-lg);
+    overflow: hidden;
+    transition: all 0.2s;
+    margin-bottom: 2rem;
+}
+
+.payment-method-card.selected {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 1px var(--primary);
+}
+
+.method-header {
+    padding: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    border-bottom: 1px solid var(--border-color);
+    background-color: rgba(255, 255, 255, 0.02);
+}
+
+.method-icon {
+    width: 48px;
+    height: 48px;
+    background-color: var(--surface);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary);
+}
+
+.method-info h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+}
+
+.method-info p {
+    font-size: 0.875rem;
+    color: var(--text-light);
+}
+
+.method-check {
+    margin-left: auto;
+    color: var(--primary);
+}
+
+.method-content {
+    padding: 2rem;
+    display: flex;
+    justify-content: center;
+}
+
+.qr-wrapper {
+    text-align: center;
+    max-width: 300px;
+    width: 100%;
+}
+
+.qr-container {
+    background-color: white;
+    padding: 1rem;
+    border-radius: var(--border-radius-md);
+    aspect-ratio: 1;
+    margin-bottom: 1rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.qr-image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.qr-instruction {
+    font-size: 0.875rem;
+    color: var(--text-light);
+    line-height: 1.5;
+}
+
+/* Payment Status */
+.payment-status-card {
+    background-color: var(--surface);
+    border-radius: var(--border-radius-md);
+    padding: 1.5rem;
+    text-align: center;
+    margin-bottom: 1.5rem;
+    border: 1px dashed var(--border-color);
+}
+
+.status-indicator {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    margin-bottom: 0.5rem;
+}
+
+.status-dot {
+    width: 10px;
+    height: 10px;
+    background-color: #fbbf24;
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+}
+
+.status-text {
+    font-weight: 600;
+    color: #fbbf24;
+    font-size: 1.125rem;
+}
+
+.status-subtext {
+    font-size: 0.875rem;
+    color: var(--text-lighter);
+}
+
+/* Success State */
+.payment-status-card.success {
+    background-color: rgba(17, 212, 115, 0.1);
+    border-style: solid;
+    border-color: var(--primary);
+}
+
+.payment-status-card.success .status-dot {
+    background-color: var(--primary);
+    animation: none;
+}
+
+.payment-status-card.success .status-text {
+    color: var(--primary);
+}
+
+/* Order Summary */
+.summary-card {
+    background-color: var(--dark-bg-2);
+    border-radius: var(--border-radius-lg);
+    border: 1px solid var(--border-color);
+    padding: 1.5rem;
+    position: sticky;
+    top: 2rem;
+}
+
+.summary-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+}
+
+.project-preview {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.project-thumb {
+    width: 80px;
+    height: 60px;
+    border-radius: var(--border-radius-md);
+    object-fit: cover;
+    background-color: var(--surface);
+}
+
+.project-info {
+    flex: 1;
+}
+
+.project-info .label {
+    display: block;
+    font-size: 0.75rem;
+    color: var(--text-lighter);
+    margin-bottom: 0.25rem;
+}
+
+.project-name {
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.4;
+}
+
+.summary-divider {
+    height: 1px;
+    background-color: var(--border-color);
+    margin: 1.5rem 0;
+}
+
+.summary-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.total-row {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-main);
+}
+
+.total-amount {
+    color: var(--primary);
+}
+
+.security-note {
+    margin-top: 2rem;
+    display: flex;
+    gap: 0.75rem;
+    padding: 1rem;
+    background-color: var(--surface);
+    border-radius: var(--border-radius-md);
+    font-size: 0.75rem;
+    color: var(--text-light);
+    line-height: 1.5;
+}
+
+.security-note .material-symbols-outlined {
+    font-size: 1.25rem;
+    color: var(--text-lighter);
+}
+
+/* Buttons */
+.btn-simulate {
+    width: 100%;
+    padding: 1rem;
+    background-color: transparent;
+    border: 1px dashed var(--text-lighter);
+    color: var(--text-lighter);
+    border-radius: var(--border-radius-md);
+    cursor: pointer;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    transition: all 0.2s;
+}
+
+.btn-simulate:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+    background-color: rgba(17, 212, 115, 0.05);
+}
+
+.btn-return {
+    display: none;
+    width: 100%;
+    padding: 1rem;
+    background-color: var(--primary);
+    color: #000;
+    border: none;
+    border-radius: var(--border-radius-md);
+    font-weight: 700;
+    text-align: center;
+    text-decoration: none;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    transition: all 0.2s;
+}
+
+.btn-return:hover {
+    background-color: var(--primary-hover);
+    transform: translateY(-1px);
+}
+
+/* Loading & Error */
+.loading-container {
+    text-align: center;
+    padding: 4rem 0;
+}
+
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid rgba(17, 212, 115, 0.1);
+    border-radius: 50%;
+    border-top-color: var(--primary);
+    animation: spin 1s linear infinite;
+    margin: 0 auto 1rem;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.error-message {
+    background-color: rgba(239, 68, 68, 0.1);
+    border: 1px solid rgba(239, 68, 68, 0.2);
+    color: #ef4444;
+    padding: 1rem;
+    border-radius: var(--border-radius-md);
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+/* Footer */
+.checkout-footer {
+    padding: 2rem 1.5rem;
+    text-align: center;
+    border-top: 1px solid var(--border-color);
+    color: var(--text-lighter);
+    font-size: 0.875rem;
+}
+
+.footer-links {
+    margin-top: 1rem;
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+}
+
+.footer-links a {
+    color: var(--text-light);
+    text-decoration: none;
+}
+
+.footer-links a:hover {
+    color: var(--primary);
+}
+
+@keyframes pulse {
+    0% {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    50% {
+        opacity: 0.5;
+        transform: scale(1.2);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}

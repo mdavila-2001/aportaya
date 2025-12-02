@@ -1,329 +1,364 @@
 <!DOCTYPE html>
 <html lang="es">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="author" content="Danny Marcelo Dávila Barrancos">
-        <meta name="description" content="Detalle del Proyecto - AportaYa">
-        <meta property="og:title" content="Detalle del Proyecto - AportaYa">
-        <meta property="og:author" content="Danny Marcelo Dávila Barrancos">
-        <meta property="og:description" content="Detalle del Proyecto - AportaYa">
-        <link rel="shortcut icon" href="../../../images/favicon.ico" type="image/x-icon">
 
-        <link rel="stylesheet" href="../../../styles/styles.css">
-        <link rel="stylesheet" href="../../../styles/fonts.css">
-        <link rel="stylesheet" href="../../../styles/components/buttons.css">
-        <link rel="stylesheet" href="../../../styles/components/header.css">
-        <link rel="stylesheet" href="../../../styles/components/sidebar.css">
-        <link rel="stylesheet" href="../../../styles/components/progress.css">
-        <link rel="stylesheet" href="../../../styles/components/modal.css">
-        <link rel="stylesheet" href="../../../styles/components/forms.css">
-        <link rel="stylesheet" href="../../../styles/pages/user/layout.css">
-        <link rel="stylesheet" href="../../../styles/pages/user/project-detail.css">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Danny Marcelo Dávila Barrancos">
+    <meta name="description" content="Detalle del Proyecto - AportaYa">
+    <meta property="og:title" content="Detalle del Proyecto - AportaYa">
+    <meta property="og:author" content="Danny Marcelo Dávila Barrancos">
+    <meta property="og:description" content="Detalle del Proyecto - AportaYa">
+    <link rel="shortcut icon" href="../../../images/favicon.ico" type="image/x-icon">
 
-        <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+    <link rel="stylesheet" href="../../../styles/styles.css">
+    <link rel="stylesheet" href="../../../styles/fonts.css">
+    <link rel="stylesheet" href="../../../styles/components/buttons.css">
+    <link rel="stylesheet" href="../../../styles/components/header.css">
+    <link rel="stylesheet" href="../../../styles/components/sidebar.css">
+    <link rel="stylesheet" href="../../../styles/components/progress.css">
+    <link rel="stylesheet" href="../../../styles/components/modal.css">
+    <link rel="stylesheet" href="../../../styles/components/forms.css">
+    <link rel="stylesheet" href="../../../styles/pages/user/layout.css">
+    <link rel="stylesheet" href="../../../styles/pages/user/project-detail.css">
 
-        <title>Detalle del Proyecto - AportaYa</title>
-    </head>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
 
-    <body>
-        <main class="user-content">
-            <aside class="sidebar user-sidebar">
-                <div class="sidebar-header">
-                    <div class="sidebar-brand">
-                        <div class="brand-icon">
-                            <span class="material-symbols-outlined">volunteer_activism</span>
+    <title>Detalle del Proyecto - AportaYa</title>
+</head>
+
+<body>
+    <main class="user-content">
+        <aside class="sidebar user-sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-brand">
+                    <div class="brand-icon">
+                        <span class="material-symbols-outlined">volunteer_activism</span>
+                    </div>
+                    <div class="brand-text">
+                        <h1>AportaYa</h1>
+                        <p>Mi Cuenta</p>
+                    </div>
+                </div>
+            </div>
+            <nav class="sidebar-nav" aria-label="Menú de navegación principal">
+                <ul class="sidebar-items">
+                    <li class="sidebar-item">
+                        <a href="../dashboard.html">
+                            <span class="material-symbols-outlined">dashboard</span>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-item active">
+                        <a href="projects.html">
+                            <span class="material-symbols-outlined filled">explore</span>
+                            <span>Proyectos</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a href="myProjects.html">
+                            <span class="material-symbols-outlined">folder</span>
+                            <span>Mis Proyectos</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a href="favorites.html">
+                            <span class="material-symbols-outlined">bookmark</span>
+                            <span>Favoritos</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a href="../settings.html">
+                            <span class="material-symbols-outlined">settings</span>
+                            <span>Configuración</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            <div class="sidebar-footer">
+                <ul class="sidebar-items">
+                    <li class="sidebar-item logout-item">
+                        <button commandfor="logout-modal" command="show-popover" class="logout-btn">
+                            <span class="material-symbols-outlined">logout</span>
+                            <span>Cerrar Sesión</span>
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </aside>
+        <section class="user-main">
+            <header class="header-logged">
+                <div class="logged-in-content">
+                    <div class="header-menu">
+                        <input type="checkbox" name="mobile-menu-switch" id="mobile-menu-switch">
+                        <label for="mobile-menu-switch" class="mobile-menu-label">
+                            <span class="material-symbols-outlined mobile-menu">menu</span>
+                        </label>
+                        <div class="floating-menu">
+                            <nav class="user-menu" aria-label="User Menu">
+                                <ul class="mobile-sidebar-items">
+                                    <li class="mobile-sidebar-item">
+                                        <a href="../dashboard.html">
+                                            <span class="material-symbols-outlined">dashboard</span>
+                                            <span>Dashboard</span>
+                                        </a>
+                                    </li>
+                                    <li class="mobile-sidebar-item active">
+                                        <a href="projects.html">
+                                            <span class="material-symbols-outlined filled">explore</span>
+                                            <span>Proyectos</span>
+                                        </a>
+                                    </li>
+                                    <li class="mobile-sidebar-item">
+                                        <a href="myProjects.html">
+                                            <span class="material-symbols-outlined">folder</span>
+                                            <span>Mis Proyectos</span>
+                                        </a>
+                                    </li>
+                                    <li class="mobile-sidebar-item">
+                                        <a href="favorites.html">
+                                            <span class="material-symbols-outlined">bookmark</span>
+                                            <span>Favoritos</span>
+                                        </a>
+                                    </li>
+                                    <li class="mobile-sidebar-item">
+                                        <a href="../settings.html">
+                                            <span class="material-symbols-outlined">settings</span>
+                                            <span>Configuración</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </nav>
+                            <div class="mobile-sidebar-footer">
+                                <ul class="mobile-sidebar-items">
+                                    <li class="mobile-sidebar-item logout-item">
+                                        <button commandfor="logout-modal" command="show-popover" class="logout-btn">
+                                            <span class="material-symbols-outlined">logout</span>
+                                            <span>Cerrar Sesión</span>
+                                        </button>
+                                    </li>
+                                </ul>
+                            </div>
                         </div>
-                        <div class="brand-text">
-                            <h1>AportaYa</h1>
-                            <p>Mi Cuenta</p>
+                    </div>
+                    <div>
+                        <a class="logo">
+                            <img src="../../../images/aporta-ya-icon.webp" alt="AportaYa Logo" width="48" height="48">
+                            <img src="../../../images/aporta-ya-letters.webp" alt="AportaYa" width="100"
+                                class="letters">
+                        </a>
+                    </div>
+                    <div>
+                        <div class="user-info">
+                            <img src="/uploads/avatar/default.png" alt="Avatar" class="user-avatar" width="48"
+                                height="48" style="border-radius: 999px;">
+                            <span class="user-name">Cargando...</span>
                         </div>
                     </div>
                 </div>
-                <nav class="sidebar-nav" aria-label="Menú de navegación principal">
-                    <ul class="sidebar-items">
-                        <li class="sidebar-item">
-                            <a href="../dashboard.html">
-                                <span class="material-symbols-outlined">dashboard</span>
-                                <span>Dashboard</span>
-                            </a>
-                        </li>
-                        <li class="sidebar-item active">
-                            <a href="projects.html">
-                                <span class="material-symbols-outlined filled">explore</span>
-                                <span>Proyectos</span>
-                            </a>
-                        </li>
-                        <li class="sidebar-item">
-                            <a href="myProjects.html">
-                                <span class="material-symbols-outlined">folder</span>
-                                <span>Mis Proyectos</span>
-                            </a>
-                        </li>
-                        <li class="sidebar-item">
-                            <a href="favorites.html">
-                                <span class="material-symbols-outlined">bookmark</span>
-                                <span>Favoritos</span>
-                            </a>
-                        </li>
-                        <li class="sidebar-item">
-                            <a href="../settings.html">
-                                <span class="material-symbols-outlined">settings</span>
-                                <span>Configuración</span>
-                            </a>
-                        </li>
-                    </ul>
+            </header>
+
+            <main class="user-projects">
+                <!-- Breadcrumbs -->
+                <nav class="breadcrumbs">
+                    <a href="projects.html">Explorar</a>
+                    <span class="separator">/</span>
+                    <span id="breadcrumb-title" class="breadcrumb-current">Detalle del Proyecto</span>
                 </nav>
-                <div class="sidebar-footer">
-                    <ul class="sidebar-items">
-                        <li class="sidebar-item logout-item">
-                            <button commandfor="logout-modal" command="show-popover" class="logout-btn">
-                                <span class="material-symbols-outlined">logout</span>
-                                <span>Cerrar Sesión</span>
-                            </button>
-                        </li>
-                    </ul>
-                </div>
-            </aside>
-            <section class="user-main">
-                <header class="header-logged">
-                    <div class="logged-in-content">
-                        <div class="header-menu">
-                            <input type="checkbox" name="mobile-menu-switch" id="mobile-menu-switch">
-                            <label for="mobile-menu-switch" class="mobile-menu-label">
-                                <span class="material-symbols-outlined mobile-menu">menu</span>
-                            </label>
-                            <div class="floating-menu">
-                                <nav class="user-menu" aria-label="User Menu">
-                                    <ul class="mobile-sidebar-items">
-                                        <li class="mobile-sidebar-item">
-                                            <a href="../dashboard.html">
-                                                <span class="material-symbols-outlined">dashboard</span>
-                                                <span>Dashboard</span>
-                                            </a>
-                                        </li>
-                                        <li class="mobile-sidebar-item active">
-                                            <a href="projects.html">
-                                                <span class="material-symbols-outlined filled">explore</span>
-                                                <span>Proyectos</span>
-                                            </a>
-                                        </li>
-                                        <li class="mobile-sidebar-item">
-                                            <a href="myProjects.html">
-                                                <span class="material-symbols-outlined">folder</span>
-                                                <span>Mis Proyectos</span>
-                                            </a>
-                                        </li>
-                                        <li class="mobile-sidebar-item">
-                                            <a href="favorites.html">
-                                                <span class="material-symbols-outlined">bookmark</span>
-                                                <span>Favoritos</span>
-                                            </a>
-                                        </li>
-                                        <li class="mobile-sidebar-item">
-                                            <a href="../settings.html">
-                                                <span class="material-symbols-outlined">settings</span>
-                                                <span>Configuración</span>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </nav>
-                                <div class="mobile-sidebar-footer">
-                                    <ul class="mobile-sidebar-items">
-                                        <li class="mobile-sidebar-item logout-item">
-                                            <button commandfor="logout-modal" command="show-popover" class="logout-btn">
-                                                <span class="material-symbols-outlined">logout</span>
-                                                <span>Cerrar Sesión</span>
-                                            </button>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <div>
-                            <a class="logo">
-                                <img src="../../../images/aporta-ya-icon.webp" alt="AportaYa Logo" width="48" height="48">
-                                <img src="../../../images/aporta-ya-letters.webp" alt="AportaYa" width="100"
-                                    class="letters">
-                            </a>
-                        </div>
-                        <div>
-                            <div class="user-info">
-                                <img src="/uploads/avatar/default.png" alt="Avatar" class="user-avatar" width="48"
-                                    height="48" style="border-radius: 999px;">
-                                <span class="user-name">Cargando...</span>
-                            </div>
-                        </div>
-                    </div>
-                </header>
 
-                <main class="user-projects">
-                    <!-- Breadcrumbs -->
-                    <nav class="breadcrumbs">
-                        <a href="projects.html">Explorar</a>
-                        <span class="separator">/</span>
-                        <span id="breadcrumb-title" class="breadcrumb-current">Detalle del Proyecto</span>
-                    </nav>
-
-                    <!-- Grid principal -->
-                    <div class="project-detail-grid">
-                        <!-- Columna izquierda - Contenido principal -->
-                        <div class="project-main-content">
-                            <!-- Hero Image -->
-                            <div class="hero-image-container">
-                                <img id="project-cover" class="hero-image" alt="Imagen del proyecto"
-                                    src="/images/placeholder-project.jpg">
-                            </div>
-
-                            <!-- Título y metadata -->
-                            <h1 id="project-title" class="project-title">Cargando...</h1>
-                            <p id="project-meta" class="project-meta">Cargando información...</p>
-
-                            <!-- Tabs Navigation -->
-                            <div class="tabs-container">
-                                <nav class="project-tabs" aria-label="Tabs">
-                                    <button class="tab-link active" data-tab="description" aria-current="page">
-                                        Descripción
-                                    </button>
-                                    <button class="tab-link" data-tab="comments">
-                                        Comentarios
-                                    </button>
-                                    <button class="tab-link" data-tab="updates" id="updates-tab" style="display: none;">
-                                        Actualizaciones
-                                    </button>
-                                </nav>
-                            </div>
-
-                            <!-- Contenido de tabs -->
-                            <div class="tab-content">
-                                <!-- Tab: Descripción -->
-                                <div id="description-content" class="content-section active">
-                                    <div class="description-wrapper">
-                                        <p id="project-description">Cargando descripción...</p>
-                                    </div>
-                                </div>
-
-                                <!-- Tab: Comentarios -->
-                                <div id="comments-content" class="content-section">
-                                    <div class="comments-section">
-                                        <h2 class="section-title">Comentarios (<span id="comments-count">0</span>)</h2>
-
-                                        <!-- Formulario de comentario -->
-                                        <div class="comment-form">
-                                            <img class="comment-avatar" src="/uploads/avatar/default.png" alt="Tu avatar">
-                                            <div class="comment-input-wrapper">
-                                                <textarea class="form-textarea" id="new-comment"
-                                                    placeholder="Añade tu comentario..." rows="3"></textarea>
-                                                <div class="comment-actions">
-                                                    <button class="btn btn-primary btn-sm" id="submit-comment">
-                                                        Comentar
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <!-- Lista de comentarios -->
-                                        <div class="comments-list" id="comments-list">
-                                            <div class="empty-state">
-                                                <p>No hay comentarios aún. ¡Sé el primero en comentar!</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Tab: Actualizaciones (solo para dueño) -->
-                                <div id="updates-content" class="content-section">
-                                    <div class="updates-section">
-                                        <h2 class="section-title">Actualizaciones del Proyecto</h2>
-                                        <div id="updates-list">
-                                            <div class="empty-state">
-                                                <p>No hay actualizaciones aún</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                <!-- Grid principal -->
+                <div class="project-detail-grid">
+                    <!-- Columna izquierda - Contenido principal -->
+                    <div class="project-main-content">
+                        <!-- Hero Image -->
+                        <div class="hero-image-container">
+                            <img id="project-cover" class="hero-image" alt="Imagen del proyecto"
+                                src="/images/placeholder-project.jpg">
                         </div>
 
-                        <!-- Sidebar derecha (Sticky) -->
-                        <aside class="project-sidebar">
-                            <div class="sidebar-card">
-                                <!-- Progreso de financiamiento -->
-                                <div class="funding-section">
-                                    <div class="funding-header">
-                                        <span class="funding-label">Financiado</span>
-                                        <span class="funding-percentage" id="funding-percentage">0%</span>
-                                    </div>
-                                    <div class="progress-bar">
-                                        <div class="progress-fill" id="progress-fill" style="width: 0%;"></div>
-                                    </div>
-                                    <p class="funding-amount" id="funding-amount">$0 recaudados de $0</p>
-                                </div>
+                        <!-- Título y metadata -->
+                        <h1 id="project-title" class="project-title">Cargando...</h1>
+                        <p id="project-meta" class="project-meta">Cargando información...</p>
 
-                                <!-- Estadísticas del proyecto -->
-                                <div class="project-stats">
-                                    <div class="stat-item">
-                                        <span class="stat-value" id="backers-count">0</span>
-                                        <span class="stat-label">Patrocinadores</span>
-                                    </div>
-                                    <div class="stat-item">
-                                        <span class="stat-value" id="days-remaining">0</span>
-                                        <span class="stat-label">Días restantes</span>
-                                    </div>
-                                </div>
-
-                                <!-- Call to Action -->
-                                <button class="btn btn-primary btn-block btn-lg btn-donate">
-                                    Donar ahora
+                        <!-- Tabs Navigation -->
+                        <div class="tabs-container">
+                            <nav class="project-tabs" aria-label="Tabs">
+                                <button class="tab-link active" data-tab="description" aria-current="page">
+                                    Descripción
                                 </button>
+                                <button class="tab-link" data-tab="comments">
+                                    Comentarios
+                                </button>
+                                <button class="tab-link" data-tab="updates" id="updates-tab" style="display: none;">
+                                    Actualizaciones
+                                </button>
+                            </nav>
+                        </div>
 
-                                <!-- Acciones secundarias -->
-                                <div class="sidebar-actions">
-                                    <button class="action-btn" id="save-project">
-                                        <span class="material-symbols-outlined">favorite_border</span>
-                                        <span class="action-label">Guardar</span>
-                                    </button>
-                                    <button class="action-btn" id="share-project">
-                                        <span class="material-symbols-outlined">share</span>
-                                        <span class="action-label">Compartir</span>
-                                    </button>
-                                </div>
-
-                                <!-- Top Donadores -->
-                                <div class="donors-section">
-                                    <h3 class="donors-title">Top Donadores</h3>
-                                    <ul class="donors-list" id="donors-list" role="list">
-                                        <li class="empty-state-small">
-                                            No hay donadores aún
-                                        </li>
-                                    </ul>
+                        <!-- Contenido de tabs -->
+                        <div class="tab-content">
+                            <!-- Tab: Descripción -->
+                            <div id="description-content" class="content-section active">
+                                <div class="description-wrapper">
+                                    <p id="project-description">Cargando descripción...</p>
                                 </div>
                             </div>
-                        </aside>
-                    </div>
-                </main>
-            </section>
-        </main>
 
-        <!-- Modal de Logout -->
-        <div class="modal modal-small" id="logout-modal" popover="manual">
+                            <!-- Tab: Comentarios -->
+                            <div id="comments-content" class="content-section">
+                                <div class="comments-section">
+                                    <h2 class="section-title">Comentarios (<span id="comments-count">0</span>)</h2>
+
+                                    <!-- Formulario de comentario -->
+                                    <div class="comment-form">
+                                        <img class="comment-avatar" src="/uploads/avatar/default.png" alt="Tu avatar">
+                                        <div class="comment-input-wrapper">
+                                            <textarea class="form-textarea" id="new-comment"
+                                                placeholder="Añade tu comentario..." rows="3"></textarea>
+                                            <div class="comment-actions">
+                                                <button class="btn btn-primary btn-sm" id="submit-comment">
+                                                    Comentar
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Lista de comentarios -->
+                                    <div class="comments-list" id="comments-list">
+                                        <div class="empty-state">
+                                            <p>No hay comentarios aún. ¡Sé el primero en comentar!</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Tab: Actualizaciones (solo para dueño) -->
+                            <div id="updates-content" class="content-section">
+                                <div class="updates-section">
+                                    <h2 class="section-title">Actualizaciones del Proyecto</h2>
+                                    <div id="updates-list">
+                                        <div class="empty-state">
+                                            <p>No hay actualizaciones aún</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sidebar derecha (Sticky) -->
+                    <aside class="project-sidebar">
+                        <div class="sidebar-card">
+                            <!-- Progreso de financiamiento -->
+                            <div class="funding-section">
+                                <div class="funding-header">
+                                    <span class="funding-label">Financiado</span>
+                                    <span class="funding-percentage" id="funding-percentage">0%</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" id="progress-fill" style="width: 0%;"></div>
+                                </div>
+                                <p class="funding-amount" id="funding-amount">$0 recaudados de $0</p>
+                            </div>
+
+                            <!-- Estadísticas del proyecto -->
+                            <div class="project-stats">
+                                <div class="stat-item">
+                                    <span class="stat-value" id="backers-count">0</span>
+                                    <span class="stat-label">Patrocinadores</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-value" id="days-remaining">0</span>
+                                    <span class="stat-label">Días restantes</span>
+                                </div>
+                            </div>
+
+                            <!-- Call to Action -->
+                            <button class="btn btn-primary btn-block btn-lg btn-donate">
+                                Donar ahora
+                            </button>
+
+                            <!-- Acciones secundarias -->
+                            <div class="sidebar-actions">
+                                <button class="action-btn" id="save-project">
+                                    <span class="material-symbols-outlined">favorite_border</span>
+                                    <span class="action-label">Guardar</span>
+                                </button>
+                                <button class="action-btn" id="share-project">
+                                    <span class="material-symbols-outlined">share</span>
+                                    <span class="action-label">Compartir</span>
+                                </button>
+                            </div>
+
+                            <!-- Top Donadores -->
+                            <div class="donors-section">
+                                <h3 class="donors-title">Top Donadores</h3>
+                                <ul class="donors-list" id="donors-list" role="list">
+                                    <li class="empty-state-small">
+                                        No hay donadores aún
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </aside>
+                </div>
+            </main>
+        </section>
+    </main>
+
+    <!-- Modal de Logout -->
+    <div class="modal modal-small" id="logout-modal" popover="manual">
+        <div class="modal-header">
+            <h2 class="modal-title">Cerrar sesión</h2>
+            <button class="modal-close" commandfor="logout-modal" command="hide-popover">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <p>¿Estás seguro de que deseas cerrar sesión?</p>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" commandfor="logout-modal" command="hide-popover">Cancelar</button>
+            <button class="btn btn-primary" id="confirm-logout">Cerrar sesión</button>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="donation-modal" style="display: none;">
+        <div class="donation-modal-content">
             <div class="modal-header">
-                <h2 class="modal-title">Cerrar sesión</h2>
-                <button class="modal-close" commandfor="logout-modal" command="hide-popover">
-                    <span class="material-symbols-outlined">close</span>
-                </button>
+                <h3 class="modal-title">Apoyar este proyecto</h3>
+                <button class="close-btn" id="close-donation-modal">&times;</button>
             </div>
             <div class="modal-body">
-                <p>¿Estás seguro de que deseas cerrar sesión?</p>
+                <div class="amount-input-container">
+                    <span class="currency-symbol">Bs.</span>
+                    <input type="number" class="amount-input" id="donation-amount" value="100" placeholder="0" min="1">
+                </div>
+
+                <div class="quick-amounts">
+                    <button class="amount-btn" data-amount="50">50</button>
+                    <button class="amount-btn" data-amount="100">100</button>
+                    <button class="amount-btn" data-amount="200">200</button>
+                    <button class="amount-btn" data-amount="500">500</button>
+                </div>
+
+                <p class="donation-summary">
+                    Estás donando a <span class="project-name-highlight" id="modal-project-title">...</span>
+                </p>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-secondary" commandfor="logout-modal" command="hide-popover">Cancelar</button>
-                <button class="btn btn-primary" id="confirm-logout">Cerrar sesión</button>
+                <button class="btn btn-primary btn-block" id="confirm-donation">Continuar al Pago</button>
+                <span class="secure-payment-text">
+                    🔒 Pago seguro procesado por AportaYa
+                </span>
             </div>
         </div>
+    </div>
 
-        <script src="../../../scripts/user-header.js"></script>
-        <script src="../../../scripts/components/logout-modal.js"></script>
-        <script src="../../../scripts/pages/user/project-detail-loader.js"></script>
-    </body>
+    <script src="../../../scripts/user-header.js"></script>
+    <script src="../../../scripts/components/logout-modal.js"></script>
+    <script src="../../../scripts/components/donation-modal.js"></script>
+    <script src="../../../scripts/pages/user/project-detail-loader.js"></script>
+</body>
+
 </html>

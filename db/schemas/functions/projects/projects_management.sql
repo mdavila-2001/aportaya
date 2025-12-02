@@ -18,28 +18,250 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+-- =====================================================
+-- GESTIÓN DE REQUISITOS DE CATEGORÍAS
+-- =====================================================
+
+-- Add category requirement
+CREATE OR REPLACE FUNCTION projects.add_category_requirement(
+  p_category_id INT,
+  p_requirement_name VARCHAR,
+  p_requirement_value TEXT
+)
+RETURNS BOOLEAN AS $$
+BEGIN
+  -- Verificar que la categoría existe
+  IF NOT EXISTS (SELECT 1 FROM projects.category WHERE id = p_category_id) THEN
+    RAISE EXCEPTION 'La categoría con ID % no existe', p_category_id;
+  END IF;
+
+  INSERT INTO projects.category_requirements (category_id, requirement_name, requirement_value)
+  VALUES (p_category_id, p_requirement_name, p_requirement_value)
+  ON CONFLICT (category_id, requirement_name) 
+  DO UPDATE SET requirement_value = EXCLUDED.requirement_value;
+  
+  RETURN TRUE;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Add multiple category requirements
+CREATE OR REPLACE FUNCTION projects.add_category_requirements(
+  p_category_id INT,
+  p_requirements JSONB
+)
+RETURNS INT AS $$
+DECLARE
+  v_requirement JSONB;
+  v_count INT := 0;
+BEGIN
+  -- Verificar que la categoría existe
+  IF NOT EXISTS (SELECT 1 FROM projects.category WHERE id = p_category_id) THEN
+    RAISE EXCEPTION 'La categoría con ID % no existe', p_category_id;
+  END IF;
+
+  -- Iterar sobre el array de requisitos
+  FOR v_requirement IN SELECT * FROM jsonb_array_elements(p_requirements)
+  LOOP
+    INSERT INTO projects.category_requirements (category_id, requirement_name, requirement_value)
+    VALUES (
+      p_category_id,
+      v_requirement->>'name',
+      v_requirement->>'value'
+    )
+    ON CONFLICT (category_id, requirement_name) 
+    DO UPDATE SET requirement_value = EXCLUDED.requirement_value;
+    
+    v_count := v_count + 1;
+  END LOOP;
+  
+  RETURN v_count;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Remove category requirement
+CREATE OR REPLACE FUNCTION projects.remove_category_requirement(
+  p_category_id INT,
+  p_requirement_name VARCHAR
+)
+RETURNS BOOLEAN AS $$
+BEGIN
+  DELETE FROM projects.category_requirements
+  WHERE category_id = p_category_id AND requirement_name = p_requirement_name;
+  
+  RETURN FOUND;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Remove all category requirements
+CREATE OR REPLACE FUNCTION projects.clear_category_requirements(p_category_id INT)
+RETURNS INT AS $$
+DECLARE
+  v_deleted_count INT;
+BEGIN
+  DELETE FROM projects.category_requirements
+  WHERE category_id = p_category_id;
+  
+  GET DIAGNOSTICS v_deleted_count = ROW_COUNT;
+  RETURN v_deleted_count;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Get category requirements
+CREATE OR REPLACE FUNCTION projects.get_category_requirements(p_category_id INT)
+RETURNS TABLE (
+  requirement_name VARCHAR(255),
+  requirement_value TEXT
+) AS $$
+BEGIN
+  RETURN QUERY
+  SELECT cr.requirement_name, cr.requirement_value
+  FROM projects.category_requirements cr
+  WHERE cr.category_id = p_category_id
+  ORDER BY cr.requirement_name ASC;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Get all categories with their requirements
+CREATE OR REPLACE FUNCTION projects.get_categories_with_requirements()
+RETURNS TABLE (
+  category_id INT,
+  category_name VARCHAR(100),
+  category_slug VARCHAR(100),
+  category_description VARCHAR(255),
+  requirements JSONB
+) AS $$
+BEGIN
+  RETURN QUERY
+  SELECT 
+    c.id,
+    c.name,
+    c.slug,
+    c.description,
+    COALESCE(
+      jsonb_agg(
+        jsonb_build_object(
+          'name', cr.requirement_name,
+          'value', cr.requirement_value
+        )
+        ORDER BY cr.requirement_name
+      ) FILTER (WHERE cr.requirement_name IS NOT NULL),
+      '[]'::jsonb
+    ) as requirements
+  FROM projects.category c
+  LEFT JOIN projects.category_requirements cr ON cr.category_id = c.id
+  GROUP BY c.id, c.name, c.slug, c.description
+  ORDER BY c.name;
+END;
+$$ LANGUAGE plpgsql;
+
 -- Check category requirements
 CREATE OR REPLACE FUNCTION projects.check_category_requirements(p_project_id UUID)
 RETURNS BOOLEAN AS $$
 DECLARE
   v_category_id INT;
   v_has_requirements BOOLEAN;
+  v_requirement_count INT;
 BEGIN
-  SELECT category_id INTO v_category_id FROM projects.project WHERE id = p_project_id;
+  -- Obtener la categoría del proyecto
+  SELECT category_id INTO v_category_id 
+  FROM projects.project 
+  WHERE id = p_project_id;
 
   IF v_category_id IS NULL THEN
+    RAISE EXCEPTION 'Proyecto no encontrado o sin categoría asignada';
+  END IF;
+
+  -- Verificar si la categoría tiene requisitos
+  SELECT COUNT(*) INTO v_requirement_count
+  FROM projects.category_requirements 
+  WHERE category_id = v_category_id;
+
+  -- Si no hay requisitos, el proyecto cumple automáticamente
+  IF v_requirement_count = 0 THEN
+    RETURN TRUE;
+  END IF;
+
+  -- TODO: Implementar validación específica según el tipo de requisito
+  -- Por ahora, si tiene requisitos, se considera que necesita revisión manual
+  -- En el futuro, se pueden validar campos específicos del proyecto
+  
+  -- Ejemplo de validaciones futuras:
+  -- - Si requiere 'video_url', verificar que no sea NULL
+  -- - Si requiere 'proof_document_id', verificar que exista
+  -- - Validaciones personalizadas por tipo de requisito
+  
+  -- Por ahora retornamos TRUE si el proyecto tiene descripción completa
+  -- y cumple con criterios básicos
+  RETURN EXISTS (
+    SELECT 1 FROM projects.project 
+    WHERE id = p_project_id 
+    AND description IS NOT NULL 
+    AND LENGTH(description) > 50
+    AND financial_goal > 0
+  );
+END;
+$$ LANGUAGE plpgsql;
+
+-- Validate specific project requirements
+CREATE OR REPLACE FUNCTION projects.validate_project_requirements(p_project_id UUID)
+RETURNS TABLE (
+  requirement_name VARCHAR(255),
+  requirement_value TEXT,
+  is_fulfilled BOOLEAN,
+  validation_message TEXT
+) AS $$
+DECLARE
+  v_category_id INT;
+  v_project RECORD;
+BEGIN
+  -- Obtener datos del proyecto
+  SELECT p.*, p.category_id INTO v_project
+  FROM projects.project p
+  WHERE p.id = p_project_id;
+
+  IF NOT FOUND THEN
     RAISE EXCEPTION 'Proyecto no encontrado';
   END IF;
 
-  SELECT EXISTS (SELECT 1 FROM projects.category_requirements WHERE category_id = v_category_id)
-  INTO v_has_requirements;
-
-  -- TODO: Implement specific requirement validation
-  IF v_has_requirements THEN
-    RETURN FALSE;
-  ELSE
-    RETURN TRUE;
-  END IF;
+  -- Retornar validación de cada requisito
+  RETURN QUERY
+  SELECT 
+    cr.requirement_name,
+    cr.requirement_value,
+    CASE 
+      -- Validación de video
+      WHEN LOWER(cr.requirement_name) LIKE '%video%' THEN
+        v_project.video_url IS NOT NULL AND LENGTH(v_project.video_url) > 0
+      
+      -- Validación de documento
+      WHEN LOWER(cr.requirement_name) LIKE '%documento%' OR LOWER(cr.requirement_name) LIKE '%certificaci%' THEN
+        v_project.proof_document_id IS NOT NULL
+      
+      -- Validación de descripción extensa
+      WHEN LOWER(cr.requirement_name) LIKE '%plan%' OR LOWER(cr.requirement_name) LIKE '%detalle%' THEN
+        v_project.description IS NOT NULL AND LENGTH(v_project.description) > 200
+      
+      -- Validación de ubicación
+      WHEN LOWER(cr.requirement_name) LIKE '%ubicaci%n%' OR LOWER(cr.requirement_name) LIKE '%poblaci%n%' THEN
+        v_project.location IS NOT NULL AND LENGTH(v_project.location) > 0
+      
+      -- Por defecto, requiere revisión manual
+      ELSE TRUE
+    END as is_fulfilled,
+    CASE 
+      WHEN LOWER(cr.requirement_name) LIKE '%video%' THEN
+        CASE WHEN v_project.video_url IS NOT NULL THEN 'Video proporcionado' ELSE 'Falta video requerido' END
+      WHEN LOWER(cr.requirement_name) LIKE '%documento%' OR LOWER(cr.requirement_name) LIKE '%certificaci%' THEN
+        CASE WHEN v_project.proof_document_id IS NOT NULL THEN 'Documento adjunto' ELSE 'Falta documento requerido' END
+      WHEN LOWER(cr.requirement_name) LIKE '%plan%' OR LOWER(cr.requirement_name) LIKE '%detalle%' THEN
+        CASE WHEN LENGTH(v_project.description) > 200 THEN 'Descripción completa' ELSE 'Descripción insuficiente' END
+      WHEN LOWER(cr.requirement_name) LIKE '%ubicaci%n%' OR LOWER(cr.requirement_name) LIKE '%poblaci%n%' THEN
+        CASE WHEN v_project.location IS NOT NULL THEN 'Ubicación especificada' ELSE 'Falta ubicación' END
+      ELSE 'Requiere revisión manual del administrador'
+    END as validation_message
+  FROM projects.category_requirements cr
+  WHERE cr.category_id = v_project.category_id
+  ORDER BY cr.requirement_name;
 END;
 $$ LANGUAGE plpgsql;
 

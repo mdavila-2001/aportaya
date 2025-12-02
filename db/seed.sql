@@ -168,13 +168,50 @@ BEGIN
     SELECT projects.create_category('Arte', 'arte', 'Expresión creativa') INTO v_cat_proj_art_id;
     SELECT projects.create_category('Medio Ambiente', 'medio_ambiente', 'Sostenibilidad') INTO v_cat_proj_env_id;
 
-    INSERT INTO projects.category_requirements (category_id, requirement_name, requirement_value) VALUES
-    (v_cat_proj_tech_id, 'Prototipo Funcional', 'Se requiere video demostrativo.'),
-    (v_cat_proj_tech_id, 'Plan Técnico', 'Documento de arquitectura técnica.'),
-    (v_cat_proj_health_id, 'Certificación Profesional', 'Aval de una institución de salud reconocida.'),
-    (v_cat_proj_social_id, 'Población Objetivo', 'Definición clara de la comunidad beneficiada.'),
-    (v_cat_proj_art_id, 'Portafolio', 'Muestra de trabajos previos del artista.'),
-    (v_cat_proj_env_id, 'Estudio de Impacto Ambiental', 'Documento aprobado.');
+    -- Agregar requisitos para Tecnología
+    PERFORM projects.add_category_requirements(
+        v_cat_proj_tech_id,
+        '[
+            {"name": "Prototipo Funcional", "value": "Se requiere video demostrativo del prototipo funcionando o evidencia fotográfica del desarrollo."},
+            {"name": "Plan Técnico", "value": "Documento de arquitectura técnica o descripción detallada de la implementación (mínimo 200 caracteres)."}
+        ]'::jsonb
+    );
+
+    -- Agregar requisitos para Salud
+    PERFORM projects.add_category_requirements(
+        v_cat_proj_health_id,
+        '[
+            {"name": "Certificación Profesional", "value": "Aval de una institución de salud reconocida o profesional médico certificado."},
+            {"name": "Presupuesto Médico", "value": "Desglose detallado de costos médicos, equipamiento o materiales sanitarios."}
+        ]'::jsonb
+    );
+
+    -- Agregar requisitos para Social
+    PERFORM projects.add_category_requirements(
+        v_cat_proj_social_id,
+        '[
+            {"name": "Población Objetivo", "value": "Definición clara de la comunidad o grupo beneficiado con datos demográficos."},
+            {"name": "Plan de Impacto", "value": "Descripción de cómo se medirá el impacto social del proyecto."}
+        ]'::jsonb
+    );
+
+    -- Agregar requisitos para Arte
+    PERFORM projects.add_category_requirements(
+        v_cat_proj_art_id,
+        '[
+            {"name": "Portafolio", "value": "Muestra de trabajos previos del artista o colectivo (imágenes, videos o enlaces)."},
+            {"name": "Propuesta Creativa", "value": "Descripción detallada del concepto artístico y su mensaje."}
+        ]'::jsonb
+    );
+
+    -- Agregar requisitos para Medio Ambiente
+    PERFORM projects.add_category_requirements(
+        v_cat_proj_env_id,
+        '[
+            {"name": "Estudio de Impacto Ambiental", "value": "Documento o descripción del impacto ambiental positivo esperado."},
+            {"name": "Plan de Sostenibilidad", "value": "Estrategia de cómo el proyecto será sostenible a largo plazo."}
+        ]'::jsonb
+    );
 
     RAISE NOTICE 'Categorías y requisitos configurados.';
 
@@ -288,5 +325,3 @@ BEGIN
 
     RAISE NOTICE '--- SEED MASIVO COMPLETADO EXITOSAMENTE ---';
 END $$;
-
-select * from projects.project p 

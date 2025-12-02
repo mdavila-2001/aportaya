@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Completar Pago - AportaYa</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="/styles/styles.css">
+    <link rel="stylesheet" href="/styles/pages/payment/pay.css">
+</head>
+
+<body>
+
+    <!-- Header Simplificado -->
+    <header class="checkout-header">
+        <div class="header-content">
+            <a href="/" class="logo">
+                <img src="/images/aporta-ya-icon.webp" alt="AportaYa" height="40">
+                <span class="logo-text">AportaYa</span>
+            </a>
+            <div class="secure-badge">
+                <span class="material-symbols-outlined">lock</span>
+                Pago Seguro
+            </div>
+        </div>
+    </header>
+
+    <main class="checkout-main">
+        <div class="checkout-container" id="payment-card">
+
+            <!-- Loading State -->
+            <div id="loading-state" class="loading-container">
+                <div class="spinner"></div>
+                <p>Cargando detalles del pago...</p>
+            </div>
+
+            <!-- Error State -->
+            <div id="error-message" class="error-message" style="display: none;"></div>
+
+            <!-- Content (Hidden initially) -->
+            <div id="payment-content" class="checkout-grid" style="display: none;">
+
+                <!-- Columna Izquierda: Detalles del Pago -->
+                <div class="payment-details-col">
+                    <h1 class="page-title">Realizar Pago</h1>
+
+                    <div class="payment-method-card selected">
+                        <div class="method-header">
+                            <div class="method-icon">
+                                <span class="material-symbols-outlined">qr_code_scanner</span>
+                            </div>
+                            <div class="method-info">
+                                <h3>Pago con QR</h3>
+                                <p>Escanea con tu app bancaria</p>
+                            </div>
+                            <div class="method-check">
+                                <span class="material-symbols-outlined">check_circle</span>
+                            </div>
+                        </div>
+
+                        <div class="method-content">
+                            <div class="qr-wrapper">
+                                <div class="qr-container">
+                                    <img id="qr-image" class="qr-image" src="" alt="Código QR de pago">
+                                </div>
+                                <p class="qr-instruction">
+                                    Escanea este código QR desde la aplicación de tu banco para completar la
+                                    transferencia.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Estado del Pago -->
+                    <div class="payment-status-card" id="status-container">
+                        <div class="status-indicator">
+                            <div class="status-dot"></div>
+                            <span class="status-text" id="status-text">Esperando confirmación...</span>
+                        </div>
+                        <p class="status-subtext">No cierres esta ventana hasta confirmar el pago.</p>
+                    </div>
+
+                    <!-- Botón de Simulación (Dev) -->
+                    <button id="btn-simulate" class="btn-simulate">
+                        <span class="material-symbols-outlined">bolt</span>
+                        Simular Pago Exitoso (Demo)
+                    </button>
+
+                    <!-- Botón de Retorno -->
+                    <a href="/" id="btn-return" class="btn-return">
+                        <span class="material-symbols-outlined">arrow_back</span>
+                        Volver al Inicio
+                    </a>
+                </div>
+
+                <!-- Columna Derecha: Resumen del Pedido -->
+                <div class="order-summary-col">
+                    <div class="summary-card">
+                        <h2 class="summary-title">Resumen de tu aporte</h2>
+
+                        <div class="project-preview">
+                            <img id="project-image" src="" alt="Proyecto" class="project-thumb">
+                            <div class="project-info">
+                                <span class="label">Estás apoyando a:</span>
+                                <h3 id="project-title" class="project-name">Cargando...</h3>
+                            </div>
+                        </div>
+
+                        <div class="summary-divider"></div>
+
+                        <div class="summary-row total-row">
+                            <span>Total a pagar</span>
+                            <span class="total-amount" id="amount-display">Bs. 0.00</span>
+                        </div>
+
+                        <div class="security-note">
+                            <span class="material-symbols-outlined">verified_user</span>
+                            <p>Tu donación está protegida por nuestra garantía de transparencia.</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <footer class="checkout-footer">
+        <p>&copy; 2025 AportaYa. Todos los derechos reservados.</p>
+        <div class="footer-links">
+            <a href="#">Términos</a>
+            <a href="#">Privacidad</a>
+            <a href="#">Ayuda</a>
+        </div>
+    </footer>
+
+    <script src="/scripts/pages/payment/pay.js"></script>
+</body>
+
+</html>
