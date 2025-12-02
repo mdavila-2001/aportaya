@@ -15,15 +15,12 @@ function createProjectCard(project) {
 
     // Calcular porcentaje
     const percentage = Math.round((project.raised_amount / project.goal_amount) * 100);
-    const progressWidth = Math.min(percentage, 100); // No pasar del 100% visualmente
-
-    // Evento para ir al detalle (evitando el botón de favorito)
+    const progressWidth = Math.min(percentage, 100);
+    
     card.style.cursor = 'pointer';
     card.addEventListener('click', (e) => {
         if (!e.target.closest('.project-fav')) {
-            // Ajustar ruta relativa según estructura de carpetas
-            // Desde /pages/user/projects/projects.html a /pages/projects/details.html
-            window.location.href = `../../projects/details.html?slug=${project.slug}`;
+            window.location.href = `projectDetail.html?slug=${project.slug}`;
         }
     });
 

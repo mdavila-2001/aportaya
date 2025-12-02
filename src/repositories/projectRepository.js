@@ -97,19 +97,17 @@ const getProjectsBySLUG = async (slug) => {
             SELECT 
                 p.id,
                 p.title,
-                p.description, -- Descripción completa
+                p.description,
                 p.financial_goal as goal_amount,
                 p.raised_amount,
                 p.end_date,
                 p.start_date,
                 p.location,
                 p.slug,
-                -- Datos del Creador
+                p.creator_id,
                 u.first_name || ' ' || u.last_name as creator_name,
                 avatar.file_path as creator_image,
-                -- Datos de Categoría
                 c.name as category_name,
-                -- Imagen de Portada
                 f.file_path as cover_image_url
             FROM projects.project p
             JOIN users.user u ON p.creator_id = u.id
@@ -154,8 +152,8 @@ const createProject = async (projectData, userId) => {
             projectData.title,
             projectData.description,
             projectData.financialGoal,
-            new Date(), 
-            projectData.endDate, 
+            new Date(),
+            projectData.endDate,
             projectData.categoryId,
             projectData.location || null,
             projectData.coverImageId || null,
@@ -173,9 +171,87 @@ const createProject = async (projectData, userId) => {
     }
 };
 
+const getProjectDonors = async (projectId, limit = 3) => {
+    const client = await dbPool.connect();
+    try {
+        const query = `
+            SELECT 
+                u.first_name || ' ' || u.last_name as donor_name,
+                avatar.file_path as donor_avatar,
+                d.amount,
+                d.created_at
+            FROM payments.donation d
+            JOIN users.user u ON d.user_id = u.id
+            LEFT JOIN files.image avatar ON u.profile_image_id = avatar.id
+            WHERE d.project_id = $1 AND d.status = 'completed'
+            ORDER BY d.amount DESC
+            LIMIT $2;
+        `;
+        const { rows } = await client.query(query, [projectId, limit]);
+        return rows;
+    } catch (error) {
+        console.error('Error obteniendo donadores del proyecto:', error);
+        return [];
+    } finally {
+        client.release();
+    }
+};
+
+const getProjectComments = async (projectId) => {
+    const client = await dbPool.connect();
+    try {
+        const query = `
+            SELECT 
+                c.id,
+                c.content,
+                c.created_at,
+                u.first_name || ' ' || u.last_name as author_name,
+                avatar.file_path as author_avatar
+            FROM social.comment c
+            JOIN users.user u ON c.user_id = u.id
+            LEFT JOIN files.image avatar ON u.profile_image_id = avatar.id
+            WHERE c.project_id = $1
+            ORDER BY c.created_at DESC;
+        `;
+        const { rows } = await client.query(query, [projectId]);
+        return rows;
+    } catch (error) {
+        console.error('Error obteniendo comentarios del proyecto:', error);
+        return [];
+    } finally {
+        client.release();
+    }
+};
+
+const getProjectUpdates = async (projectId) => {
+    const client = await dbPool.connect();
+    try {
+        const query = `
+            SELECT 
+                id,
+                title,
+                content,
+                created_at
+            FROM social.project_update
+            WHERE project_id = $1
+            ORDER BY created_at DESC;
+        `;
+        const { rows } = await client.query(query, [projectId]);
+        return rows;
+    } catch (error) {
+        console.error('Error obteniendo actualizaciones del proyecto:', error);
+        return [];
+    } finally {
+        client.release();
+    }
+};
+
 module.exports = {
     createProject,
     getProjects,
     getProjectCategories,
-    getProjectsBySLUG
+    getProjectsBySLUG,
+    getProjectDonors,
+    getProjectComments,
+    getProjectUpdates
 };

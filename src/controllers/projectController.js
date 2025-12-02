@@ -3,7 +3,7 @@ const documentRepository = require('../repositories/documentRepository');
 
 const createProject = async (req, res) => {
     try {
-        const userId = req.user.id; 
+        const userId = req.user.id;
 
         const projectData = {
             title: req.body.title,
@@ -19,7 +19,7 @@ const createProject = async (req, res) => {
 
         const projectId = await projectRepository.createProject(projectData, userId);
 
-        
+
         if (projectData.proofDocumentId) {
             await documentRepository.markDocumentAsPermanent(projectData.proofDocumentId);
         }
@@ -46,7 +46,7 @@ const getProjects = async (req, res) => {
 
         const categories = await projectRepository.getProjectCategories();
 
-        const projects = await projectRepository.getProjects(searchBy, filters); 
+        const projects = await projectRepository.getProjects(searchBy, filters);
 
         res.status(200).json({
             message: 'Proyectos obtenidos exitosamente',
@@ -84,12 +84,25 @@ const getProjectDetail = async (req, res) => {
     const { slug } = req.params;
     try {
         const project = await projectRepository.getProjectsBySLUG(slug);
-        const categories = await projectRepository.getProjectCategories();
         if (!project) {
             return res.status(404).json({
                 message: 'Proyecto no encontrado'
             });
         }
+
+        const categories = await projectRepository.getProjectCategories();
+
+        // Obtener donadores y comentarios (públicos)
+        const donors = await projectRepository.getProjectDonors(project.id);
+        const comments = await projectRepository.getProjectComments(project.id);
+
+        // Verificar si el usuario autenticado es el dueño
+        const userId = req.user?.id;
+        const isOwner = userId && project.creator_id === userId;
+
+        // Obtener actualizaciones solo si es el dueño
+        const updates = isOwner ? await projectRepository.getProjectUpdates(project.id) : [];
+
         res.status(200).json({
             message: 'Proyecto obtenido exitosamente',
             extraData: {
@@ -97,6 +110,7 @@ const getProjectDetail = async (req, res) => {
                     id: category.id,
                     name: category.name,
                 })),
+                is_owner: isOwner
             },
             data: {
                 project: {
@@ -113,7 +127,26 @@ const getProjectDetail = async (req, res) => {
                     location: project.location,
                     start_date: project.start_date,
                     end_date: project.end_date
-                }
+                },
+                donors: donors.map(donor => ({
+                    name: donor.donor_name,
+                    avatar: donor.donor_avatar,
+                    amount: donor.amount,
+                    date: donor.created_at
+                })),
+                comments: comments.map(comment => ({
+                    id: comment.id,
+                    content: comment.content,
+                    author_name: comment.author_name,
+                    author_avatar: comment.author_avatar,
+                    created_at: comment.created_at
+                })),
+                updates: updates.map(update => ({
+                    id: update.id,
+                    title: update.title,
+                    content: update.content,
+                    created_at: update.created_at
+                }))
             }
         });
     } catch (error) {

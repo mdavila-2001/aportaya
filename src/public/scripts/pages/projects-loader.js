@@ -1,10 +1,16 @@
+// Public Projects Loader
+
+const API_BASE_URL = '/api/projects';
+let currentCategory = 'all';
+let currentSearch = '';
+
 function createProjectCard(project) {
     const card = document.createElement('article');
     card.className = 'project-card';
 
     const favoriteIcon = project.is_favorite ? 'favorite' : 'favorite_border';
-
     const percentage = Math.round((project.raised_amount / project.goal_amount) * 100);
+    const progressWidth = Math.min(percentage, 100);
 
     card.style.cursor = 'pointer';
     card.addEventListener('click', (e) => {
@@ -17,7 +23,7 @@ function createProjectCard(project) {
     card.innerHTML = `
         <div class="project-image-container">
             <img 
-                src="${project.cover_image_url}" 
+                src="${project.cover_image_url || '../../images/placeholder-project.jpg'}" 
                 alt="${project.title}"
                 onerror="this.src='../../images/placeholder-project.jpg'"
             />
@@ -32,12 +38,12 @@ function createProjectCard(project) {
         <div class="project-statistics">
             <div class="progress-info">
                 <span class="goal-percentage">${percentage}%</span>
-                <span class="raised-amount">$${project.raised_amount.toLocaleString()}</span>
+                <span class="raised-amount">Bs. ${parseFloat(project.raised_amount).toLocaleString()}</span>
             </div>
             <div class="progress-bar">
-                <div class="progress-fill" style="width: ${percentage}%"></div>
+                <div class="progress-fill" style="width: ${progressWidth}%"></div>
             </div>
-            <span class="project-goal">Meta: $${project.goal_amount.toLocaleString()}</span>
+            <span class="project-goal">Meta: Bs. ${parseFloat(project.goal_amount).toLocaleString()}</span>
         </div>
     `;
 
@@ -57,6 +63,7 @@ function renderProjects(projects) {
     if (projects.length === 0) {
         projectsGrid.innerHTML = `
             <div style="grid-column: 1 / -1; text-align: center; padding: var(--sp2XL); color: var(--text-light);">
+                <span class="material-symbols-outlined" style="font-size: 48px; margin-bottom: 1rem;">search_off</span>
                 <p>No se encontraron proyectos que coincidan con tu búsqueda.</p>
             </div>
         `;
@@ -77,9 +84,16 @@ function attachFavoriteListeners() {
     favoriteButtons.forEach(button => {
         button.addEventListener('click', (e) => {
             e.stopPropagation();
-            const icon = button.querySelector('.material-symbols-outlined');
+            // En vista pública, tal vez redirigir a login si intenta dar fav?
+            // Por ahora mantenemos comportamiento visual o alertamos
+            const token = localStorage.getItem('token');
+            if (!token) {
+                window.location.href = '../auth/login.html';
+                return;
+            }
 
-            
+            // Si hay token, lógica visual (o llamar API si quisiéramos)
+            const icon = button.querySelector('.material-symbols-outlined');
             if (icon.textContent === 'favorite_border') {
                 icon.textContent = 'favorite';
                 button.setAttribute('aria-label', 'Quitar de favoritos');
@@ -87,51 +101,62 @@ function attachFavoriteListeners() {
                 icon.textContent = 'favorite_border';
                 button.setAttribute('aria-label', 'Agregar a favoritos');
             }
-
-            const projectId = button.dataset.projectId;
-            console.log(`Toggle favorito para proyecto ${projectId}`);
+            console.log(`Toggle favorito para proyecto ${button.dataset.projectId}`);
         });
     });
 }
 
 function renderCategories(categories) {
     const categoryChips = document.querySelector('.category-chips');
-
     if (!categoryChips) return;
 
     categoryChips.innerHTML = '';
 
+    // Chip "Todos"
+    const allChip = createCategoryChip({ id: 'all', name: 'Todos' });
+    if (currentCategory === 'all') allChip.classList.add('active'); // O chip-active según CSS
+    // Nota: en projects.html original usaban data-category, aquí normalizamos
+    categoryChips.appendChild(allChip);
+
     categories.forEach(category => {
-        const chip = document.createElement('button');
-        chip.type = 'button';
-        chip.className = 'chip';
-        chip.setAttribute('aria-pressed', 'false');
-        chip.dataset.categoryId = category.id;
-        chip.textContent = category.name;
-
-        
-        chip.addEventListener('click', () => {
-            const isPressed = chip.getAttribute('aria-pressed') === 'true';
-            chip.setAttribute('aria-pressed', !isPressed);
-
-            console.log(`Filtrar por categoría: ${category.name}`);
-        });
-
+        const chip = createCategoryChip(category);
+        if (currentCategory == category.id) chip.classList.add('active');
         categoryChips.appendChild(chip);
     });
 }
 
-async function loadProjects() {
-    await fetchProjects();
+function createCategoryChip(category) {
+    const chip = document.createElement('button');
+    chip.type = 'button';
+    // Asumiendo clases estándar
+    chip.className = `chip chip-default ${currentCategory == category.id ? 'chip-active' : ''}`;
+    chip.dataset.categoryId = category.id;
+    chip.textContent = category.name;
+
+    chip.addEventListener('click', () => {
+        // Actualizar visualmente
+        document.querySelectorAll('.category-chips .chip').forEach(c => c.classList.remove('chip-active'));
+        chip.classList.add('chip-active');
+
+        currentCategory = category.id;
+        fetchProjects();
+    });
+
+    return chip;
 }
 
-async function fetchProjects(searchBy = '') {
+async function fetchProjects() {
     try {
-        let url = '/api/projects';
+        let url = API_BASE_URL;
         const params = new URLSearchParams();
-        
-        if (searchBy) {
-            params.append('searchBy', searchBy);
+
+        if (currentSearch) {
+            params.append('searchBy', currentSearch);
+        }
+
+        if (currentCategory && currentCategory !== 'all') {
+            const filterObj = { categoryId: currentCategory };
+            params.append('filterBy', JSON.stringify(filterObj));
         }
 
         if (params.toString()) {
@@ -143,14 +168,15 @@ async function fetchProjects(searchBy = '') {
             throw new Error('Error al cargar los proyectos');
         }
         const result = await response.json();
-        
-        
+
         const projects = result.data ? result.data.projects : [];
         const extraData = result.extraData || {};
 
         renderProjects(projects);
-        
-        if (extraData.categories) {
+
+        // Renderizar categorías si es necesario
+        const chipsContainer = document.querySelector('.category-chips');
+        if (chipsContainer && chipsContainer.children.length <= 1 && extraData.categories) {
             renderCategories(extraData.categories);
         }
 
@@ -164,15 +190,13 @@ async function fetchProjects(searchBy = '') {
 }
 
 function updateExtraInfo(extraData) {
-    
     if (extraData.totalProjects !== undefined) {
-         console.log(`Total proyectos: ${extraData.totalProjects}`);
+        console.log(`Total proyectos: ${extraData.totalProjects}`);
     }
 }
 
 function showErrorMessage() {
     const projectsGrid = document.querySelector('.projects-grid');
-
     if (projectsGrid) {
         projectsGrid.innerHTML = `
             <div style="grid-column: 1 / -1; text-align: center; padding: var(--sp2XL); color: var(--text-light);">
@@ -184,29 +208,21 @@ function showErrorMessage() {
 
 function setupSearch() {
     const searchInput = document.getElementById('search-projects');
-    const searchForm = document.querySelector('.sidebar-search');
+    const searchForm = document.querySelector('.sidebar-search'); // Si existe en layout público
     let debounceTimer;
 
     if (searchInput) {
         searchInput.addEventListener('input', (e) => {
             clearTimeout(debounceTimer);
             debounceTimer = setTimeout(() => {
-                fetchProjects(e.target.value);
-            }, 300); 
-        });
-    }
-
-    if (searchForm) {
-        searchForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            if (searchInput) {
-                fetchProjects(searchInput.value);
-            }
+                currentSearch = e.target.value;
+                fetchProjects();
+            }, 300);
         });
     }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    fetchProjects(); 
-    setupSearch();   
+    setupSearch();
+    fetchProjects();
 });
