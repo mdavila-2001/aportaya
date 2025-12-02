@@ -29,40 +29,34 @@
 .sort-select {
     appearance: none;
     width: 100%;
-    background-color: rgba(255, 255, 255, 0.1);
-    border: none;
-    border-radius: var(--brM);
-    padding: var(--spS) var(--spXL) var(--spS) var(--spM);
+    padding: var(--spM);
+    border-radius: var(--border-radius-lg);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background-color: rgba(255, 255, 255, 0.05);
+    color: var(--text-light);
     font-size: var(--sfS);
-    font-weight: 500;
-    color: var(--color-text-primary);
     cursor: pointer;
-    transition: background-color var(--duration-normal) var(--easing-standard);
+    transition: all 0.3s ease;
+    background-image: url('data:image/svg+xml,%3csvg xmlns=%27http://www.w3.org/2000/svg%27 fill=%27none%27 viewBox=%270 0 20 20%27%3e%3cpath stroke=%27%2311d473%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27 stroke-width=%271.5%27 d=%27M6 8l4 4 4-4%27/%3e%3c/svg%3e');
+    background-repeat: no-repeat;
+    background-position: right 8px center;
+    background-size: 24px 24px;
+    padding-right: 40px;
 }
 
 .sort-select:hover {
-    background-color: rgba(255, 255, 255, 0.2);
+    background-color: rgba(255, 255, 255, 0.1);
 }
 
 .sort-select:focus {
-    outline: 2px solid var(--color-primary);
-    outline-offset: 2px;
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(17, 212, 115, 0.1);
 }
 
 .sort-select option {
-    background-color: var(--color-background-secondary);
-    color: var(--color-text-primary);
-}
-
-.projects-sort::after {
-    content: 'expand_more';
-    font-family: 'Material Symbols Outlined';
-    position: absolute;
-    right: var(--spM);
-    top: 50%;
-    transform: translateY(-50%);
-    pointer-events: none;
-    color: rgba(255, 255, 255, 0.8);
+    background-color: var(--dark-bg);
+    color: var(--text-light);
 }
 
 .projects-filters {
@@ -151,6 +145,7 @@
     .sort-select {
         width: auto;
         min-width: 180px;
+        font-size: var(--sfL);
     }
 
     .projects-filters {
