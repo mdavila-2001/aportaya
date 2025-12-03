@@ -37,7 +37,7 @@ services:
       DB_NAME: aportaya_db
       DB_PORT: 5432
       PORT: 3001
-      JWT_SECRET: ${JWT_SECRET}
+      JWT_SECRET: amxJhhrV4qk/A7qiikJnBbrx+/+9UlVSa2lt4xYn29Y=
       UPLOADS_PATH: /app/uploads
       PUBLIC_URL: https://4nz2jqk7-3001.brs.devtunnels.ms
     volumes:
