@@ -65,7 +65,7 @@ function renderDonors(donors) {
 
     donorsList.innerHTML = donors.map(donor => `
         <li class="donor-item">
-            <img class="donor-avatar" src="${donor.avatar || '/uploads/avatar/default.png'}" alt="${donor.name}">
+            <img class="donor-avatar" src="${donor.avatar || '/uploads/avatar/blank/no_photo.png'}" alt="${donor.name}">
             <div class="donor-info">
                 <p class="donor-name">${donor.name}</p>
             </div>
@@ -91,7 +91,7 @@ function renderComments(comments) {
 
     commentsList.innerHTML = comments.map(comment => `
         <div class="comment-item">
-            <img class="comment-avatar" src="${comment.author_avatar || '/uploads/avatar/default.png'}" alt="${comment.author_name}">
+            <img class="comment-avatar" src="${comment.author_avatar || '/uploads/avatar/blank/no_photo.png'}" alt="${comment.author_name}">
             <div class="comment-content">
                 <div class="comment-header">
                     <p class="comment-author">${comment.author_name}</p>
@@ -137,7 +137,7 @@ async function loadUserAvatar() {
 
         if (response.ok) {
             const result = await response.json();
-            const userAvatar = result.data.profile_image_url || '/uploads/avatar/admin.png';
+            const userAvatar = result.data.profile_image_url || '/uploads/avatar/blank/no_photo.png';
 
             const commentFormAvatar = document.querySelector('.comment-form .comment-avatar');
             if (commentFormAvatar) {
@@ -240,7 +240,7 @@ async function submitComment() {
 
             const commentHTML = `
                 <div class="comment-item">
-                    <img class="comment-avatar" src="${comment.author_avatar || '/uploads/avatar/default.png'}" alt="${comment.author_name}">
+                    <img class="comment-avatar" src="${comment.author_avatar || '/uploads/avatar/blank/no_photo.png'}" alt="${comment.author_name}">
                     <div class="comment-content">
                         <div class="comment-header">
                             <p class="comment-author">${comment.author_name}</p>

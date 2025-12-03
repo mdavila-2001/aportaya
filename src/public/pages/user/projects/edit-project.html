@@ -4,28 +4,26 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="author" content="Danny Marcelo Dávila Barrancos">
-        <meta name="description" content="Mis Favoritos - AportaYa">
-        <meta property="og:title" content="Mis Favoritos - AportaYa">
+        <meta name="description" content="Editar Proyecto - AportaYa">
+        <meta property="og:title" content="Editar Proyecto - AportaYa">
         <meta property="og:author" content="Danny Marcelo Dávila Barrancos">
-        <meta property="og:description" content="Mis Favoritos - AportaYa">
+        <meta property="og:description" content="Editar Proyecto - AportaYa">
         <link rel="shortcut icon" href="../../../images/favicon.ico" type="image/x-icon">
 
         <link rel="stylesheet" href="../../../styles/styles.css">
         <link rel="stylesheet" href="../../../styles/fonts.css">
-
-        <link rel="stylesheet" href="../../../styles/components/chips.css">
         <link rel="stylesheet" href="../../../styles/components/buttons.css">
         <link rel="stylesheet" href="../../../styles/components/header.css">
         <link rel="stylesheet" href="../../../styles/components/sidebar.css">
-        <link rel="stylesheet" href="../../../styles/components/progress.css">
-        <link rel="stylesheet" href="../../../styles/components/project-card.css">
+        <link rel="stylesheet" href="../../../styles/components/forms.css">
         <link rel="stylesheet" href="../../../styles/components/modal.css">
+        <link rel="stylesheet" href="../../../styles/components/notification.css">
         <link rel="stylesheet" href="../../../styles/pages/user/layout.css">
-        <link rel="stylesheet" href="../../../styles/pages/user/projects.css">
+        <link rel="stylesheet" href="../../../styles/pages/user/edit-project.css">
 
         <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
 
-        <title>Mis Favoritos - AportaYa</title>
+        <title>Editar Proyecto - AportaYa</title>
     </head>
 
     <body>
@@ -46,7 +44,7 @@
                     <ul class="sidebar-items">
                         <li class="sidebar-item">
                             <a href="../dashboard.html">
-                                <span class="material-symbols-outlined">dashboard</span>
+                                <span class="material-symbols-outlined filled">dashboard</span>
                                 <span>Dashboard</span>
                             </a>
                         </li>
@@ -56,15 +54,15 @@
                                 <span>Proyectos</span>
                             </a>
                         </li>
-                        <li class="sidebar-item">
+                        <li class="sidebar-item active">
                             <a href="myProjects.html">
                                 <span class="material-symbols-outlined">folder</span>
                                 <span>Mis Proyectos</span>
                             </a>
                         </li>
-                        <li class="sidebar-item active">
+                        <li class="sidebar-item">
                             <a href="favorites.html">
-                                <span class="material-symbols-outlined filled">bookmark</span>
+                                <span class="material-symbols-outlined">bookmark</span>
                                 <span>Favoritos</span>
                             </a>
                         </li>
@@ -100,7 +98,7 @@
                                     <ul class="mobile-sidebar-items">
                                         <li class="mobile-sidebar-item">
                                             <a href="../dashboard.html">
-                                                <span class="material-symbols-outlined">dashboard</span>
+                                                <span class="material-symbols-outlined filled">dashboard</span>
                                                 <span>Dashboard</span>
                                             </a>
                                         </li>
@@ -110,15 +108,15 @@
                                                 <span>Proyectos</span>
                                             </a>
                                         </li>
-                                        <li class="mobile-sidebar-item">
+                                        <li class="mobile-sidebar-item active">
                                             <a href="myProjects.html">
                                                 <span class="material-symbols-outlined">folder</span>
                                                 <span>Mis Proyectos</span>
                                             </a>
                                         </li>
-                                        <li class="mobile-sidebar-item active">
+                                        <li class="mobile-sidebar-item">
                                             <a href="favorites.html">
-                                                <span class="material-symbols-outlined filled">bookmark</span>
+                                                <span class="material-symbols-outlined">bookmark</span>
                                                 <span>Favoritos</span>
                                             </a>
                                         </li>
@@ -158,27 +156,88 @@
                         </div>
                     </div>
                 </header>
+                <main class="edit-project-container">
+                    <div class="edit-project-header">
+                        <h2>Editar Proyecto</h2>
+                        <p>Actualiza la información de tu proyecto</p>
+                    </div>
 
-                <main class="user-projects">
-                    <div class="projects-header">
-                        <h1 class="projects-title">Mis Favoritos</h1>
-                        <p class="projects-subtitle">Proyectos que has guardado para apoyar más tarde</p>
-                    </div>
-                    <div class="projects-grid" id="projects-grid">
-                        <div class="loading-container" id="loading">
-                            <div class="spinner"></div>
-                            <p>Cargando favoritos...</p>
+                    <form class="edit-form" id="edit-project-form">
+                        <div class="form-group">
+                            <label for="project-title">
+                                Nombre del Proyecto <span style="color: #ef4444;">*</span>
+                            </label>
+                            <input 
+                                type="text" 
+                                id="project-title" 
+                                name="title" 
+                                placeholder="Ej: Construyendo un futuro mejor"
+                                maxlength="200"
+                            >
+                            <div class="char-counter">
+                                <span id="title-counter">0</span>/200
+                            </div>
                         </div>
-                        <div class="empty-state" id="empty-state" style="display: none;">
-                            <span class="material-symbols-outlined empty-icon">bookmark_border</span>
-                            <h2>No tienes favoritos aún</h2>
-                            <p>Explora proyectos y guarda los que más te interesen</p>
-                            <a href="projects.html" class="btn btn-primary">Explorar Proyectos</a>
+
+                        <div class="form-group">
+                            <label for="project-summary">
+                                Resumen <span style="color: #ef4444;">*</span>
+                            </label>
+                            <textarea 
+                                id="project-summary" 
+                                name="summary" 
+                                placeholder="Un resumen breve de tu proyecto (se mostrará en las tarjetas de vista previa)..."
+                                maxlength="500"
+                                rows="3"
+                            ></textarea>
+                            <div class="char-counter">
+                                <span id="summary-counter">0</span>/500
+                            </div>
                         </div>
-                    </div>
+
+                        <div class="form-group">
+                            <label for="project-description">
+                                Descripción Detallada <span style="color: #ef4444;">*</span>
+                            </label>
+                            <textarea 
+                                id="project-description" 
+                                name="description" 
+                                placeholder="Describe tu proyecto de manera detallada..."
+                                maxlength="5000"
+                            ></textarea>
+                            <div class="char-counter">
+                                <span id="description-counter">0</span>/5000
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="project-end-date">
+                                Fecha Límite <span style="color: #ef4444;">*</span>
+                            </label>
+                            <input 
+                                type="date" 
+                                id="project-end-date" 
+                                name="endDate"
+                            >
+                            <small style="display: block; margin-top: 0.5rem; color: #666;">
+                                La fecha límite debe ser posterior a hoy
+                            </small>
+                        </div>
+
+                        <div class="form-actions">
+                            <a href="myProjects.html" class="btn btn-secondary">
+                                Cancelar
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                <span class="material-symbols-outlined" style="font-size: 18px;">save</span>
+                                Guardar Cambios
+                            </button>
+                        </div>
+                    </form>
                 </main>
             </section>
         </main>
+
         <div class="modal modal-small" id="logout-modal" popover="manual">
             <div class="modal-header">
                 <h2 class="modal-title">Cerrar sesión</h2>
@@ -194,8 +253,16 @@
                 <button class="btn btn-primary" id="confirm-logout">Cerrar sesión</button>
             </div>
         </div>
+
+        <div class="loading-overlay" id="loading-overlay">
+            <div class="spinner"></div>
+        </div>
+
+        <div id="notification-container"></div>
+
         <script src="../../../scripts/user-header.js"></script>
         <script src="../../../scripts/components/logout-modal.js"></script>
-        <script src="../../../scripts/pages/user/favorites-loader.js"></script>
+        <script src="../../../scripts/components/notification.js"></script>
+        <script src="../../../scripts/pages/user/edit-project-handler.js"></script>
     </body>
 </html>

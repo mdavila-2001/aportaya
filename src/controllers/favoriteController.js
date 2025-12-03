@@ -5,11 +5,7 @@ const toggleFavorite = async (req, res) => {
         const { projectId } = req.params;
         const userId = req.user.id;
 
-        console.log(`[FavoriteController] Toggling favorite for User ${userId} and Project ${projectId}`);
-
         const isFavorited = await favoriteRepository.toggleFavorite(userId, projectId);
-
-        console.log(`[FavoriteController] Result: ${isFavorited}`);
 
         res.json({
             success: true,

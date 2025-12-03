@@ -57,7 +57,6 @@
     const slug = getSlugFromQuery();
 
     if (!slug) {
-      console.info('detail-loader: no slug en query string — mostrando fallback.');
       setDescription('project-description', '<p>No se especificó un proyecto.</p>');
       return;
     }
@@ -82,7 +81,6 @@
       const project = payload.data?.project;
 
       if (!project) {
-        console.warn('detail-loader: proyecto no encontrado para slug=', slug);
         setDescription('project-description', '<p>Proyecto no encontrado.</p>');
         return;
       }

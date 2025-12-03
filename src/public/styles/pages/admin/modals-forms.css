@@ -1,0 +1,89 @@
+.modal-body .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spXS, 0.5rem);
+    margin-bottom: 0;
+}
+
+.modal-body .form-label,
+.modal-body .form-label-text {
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--text-light, #fff);
+    margin-bottom: var(--spXS, 0.5rem);
+    display: block;
+}
+
+.modal-body .form-input {
+    width: 100%;
+    padding: 0.875rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.9375rem;
+    font-family: var(--font-base);
+    transition: all 0.2s ease;
+    background-color: #283930;
+    color: var(--text-light, #fff);
+    outline: none;
+    line-height: 1.5;
+}
+
+.modal-body .form-input::placeholder {
+    color: #9db9ab;
+}
+
+.modal-body .form-input:focus {
+    outline: none;
+    background-color: #2f4138;
+    box-shadow: 0 0 0 2px rgba(17, 212, 114, 0.3);
+}
+
+.modal-body .form-input:hover:not(:focus) {
+    background-color: #2f4138;
+}
+
+.modal-body textarea.form-input {
+    min-height: 120px;
+    resize: vertical;
+    line-height: 1.6;
+}
+
+.modal-body > p {
+    font-size: 0.9375rem;
+    color: var(--text-muted, #9db9ab);
+    margin: 0 0 var(--spM, 1rem) 0;
+    line-height: 1.6;
+}
+
+#observe-confirm-modal .modal-body,
+#reject-confirm-modal .modal-body {
+    padding: var(--spL, 1.5rem);
+}
+
+#observe-confirm-modal textarea,
+#reject-confirm-modal textarea {
+    min-height: 140px;
+}
+
+.modal-body .form-label span[style*="color"],
+.modal-body .form-label-text span[style*="color"] {
+    color: #ef4444;
+    margin-left: 2px;
+    font-weight: 700;
+}
+
+@media (min-width: 768px) {
+    .modal-body .form-input {
+        font-size: 1rem;
+        padding: 1rem;
+    }
+
+    .modal-body>p {
+        font-size: 1rem;
+    }
+
+    #observe-confirm-modal textarea,
+    #reject-confirm-modal textarea {
+        min-height: 160px;
+    }
+}

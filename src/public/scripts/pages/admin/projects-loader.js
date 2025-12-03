@@ -221,14 +221,17 @@
 
     confirmObserveBtn?.addEventListener('click', async () => {
         const reason = observeReasonTextarea.value.trim();
+        observeReasonError.style.display = 'none';
 
         if (!reason) {
             observeReasonError.textContent = 'Debes ingresar un motivo';
+            observeReasonError.style.display = 'block';
             return;
         }
 
         if (reason.length < 10) {
             observeReasonError.textContent = 'El motivo debe tener al menos 10 caracteres';
+            observeReasonError.style.display = 'block';
             return;
         }
 
@@ -275,14 +278,17 @@
 
     confirmRejectBtn?.addEventListener('click', async () => {
         const reason = rejectReasonTextarea.value.trim();
+        rejectReasonError.style.display = 'none';
 
         if (!reason) {
             rejectReasonError.textContent = 'Debes ingresar un motivo';
+            rejectReasonError.style.display = 'block';
             return;
         }
 
         if (reason.length < 10) {
             rejectReasonError.textContent = 'El motivo debe tener al menos 10 caracteres';
+            rejectReasonError.style.display = 'block';
             return;
         }
 

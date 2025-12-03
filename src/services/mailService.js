@@ -8,7 +8,6 @@ let testAccount = null;
 const createTransporter = async () => {
     if (!testAccount) {
         testAccount = await nodemailer.createTestAccount();
-        console.log('Cuenta Ethereal creada: ', testAccount);
     }
 
     return nodemailer.createTransport({
@@ -77,15 +76,8 @@ const sendVerificationEmail = async (toEmail, token) => {
             `,
         });
 
-        console.log('📨 Mensaje enviado (ID): %s', info.messageId);
-        
         const previewUrl = nodemailer.getTestMessageUrl(info);
-        console.log("⭐ [VISTA PREVIA] Abre este link para ver el correo simulado:");
-        console.log("----------------------------------------------------------");
-        console.log(previewUrl);
-        console.log("----------------------------------------------------------");
 
-        
         return {
             success: true,
             previewUrl: previewUrl

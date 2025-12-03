@@ -428,12 +428,10 @@
         }
 
         
-        const profileImageUrl = admin.profileImageUrl || admin.profile_image_url;
-        if (profileImageUrl) {
-            const profileLabel = document.querySelector('.profile-label');
-            if (profileLabel) {
-                profileLabel.style.backgroundImage = `url('${profileImageUrl}')`;
-            }
+        const profileImageUrl = admin.profileImageUrl || admin.profile_image_url || '/uploads/avatar/blank/no_photo.png';
+        const profileLabel = document.querySelector('.profile-label');
+        if (profileLabel) {
+            profileLabel.style.backgroundImage = `url('${profileImageUrl}')`;
         }
     }
 
@@ -509,7 +507,6 @@
     }
 
     function showSuccess(message) {
-        console.log('Success:', message);
         if (typeof Notification !== 'undefined') {
             Notification.success(message);
         } else {

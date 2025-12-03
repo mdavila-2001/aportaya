@@ -41,8 +41,8 @@ async function loadUserHeader() {
             userNameElement.textContent = fullName;
         }
 
-        if (userAvatarElement && user.profile_image_url) {
-            userAvatarElement.src = user.profile_image_url;
+        if (userAvatarElement) {
+            userAvatarElement.src = user.profile_image_url || '/uploads/avatar/blank/no_photo.png';
             userAvatarElement.alt = fullName;
         }
 

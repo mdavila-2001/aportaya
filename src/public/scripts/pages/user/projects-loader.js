@@ -2,6 +2,20 @@ const API_BASE_URL = '/api/projects';
 let currentCategory = 'all';
 let currentSearch = '';
 
+function parseJwt(token) {
+    try {
+        const base64Url = token.split('.')[1];
+        const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+        const jsonPayload = decodeURIComponent(atob(base64).split('').map(function (c) {
+            return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+        }).join(''));
+        return JSON.parse(jsonPayload);
+    } catch (error) {
+        console.error('Error decoding JWT:', error);
+        return null;
+    }
+}
+
 function createProjectCard(project) {
     const card = document.createElement('article');
     card.className = 'project-card';
@@ -159,19 +173,20 @@ async function fetchProjects() {
             return;
         }
 
+        const decodedToken = parseJwt(token);
+        const userId = decodedToken ? decodedToken.id : null;
+
         const params = new URLSearchParams();
         if (currentSearch) params.append('searchBy', currentSearch);
 
-        if (currentCategory && currentCategory !== 'all') {
-            const filterObj = { category_id: currentCategory };
-            params.append('filterBy', JSON.stringify(filterObj));
+        if (userId) {
+            params.append('userId', userId);
         }
 
         const url = `${API_BASE_URL}?${params.toString()}`;
 
         const response = await fetch(url, {
             headers: {
-                'Authorization': `Bearer ${token}`,
                 'Content-Type': 'application/json'
             }
         });

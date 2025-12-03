@@ -1,0 +1,277 @@
+.edit-project-container {
+    width: 100%;
+    padding: 1rem;
+    margin: 0 auto;
+}
+
+.edit-project-header {
+    margin-bottom: 1.5rem;
+}
+
+.edit-project-header h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-main, #fff);
+    margin-bottom: 0.5rem;
+    line-height: 1.3;
+}
+
+.edit-project-header p {
+    color: var(--text-light, #9db9ab);
+    font-size: 0.875rem;
+    line-height: 1.5;
+}
+
+.edit-form {
+    background: var(--card-bg, #1a2621);
+    border-radius: 12px;
+    padding: 1.25rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.edit-form .form-group {
+    margin-bottom: 1.25rem;
+}
+
+.edit-form .form-group label {
+    display: flex;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: var(--text-light, #9db9ab);
+    font-size: 0.9375rem;
+}
+
+.edit-form .form-group label span[style*="color"] {
+    margin-left: 4px;
+}
+
+.edit-form .form-group input,
+.edit-form .form-group textarea {
+    width: 100%;
+    padding: 0.875rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-family: var(--font-base);
+    transition: all 0.2s ease;
+    background-color: #283930;
+    color: var(--text-light, #fff);
+    outline: none;
+    resize: none;
+}
+
+.edit-form .form-group input::placeholder,
+.edit-form .form-group textarea::placeholder {
+    color: #9db9ab;
+}
+
+.edit-form .form-group input:focus,
+.edit-form .form-group textarea:focus {
+    outline: none;
+    background-color: #2f4138;
+    box-shadow: 0 0 0 2px rgba(17, 212, 114, 0.3);
+}
+
+.edit-form .form-group input:hover,
+.edit-form .form-group textarea:hover {
+    background-color: #2f4138;
+}
+
+.edit-form .form-group input:disabled,
+.edit-form .form-group textarea:disabled {
+    background-color: #1f2a24;
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.edit-form .form-group textarea {
+    min-height: 120px;
+    resize: vertical;
+    line-height: 1.6;
+    overflow: auto;
+}
+
+.edit-form .form-group textarea[name="description"] {
+    min-height: 180px;
+}
+
+.edit-form .char-counter {
+    text-align: right;
+    font-size: 0.8125rem;
+    color: var(--text-light, #9db9ab);
+    margin-top: 0.375rem;
+    font-weight: 500;
+}
+
+.edit-form .form-group small {
+    display: block;
+    margin-top: 0.5rem;
+    color: var(--text-light, #9db9ab);
+    font-size: 0.8125rem;
+    line-height: 1.4;
+}
+
+.edit-form .form-actions {
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.edit-form .form-actions button,
+.edit-form .form-actions a {
+    width: 100%;
+    padding: 0.875rem 1.25rem;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.loading-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 9999;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(2px);
+}
+
+.loading-overlay.active {
+    display: flex;
+}
+
+.loading-overlay .spinner {
+    width: 48px;
+    height: 48px;
+    border: 4px solid rgba(255, 255, 255, 0.2);
+    border-top-color: var(--primary, #11d472);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+.edit-form input:focus-visible,
+.edit-form textarea:focus-visible,
+.edit-form button:focus-visible {
+    outline: 2px solid var(--primary, #11d472);
+    outline-offset: 2px;
+}
+
+.edit-form .form-group input.error,
+.edit-form .form-group textarea.error {
+    border: 1px solid var(--color-error, #ef4444);
+    box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.2);
+}
+
+.edit-form .form-group input.error:focus,
+.edit-form .form-group textarea.error:focus {
+    box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.3);
+}
+
+.edit-form .form-group input.success,
+.edit-form .form-group textarea.success {
+    border: 1px solid var(--primary, #11d472);
+    box-shadow: 0 0 0 2px rgba(17, 212, 114, 0.2);
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+    .edit-project-container {
+        padding: 1.5rem;
+    }
+
+    .edit-project-header h2 {
+        font-size: 1.75rem;
+    }
+
+    .edit-form {
+        padding: 1.75rem;
+    }
+
+    .edit-form .form-group {
+        margin-bottom: 1.5rem;
+    }
+
+    .edit-form .form-group textarea {
+        min-height: 140px;
+    }
+
+    .edit-form .form-group textarea[name="description"] {
+        min-height: 200px;
+    }
+
+    .edit-form .form-actions {
+        flex-direction: row;
+        justify-content: flex-end;
+    }
+
+    .edit-form .form-actions button,
+    .edit-form .form-actions a {
+        width: auto;
+        min-width: 140px;
+    }
+}
+
+@media (min-width: 992px) {
+    .edit-project-container {
+        max-width: 900px;
+        padding: 2rem;
+    }
+
+    .edit-project-header {
+        margin-bottom: 2rem;
+    }
+
+    .edit-project-header h2 {
+        font-size: 2rem;
+    }
+
+    .edit-project-header p {
+        font-size: 0.9375rem;
+    }
+
+    .edit-form {
+        padding: 2.5rem;
+    }
+
+    .edit-form .form-group input,
+    .edit-form .form-group textarea {
+        padding: 1rem;
+        font-size: 1rem;
+    }
+
+    .edit-form .form-group textarea[name="summary"] {
+        min-height: 120px;
+    }
+
+    .edit-form .form-group textarea[name="description"] {
+        min-height: 220px;
+    }
+
+    .edit-form .form-actions {
+        flex-direction: row;
+        justify-content: flex-end;
+    }
+
+    .edit-form .form-actions button,
+    .edit-form .form-actions a {
+        width: auto;
+        min-width: 160px;
+    }
+}

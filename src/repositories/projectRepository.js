@@ -324,6 +324,64 @@ const getProjectsByCreator = async (creatorId) => {
     }
 };
 
+const getProjectById = async (projectId) => {
+    const client = await dbPool.connect();
+    try {
+        const query = `
+            SELECT 
+                p.id,
+                p.title,
+                p.description,
+                p.summary,
+                p.end_date,
+                p.creator_id
+            FROM projects.project p
+            WHERE p.id = $1
+        `;
+
+        const { rows } = await client.query(query, [projectId]);
+        return rows[0];
+    } catch (error) {
+        console.error('Error obteniendo proyecto por ID:', error);
+        throw error;
+    } finally {
+        client.release();
+    }
+};
+
+const updateProject = async (projectId, updateData) => {
+    const client = await dbPool.connect();
+    try {
+        const query = `
+            SELECT projects.update_project(
+                $1,  -- p_id
+                $2,  -- p_title
+                $3,  -- p_description
+                $4,  -- p_summary
+                NULL, -- p_financial_goal
+                NULL, -- p_start_date
+                $5   -- p_end_date
+            ) as success;
+        `;
+
+        const values = [
+            projectId,
+            updateData.title || null,
+            updateData.description || null,
+            updateData.summary || null,
+            updateData.endDate || null
+        ];
+
+        const res = await client.query(query, values);
+        return res.rows[0].success;
+    } catch (error) {
+        console.error('Error actualizando proyecto:', error);
+        throw error;
+    } finally {
+        client.release();
+    }
+};
+
 module.exports = {
     createProject,
     getProjects,
@@ -333,5 +391,7 @@ module.exports = {
     getProjectComments,
     getProjectUpdates,
     createComment,
-    getProjectsByCreator
+    getProjectsByCreator,
+    getProjectById,
+    updateProject
 };

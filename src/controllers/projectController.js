@@ -41,22 +41,20 @@ const createProject = async (req, res) => {
 
 const getProjects = async (req, res) => {
     try {
-        const { searchBy, filterBy } = req.query;
-
-        const filters = filterBy ? JSON.parse(filterBy) : null;
+        const { searchBy, userId } = req.query;
 
         const categories = await projectRepository.getProjectCategories();
 
-        const projects = await projectRepository.getProjects(searchBy, filters);
+        const projects = await projectRepository.getProjects(searchBy, null);
 
         let favoritedProjectIds = [];
-        if (req.user) {
+        const userIdToCheck = userId || (req.user ? req.user.id : null);
+
+        if (userIdToCheck) {
             const favoriteRepository = require('../repositories/favoriteRepository');
             const projectIds = projects.map(p => p.id);
             if (projectIds.length > 0) {
-                console.log(`[ProjectController] Checking favorites for User ${req.user.id} against ${projectIds.length} projects`);
-                favoritedProjectIds = await favoriteRepository.checkIfFavorited(req.user.id, projectIds);
-                console.log(`[ProjectController] Found ${favoritedProjectIds.length} favorites:`, favoritedProjectIds);
+                favoritedProjectIds = await favoriteRepository.checkIfFavorited(userIdToCheck, projectIds);
             }
         }
 
@@ -257,11 +255,118 @@ const getProjectCategories = async (req, res) => {
     }
 };
 
+const getProjectForEdit = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const userId = req.user.id;
+
+        const project = await projectRepository.getProjectById(id);
+
+        if (!project) {
+            return res.status(404).json({
+                success: false,
+                message: 'Proyecto no encontrado'
+            });
+        }
+
+        if (project.creator_id !== userId) {
+            return res.status(403).json({
+                success: false,
+                message: 'No tienes permiso para editar este proyecto'
+            });
+        }
+
+        res.json({
+            success: true,
+            data: {
+                project
+            }
+        });
+    } catch (error) {
+        console.error('Error obteniendo proyecto para edición:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Error al obtener el proyecto'
+        });
+    }
+};
+
+const updateProject = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const userId = req.user.id;
+        const { title, description, summary, endDate } = req.body;
+
+        if (!title && !description && !summary && !endDate) {
+            return res.status(400).json({
+                success: false,
+                message: 'Debes proporcionar al menos un campo para actualizar'
+            });
+        }
+
+        const project = await projectRepository.getProjectById(id);
+
+        if (!project) {
+            return res.status(404).json({
+                success: false,
+                message: 'Proyecto no encontrado'
+            });
+        }
+
+        if (project.creator_id !== userId) {
+            return res.status(403).json({
+                success: false,
+                message: 'No tienes permiso para editar este proyecto'
+            });
+        }
+
+        if (endDate) {
+            const endDateObj = new Date(endDate);
+            const now = new Date();
+
+            if (endDateObj <= now) {
+                return res.status(400).json({
+                    success: false,
+                    message: 'La fecha límite debe ser posterior a la fecha actual'
+                });
+            }
+        }
+
+        const updateData = {};
+        if (title) updateData.title = title.trim();
+        if (description) updateData.description = description.trim();
+        if (summary) updateData.summary = summary.trim();
+        if (endDate) updateData.endDate = endDate;
+
+        const success = await projectRepository.updateProject(id, updateData);
+
+        if (!success) {
+            return res.status(500).json({
+                success: false,
+                message: 'Error al actualizar el proyecto'
+            });
+        }
+
+        res.json({
+            success: true,
+            message: 'Proyecto actualizado exitosamente'
+        });
+    } catch (error) {
+        console.error('Error actualizando proyecto:', error);
+        res.status(500).json({
+            success: false,
+            message: error.message || 'Error al actualizar el proyecto'
+        });
+    }
+};
+
 module.exports = {
     createProject,
     getProjects,
     getProjectDetail,
     createComment,
     getMyProjects,
-    getProjectCategories
+    getProjectCategories,
+    getProjectForEdit,
+    updateProject
 };

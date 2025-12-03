@@ -66,7 +66,7 @@
                                     <div class="form-group full-width">
                                         <label for="title" class="form-label required">Título del Proyecto</label>
                                         <input type="text" id="title" class="form-input"
-                                            placeholder="Ej: Plataforma educativa para niños" required maxlength="100">
+                                            placeholder="Ej: Plataforma educativa para niños" maxlength="100">
                                         <div class="error_msg" id="title_error_msg"></div>
                                         <span class="form-hint">Máximo 100 caracteres</span>
                                     </div>
@@ -74,7 +74,7 @@
                                     <div class="form-group full-width">
                                         <label for="summary" class="form-label required">Descripción Corta</label>
                                         <input type="text" id="summary" class="form-input"
-                                            placeholder="Un resumen conciso que capture la esencia de tu proyecto" required
+                                            placeholder="Un resumen conciso que capture la esencia de tu proyecto"
                                             maxlength="200">
                                         <span class="form-hint">Este texto aparecerá en las tarjetas de proyecto</span>
                                     </div>
@@ -84,7 +84,7 @@
                                         <div class="input-with-prefix">
                                             <span class="input-prefix">Bs.</span>
                                             <input type="number" id="financial-goal" class="form-input" placeholder="5000"
-                                                required min="100" step="0.01">
+                                                min="100" step="0.01">
                                         </div>
                                         <div class="error_msg" id="financial_goal_error_msg"></div>
                                         <span class="form-hint">Monto mínimo: Bs. 100</span>
@@ -92,7 +92,7 @@
 
                                     <div class="form-group">
                                         <label for="category" class="form-label required">Categoría</label>
-                                        <select id="category" class="form-select" required>
+                                        <select id="category" class="form-select">
                                             <option value="">Selecciona una categoría</option>
                                         </select>
                                         <div class="error_msg" id="category_error_msg"></div>
@@ -100,8 +100,7 @@
 
                                     <div class="form-group full-width">
                                         <label for="location" class="form-label required">Ubicación</label>
-                                        <input type="text" id="location" class="form-input" placeholder="Ciudad, País"
-                                            required>
+                                        <input type="text" id="location" class="form-input" placeholder="Ciudad, País">
                                         <div class="error_msg" id="location_error_msg"></div>
                                     </div>
                                 </div>
@@ -116,7 +115,7 @@
                                         <label for="description" class="form-label required">Descripción Completa</label>
                                         <textarea id="description" class="form-textarea" rows="10"
                                             placeholder="Describe tu proyecto en detalle. ¿Cuál es el problema que resuelves? ¿Quiénes se benefician?"
-                                            required minlength="50"></textarea>
+                                            minlength="50"></textarea>
                                         <div class="error_msg" id="description_error_msg"></div>
                                         <span class="form-hint">Mínimo 50 caracteres. Sé claro sobre el propósito y el
                                             impacto.</span>
@@ -202,7 +201,7 @@
 
                                     <div class="form-group full-width">
                                         <div class="checkbox-group">
-                                            <input type="checkbox" id="terms" required>
+                                            <input type="checkbox" id="terms">
                                             <label for="terms" class="checkbox-label">
                                                 Confirmo que la información es correcta y acepto los
                                                 <a href="#" class="link">términos y condiciones</a>.

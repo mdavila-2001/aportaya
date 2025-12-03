@@ -95,7 +95,6 @@ function attachFavoriteListeners() {
                 icon.textContent = 'favorite_border';
                 button.setAttribute('aria-label', 'Agregar a favoritos');
             }
-            console.log(`Toggle favorito para proyecto ${button.dataset.projectId}`);
         });
     });
 }
@@ -123,13 +122,10 @@ function createCategoryChip(category) {
     chip.textContent = category.name;
 
     chip.addEventListener('click', () => {
-        console.log('Clicked category:', category.id, category.name);
-
         document.querySelectorAll('.category-chips .chip').forEach(c => c.classList.remove('chip-active'));
         chip.classList.add('chip-active');
 
         currentCategory = category.id;
-        console.log('Current category set to:', currentCategory);
         fetchProjects();
     });
 
@@ -179,9 +175,7 @@ async function fetchProjects() {
 }
 
 function updateExtraInfo(extraData) {
-    if (extraData.totalProjects !== undefined) {
-        console.log(`Total proyectos: ${extraData.totalProjects}`);
-    }
+    // Info adicional si es necesaria en el futuro
 }
 
 function showErrorMessage() {

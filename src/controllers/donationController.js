@@ -109,8 +109,6 @@ const handlePaymentWebhook = async (req, res) => {
                     webhookData.donationId,
                     'completed'
                 );
-
-                console.log(`Pago completado para donación: ${webhookData.donationId}`);
             }
         } else if (webhookData.eventType === 'payment.failed' || webhookData.status === 'failed') {
             if (webhookData.donationId) {
@@ -118,8 +116,6 @@ const handlePaymentWebhook = async (req, res) => {
                     webhookData.donationId,
                     'failed'
                 );
-
-                console.log(`Pago fallido para donación: ${webhookData.donationId}`);
             }
         }
 

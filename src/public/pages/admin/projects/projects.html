@@ -21,8 +21,11 @@
         <link rel="stylesheet" href="../../../styles/components/notification.css">
         <link rel="stylesheet" href="../../../styles/components/table.css">
         <link rel="stylesheet" href="../../../styles/components/table-layout.css">
+        <link rel="stylesheet" href="../../../styles/components/forms.css">
         <link rel="stylesheet" href="../../../styles/pages/admin/layout.css">
+        <link rel="stylesheet" href="../../../styles/components/forms.css">
         <link rel="stylesheet" href="../../../styles/pages/admin/projects/projects.css">
+        <link rel="stylesheet" href="../../../styles/pages/admin/modals-forms.css">
 
         <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
 
@@ -152,7 +155,7 @@
                         </div>
                         <div>
                             <div class="user-info">
-                                <img src="/uploads/avatar/admin.png" alt="Avatar Default" class="user-avatar" width="48"
+                                <img src="/uploads/avatar/blank/no_photo.png" alt="Avatar Default" class="user-avatar" width="48"
                                     height="48" style="border-radius: 999px;">
                                 <span class="user-name">Cargando...</span>
                             </div>
@@ -223,7 +226,7 @@
                     <textarea id="observe-reason" class="form-input" rows="5"
                         placeholder="Ej: La descripción del proyecto debe ser más detallada. Por favor incluye información sobre el impacto esperado y los beneficiarios..."
                         style="resize: vertical; min-height: 120px;"></textarea>
-                    <div class="error_msg" id="observe_reason_error"></div>
+                    <div class="error_msg" id="observe_reason_error" style="display: none;"></div>
                 </div>
             </div>
             <div class="modal-footer">
@@ -253,7 +256,7 @@
                     <textarea id="reject-reason" class="form-input" rows="5"
                         placeholder="Ej: El proyecto no cumple con los requisitos mínimos establecidos en nuestras políticas..."
                         style="resize: vertical; min-height: 120px;"></textarea>
-                    <div class="error_msg" id="reject_reason_error"></div>
+                    <div class="error_msg" id="reject_reason_error" style="display: none;"></div>
                 </div>
             </div>
             <div class="modal-footer">

@@ -13,5 +13,7 @@ router.post('/favorites/:projectId', favoriteController.toggleFavorite);
 router.get('/favorites', favoriteController.getUserFavorites);
 
 router.get('/my-projects', projectController.getMyProjects);
+router.get('/projects/:id', projectController.getProjectForEdit);
+router.put('/projects/:id', projectController.updateProject);
 
 module.exports = router;

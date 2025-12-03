@@ -113,7 +113,6 @@ async function signupUser() {
         return false;
     }
 
-    console.log('Formulario válido - Iniciando proceso...');
     const btnSubmit = document.querySelector('.btn-submit');
     const originalText = btnSubmit.textContent;
 
@@ -127,7 +126,6 @@ async function signupUser() {
             uploadedImageID = await profileUploader.upload();
 
             if (!uploadedImageID) {
-                console.warn('Error al subir la imagen de perfil.');
                 Notification.warning('No se pudo subir la imagen de perfil. Subiendo sin imagen...');
             }
         }

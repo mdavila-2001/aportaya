@@ -38,9 +38,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const confirmData = await confirmResponse.json();
 
         if (!confirmData.success) {
-            if (payment.status === 'CONFIRMED') {
-                console.log('Pago ya confirmado previamente');
-            } else {
+            if (payment.status !== 'CONFIRMED') {
                 throw new Error(confirmData.message || 'Error al confirmar el pago');
             }
         }

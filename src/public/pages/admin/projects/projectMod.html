@@ -15,7 +15,9 @@
         <link rel="stylesheet" href="../../../styles/components/sidebar.css">
         <link rel="stylesheet" href="../../../styles/components/notification.css">
         <link rel="stylesheet" href="../../../styles/pages/admin/layout.css">
+        <link rel="stylesheet" href="../../../styles/components/forms.css">
         <link rel="stylesheet" href="../../../styles/pages/admin/projects/projectMod.css">
+        <link rel="stylesheet" href="../../../styles/pages/admin/modals-forms.css">
 
         <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
 
@@ -146,7 +148,7 @@
                         </div>
                         <div>
                             <div class="user-info">
-                                <img src="/uploads/avatar/admin.png" alt="Avatar Default" class="user-avatar" width="48"
+                                <img src="/uploads/avatar/blank/no_photo.png" alt="Avatar Default" class="user-avatar" width="48"
                                     height="48" style="border-radius: 999px;">
                                 <span class="user-name">Cargando...</span>
                             </div>
@@ -297,12 +299,11 @@
                 </button>
             </div>
             <div class="modal-body">
-                <p style="margin-bottom: var(--spMD); color: var(--text-secondary);">
+                <p>
                     Indica las correcciones o mejoras necesarias para que el creador pueda revisarlas:
                 </p>
                 <div class="form-group">
-                    <label for="observe-reason" class="form-label" style="margin-bottom: var(--spSM);">Motivo u
-                        Observaciones *</label>
+                    <label for="observe-reason" class="form-label" style="margin-bottom: var(--spSM);">Motivo u Observaciones *</label>
                     <textarea id="observe-reason" class="form-input" rows="5"
                         placeholder="Ej: La descripción del proyecto debe ser más detallada. Por favor incluye información sobre el impacto esperado y los beneficiarios..."
                         style="resize: vertical; min-height: 120px;"></textarea>
@@ -327,12 +328,11 @@
                 </button>
             </div>
             <div class="modal-body">
-                <p style="margin-bottom: var(--spMD); color: var(--text-secondary);">
+                <p>
                     Explica claramente el motivo del rechazo. Esta acción es definitiva:
                 </p>
                 <div class="form-group">
-                    <label for="reject-reason" class="form-label" style="margin-bottom: var(--spSM);">Motivo del Rechazo
-                        *</label>
+                    <label for="reject-reason" class="form-label">Motivo del Rechazo *</label>
                     <textarea id="reject-reason" class="form-input" rows="5"
                         placeholder="Ej: El proyecto no cumple con los requisitos mínimos establecidos en nuestras políticas..."
                         style="resize: vertical; min-height: 120px;"></textarea>

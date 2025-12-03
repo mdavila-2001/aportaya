@@ -81,11 +81,6 @@
             <td>
                 <span class="status-badge ${statusClass}">${statusText}</span>
             </td>
-            /* <td>
-                <div class="table-actions">
-                    ${getActionButtons(user)}
-                </div>
-            </td> */
         `;
 
         return tr;
@@ -240,14 +235,11 @@
     }
 
     function displayHistory(history) {
-
-        console.log('Historial:', history);
         alert('Historial del usuario:\n' + JSON.stringify(history, null, 2));
     }
 
     function showSuccess(message) {
-
-        console.log('Success:', message);
+        // Success message handled by UI
     }
 
     function showError(message) {
