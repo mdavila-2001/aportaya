@@ -289,6 +289,41 @@ const createComment = async (projectId, userId, content) => {
     }
 };
 
+const getProjectsByCreator = async (creatorId) => {
+    const client = await dbPool.connect();
+    try {
+        const query = `
+            SELECT 
+                p.id,
+                p.title,
+                p.slug,
+                p.summary as description,
+                p.financial_goal as goal_amount,
+                p.raised_amount,
+                p.start_date,
+                p.end_date,
+                p.approval_status as status,
+                p.campaign_status,
+                c.name as category_name,
+                img.file_path as cover_image_url
+            FROM projects.project p
+            LEFT JOIN projects.category c ON p.category_id = c.id
+            LEFT JOIN projects.project_image pi ON p.id = pi.project_id AND pi.is_cover = TRUE
+            LEFT JOIN files.image img ON pi.image_id = img.id
+            WHERE p.creator_id = $1
+            ORDER BY p.created_at DESC
+        `;
+
+        const { rows } = await client.query(query, [creatorId]);
+        return rows;
+    } catch (error) {
+        console.error('Error obteniendo proyectos del creador:', error);
+        throw error;
+    } finally {
+        client.release();
+    }
+};
+
 module.exports = {
     createProject,
     getProjects,
@@ -297,5 +332,6 @@ module.exports = {
     getProjectDonors,
     getProjectComments,
     getProjectUpdates,
-    createComment
+    createComment,
+    getProjectsByCreator
 };

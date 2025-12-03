@@ -48,6 +48,18 @@ const getProjects = async (req, res) => {
 
         const projects = await projectRepository.getProjects(searchBy, filters);
 
+        // Obtener favoritos del usuario si está autenticado
+        let favoritedProjectIds = [];
+        if (req.user) {
+            const favoriteRepository = require('../repositories/favoriteRepository');
+            const projectIds = projects.map(p => p.id);
+            if (projectIds.length > 0) {
+                console.log(`[ProjectController] Checking favorites for User ${req.user.id} against ${projectIds.length} projects`);
+                favoritedProjectIds = await favoriteRepository.checkIfFavorited(req.user.id, projectIds);
+                console.log(`[ProjectController] Found ${favoritedProjectIds.length} favorites:`, favoritedProjectIds);
+            }
+        }
+
         res.status(200).json({
             message: 'Proyectos obtenidos exitosamente',
             extraData: {
@@ -68,6 +80,7 @@ const getProjects = async (req, res) => {
                     raised_amount: project.raised_amount,
                     description: project.description,
                     cover_image_url: project.cover_image_url,
+                    is_favorite: favoritedProjectIds.includes(project.id)
                 })),
             }
         });
@@ -206,9 +219,30 @@ const createComment = async (req, res) => {
     }
 };
 
+const getMyProjects = async (req, res) => {
+    try {
+        const userId = req.user.id;
+        const projects = await projectRepository.getProjectsByCreator(userId);
+
+        res.status(200).json({
+            success: true,
+            data: {
+                projects
+            }
+        });
+    } catch (error) {
+        console.error('Error obteniendo mis proyectos:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Error al obtener tus proyectos'
+        });
+    }
+};
+
 module.exports = {
     createProject,
     getProjects,
     getProjectDetail,
-    createComment
+    createComment,
+    getMyProjects
 };

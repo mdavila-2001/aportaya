@@ -487,6 +487,42 @@ const getProjectById = async (req, res) => {
     }
 };
 
+const updateProjectStatus = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { status, reason } = req.body;
+        const adminId = req.user.id;
+
+        const validStatuses = ['published', 'rejected', 'observed'];
+        if (!validStatuses.includes(status)) {
+            return res.status(400).json({
+                success: false,
+                message: 'Estado inválido'
+            });
+        }
+
+        if ((status === 'rejected' || status === 'observed') && !reason) {
+            return res.status(400).json({
+                success: false,
+                message: 'Se requiere una razón para rechazar u observar el proyecto'
+            });
+        }
+
+        await adminRepository.updateProjectStatus(id, status, reason, adminId);
+
+        res.status(200).json({
+            success: true,
+            message: 'Estado del proyecto actualizado exitosamente'
+        });
+    } catch (error) {
+        console.error('Error actualizando estado del proyecto:', error);
+        res.status(500).json({
+            success: false,
+            message: error.message || 'Error actualizando estado del proyecto'
+        });
+    }
+};
+
 module.exports = {
     getDashboardStats,
     getUsers,
@@ -501,5 +537,6 @@ module.exports = {
     updateCategory,
     deleteCategory,
     getProjects,
-    getProjectById
+    getProjectById,
+    updateProjectStatus
 };

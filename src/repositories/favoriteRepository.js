@@ -51,7 +51,7 @@ const checkIfFavorited = async (userId, projectIds) => {
         const query = `
             SELECT project_id
             FROM social.favorite
-            WHERE user_id = $1 AND project_id = ANY($2)
+            WHERE user_id = $1 AND project_id = ANY($2::uuid[])
         `;
         const result = await client.query(query, [userId, projectIds]);
         return result.rows.map(row => row.project_id);

@@ -1,179 +1,209 @@
 <!DOCTYPE html>
 <html lang="es">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="author" content="Danny Marcelo Dávila Barrancos">
-        <meta name="description" content="Mis Proyectos - AportaYa">
-        <meta property="og:title" content="Mis Proyectos - AportaYa">
-        <meta property="og:author" content="Danny Marcelo Dávila Barrancos">
-        <meta property="og:description" content="Mis Proyectos - AportaYa">
-        <link rel="shortcut icon" href="../../../images/favicon.ico" type="image/x-icon">
 
-        <link rel="stylesheet" href="../../../styles/styles.css">
-        <link rel="stylesheet" href="../../../styles/fonts.css">
-        <link rel="stylesheet" href="../../../styles/components/buttons.css">
-        <link rel="stylesheet" href="../../../styles/components/header.css">
-        <link rel="stylesheet" href="../../../styles/components/sidebar.css">
-        <link rel="stylesheet" href="../../../styles/components/progress.css">
-        <link rel="stylesheet" href="../../../styles/components/modal.css">
-        <link rel="stylesheet" href="../../../styles/pages/user/layout.css">
-        <link rel="stylesheet" href="../../../styles/pages/user/projects.css">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Danny Marcelo Dávila Barrancos">
+    <meta name="description" content="Mis Proyectos - AportaYa">
+    <meta property="og:title" content="Mis Proyectos - AportaYa">
+    <meta property="og:author" content="Danny Marcelo Dávila Barrancos">
+    <meta property="og:description" content="Mis Proyectos - AportaYa">
+    <link rel="shortcut icon" href="../../../images/favicon.ico" type="image/x-icon">
 
-        <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+    <link rel="stylesheet" href="../../../styles/styles.css">
+    <link rel="stylesheet" href="../../../styles/fonts.css">
+    <link rel="stylesheet" href="../../../styles/components/buttons.css">
+    <link rel="stylesheet" href="../../../styles/components/header.css">
+    <link rel="stylesheet" href="../../../styles/components/sidebar.css">
+    <link rel="stylesheet" href="../../../styles/components/progress.css">
+    <link rel="stylesheet" href="../../../styles/components/modal.css">
+    <link rel="stylesheet" href="../../../styles/pages/user/layout.css">
+    <link rel="stylesheet" href="../../../styles/pages/user/projects.css">
 
-        <title>Mis Proyectos - AportaYa</title>
-    </head>
-    <body>
-        <main class="user-content">
-            <aside class="sidebar user-sidebar">
-                <div class="sidebar-header">
-                    <div class="sidebar-brand">
-                        <div class="brand-icon">
-                            <span class="material-symbols-outlined">volunteer_activism</span>
-                        </div>
-                        <div class="brand-text">
-                            <h1>AportaYa</h1>
-                            <p>Mi Cuenta</p>
-                        </div>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+
+    <title>Mis Proyectos - AportaYa</title>
+</head>
+
+<body>
+    <main class="user-content">
+        <aside class="sidebar user-sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-brand">
+                    <div class="brand-icon">
+                        <span class="material-symbols-outlined">volunteer_activism</span>
+                    </div>
+                    <div class="brand-text">
+                        <h1>AportaYa</h1>
+                        <p>Mi Cuenta</p>
                     </div>
                 </div>
-                <nav class="sidebar-nav" aria-label="Menú de navegación principal">
-                    <ul class="sidebar-items">
-                        <li class="sidebar-item">
-                            <a href="../dashboard.html">
-                                <span class="material-symbols-outlined filled">dashboard</span>
-                                <span>Dashboard</span>
-                            </a>
-                        </li>
-                        <li class="sidebar-item">
-                            <a href="projects.html">
-                                <span class="material-symbols-outlined">explore</span>
-                                <span>Proyectos</span>
-                            </a>
-                        </li>
-                        <li class="sidebar-item active">
-                            <a href="myProjects.html">
-                                <span class="material-symbols-outlined">folder</span>
-                                <span>Mis Proyectos</span>
-                            </a>
-                        </li>
-                        <li class="sidebar-item">
-                            <a href="favorites.html">
-                                <span class="material-symbols-outlined">bookmark</span>
-                                <span>Favoritos</span>
-                            </a>
-                        </li>
-                        <li class="sidebar-item">
-                            <a href="../settings.html">
-                                <span class="material-symbols-outlined">settings</span>
-                                <span>Configuración</span>
-                            </a>
-                        </li>
-                    </ul>
-                </nav>
-                <div class="sidebar-footer">
-                    <ul class="sidebar-items">
-                        <li class="sidebar-item logout-item">
-                            <button commandfor="logout-modal" command="show-popover" class="logout-btn">
-                                <span class="material-symbols-outlined">logout</span>
-                                <span>Cerrar Sesión</span>
-                            </button>
-                        </li>
-                    </ul>
-                </div>
-            </aside>
-            <section class="user-main">
-                <header class="header-logged">
-                    <div class="logged-in-content">
-                        <div class="header-menu">
-                            <input type="checkbox" name="mobile-menu-switch" id="mobile-menu-switch">
-                            <label for="mobile-menu-switch" class="mobile-menu-label">
-                                <span class="material-symbols-outlined mobile-menu">menu</span>
-                            </label>
-                            <div class="floating-menu">
-                                <nav class="user-menu" aria-label="User Menu">
-                                    <ul class="mobile-sidebar-items">
-                                        <li class="mobile-sidebar-item">
-                                            <a href="../dashboard.html">
-                                                <span class="material-symbols-outlined filled">dashboard</span>
-                                                <span>Dashboard</span>
-                                            </a>
-                                        </li>
-                                        <li class="mobile-sidebar-item">
-                                            <a href="projects.html">
-                                                <span class="material-symbols-outlined">explore</span>
-                                                <span>Proyectos</span>
-                                            </a>
-                                        </li>
-                                        <li class="mobile-sidebar-item active">
-                                            <a href="myProjects.html">
-                                                <span class="material-symbols-outlined">folder</span>
-                                                <span>Mis Proyectos</span>
-                                            </a>
-                                        </li>
-                                        <li class="mobile-sidebar-item">
-                                            <a href="favorites.html">
-                                                <span class="material-symbols-outlined">bookmark</span>
-                                                <span>Favoritos</span>
-                                            </a>
-                                        </li>
-                                        <li class="mobile-sidebar-item">
-                                            <a href="../settings.html">
-                                                <span class="material-symbols-outlined">settings</span>
-                                                <span>Configuración</span>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </nav>
-                                <div class="mobile-sidebar-footer">
-                                    <ul class="mobile-sidebar-items">
-                                        <li class="mobile-sidebar-item logout-item">
-                                            <button commandfor="logout-modal" command="show-popover" class="logout-btn">
-                                                <span class="material-symbols-outlined">logout</span>
-                                                <span>Cerrar Sesión</span>
-                                            </button>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <div>
-                            <a class="logo">
-                                <img src="../../../images/aporta-ya-icon.webp" alt="AportaYa Logo" width="48" height="48">
-                                <img src="../../../images/aporta-ya-letters.webp" alt="AportaYa" width="100" class="letters">
-                            </a>
-                        </div>
-                        <div>
-                            <div class="user-info">
-                                <img src="/uploads/avatar/default.png" alt="Avatar" class="user-avatar" width="48"
-                                    height="48" style="border-radius: 999px;">
-                                <span class="user-name">Cargando...</span>
+            </div>
+            <nav class="sidebar-nav" aria-label="Menú de navegación principal">
+                <ul class="sidebar-items">
+                    <li class="sidebar-item">
+                        <a href="../dashboard.html">
+                            <span class="material-symbols-outlined filled">dashboard</span>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a href="projects.html">
+                            <span class="material-symbols-outlined">explore</span>
+                            <span>Proyectos</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-item active">
+                        <a href="myProjects.html">
+                            <span class="material-symbols-outlined">folder</span>
+                            <span>Mis Proyectos</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a href="favorites.html">
+                            <span class="material-symbols-outlined">bookmark</span>
+                            <span>Favoritos</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a href="../settings.html">
+                            <span class="material-symbols-outlined">settings</span>
+                            <span>Configuración</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            <div class="sidebar-footer">
+                <ul class="sidebar-items">
+                    <li class="sidebar-item logout-item">
+                        <button commandfor="logout-modal" command="show-popover" class="logout-btn">
+                            <span class="material-symbols-outlined">logout</span>
+                            <span>Cerrar Sesión</span>
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </aside>
+        <section class="user-main">
+            <header class="header-logged">
+                <div class="logged-in-content">
+                    <div class="header-menu">
+                        <input type="checkbox" name="mobile-menu-switch" id="mobile-menu-switch">
+                        <label for="mobile-menu-switch" class="mobile-menu-label">
+                            <span class="material-symbols-outlined mobile-menu">menu</span>
+                        </label>
+                        <div class="floating-menu">
+                            <nav class="user-menu" aria-label="User Menu">
+                                <ul class="mobile-sidebar-items">
+                                    <li class="mobile-sidebar-item">
+                                        <a href="../dashboard.html">
+                                            <span class="material-symbols-outlined filled">dashboard</span>
+                                            <span>Dashboard</span>
+                                        </a>
+                                    </li>
+                                    <li class="mobile-sidebar-item">
+                                        <a href="projects.html">
+                                            <span class="material-symbols-outlined">explore</span>
+                                            <span>Proyectos</span>
+                                        </a>
+                                    </li>
+                                    <li class="mobile-sidebar-item active">
+                                        <a href="myProjects.html">
+                                            <span class="material-symbols-outlined">folder</span>
+                                            <span>Mis Proyectos</span>
+                                        </a>
+                                    </li>
+                                    <li class="mobile-sidebar-item">
+                                        <a href="favorites.html">
+                                            <span class="material-symbols-outlined">bookmark</span>
+                                            <span>Favoritos</span>
+                                        </a>
+                                    </li>
+                                    <li class="mobile-sidebar-item">
+                                        <a href="../settings.html">
+                                            <span class="material-symbols-outlined">settings</span>
+                                            <span>Configuración</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </nav>
+                            <div class="mobile-sidebar-footer">
+                                <ul class="mobile-sidebar-items">
+                                    <li class="mobile-sidebar-item logout-item">
+                                        <button commandfor="logout-modal" command="show-popover" class="logout-btn">
+                                            <span class="material-symbols-outlined">logout</span>
+                                            <span>Cerrar Sesión</span>
+                                        </button>
+                                    </li>
+                                </ul>
                             </div>
                         </div>
                     </div>
-                </header>
-                <main class="user-projects"></main>
-            </section>
-        </main>
-        <div class="modal modal-small" id="logout-modal" popover="manual">
-            <div class="modal-header">
-                <h2 class="modal-title">Cerrar sesión</h2>
-                <button class="modal-close" commandfor="logout-modal" command="hide-popover">
-                    <span class="material-symbols-outlined">close</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <p>¿Estás seguro de que deseas cerrar sesión?</p>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary" commandfor="logout-modal" command="hide-popover">Cancelar</button>
-                <button class="btn btn-primary" id="confirm-logout">Cerrar sesión</button>
-            </div>
+                    <div>
+                        <a class="logo">
+                            <img src="../../../images/aporta-ya-icon.webp" alt="AportaYa Logo" width="48" height="48">
+                            <img src="../../../images/aporta-ya-letters.webp" alt="AportaYa" width="100"
+                                class="letters">
+                        </a>
+                    </div>
+                    <div>
+                        <div class="user-info">
+                            <img src="/uploads/avatar/default.png" alt="Avatar" class="user-avatar" width="48"
+                                height="48" style="border-radius: 999px;">
+                            <span class="user-name">Cargando...</span>
+                        </div>
+                    </div>
+                </div>
+            </header>
+            <main class="user-projects">
+                <div class="projects-header">
+                    <h2 class="section-title">Mis Proyectos</h2>
+                    <a href="create-project/step1.html" class="btn btn-primary">
+                        <span class="material-symbols-outlined">add</span>
+                        Crear Proyecto
+                    </a>
+                </div>
+
+                <div class="projects-grid" id="projects-grid">
+                    <!-- Projects will be loaded here -->
+                    <div class="loading-state">
+                        <div class="spinner"></div>
+                        <p>Cargando tus proyectos...</p>
+                    </div>
+                </div>
+
+                <div id="empty-state" class="empty-state" style="display: none;">
+                    <img src="../../../images/empty-projects.svg" alt="No projects" class="empty-image">
+                    <h3>Aún no has creado proyectos</h3>
+                    <p>¡Anímate a lanzar tu primera campaña y haz realidad tu idea!</p>
+                    <a href="create-project/step1.html" class="btn btn-primary">
+                        Comenzar ahora
+                    </a>
+                </div>
+            </main>
+        </section>
+    </main>
+    <div class="modal modal-small" id="logout-modal" popover="manual">
+        <div class="modal-header">
+            <h2 class="modal-title">Cerrar sesión</h2>
+            <button class="modal-close" commandfor="logout-modal" command="hide-popover">
+                <span class="material-symbols-outlined">close</span>
+            </button>
         </div>
+        <div class="modal-body">
+            <p>¿Estás seguro de que deseas cerrar sesión?</p>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" commandfor="logout-modal" command="hide-popover">Cancelar</button>
+            <button class="btn btn-primary" id="confirm-logout">Cerrar sesión</button>
+        </div>
+    </div>
 
-        <script src="../../../scripts/user-header.js"></script>
-        <script src="../../../scripts/components/logout-modal.js"></script>
-    </body>
+    <script src="../../../scripts/user-header.js"></script>
+    <script src="../../../scripts/components/logout-modal.js"></script>
+    <script src="../../../scripts/pages/user/my-projects-loader.js"></script>
+</body>
+
 </html>

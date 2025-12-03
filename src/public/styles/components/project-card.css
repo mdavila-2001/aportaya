@@ -33,7 +33,7 @@
     right: 1rem;
     width: 2.5rem;
     height: 2.5rem;
-    background: rgba(0,0,0,0.5);
+    background: rgba(0, 0, 0, 0.5);
     color: #FFFFFF;
     border-radius: 50%;
     border: none;
@@ -43,9 +43,13 @@
     transition: all 0.3s ease;
 }
 
-.project-fav:hover {
+.project-fav:hover,
+.project-fav.is-favorite {
     background: var(--primary);
     color: var(--text-dark);
+}
+
+.project-fav:hover {
     transform: scale(1.1);
 }
 

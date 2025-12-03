@@ -12,6 +12,7 @@ function createProjectCard(project) {
     // Determinar icono de favorito
     const favoriteIcon = project.is_favorite ? 'favorite' : 'favorite_border';
     const favoriteLabel = project.is_favorite ? 'Quitar de favoritos' : 'Agregar a favoritos';
+    const favoriteBtnClass = project.is_favorite ? 'is-favorite' : '';
 
     // Calcular porcentaje
     const percentage = Math.round((project.raised_amount / project.goal_amount) * 100);
@@ -31,7 +32,7 @@ function createProjectCard(project) {
                 alt="${project.title}"
                 onerror="this.src='/images/placeholder-project.jpg'"
             />
-            <button class="project-fav" aria-label="${favoriteLabel}" data-project-id="${project.id}">
+            <button class="project-fav ${favoriteBtnClass}" aria-label="${favoriteLabel}" data-project-id="${project.id}">
                 <span class="material-symbols-outlined">${favoriteIcon}</span>
             </button>
         </div>
@@ -83,6 +84,7 @@ function renderProjects(projects) {
     attachFavoriteListeners();
 }
 
+
 // Manejar clicks en favoritos
 function attachFavoriteListeners() {
     const favoriteButtons = document.querySelectorAll('.project-fav');
@@ -92,22 +94,38 @@ function attachFavoriteListeners() {
             e.stopPropagation(); // Evitar navegación a detalle
             const projectId = button.dataset.projectId;
 
-            // Aquí iría la llamada al backend para togglear favorito
-            // await toggleFavorite(projectId);
-
-            // Por ahora simulación visual
-            const icon = button.querySelector('.material-symbols-outlined');
-            if (icon.textContent === 'favorite_border') {
-                icon.textContent = 'favorite';
-                button.setAttribute('aria-label', 'Quitar de favoritos');
-            } else {
-                icon.textContent = 'favorite_border';
-                button.setAttribute('aria-label', 'Agregar a favoritos');
-            }
-            console.log(`Toggle favorito para proyecto ${projectId}`);
+            await toggleFavorite(projectId, button);
         });
     });
 }
+
+// Toggle de favorito con backend
+async function toggleFavorite(projectId, button) {
+    try {
+        const token = localStorage.getItem('token');
+        const response = await fetch(`/api/user/favorites/${projectId}`, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            }
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+            // Recargar la página para reflejar el cambio
+            window.location.reload();
+        } else {
+            console.error('Error:', data.message);
+            alert('Error al actualizar favoritos');
+        }
+    } catch (error) {
+        console.error('Error toggling favorite:', error);
+        alert('Error al actualizar favoritos');
+    }
+}
+
 
 // Renderizar chips de categorías
 function renderCategories(categories) {

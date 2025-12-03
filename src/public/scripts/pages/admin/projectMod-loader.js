@@ -190,20 +190,73 @@
     carouselNext.addEventListener('click', nextImage);
 
     // Action buttons (placeholder)
+    // Modal elements
+    const actionModal = document.getElementById('action-modal');
+    const actionModalTitle = document.getElementById('action-modal-title');
+    const actionModalMessage = document.getElementById('action-modal-message');
+    const actionReason = document.getElementById('action-reason');
+    const confirmActionBtn = document.getElementById('confirm-action-btn');
+
+    let currentAction = null;
+
+    // Action buttons
     document.getElementById('btn-approve')?.addEventListener('click', () => {
-        console.log('Aprobar proyecto:', projectId);
-        Notification.success('Funcionalidad de aprobación en desarrollo');
+        if (confirm('¿Estás seguro de aprobar este proyecto? Se publicará inmediatamente.')) {
+            updateProjectStatus('published');
+        }
     });
 
     document.getElementById('btn-observe')?.addEventListener('click', () => {
-        console.log('Observar proyecto:', projectId);
-        Notification.success('Funcionalidad de observación en desarrollo');
+        currentAction = 'observed';
+        actionModalTitle.textContent = 'Observar Proyecto';
+        actionModalMessage.textContent = 'Indica las correcciones necesarias:';
+        actionReason.value = '';
+        actionModal.showPopover();
     });
 
     document.getElementById('btn-reject')?.addEventListener('click', () => {
-        console.log('Rechazar proyecto:', projectId);
-        Notification.success('Funcionalidad de rechazo en desarrollo');
+        currentAction = 'rejected';
+        actionModalTitle.textContent = 'Rechazar Proyecto';
+        actionModalMessage.textContent = 'Indica el motivo del rechazo:';
+        actionReason.value = '';
+        actionModal.showPopover();
     });
+
+    confirmActionBtn?.addEventListener('click', () => {
+        const reason = actionReason.value.trim();
+        if (!reason) {
+            Notification.error('Debes ingresar un motivo');
+            return;
+        }
+        updateProjectStatus(currentAction, reason);
+        actionModal.hidePopover();
+    });
+
+    async function updateProjectStatus(status, reason = null) {
+        try {
+            const token = localStorage.getItem('token');
+            const response = await fetch(`${API_BASE_URL}/projects/${projectId}/status`, {
+                method: 'PUT',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ status, reason })
+            });
+
+            const result = await response.json();
+
+            if (!response.ok) {
+                throw new Error(result.message || 'Error al actualizar estado');
+            }
+
+            Notification.success('Estado actualizado correctamente');
+            setTimeout(() => window.location.reload(), 1500);
+        } catch (error) {
+            console.error(error);
+            Notification.error(error.message || 'Error al actualizar el estado');
+        }
+    }
 
     // Load project on page load
     if (document.readyState === 'loading') {
