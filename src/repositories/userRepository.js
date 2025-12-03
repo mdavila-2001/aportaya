@@ -27,11 +27,9 @@ const getUserById = async (userId) => {
     }
 };
 
-// Obtener toda la info del dashboard en una sola query
 const getUserDashboardData = async (userId) => {
     const client = await dbPool.connect();
     try {
-        // Obtener info del usuario
         const userQuery = `
             SELECT 
                 first_name,
@@ -45,7 +43,6 @@ const getUserDashboardData = async (userId) => {
         const userResult = await client.query(userQuery, [userId]);
         const user = userResult.rows[0];
 
-        // Obtener proyectos activos del usuario
         const projectsQuery = `
             SELECT 
                 p.id,
@@ -65,7 +62,6 @@ const getUserDashboardData = async (userId) => {
         `;
         const projectsResult = await client.query(projectsQuery, [userId]);
 
-        // Obtener actividad reciente (donaciones)
         const activityQuery = `
             SELECT 
                 d.id,
@@ -80,7 +76,6 @@ const getUserDashboardData = async (userId) => {
         `;
         const activityResult = await client.query(activityQuery, [userId]);
 
-        // Obtener proyectos recomendados
         const recommendedQuery = `
             SELECT 
                 p.id,

@@ -632,7 +632,6 @@ const getProjectById = async (projectId) => {
             return null;
         }
 
-        // Obtener imágenes del proyecto
         const imagesQuery = `
             SELECT img.file_path, pi.is_cover, pi.display_order
             FROM projects.project_image pi
@@ -659,7 +658,6 @@ const updateProjectStatus = async (projectId, status, reason, adminId) => {
     try {
         await client.query('BEGIN');
 
-        // 1. Obtener estado actual
         const getProjectQuery = `SELECT approval_status FROM projects.project WHERE id = $1`;
         const projectResult = await client.query(getProjectQuery, [projectId]);
 
@@ -669,20 +667,15 @@ const updateProjectStatus = async (projectId, status, reason, adminId) => {
 
         const oldStatus = projectResult.rows[0].approval_status;
 
-        // 2. Actualizar estado del proyecto
         let updateQuery = `
             UPDATE projects.project 
             SET approval_status = $1, updated_at = NOW()
         `;
 
-        // Si se aprueba, también podríamos querer establecer campaign_status a 'in_progress' si la fecha de inicio ya pasó
-        // Por ahora mantenemos simple la lógica de aprobación
-
         updateQuery += ` WHERE id = $2 RETURNING id`;
 
         await client.query(updateQuery, [status, projectId]);
 
-        // 3. Registrar en historial
         const historyQuery = `
             INSERT INTO projects.project_status_history (project_id, old_status, new_status, changed_by, reason)
             VALUES ($1, $2, $3, $4, $5)

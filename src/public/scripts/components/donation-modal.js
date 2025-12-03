@@ -10,41 +10,33 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let currentAmount = 100;
 
-    // Inicialización
     if (pageProjectTitle) {
         modalProjectTitle.textContent = pageProjectTitle.textContent;
-        // Observar cambios en el título (por si carga asíncronamente)
         const observer = new MutationObserver(() => {
             modalProjectTitle.textContent = pageProjectTitle.textContent;
         });
         observer.observe(pageProjectTitle, { childList: true, characterData: true, subtree: true });
     }
 
-    // Event Listeners
     donateBtns.forEach(btn => {
         btn.addEventListener('click', openModal);
     });
 
     closeBtn.addEventListener('click', closeModal);
 
-    // Cerrar al hacer click fuera
     modal.addEventListener('click', (e) => {
         if (e.target === modal) closeModal();
     });
-
-    // Input de monto
     amountInput.addEventListener('input', (e) => {
         currentAmount = parseFloat(e.target.value) || 0;
     });
 
-    // Botones rápidos
     quickAmountBtns.forEach(btn => {
         btn.addEventListener('click', () => {
             const amount = parseFloat(btn.dataset.amount);
             amountInput.value = amount;
             currentAmount = amount;
 
-            // Animación visual
             btn.style.transform = 'scale(0.95)';
             setTimeout(() => btn.style.transform = 'scale(1)', 100);
         });
@@ -52,7 +44,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     confirmBtn.addEventListener('click', processDonation);
 
-    // Funciones
     function openModal() {
         modal.style.display = 'flex';
         document.body.style.overflow = 'hidden';
@@ -69,7 +60,6 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // Obtener slug del proyecto de la URL
         const urlParams = new URLSearchParams(window.location.search);
         const slug = urlParams.get('slug');
 

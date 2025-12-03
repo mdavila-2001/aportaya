@@ -123,7 +123,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             } catch (error) {
                 console.error('Error en polling:', error);
             }
-        }, 3000); // Verificar cada 3 segundos
+        }, 3000);
     }
 
     function showError(message) {

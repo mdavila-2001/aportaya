@@ -2,19 +2,16 @@ document.addEventListener('DOMContentLoaded', async () => {
     const urlParams = new URLSearchParams(window.location.search);
     const paymentId = urlParams.get('id');
 
-    // UI Elements
     const loadingState = document.getElementById('loading-state');
     const errorState = document.getElementById('error-state');
     const successState = document.getElementById('success-state');
     const errorMessage = document.getElementById('error-message');
 
-    // Payment Details
     const donationAmount = document.getElementById('donation-amount');
     const projectName = document.getElementById('project-name');
     const paymentDate = document.getElementById('payment-date');
     const transactionId = document.getElementById('transaction-id');
 
-    // Project Card
     const projectCard = document.getElementById('project-card');
     const projectImage = document.getElementById('project-image');
     const projectTitleCard = document.getElementById('project-title-card');
@@ -26,7 +23,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     try {
-        // 1. Obtener detalles del pago
         const paymentResponse = await fetch(`/api/gateway/payments/${paymentId}`);
         const paymentData = await paymentResponse.json();
 
@@ -36,14 +32,12 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         const payment = paymentData.data;
 
-        // 2. Confirmar el pago automáticamente
         const confirmResponse = await fetch(`/api/gateway/payments/${paymentId}/confirm`, {
             method: 'POST'
         });
         const confirmData = await confirmResponse.json();
 
         if (!confirmData.success) {
-            // Si ya está confirmado, no es un error
             if (payment.status === 'CONFIRMED') {
                 console.log('Pago ya confirmado previamente');
             } else {
@@ -51,7 +45,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
         }
 
-        // 3. Mostrar página de éxito
         showSuccess(payment, paymentId);
 
     } catch (error) {
@@ -63,7 +56,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         loadingState.style.display = 'none';
         successState.style.display = 'block';
 
-        // Actualizar detalles del pago
         donationAmount.textContent = `Bs. ${parseFloat(payment.amount).toFixed(2)}`;
 
         if (payment.projectTitle) {
@@ -71,7 +63,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             projectTitleCard.textContent = payment.projectTitle;
         }
 
-        // Fecha actual
         const now = new Date();
         paymentDate.textContent = now.toLocaleDateString('es-BO', {
             year: 'numeric',
@@ -83,17 +74,13 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         transactionId.textContent = id.substring(0, 8).toUpperCase();
 
-        // Mostrar tarjeta del proyecto si hay imagen
         if (payment.projectImage) {
             projectImage.src = payment.projectImage;
             projectCard.style.display = 'flex';
         }
 
-        // Configurar botón de ver proyecto (necesitamos el slug)
-        // Por ahora redirigimos al inicio, pero podríamos obtener el slug del proyecto
         viewProjectBtn.href = '/';
 
-        // Configurar botones de compartir
         setupShareButtons(payment);
     }
 

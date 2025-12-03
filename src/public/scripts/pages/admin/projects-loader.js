@@ -155,14 +155,170 @@
                 window.location.href = `projectMod.html?id=${projectId}`;
                 break;
             case 'approve':
-                console.log('Approve project:', projectId);
+                currentProjectId = projectId;
+                approveConfirmModal?.showPopover();
                 break;
             case 'observe':
-                console.log('Observe project:', projectId);
+                currentProjectId = projectId;
+                observeReasonTextarea.value = '';
+                observeReasonError.textContent = '';
+                observeConfirmModal?.showPopover();
                 break;
             case 'reject':
-                console.log('Reject project:', projectId);
+                currentProjectId = projectId;
+                rejectReasonTextarea.value = '';
+                rejectReasonError.textContent = '';
+                rejectConfirmModal?.showPopover();
                 break;
+        }
+    });
+
+    const approveConfirmModal = document.getElementById('approve-confirm-modal');
+    const confirmApproveBtn = document.getElementById('confirm-approve-btn');
+    let currentProjectId = null;
+
+    confirmApproveBtn?.addEventListener('click', async () => {
+        if (!currentProjectId) return;
+
+        approveConfirmModal?.hidePopover();
+
+        try {
+            const token = localStorage.getItem('token');
+            const response = await fetch(`${API_BASE_URL}/projects/${currentProjectId}/status`, {
+                method: 'PUT',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ status: 'published' })
+            });
+
+            const result = await response.json();
+
+            if (!response.ok) {
+                throw new Error(result.message || 'Error al aprobar proyecto');
+            }
+
+            if (typeof Notification !== 'undefined') {
+                Notification.success('Proyecto aprobado exitosamente');
+            }
+
+            loadProjects();
+        } catch (error) {
+            console.error(error);
+            if (typeof Notification !== 'undefined') {
+                Notification.error(error.message || 'Error al aprobar el proyecto');
+            }
+        } finally {
+            currentProjectId = null;
+        }
+    });
+
+    const observeConfirmModal = document.getElementById('observe-confirm-modal');
+    const confirmObserveBtn = document.getElementById('confirm-observe-btn');
+    const observeReasonTextarea = document.getElementById('observe-reason');
+    const observeReasonError = document.getElementById('observe_reason_error');
+
+    confirmObserveBtn?.addEventListener('click', async () => {
+        const reason = observeReasonTextarea.value.trim();
+
+        if (!reason) {
+            observeReasonError.textContent = 'Debes ingresar un motivo';
+            return;
+        }
+
+        if (reason.length < 10) {
+            observeReasonError.textContent = 'El motivo debe tener al menos 10 caracteres';
+            return;
+        }
+
+        if (!currentProjectId) return;
+
+        observeConfirmModal?.hidePopover();
+
+        try {
+            const token = localStorage.getItem('token');
+            const response = await fetch(`${API_BASE_URL}/projects/${currentProjectId}/status`, {
+                method: 'PUT',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ status: 'observed', reason })
+            });
+
+            const result = await response.json();
+
+            if (!response.ok) {
+                throw new Error(result.message || 'Error al observar proyecto');
+            }
+
+            if (typeof Notification !== 'undefined') {
+                Notification.success('Observaciones enviadas exitosamente');
+            }
+
+            loadProjects();
+        } catch (error) {
+            console.error(error);
+            if (typeof Notification !== 'undefined') {
+                Notification.error(error.message || 'Error al enviar observaciones');
+            }
+        } finally {
+            currentProjectId = null;
+        }
+    });
+
+    const rejectConfirmModal = document.getElementById('reject-confirm-modal');
+    const confirmRejectBtn = document.getElementById('confirm-reject-btn');
+    const rejectReasonTextarea = document.getElementById('reject-reason');
+    const rejectReasonError = document.getElementById('reject_reason_error');
+
+    confirmRejectBtn?.addEventListener('click', async () => {
+        const reason = rejectReasonTextarea.value.trim();
+
+        if (!reason) {
+            rejectReasonError.textContent = 'Debes ingresar un motivo';
+            return;
+        }
+
+        if (reason.length < 10) {
+            rejectReasonError.textContent = 'El motivo debe tener al menos 10 caracteres';
+            return;
+        }
+
+        if (!currentProjectId) return;
+
+        rejectConfirmModal?.hidePopover();
+
+        try {
+            const token = localStorage.getItem('token');
+            const response = await fetch(`${API_BASE_URL}/projects/${currentProjectId}/status`, {
+                method: 'PUT',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ status: 'rejected', reason })
+            });
+
+            const result = await response.json();
+
+            if (!response.ok) {
+                throw new Error(result.message || 'Error al rechazar proyecto');
+            }
+
+            if (typeof Notification !== 'undefined') {
+                Notification.success('Proyecto rechazado');
+            }
+
+            loadProjects();
+        } catch (error) {
+            console.error(error);
+            if (typeof Notification !== 'undefined') {
+                Notification.error(error.message || 'Error al rechazar el proyecto');
+            }
+        } finally {
+            currentProjectId = null;
         }
     });
 

@@ -188,6 +188,82 @@
                 </main>
             </section>
         </main>
+        <div class="modal modal-small" id="approve-confirm-modal" popover="manual">
+            <div class="modal-header">
+                <h2 class="modal-title">Confirmar Aprobación</h2>
+                <button class="modal-close" commandfor="approve-confirm-modal" command="hide-popover">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>¿Estás seguro de aprobar este proyecto? Se publicará inmediatamente y será visible para todos los
+                    usuarios.</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" commandfor="approve-confirm-modal"
+                    command="hide-popover">Cancelar</button>
+                <button class="btn btn-success" id="confirm-approve-btn">Aprobar Proyecto</button>
+            </div>
+        </div>
+
+        <div class="modal modal-medium" id="observe-confirm-modal" popover="manual">
+            <div class="modal-header">
+                <h2 class="modal-title">Observar Proyecto</h2>
+                <button class="modal-close" commandfor="observe-confirm-modal" command="hide-popover">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p style="margin-bottom: var(--spMD); color: var(--text-secondary);">
+                    Indica las correcciones o mejoras necesarias para que el creador pueda revisarlas:
+                </p>
+                <div class="form-group">
+                    <label for="observe-reason" class="form-label" style="margin-bottom: var(--spSM);">Motivo u
+                        Observaciones *</label>
+                    <textarea id="observe-reason" class="form-input" rows="5"
+                        placeholder="Ej: La descripción del proyecto debe ser más detallada. Por favor incluye información sobre el impacto esperado y los beneficiarios..."
+                        style="resize: vertical; min-height: 120px;"></textarea>
+                    <div class="error_msg" id="observe_reason_error"></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" commandfor="observe-confirm-modal"
+                    command="hide-popover">Cancelar</button>
+                <button class="btn btn-warning" id="confirm-observe-btn">
+                    <span class="material-symbols-outlined">visibility</span>
+                    Enviar Observaciones
+                </button>
+            </div>
+        </div>
+
+        <div class="modal modal-medium" id="reject-confirm-modal" popover="manual">
+            <div class="modal-header">
+                <h2 class="modal-title">Rechazar Proyecto</h2>
+                <button class="modal-close" commandfor="reject-confirm-modal" command="hide-popover">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p style="margin-bottom: var(--spMD); color: var(--text-secondary);">
+                    Explica claramente el motivo del rechazo. Esta acción es definitiva:
+                </p>
+                <div class="form-group">
+                    <label for="reject-reason" class="form-label" style="margin-bottom: var(--spSM);">Motivo del Rechazo
+                        *</label>
+                    <textarea id="reject-reason" class="form-input" rows="5"
+                        placeholder="Ej: El proyecto no cumple con los requisitos mínimos establecidos en nuestras políticas..."
+                        style="resize: vertical; min-height: 120px;"></textarea>
+                    <div class="error_msg" id="reject_reason_error"></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" commandfor="reject-confirm-modal" command="hide-popover">Cancelar</button>
+                <button class="btn btn-danger" id="confirm-reject-btn">
+                    <span class="material-symbols-outlined">cancel</span>
+                    Rechazar Proyecto
+                </button>
+            </div>
+        </div>
 
         <div class="modal modal-small" id="logout-modal" popover="manual">
             <div class="modal-header">

@@ -1,9 +1,6 @@
-// Elementos del DOM
 const projectsGrid = document.getElementById('projects-grid');
 const loadingContainer = document.getElementById('loading');
 const emptyState = document.getElementById('empty-state');
-
-// Cargar favoritos
 async function loadFavorites() {
     try {
         const token = localStorage.getItem('token');
@@ -28,7 +25,6 @@ async function loadFavorites() {
     }
 }
 
-// Renderizar proyectos
 function renderProjects(projects) {
     if (projects.length === 0) {
         emptyState.style.display = 'flex';
@@ -42,11 +38,9 @@ function renderProjects(projects) {
         projectsGrid.appendChild(card);
     });
 
-    // Attach listeners para favoritos
     attachFavoriteListeners();
 }
 
-// Crear card de proyecto
 function createProjectCard(project) {
     const card = document.createElement('div');
     card.className = 'project-card';
@@ -60,7 +54,7 @@ function createProjectCard(project) {
             <img src="${project.cover_image_url || '/images/placeholder-project.jpg'}" 
                  alt="${project.title}" 
                  class="project-image">
-            <button class="project-fav" data-project-id="${project.id}" aria-label="Quitar de favoritos">
+            <button class="project-fav" data-project-id="${project.id}" aria-label="Quitar de favoritos" active>
                 <span class="material-symbols-outlined filled">favorite</span>
             </button>
         </div>
@@ -96,7 +90,6 @@ function createProjectCard(project) {
         </div>
     `;
 
-    // Click en card para ir a detalle
     card.addEventListener('click', (e) => {
         if (!e.target.closest('.project-fav')) {
             window.location.href = `projectDetail.html?slug=${project.slug}`;
@@ -106,7 +99,6 @@ function createProjectCard(project) {
     return card;
 }
 
-// Calcular días restantes
 function calculateDaysLeft(endDate) {
     const end = new Date(endDate);
     const now = new Date();
@@ -115,7 +107,6 @@ function calculateDaysLeft(endDate) {
     return days > 0 ? days : 0;
 }
 
-// Manejar clicks en favoritos
 function attachFavoriteListeners() {
     const favoriteButtons = document.querySelectorAll('.project-fav');
 
@@ -129,7 +120,6 @@ function attachFavoriteListeners() {
     });
 }
 
-// Toggle de favorito
 async function toggleFavorite(projectId, button) {
     try {
         const token = localStorage.getItem('token');
@@ -144,14 +134,12 @@ async function toggleFavorite(projectId, button) {
         const data = await response.json();
 
         if (data.success) {
-            // Si se removió de favoritos, quitar del DOM
             if (!data.data.is_favorited) {
                 const card = button.closest('.project-card');
                 card.style.opacity = '0';
                 card.style.transform = 'scale(0.9)';
                 setTimeout(() => {
                     card.remove();
-                    // Verificar si quedaron proyectos
                     const remainingCards = projectsGrid.querySelectorAll('.project-card');
                     if (remainingCards.length === 0) {
                         emptyState.style.display = 'flex';
@@ -167,7 +155,6 @@ async function toggleFavorite(projectId, button) {
     }
 }
 
-// Mostrar error
 function showError(message) {
     projectsGrid.innerHTML = `
         <div class="error-state">
@@ -177,7 +164,6 @@ function showError(message) {
     `;
 }
 
-// Inicialización
 document.addEventListener('DOMContentLoaded', () => {
     const token = localStorage.getItem('token');
     if (!token) {

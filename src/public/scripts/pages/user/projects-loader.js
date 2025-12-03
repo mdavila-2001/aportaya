@@ -1,20 +1,15 @@
-// User Projects Loader - Adaptado para usuario autenticado
-
 const API_BASE_URL = '/api/projects';
 let currentCategory = 'all';
 let currentSearch = '';
 
-// Crear tarjeta de proyecto (Reutilizable)
 function createProjectCard(project) {
     const card = document.createElement('article');
     card.className = 'project-card';
 
-    // Determinar icono de favorito
     const favoriteIcon = project.is_favorite ? 'favorite' : 'favorite_border';
     const favoriteLabel = project.is_favorite ? 'Quitar de favoritos' : 'Agregar a favoritos';
     const favoriteBtnClass = project.is_favorite ? 'is-favorite' : '';
 
-    // Calcular porcentaje
     const percentage = Math.round((project.raised_amount / project.goal_amount) * 100);
     const progressWidth = Math.min(percentage, 100);
 
@@ -55,7 +50,6 @@ function createProjectCard(project) {
     return card;
 }
 
-// Renderizar lista de proyectos
 function renderProjects(projects) {
     const projectsGrid = document.querySelector('.projects-grid');
 
@@ -84,14 +78,12 @@ function renderProjects(projects) {
     attachFavoriteListeners();
 }
 
-
-// Manejar clicks en favoritos
 function attachFavoriteListeners() {
     const favoriteButtons = document.querySelectorAll('.project-fav');
 
     favoriteButtons.forEach(button => {
         button.addEventListener('click', async (e) => {
-            e.stopPropagation(); // Evitar navegación a detalle
+            e.stopPropagation();
             const projectId = button.dataset.projectId;
 
             await toggleFavorite(projectId, button);
@@ -99,7 +91,6 @@ function attachFavoriteListeners() {
     });
 }
 
-// Toggle de favorito con backend
 async function toggleFavorite(projectId, button) {
     try {
         const token = localStorage.getItem('token');
@@ -114,7 +105,6 @@ async function toggleFavorite(projectId, button) {
         const data = await response.json();
 
         if (data.success) {
-            // Recargar la página para reflejar el cambio
             window.location.reload();
         } else {
             console.error('Error:', data.message);
@@ -126,19 +116,14 @@ async function toggleFavorite(projectId, button) {
     }
 }
 
-
-// Renderizar chips de categorías
 function renderCategories(categories) {
     const categoryChips = document.querySelector('.category-chips');
     if (!categoryChips) return;
 
-    // Mantener el chip "Todos" y limpiar el resto si es necesario, 
-    // o reconstruir todo. Aquí reconstruimos para asegurar orden.
     categoryChips.innerHTML = '';
 
-    // Chip "Todos"
     const allChip = createCategoryChip({ id: 'all', name: 'Todos' });
-    if (currentCategory === 'all') allChip.classList.add('active'); // Usamos clase .active o atributo
+    if (currentCategory === 'all') allChip.classList.add('active');
     categoryChips.appendChild(allChip);
 
     categories.forEach(category => {
@@ -151,18 +136,14 @@ function renderCategories(categories) {
 function createCategoryChip(category) {
     const chip = document.createElement('button');
     chip.type = 'button';
-    // Usamos las clases del sistema de diseño: chip chip-default
-    // Si está activo, se le puede añadir una clase extra si el CSS lo soporta, o cambiar estilo
     chip.className = `chip chip-default ${currentCategory == category.id ? 'chip-active' : ''}`;
     chip.dataset.categoryId = category.id;
     chip.textContent = category.name;
 
     chip.addEventListener('click', () => {
-        // Actualizar estado visual
         document.querySelectorAll('.category-chips .chip').forEach(c => c.classList.remove('chip-active'));
         chip.classList.add('chip-active');
 
-        // Actualizar filtro y recargar
         currentCategory = category.id;
         fetchProjects();
     });
@@ -170,7 +151,6 @@ function createCategoryChip(category) {
     return chip;
 }
 
-// Función principal para obtener proyectos
 async function fetchProjects() {
     try {
         const token = localStorage.getItem('token');
@@ -181,11 +161,6 @@ async function fetchProjects() {
 
         const params = new URLSearchParams();
         if (currentSearch) params.append('searchBy', currentSearch);
-
-        // El backend espera un objeto JSON en 'filterBy' para filtros complejos
-        // O podemos adaptar el backend. Asumamos que el backend recibe query params directos o filterBy
-        // Revisando projectController: const { searchBy, filterBy } = req.query;
-        // const filters = filterBy ? JSON.parse(filterBy) : null;
 
         if (currentCategory && currentCategory !== 'all') {
             const filterObj = { category_id: currentCategory };
@@ -215,8 +190,6 @@ async function fetchProjects() {
 
         renderProjects(projects);
 
-        // Renderizar categorías solo si es la primera carga o si no están renderizadas
-        // Para evitar parpadeos, podemos verificar si ya hay chips (excepto "Todos")
         const chipsContainer = document.querySelector('.category-chips');
         if (chipsContainer && chipsContainer.children.length <= 1 && extraData.categories) {
             renderCategories(extraData.categories);
@@ -231,7 +204,6 @@ async function fetchProjects() {
     }
 }
 
-// Configurar búsqueda
 function setupSearch() {
     const searchInput = document.getElementById('search-projects');
     let debounceTimer;

@@ -1,5 +1,3 @@
-// Public Projects Loader
-
 const API_BASE_URL = '/api/projects';
 let currentCategory = 'all';
 let currentSearch = '';
@@ -84,15 +82,11 @@ function attachFavoriteListeners() {
     favoriteButtons.forEach(button => {
         button.addEventListener('click', (e) => {
             e.stopPropagation();
-            // En vista pública, tal vez redirigir a login si intenta dar fav?
-            // Por ahora mantenemos comportamiento visual o alertamos
             const token = localStorage.getItem('token');
             if (!token) {
                 window.location.href = '../auth/login.html';
                 return;
             }
-
-            // Si hay token, lógica visual (o llamar API si quisiéramos)
             const icon = button.querySelector('.material-symbols-outlined');
             if (icon.textContent === 'favorite_border') {
                 icon.textContent = 'favorite';
@@ -112,15 +106,11 @@ function renderCategories(categories) {
 
     categoryChips.innerHTML = '';
 
-    // Chip "Todos"
     const allChip = createCategoryChip({ id: 'all', name: 'Todos' });
-    if (currentCategory === 'all') allChip.classList.add('active'); // O chip-active según CSS
-    // Nota: en projects.html original usaban data-category, aquí normalizamos
     categoryChips.appendChild(allChip);
 
     categories.forEach(category => {
         const chip = createCategoryChip(category);
-        if (currentCategory == category.id) chip.classList.add('active');
         categoryChips.appendChild(chip);
     });
 }
@@ -128,17 +118,18 @@ function renderCategories(categories) {
 function createCategoryChip(category) {
     const chip = document.createElement('button');
     chip.type = 'button';
-    // Asumiendo clases estándar
-    chip.className = `chip chip-default ${currentCategory == category.id ? 'chip-active' : ''}`;
+    chip.className = `chip ${currentCategory == category.id ? 'chip-active' : ''}`;
     chip.dataset.categoryId = category.id;
     chip.textContent = category.name;
 
     chip.addEventListener('click', () => {
-        // Actualizar visualmente
+        console.log('Clicked category:', category.id, category.name);
+
         document.querySelectorAll('.category-chips .chip').forEach(c => c.classList.remove('chip-active'));
         chip.classList.add('chip-active');
 
         currentCategory = category.id;
+        console.log('Current category set to:', currentCategory);
         fetchProjects();
     });
 
@@ -155,7 +146,7 @@ async function fetchProjects() {
         }
 
         if (currentCategory && currentCategory !== 'all') {
-            const filterObj = { categoryId: currentCategory };
+            const filterObj = { category_id: currentCategory };
             params.append('filterBy', JSON.stringify(filterObj));
         }
 
@@ -174,9 +165,7 @@ async function fetchProjects() {
 
         renderProjects(projects);
 
-        // Renderizar categorías si es necesario
-        const chipsContainer = document.querySelector('.category-chips');
-        if (chipsContainer && chipsContainer.children.length <= 1 && extraData.categories) {
+        if (extraData.categories) {
             renderCategories(extraData.categories);
         }
 
@@ -208,7 +197,7 @@ function showErrorMessage() {
 
 function setupSearch() {
     const searchInput = document.getElementById('search-projects');
-    const searchForm = document.querySelector('.sidebar-search'); // Si existe en layout público
+    const searchForm = document.querySelector('.sidebar-search');
     let debounceTimer;
 
     if (searchInput) {

@@ -8,7 +8,7 @@ class DocumentUploader {
             this.fileNameDisplay = fileNameDisplayId;
         }
 
-        this.maxSize = options.maxSize || 10 * 1024 * 1024; // 10MB default
+        this.maxSize = options.maxSize || 10 * 1024 * 1024;
         this.endpoint = options.endpoint || '/api/document';
         this.documentType = options.documentType || 'general';
         this.allowedTypes = options.allowedTypes || ['.pdf', '.doc', '.docx'];
@@ -29,7 +29,6 @@ class DocumentUploader {
         const file = e.target.files[0];
         if (!file) return;
 
-        // Check file extension
         const fileExt = '.' + file.name.split('.').pop().toLowerCase();
         if (!this.allowedTypes.includes(fileExt)) {
             console.error(`Tipo de archivo no permitido. Permitidos: ${this.allowedTypes.join(', ')}`);
@@ -37,14 +36,12 @@ class DocumentUploader {
             return;
         }
 
-        // Check file size
         if (file.size > this.maxSize) {
             console.error(`El archivo excede el tamaño máximo permitido de ${this.maxSize / (1024 * 1024)} MB.`);
             this.input.value = '';
             return;
         }
 
-        // Update file name display
         if (this.fileNameDisplay) {
             this.fileNameDisplay.textContent = file.name;
         }

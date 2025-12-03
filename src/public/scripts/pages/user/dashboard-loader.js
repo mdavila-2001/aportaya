@@ -1,8 +1,5 @@
-// User Dashboard Loader - Simple con un solo endpoint
-
 const API_BASE = '/api/user';
 
-// Cargar todo el dashboard de una vez
 async function loadUserDashboard() {
     try {
         const token = localStorage.getItem('token');
@@ -25,11 +22,9 @@ async function loadUserDashboard() {
         const result = await response.json();
         const data = result.data;
 
-        // Actualizar bienvenida
         document.getElementById('welcome-title').textContent = `¡Hola, ${data.user.name}!`;
         document.getElementById('welcome-subtitle').textContent = 'Bienvenido a tu dashboard';
 
-        // Renderizar secciones
         renderActiveProjects(data.projects || []);
         renderRecentActivity(data.activity || []);
         renderRecommendedProjects(data.recommended || []);
@@ -39,7 +34,6 @@ async function loadUserDashboard() {
     }
 }
 
-// Renderizar proyectos activos
 function renderActiveProjects(projects) {
     const container = document.getElementById('active-projects');
 
@@ -68,13 +62,11 @@ function renderActiveProjects(projects) {
     `).join('');
 }
 
-// Calcular porcentaje
 function calculatePercentage(current, goal) {
     if (!goal || goal === 0) return 0;
     return Math.min(Math.round((current / goal) * 100), 100);
 }
 
-// Renderizar actividad reciente
 function renderRecentActivity(activities) {
     const container = document.getElementById('recent-activity');
 
@@ -96,7 +88,6 @@ function renderRecentActivity(activities) {
     `).join('');
 }
 
-// Formatear tiempo relativo
 function formatTimeAgo(dateString) {
     const date = new Date(dateString);
     const now = new Date();
@@ -108,7 +99,6 @@ function formatTimeAgo(dateString) {
     return `Hace ${Math.floor(diff / 86400)} días`;
 }
 
-// Renderizar proyectos recomendados
 function renderRecommendedProjects(projects) {
     const container = document.getElementById('recommended-projects');
 
@@ -128,7 +118,6 @@ function renderRecommendedProjects(projects) {
     `).join('');
 }
 
-// Inicializar cuando carga la página
 document.addEventListener('DOMContentLoaded', () => {
     loadUserDashboard();
 });

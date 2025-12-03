@@ -1,5 +1,3 @@
-// Validation functions following login/signup pattern
-
 function clearErrorMessages() {
     document.querySelectorAll('.error_msg').forEach(el => el.textContent = '');
 }
@@ -133,7 +131,6 @@ function validateTerms() {
     return true;
 }
 
-// Updated validateStep function
 function validateStepFields(step) {
     clearErrorMessages();
     let isValid = true;

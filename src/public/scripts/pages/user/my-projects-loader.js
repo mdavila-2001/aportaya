@@ -60,16 +60,13 @@
         const card = document.createElement('article');
         card.className = 'project-card';
 
-        // Calcular porcentaje y días restantes
         const percentage = Math.round((project.raised_amount / project.goal_amount) * 100);
         const progressWidth = Math.min(percentage, 100);
 
         const daysLeft = calculateDaysLeft(project.end_date);
         const daysText = daysLeft > 0 ? `${daysLeft} días restantes` : 'Finalizado';
 
-        // Determinar clase y texto del estado
-        const statusInfo = getStatusInfo(project.status); // status viene como nombre (ej: 'Publicado') o ID?
-        // El backend devuelve status_name en 'status'
+        const statusInfo = getStatusInfo(project.status);
 
         card.innerHTML = `
             <div class="project-image-container">
@@ -117,14 +114,6 @@
     }
 
     function getStatusInfo(statusName) {
-        // Mapear nombres de estado a clases y textos
-        // statusName viene del backend (project_status.name)
-        // Asumimos que viene en español o inglés según la DB.
-        // Si viene 'published', 'draft', etc.
-
-        // Revisando repository: s.name as status_name.
-        // Si la tabla project_status tiene nombres en español o inglés.
-        // Asumamos inglés por los constraints ('draft', 'published').
 
         const statusMap = {
             'draft': { text: 'Borrador', className: 'status-draft' },
@@ -135,15 +124,11 @@
             'finished': { text: 'Finalizado', className: 'status-finished' }
         };
 
-        // Normalizar entrada
         const key = Object.keys(statusMap).find(k => k.toLowerCase() === statusName?.toLowerCase()) || 'draft';
 
-        // Si no coincide, devolver tal cual
         return statusMap[key] || { text: statusName, className: 'status-default' };
     }
 
-    // Estilos CSS para los badges (inyectados dinámicamente o deberían ir en CSS)
-    // Agregaremos estilos básicos aquí si no existen
     const style = document.createElement('style');
     style.textContent = `
         .project-status-badge {
@@ -169,7 +154,6 @@
     `;
     document.head.appendChild(style);
 
-    // Inicializar
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', loadMyProjects);
     } else {

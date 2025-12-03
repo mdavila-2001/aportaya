@@ -6,7 +6,6 @@
     let projectImages = [];
     let currentImageIndex = 0;
 
-    // DOM elements
     const projectTitle = document.getElementById('project-title');
     const projectAuthor = document.getElementById('project-author');
     const projectStatus = document.getElementById('project-status');
@@ -24,7 +23,6 @@
     const documentPreview = document.getElementById('document-preview');
     const documentFrame = document.getElementById('document-frame');
 
-    // Get project ID from URL
     const urlParams = new URLSearchParams(window.location.search);
     const projectId = urlParams.get('id');
 
@@ -67,44 +65,34 @@
     }
 
     function renderProject(project) {
-        // Cambiar el título del documento
         document.title = `${project.title} - Moderación`;
 
-        // Títulos
         projectTitle.textContent = project.title;
         contentTitle.textContent = project.title;
 
-        // Autor
         projectAuthor.textContent = project.creator_name || 'Desconocido';
 
-        // Estado
         const statusText = getStatusText(project.approval_status);
         projectStatus.textContent = statusText;
         projectStatus.className = `project-status-badge status-${project.approval_status}`;
 
-        // Fecha
         projectDate.textContent = formatDate(project.created_at);
 
-        // Descripción
         contentDescription.innerHTML = `<p>${escapeHtml(project.description || 'Sin descripción')}</p>`;
 
-        // Métricas
         metricGoal.textContent = `$${parseFloat(project.financial_goal).toLocaleString('es-ES')} USD`;
         metricCategory.textContent = project.category_name || 'Sin categoría';
         metricCategory.classList.add('text-white');
         metricLocation.textContent = project.location || 'No especificada';
         metricLocation.classList.add('text-white');
 
-        // Imágenes
         setupCarousel(project);
 
-        // Documento
         if (project.proof_document_url) {
             documentPreview.style.display = 'block';
             documentFrame.src = project.proof_document_url;
         }
 
-        // Mostrar botones de acción solo si está en revisión
         const actionButtons = document.querySelector('.action-buttons');
         if (actionButtons) {
             if (project.approval_status === 'in_review') {
@@ -114,12 +102,10 @@
             }
         }
 
-        // Historial (placeholder por ahora)
         loadHistory(project.id);
     }
 
     function setupCarousel(project) {
-        // Por ahora solo mostrar la imagen de portada
         projectImages = project.cover_image_url ? [project.cover_image_url] : [];
 
         if (projectImages.length === 0) {
@@ -135,7 +121,6 @@
             carouselCounter.textContent = `${currentImageIndex + 1} / ${projectImages.length}`;
         }
 
-        // Mostrar/ocultar botones si solo hay una imagen
         if (projectImages.length <= 1) {
             carouselPrev.style.display = 'none';
             carouselNext.style.display = 'none';
@@ -153,7 +138,6 @@
     }
 
     async function loadHistory(projectId) {
-        // Placeholder - posteriormente cargar desde el backend
         historyList.innerHTML = '<p class="empty-history">No hay acciones registradas</p>';
     }
 
@@ -185,12 +169,9 @@
         return div.innerHTML;
     }
 
-    // Event listeners
     carouselPrev.addEventListener('click', prevImage);
     carouselNext.addEventListener('click', nextImage);
 
-    // Action buttons (placeholder)
-    // Modal elements
     const actionModal = document.getElementById('action-modal');
     const actionModalTitle = document.getElementById('action-modal-title');
     const actionModalMessage = document.getElementById('action-modal-message');
@@ -199,37 +180,72 @@
 
     let currentAction = null;
 
-    // Action buttons
+    const approveConfirmModal = document.getElementById('approve-confirm-modal');
+    const confirmApproveBtn = document.getElementById('confirm-approve-btn');
+
     document.getElementById('btn-approve')?.addEventListener('click', () => {
-        if (confirm('¿Estás seguro de aprobar este proyecto? Se publicará inmediatamente.')) {
-            updateProjectStatus('published');
-        }
+        approveConfirmModal?.showPopover();
     });
+
+    confirmApproveBtn?.addEventListener('click', () => {
+        approveConfirmModal?.hidePopover();
+        updateProjectStatus('published');
+    });
+
+    const observeConfirmModal = document.getElementById('observe-confirm-modal');
+    const confirmObserveBtn = document.getElementById('confirm-observe-btn');
+    const observeReasonTextarea = document.getElementById('observe-reason');
+    const observeReasonError = document.getElementById('observe_reason_error');
 
     document.getElementById('btn-observe')?.addEventListener('click', () => {
-        currentAction = 'observed';
-        actionModalTitle.textContent = 'Observar Proyecto';
-        actionModalMessage.textContent = 'Indica las correcciones necesarias:';
-        actionReason.value = '';
-        actionModal.showPopover();
+        observeReasonTextarea.value = '';
+        observeReasonError.textContent = '';
+        observeConfirmModal?.showPopover();
     });
 
-    document.getElementById('btn-reject')?.addEventListener('click', () => {
-        currentAction = 'rejected';
-        actionModalTitle.textContent = 'Rechazar Proyecto';
-        actionModalMessage.textContent = 'Indica el motivo del rechazo:';
-        actionReason.value = '';
-        actionModal.showPopover();
-    });
+    confirmObserveBtn?.addEventListener('click', () => {
+        const reason = observeReasonTextarea.value.trim();
 
-    confirmActionBtn?.addEventListener('click', () => {
-        const reason = actionReason.value.trim();
         if (!reason) {
-            Notification.error('Debes ingresar un motivo');
+            observeReasonError.textContent = 'Debes ingresar un motivo';
             return;
         }
-        updateProjectStatus(currentAction, reason);
-        actionModal.hidePopover();
+
+        if (reason.length < 10) {
+            observeReasonError.textContent = 'El motivo debe tener al menos 10 caracteres';
+            return;
+        }
+
+        observeConfirmModal?.hidePopover();
+        updateProjectStatus('observed', reason);
+    });
+
+    const rejectConfirmModal = document.getElementById('reject-confirm-modal');
+    const confirmRejectBtn = document.getElementById('confirm-reject-btn');
+    const rejectReasonTextarea = document.getElementById('reject-reason');
+    const rejectReasonError = document.getElementById('reject_reason_error');
+
+    document.getElementById('btn-reject')?.addEventListener('click', () => {
+        rejectReasonTextarea.value = '';
+        rejectReasonError.textContent = '';
+        rejectConfirmModal?.showPopover();
+    });
+
+    confirmRejectBtn?.addEventListener('click', () => {
+        const reason = rejectReasonTextarea.value.trim();
+
+        if (!reason) {
+            rejectReasonError.textContent = 'Debes ingresar un motivo';
+            return;
+        }
+
+        if (reason.length < 10) {
+            rejectReasonError.textContent = 'El motivo debe tener al menos 10 caracteres';
+            return;
+        }
+
+        rejectConfirmModal?.hidePopover();
+        updateProjectStatus('rejected', reason);
     });
 
     async function updateProjectStatus(status, reason = null) {
@@ -258,7 +274,6 @@
         }
     }
 
-    // Load project on page load
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', loadProject);
     } else {

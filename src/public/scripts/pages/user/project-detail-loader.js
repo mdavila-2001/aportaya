@@ -1,6 +1,5 @@
 const API_BASE_URL = '/api/projects';
 
-// Obtener slug de la URL
 const urlParams = new URLSearchParams(window.location.search);
 const projectSlug = urlParams.get('slug');
 
@@ -8,7 +7,6 @@ if (!projectSlug) {
     window.location.href = 'projects.html';
 }
 
-// Función para calcular días restantes
 function calculateDaysRemaining(endDate) {
     const today = new Date();
     const end = new Date(endDate);
@@ -17,7 +15,6 @@ function calculateDaysRemaining(endDate) {
     return diffDays > 0 ? diffDays : 0;
 }
 
-// Función para formatear fecha relativa
 function formatRelativeTime(date) {
     const now = new Date();
     const past = new Date(date);
@@ -31,7 +28,6 @@ function formatRelativeTime(date) {
     return `Hace ${Math.floor(diffDays / 30)} meses`;
 }
 
-// Renderizar proyecto
 function renderProject(project, isOwner) {
     document.getElementById('project-title').textContent = project.title;
     document.getElementById('breadcrumb-title').textContent = project.title;
@@ -255,10 +251,8 @@ async function submitComment() {
                 </div>
             `;
 
-            // Insertar al inicio de la lista
             commentsList.insertAdjacentHTML('afterbegin', commentHTML);
 
-            // Actualizar contador
             const currentCount = parseInt(commentsCount.textContent);
             commentsCount.textContent = currentCount + 1;
 
@@ -269,7 +263,6 @@ async function submitComment() {
         console.error('Error enviando comentario:', error);
         alert('Error al enviar el comentario. Por favor intenta de nuevo.');
     } finally {
-        // Rehabilitar botón
         submitButton.disabled = false;
         submitButton.textContent = 'Comentar';
     }
@@ -283,11 +276,9 @@ function setupTabs() {
         link.addEventListener('click', () => {
             const targetTab = link.dataset.tab;
 
-            // Remover active de todos
             tabLinks.forEach(l => l.classList.remove('active'));
             contentSections.forEach(s => s.classList.remove('active'));
 
-            // Activar seleccionado
             link.classList.add('active');
             document.getElementById(`${targetTab}-content`).classList.add('active');
         });

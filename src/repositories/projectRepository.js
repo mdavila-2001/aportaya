@@ -256,14 +256,12 @@ const getProjectUpdates = async (projectId) => {
 const createComment = async (projectId, userId, content) => {
     const client = await dbPool.connect();
     try {
-        // Llamar a la función de BD para crear el comentario
         const createQuery = `
             SELECT social.create_comment($1, $2, $3) as comment_id;
         `;
         const createResult = await client.query(createQuery, [projectId, userId, content]);
         const commentId = createResult.rows[0].comment_id;
 
-        // Obtener el comentario creado con información del autor
         const getQuery = `
             SELECT 
                 c.id,
