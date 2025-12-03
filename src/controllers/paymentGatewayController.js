@@ -161,7 +161,7 @@ const generateQR = async (req, res) => {
         }
 
         const baseUrl = process.env.PUBLIC_URL || `${req.protocol}://${req.get('host')}`;
-        const paymentUrl = `${baseUrl}/pages/payment/pay.html?id=${id}`;
+        const paymentUrl = `${baseUrl}/pages/payment/success.html?id=${id}`;
         const qrBuffer = await QRCode.toBuffer(paymentUrl, {
             type: 'png',
             width: 300,

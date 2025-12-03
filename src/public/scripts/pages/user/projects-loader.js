@@ -16,7 +16,7 @@ function createProjectCard(project) {
     // Calcular porcentaje
     const percentage = Math.round((project.raised_amount / project.goal_amount) * 100);
     const progressWidth = Math.min(percentage, 100);
-    
+
     card.style.cursor = 'pointer';
     card.addEventListener('click', (e) => {
         if (!e.target.closest('.project-fav')) {
@@ -229,17 +229,12 @@ function setupSearch() {
     }
 }
 
-// Inicialización
 document.addEventListener('DOMContentLoaded', () => {
-    // Verificar token antes de nada
     const token = localStorage.getItem('token');
     if (!token) {
         window.location.href = '../../auth/login.html';
         return;
     }
-
-    // Cargar nombre de usuario en header (opcional, si no lo hace otro script)
-    // loadUserInfo(); 
 
     setupSearch();
     fetchProjects();

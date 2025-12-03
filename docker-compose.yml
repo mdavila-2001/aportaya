@@ -39,7 +39,7 @@ services:
       PORT: 3001
       JWT_SECRET: ${JWT_SECRET}
       UPLOADS_PATH: /app/uploads
-      PUBLIC_URL: https://s6vj6xlw-3001.brs.devtunnels.ms/
+      PUBLIC_URL: https://4nz2jqk7-3001.brs.devtunnels.ms
     volumes:
       - ./src:/app
       - ./uploads:/app/uploads

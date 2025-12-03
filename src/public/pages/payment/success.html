@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pago Confirmado - AportaYa</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="/styles/styles.css">
+    <link rel="stylesheet" href="/styles/pages/payment/success.css">
+</head>
+
+<body>
+    <div class="success-container">
+        <!-- Loading State -->
+        <div id="loading-state" class="loading-wrapper">
+            <div class="spinner"></div>
+            <p>Confirmando tu pago...</p>
+        </div>
+
+        <!-- Error State -->
+        <div id="error-state" class="error-wrapper" style="display: none;">
+            <div class="error-icon">
+                <span class="material-symbols-outlined">error</span>
+            </div>
+            <h1>Error al procesar</h1>
+            <p id="error-message">Hubo un problema al confirmar tu pago.</p>
+            <a href="/" class="btn-primary">Volver al inicio</a>
+        </div>
+
+        <!-- Success State -->
+        <div id="success-state" class="success-wrapper" style="display: none;">
+            <!-- Success Animation -->
+            <div class="success-animation">
+                <div class="checkmark-circle">
+                    <div class="checkmark"></div>
+                </div>
+            </div>
+
+            <h1 class="success-title">¡Pago Confirmado!</h1>
+            <p class="success-subtitle">Gracias por tu generosa contribución</p>
+
+            <!-- Payment Summary -->
+            <div class="payment-summary">
+                <div class="summary-row">
+                    <span class="label">Monto donado</span>
+                    <span class="value amount" id="donation-amount">Bs. 0.00</span>
+                </div>
+                <div class="summary-divider"></div>
+                <div class="summary-row">
+                    <span class="label">Proyecto apoyado</span>
+                    <span class="value" id="project-name">Cargando...</span>
+                </div>
+                <div class="summary-row">
+                    <span class="label">Fecha</span>
+                    <span class="value" id="payment-date">-</span>
+                </div>
+                <div class="summary-row">
+                    <span class="label">ID de transacción</span>
+                    <span class="value transaction-id" id="transaction-id">-</span>
+                </div>
+            </div>
+
+            <!-- Project Preview -->
+            <div class="project-card" id="project-card" style="display: none;">
+                <img id="project-image" src="" alt="Proyecto" class="project-image">
+                <div class="project-info">
+                    <h3 id="project-title-card">Proyecto</h3>
+                    <p class="project-description">Tu aporte hace la diferencia</p>
+                </div>
+            </div>
+
+            <!-- Actions -->
+            <div class="actions">
+                <a href="#" id="view-project-btn" class="btn-primary">
+                    <span class="material-symbols-outlined">visibility</span>
+                    Ver Proyecto
+                </a>
+                <a href="/" class="btn-secondary">
+                    <span class="material-symbols-outlined">home</span>
+                    Volver al Inicio
+                </a>
+            </div>
+
+            <!-- Share Section -->
+            <div class="share-section">
+                <p class="share-label">Comparte tu apoyo</p>
+                <div class="share-buttons">
+                    <button class="share-btn" id="share-whatsapp">
+                        <span class="material-symbols-outlined">chat</span>
+                    </button>
+                    <button class="share-btn" id="share-facebook">
+                        <span class="material-symbols-outlined">share</span>
+                    </button>
+                    <button class="share-btn" id="share-twitter">
+                        <span class="material-symbols-outlined">send</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Footer Note -->
+            <div class="footer-note">
+                <span class="material-symbols-outlined">verified_user</span>
+                <p>Tu donación ha sido registrada de forma segura. Recibirás un comprobante por correo electrónico.</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="/scripts/pages/payment/success.js"></script>
+</body>
+
+</html>

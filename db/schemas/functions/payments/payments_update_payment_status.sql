@@ -24,12 +24,10 @@ BEGIN
     payment_status = p_status
   WHERE id = p_donation_id;
 
-  -- Si el estado es completed, actualizar raised_amount del proyecto
-  IF p_status = 'completed' THEN
-    UPDATE projects.project
-    SET raised_amount = raised_amount + v_donation_amount
-    WHERE id = v_project_id;
-  END IF;
+  -- NOTA: El raised_amount se actualiza automáticamente por el trigger
+  -- trg_update_raised_amount en payments.donation
+  -- No es necesario actualizarlo manualmente aquí
+
 
   -- Registrar transacción si se provee payload
   IF p_payload IS NOT NULL THEN
