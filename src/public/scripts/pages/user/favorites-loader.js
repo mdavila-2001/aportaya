@@ -55,7 +55,7 @@ function createProjectCard(project) {
                  alt="${project.title}" 
                  class="project-image">
             <button class="project-fav" data-project-id="${project.id}" aria-label="Quitar de favoritos" active>
-                <span class="material-symbols-outlined filled">favorite</span>
+                <span class="material-symbols-outlined">favorite</span>
             </button>
         </div>
         <div class="project-content">

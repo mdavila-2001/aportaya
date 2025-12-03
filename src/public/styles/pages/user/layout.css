@@ -6,6 +6,10 @@
     background: var(--dark-bg);
 }
 
+h1 {
+    color: var(--text-light);
+}
+
 .user-main {
     flex: 1;
     display: flex;

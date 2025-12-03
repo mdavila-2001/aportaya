@@ -129,30 +129,6 @@
         return statusMap[key] || { text: statusName, className: 'status-default' };
     }
 
-    const style = document.createElement('style');
-    style.textContent = `
-        .project-status-badge {
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-            padding: 4px 12px;
-            border-radius: 999px;
-            font-size: 12px;
-            font-weight: 700;
-            color: white;
-            backdrop-filter: blur(4px);
-            z-index: 5;
-        }
-        .status-draft { background-color: rgba(107, 114, 128, 0.9); }
-        .status-review { background-color: rgba(245, 158, 11, 0.9); }
-        .status-observed { background-color: rgba(249, 115, 22, 0.9); }
-        .status-published { background-color: rgba(34, 197, 94, 0.9); }
-        .status-rejected { background-color: rgba(239, 68, 68, 0.9); }
-        .status-finished { background-color: rgba(59, 130, 246, 0.9); }
-        
-        .btn-sm { padding: 4px 12px; font-size: 14px; }
-    `;
-    document.head.appendChild(style);
 
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', loadMyProjects);
