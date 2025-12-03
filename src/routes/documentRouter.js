@@ -5,21 +5,21 @@ const path = require('path');
 const documentController = require('../controllers/documentController');
 
 const uploadsPath = process.env.UPLOADS_PATH || 'uploads';
-const uploadDirectory = path.isAbsolute(uploadsPath) 
-    ? uploadsPath 
+const uploadDirectory = path.isAbsolute(uploadsPath)
+    ? uploadsPath
     : path.join(__dirname, '../../', uploadsPath);
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        
         const documentType = req.body.documentType || req.query.documentType || 'general';
-        let subDir = 'documents';
-        
+        let finalPath;
+
         if (documentType === 'proof') {
-            subDir = 'documents/proof';
+            finalPath = path.join(uploadDirectory, 'documents', 'proof');
+        } else {
+            finalPath = path.join(uploadDirectory, 'documents');
         }
-        
-        const finalPath = path.join(uploadDirectory, subDir);
+
         cb(null, finalPath);
     },
     filename: (req, file, cb) => {
@@ -30,7 +30,6 @@ const storage = multer.diskStorage({
 });
 
 const fileFilter = (req, file, cb) => {
-    
     if (file.mimetype === 'application/pdf') {
         cb(null, true);
     } else {
@@ -38,11 +37,11 @@ const fileFilter = (req, file, cb) => {
     }
 };
 
-const upload = multer({ 
+const upload = multer({
     storage: storage,
     fileFilter: fileFilter,
     limits: {
-        fileSize: 10 * 1024 * 1024 
+        fileSize: 10 * 1024 * 1024
     }
 });
 

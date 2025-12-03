@@ -58,18 +58,6 @@
     function renderCategories(categories) {
         tbody.innerHTML = '';
 
-        if (categories.length === 0) {
-            tbody.innerHTML = `
-                <tr>
-                    <td colspan="4" style="text-align: center; padding: var(--spXL); color: var(--text-light);">
-                        No hay categorías registradas
-                    </td>
-                </tr>
-            `;
-            paginationInfo.textContent = 'Mostrando 0 de 0';
-            return;
-        }
-
         categories.forEach(category => {
             const row = document.createElement('tr');
             row.innerHTML = `
@@ -86,8 +74,6 @@
             `;
             tbody.appendChild(row);
         });
-
-        paginationInfo.textContent = `Mostrando ${categories.length} de ${categories.length}`;
 
 
         attachActionListeners();

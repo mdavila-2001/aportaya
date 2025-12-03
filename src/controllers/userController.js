@@ -1,6 +1,5 @@
 const userRepository = require('../repositories/userRepository');
 
-// GET /api/user/home - Dashboard unificado
 const getUserHome = async (req, res) => {
     try {
         const userId = req.user.id;
@@ -14,7 +13,6 @@ const getUserHome = async (req, res) => {
             });
         }
 
-        // Formatear nombre completo
         const fullName = [
             dashboardData.user.first_name,
             dashboardData.user.middle_name,

@@ -364,6 +364,24 @@
         </div>
         </div>
 
+        <div class="modal modal-small" id="delete-confirm-modal" popover="manual">
+            <div class="modal-header">
+                <h2 class="modal-title">Confirmar Eliminación</h2>
+                <button class="modal-close" commandfor="delete-confirm-modal" command="hide-popover">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p class="delete-confirm-message">
+                    ¿Estás seguro de que deseas eliminar este administrador? Esta acción no se puede deshacer.
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" commandfor="delete-confirm-modal" command="hide-popover">Cancelar</button>
+                <button class="btn btn-danger" id="confirm-delete-btn">Eliminar</button>
+            </div>
+        </div>
+
         <div class="modal modal-small" id="logout-modal" popover="manual">
             <div class="modal-header">
                 <h2 class="modal-title">Cerrar sesión</h2>

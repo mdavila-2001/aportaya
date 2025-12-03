@@ -501,7 +501,6 @@
     font-weight: 500;
 }
 
-/* Checkbox Group */
 .checkbox-group {
     display: flex;
     align-items: flex-start;
@@ -530,7 +529,6 @@
     opacity: 0.8;
 }
 
-/* Sticky Footer */
 .create-footer {
     position: fixed;
     bottom: 0;

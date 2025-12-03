@@ -140,10 +140,11 @@ const createProject = async (projectData, userId) => {
                 $5,  -- p_start_date
                 $6,  -- p_end_date
                 $7,  -- p_category_id
-                $8,  -- p_location (Opcional)
-                $9,  -- p_cover_image_id (Opcional)
-                $10, -- p_video_url (Opcional)
-                $11  -- p_proof_document_id (Opcional)
+                $8,  -- p_summary
+                $9,  -- p_location
+                $10, -- p_cover_image_id
+                $11, -- p_video_url
+                $12  -- p_proof_document_id
             ) as project_id;
         `;
 
@@ -155,6 +156,7 @@ const createProject = async (projectData, userId) => {
             new Date(),
             projectData.endDate,
             projectData.categoryId,
+            projectData.summary || null,
             projectData.location || null,
             projectData.coverImageId || null,
             projectData.videoUrl || null,

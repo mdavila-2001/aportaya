@@ -196,7 +196,8 @@
             'active': 'status-active',
             'pending_verification': 'status-pending',
             'suspended': 'status-inactive',
-            'banned': 'status-cancelled'
+            'banned': 'status-cancelled',
+            'deleted': 'status-inactive'
         };
         return statusMap[status] || 'status-pending';
     }
@@ -206,7 +207,8 @@
             'active': 'Activo',
             'pending_verification': 'Pendiente',
             'suspended': 'Suspendido',
-            'banned': 'Baneado'
+            'banned': 'Baneado',
+            'deleted': 'Inactivo'
         };
         return statusMap[status] || status;
     }

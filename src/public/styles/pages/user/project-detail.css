@@ -39,10 +39,6 @@
     color: #ffffff;
 }
 
-/* ===========================
-   HERO SECTION
-   =========================== */
-
 .hero-image-container {
     position: relative;
     width: 100%;
@@ -61,7 +57,6 @@
     object-fit: cover;
 }
 
-/* Título y Meta */
 .project-title {
     font-size: 1.875rem;
     font-weight: 700;
@@ -175,10 +170,6 @@
     font-size: 0.875rem;
     list-style: none;
 }
-
-/* ===========================
-   COMMENTS SECTION
-   =========================== */
 
 .comments-section,
 .updates-section {
@@ -311,7 +302,6 @@
     margin-top: 0.5rem;
 }
 
-/* Progress Bar */
 .sidebar-card .progress-bar {
     width: 100%;
     background-color: rgba(17, 212, 115, 0.2);
@@ -326,10 +316,6 @@
     border-radius: 9999px;
     transition: width 0.6s ease;
 }
-
-/* ===========================
-   PROJECT STATS
-   =========================== */
 
 .project-stats {
     display: flex;
@@ -358,19 +344,11 @@
     display: block;
 }
 
-/* ===========================
-   DONATE BUTTON
-   =========================== */
-
 .btn-donate {
     font-size: 1rem;
     font-weight: 700;
     padding: 0.75rem 1.25rem;
 }
-
-/* ===========================
-   SIDEBAR ACTIONS
-   =========================== */
 
 .sidebar-actions {
     display: flex;
@@ -404,10 +382,6 @@
     font-size: 0.75rem;
     font-weight: 500;
 }
-
-/* ===========================
-   TOP DONORS
-   =========================== */
 
 .donors-section {
     padding-top: 1rem;
@@ -466,11 +440,7 @@
     flex-shrink: 0;
 }
 
-/* ===========================
-   RESPONSIVE
-   =========================== */
-
-@media (max-width: 640px) {
+@media (max-width: 767px) {
     .project-tabs {
         gap: 1rem;
     }
@@ -488,7 +458,7 @@
     }
 }
 
-@media (max-width: 1023px) {
+@media (max-width: 991px) {
     .project-sidebar {
         order: -1;
     }

@@ -13,7 +13,7 @@
                 return;
             }
 
-            
+
             const params = new URLSearchParams({
                 page: page,
                 limit: 10,
@@ -81,11 +81,11 @@
             <td>
                 <span class="status-badge ${statusClass}">${statusText}</span>
             </td>
-            <td>
+            /* <td>
                 <div class="table-actions">
                     ${getActionButtons(user)}
                 </div>
-            </td>
+            </td> */
         `;
 
         return tr;
@@ -158,7 +158,7 @@
             const result = await response.json();
             showSuccess('Estado del usuario actualizado exitosamente');
 
-            
+
             loadUsers(currentPage, currentFilters);
 
         } catch (error) {
@@ -167,19 +167,8 @@
         }
     }
 
-    function updatePagination(pagination) {
-        const paginationInfo = document.querySelector('.table-pagination-info');
-        if (paginationInfo) {
-            const start = (pagination.page - 1) * pagination.limit + 1;
-            const end = Math.min(start + pagination.limit - 1, pagination.total);
-            paginationInfo.innerHTML = `
-                Mostrando <span>${start}-${end}</span> de <span>${pagination.total}</span>
-            `;
-        }
-    }
-
     function attachEventListeners() {
-        
+
         document.addEventListener('click', async (e) => {
             const actionLink = e.target.closest('[data-action]');
             if (!actionLink) return;
@@ -211,7 +200,7 @@
             }
         });
 
-        
+
         const searchInput = document.querySelector('.table-search input');
         if (searchInput) {
             let searchTimeout;
@@ -251,22 +240,22 @@
     }
 
     function displayHistory(history) {
-        
+
         console.log('Historial:', history);
         alert('Historial del usuario:\n' + JSON.stringify(history, null, 2));
     }
 
     function showSuccess(message) {
-        
+
         console.log('Success:', message);
     }
 
     function showError(message) {
-        
+
         console.error('Error:', message);
     }
 
-    
+
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', () => {
             loadUsers();

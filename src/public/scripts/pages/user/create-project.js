@@ -199,6 +199,7 @@ async function handleSubmit(e) {
 
         const projectData = {
             title: document.getElementById('title').value.trim(),
+            summary: document.getElementById('summary').value.trim(),
             description: document.getElementById('description').value.trim(),
             financialGoal: parseFloat(document.getElementById('financial-goal').value),
             endDate: document.getElementById('end-date').value,

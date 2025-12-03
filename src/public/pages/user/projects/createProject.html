@@ -1,257 +1,254 @@
 <!DOCTYPE html>
 <html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="author" content="Danny Marcelo Dávila Barrancos">
+        <meta name="description" content="Crear Nuevo Proyecto - AportaYa">
+        <link rel="shortcut icon" href="../../../images/favicon.ico" type="image/x-icon">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="author" content="Danny Marcelo Dávila Barrancos">
-    <meta name="description" content="Crear Nuevo Proyecto - AportaYa">
-    <link rel="shortcut icon" href="../../../images/favicon.ico" type="image/x-icon">
+        <link rel="stylesheet" href="../../../styles/styles.css">
+        <link rel="stylesheet" href="../../../styles/fonts.css">
+        <link rel="stylesheet" href="../../../styles/components/buttons.css">
+        <link rel="stylesheet" href="../../../styles/components/notification.css">
+        <link rel="stylesheet" href="../../../styles/components/forms.css">
+        <link rel="stylesheet" href="../../../styles/pages/user/create-project.css">
 
-    <link rel="stylesheet" href="../../../styles/styles.css">
-    <link rel="stylesheet" href="../../../styles/fonts.css">
-    <link rel="stylesheet" href="../../../styles/components/buttons.css">
-    <link rel="stylesheet" href="../../../styles/components/notification.css">
-    <link rel="stylesheet" href="../../../styles/components/forms.css">
-    <link rel="stylesheet" href="../../../styles/pages/user/create-project.css">
+        <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
 
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+        <title>Crear Proyecto - AportaYa</title>
+    </head>
 
-    <title>Crear Proyecto - AportaYa</title>
-</head>
-
-<body>
-    <div class="create-layout">
-        <header class="create-header">
-            <div class="header-container">
-                <div class="header-brand">
-                    <img src="../../../images/aporta-ya-icon.webp" alt="AportaYa" height="24">
-                    <span class="brand-name">AportaYa</span>
+    <body>
+        <div class="create-layout">
+            <header class="create-header">
+                <div class="header-container">
+                    <div class="header-brand">
+                        <img src="../../../images/aporta-ya-icon.webp" alt="AportaYa" height="24">
+                        <span class="brand-name">AportaYa</span>
+                    </div>
+                    <h1 class="header-title">Crear Nuevo Proyecto</h1>
+                    <button class="close-btn" onclick="window.location.href='../dashboard.html'" aria-label="Cerrar">
+                        <span class="material-symbols-outlined">close</span>
+                    </button>
                 </div>
-                <h1 class="header-title">Crear Nuevo Proyecto</h1>
-                <button class="close-btn" onclick="window.location.href='../dashboard.html'" aria-label="Cerrar">
-                    <span class="material-symbols-outlined">close</span>
-                </button>
-            </div>
-        </header>
+            </header>
 
-        <main class="create-main">
-            <div class="create-container">
+            <main class="create-main">
+                <div class="create-container">
 
-                <div class="progress-section">
-                    <div class="progress-steps">
-                        <div class="step-item active" data-step="1">
-                            <span class="step-number">1</span>
-                            <span class="step-label">Información Básica</span>
+                    <div class="progress-section">
+                        <div class="progress-steps">
+                            <div class="step-item active" data-step="1">
+                                <span class="step-number">1</span>
+                                <span class="step-label">Información Básica</span>
+                            </div>
+                            <div class="step-item" data-step="2">
+                                <span class="step-number">2</span>
+                                <span class="step-label">Detalles</span>
+                            </div>
+                            <div class="step-item" data-step="3">
+                                <span class="step-number">3</span>
+                                <span class="step-label">Publicar</span>
+                            </div>
                         </div>
-                        <div class="step-item" data-step="2">
-                            <span class="step-number">2</span>
-                            <span class="step-label">Detalles</span>
-                        </div>
-                        <div class="step-item" data-step="3">
-                            <span class="step-number">3</span>
-                            <span class="step-label">Publicar</span>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progress-fill"></div>
                         </div>
                     </div>
-                    <div class="progress-bar">
-                        <div class="progress-fill" id="progress-fill"></div>
-                    </div>
-                </div>
 
-                <form id="create-project-form">
+                    <form id="create-project-form">
 
-                    <!-- Step 1: Basic Information -->
-                    <div class="form-step active" data-step="1">
-                        <div class="step-card">
-                            <h2 class="step-title">Información Básica del Proyecto</h2>
+                        <!-- Step 1: Basic Information -->
+                        <div class="form-step active" data-step="1">
+                            <div class="step-card">
+                                <h2 class="step-title">Información Básica del Proyecto</h2>
 
-                            <div class="form-grid">
-                                <div class="form-group full-width">
-                                    <label for="title" class="form-label required">Título del Proyecto</label>
-                                    <input type="text" id="title" class="form-input"
-                                        placeholder="Ej: Plataforma educativa para niños" required maxlength="100">
-                                    <div class="error_msg" id="title_error_msg"></div>
-                                    <span class="form-hint">Máximo 100 caracteres</span>
-                                </div>
-
-                                <div class="form-group full-width">
-                                    <label for="summary" class="form-label required">Descripción Corta</label>
-                                    <input type="text" id="summary" class="form-input"
-                                        placeholder="Un resumen conciso que capture la esencia de tu proyecto" required
-                                        maxlength="200">
-                                    <span class="form-hint">Este texto aparecerá en las tarjetas de proyecto</span>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="financial-goal" class="form-label required">Monto Meta (Bs.)</label>
-                                    <div class="input-with-prefix">
-                                        <span class="input-prefix">Bs.</span>
-                                        <input type="number" id="financial-goal" class="form-input" placeholder="5000"
-                                            required min="100" step="0.01">
+                                <div class="form-grid">
+                                    <div class="form-group full-width">
+                                        <label for="title" class="form-label required">Título del Proyecto</label>
+                                        <input type="text" id="title" class="form-input"
+                                            placeholder="Ej: Plataforma educativa para niños" required maxlength="100">
+                                        <div class="error_msg" id="title_error_msg"></div>
+                                        <span class="form-hint">Máximo 100 caracteres</span>
                                     </div>
-                                    <div class="error_msg" id="financial_goal_error_msg"></div>
-                                    <span class="form-hint">Monto mínimo: Bs. 100</span>
-                                </div>
 
-                                <div class="form-group">
-                                    <label for="category" class="form-label required">Categoría</label>
-                                    <select id="category" class="form-select" required>
-                                        <option value="">Selecciona una categoría</option>
-                                    </select>
-                                    <div class="error_msg" id="category_error_msg"></div>
-                                </div>
+                                    <div class="form-group full-width">
+                                        <label for="summary" class="form-label required">Descripción Corta</label>
+                                        <input type="text" id="summary" class="form-input"
+                                            placeholder="Un resumen conciso que capture la esencia de tu proyecto" required
+                                            maxlength="200">
+                                        <span class="form-hint">Este texto aparecerá en las tarjetas de proyecto</span>
+                                    </div>
 
-                                <div class="form-group full-width">
-                                    <label for="location" class="form-label required">Ubicación</label>
-                                    <input type="text" id="location" class="form-input" placeholder="Ciudad, País"
-                                        required>
-                                    <div class="error_msg" id="location_error_msg"></div>
+                                    <div class="form-group">
+                                        <label for="financial-goal" class="form-label required">Monto Meta (Bs.)</label>
+                                        <div class="input-with-prefix">
+                                            <span class="input-prefix">Bs.</span>
+                                            <input type="number" id="financial-goal" class="form-input" placeholder="5000"
+                                                required min="100" step="0.01">
+                                        </div>
+                                        <div class="error_msg" id="financial_goal_error_msg"></div>
+                                        <span class="form-hint">Monto mínimo: Bs. 100</span>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="category" class="form-label required">Categoría</label>
+                                        <select id="category" class="form-select" required>
+                                            <option value="">Selecciona una categoría</option>
+                                        </select>
+                                        <div class="error_msg" id="category_error_msg"></div>
+                                    </div>
+
+                                    <div class="form-group full-width">
+                                        <label for="location" class="form-label required">Ubicación</label>
+                                        <input type="text" id="location" class="form-input" placeholder="Ciudad, País"
+                                            required>
+                                        <div class="error_msg" id="location_error_msg"></div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                    <!-- Step 2: Details -->
-                    <div class="form-step" data-step="2">
-                        <div class="step-card">
-                            <h2 class="step-title">Detalles del Proyecto</h2>
+                        <!-- Step 2: Details -->
+                        <div class="form-step" data-step="2">
+                            <div class="step-card">
+                                <h2 class="step-title">Detalles del Proyecto</h2>
 
-                            <div class="form-grid">
-                                <div class="form-group full-width">
-                                    <label for="description" class="form-label required">Descripción Completa</label>
-                                    <textarea id="description" class="form-textarea" rows="10"
-                                        placeholder="Describe tu proyecto en detalle. ¿Cuál es el problema que resuelves? ¿Quiénes se benefician?"
-                                        required minlength="50"></textarea>
-                                    <div class="error_msg" id="description_error_msg"></div>
-                                    <span class="form-hint">Mínimo 50 caracteres. Sé claro sobre el propósito y el
-                                        impacto.</span>
+                                <div class="form-grid">
+                                    <div class="form-group full-width">
+                                        <label for="description" class="form-label required">Descripción Completa</label>
+                                        <textarea id="description" class="form-textarea" rows="10"
+                                            placeholder="Describe tu proyecto en detalle. ¿Cuál es el problema que resuelves? ¿Quiénes se benefician?"
+                                            required minlength="50"></textarea>
+                                        <div class="error_msg" id="description_error_msg"></div>
+                                        <span class="form-hint">Mínimo 50 caracteres. Sé claro sobre el propósito y el
+                                            impacto.</span>
+                                    </div>
+
+                                    <div class="form-group full-width">
+                                        <label class="form-label required">Imagen de Portada</label>
+                                        <div class="upload-zone" id="cover-preview">
+                                            <input type="file" id="cover-image-input" accept="image/*" hidden>
+                                            <div class="upload-placeholder">
+                                                <span
+                                                    class="material-symbols-outlined upload-icon">add_photo_alternate</span>
+                                                <p class="upload-text">Arrastra y suelta o haz clic para subir</p>
+                                                <span class="upload-hint">PNG, JPG o WEBP (máx. 5MB)</span>
+                                            </div>
+                                        </div>
+                                        <div class="error_msg" id="cover_image_error_msg"></div>
+                                    </div>
+
+                                    <div class="form-group full-width">
+                                        <label for="video-url" class="form-label">
+                                            Video del Proyecto
+                                        </label>
+                                        <input type="url" id="video-url" class="form-input"
+                                            placeholder="https://youtube.com/watch?v=...">
+                                    </div>
+
+                                    <div class="form-group full-width">
+                                        <label for="proof-document-input" class="form-label">Documento de Prueba
+                                            (opcional)</label>
+                                        <div class="file-upload-area">
+                                            <button type="button" class="btn btn-secondary" id="upload-doc-btn">
+                                                <span class="material-symbols-outlined">upload_file</span>
+                                                Seleccionar Archivo
+                                            </button>
+                                            <span id="proof-file-name" class="file-name">Ningún archivo seleccionado</span>
+                                        </div>
+                                        <input type="file" id="proof-document-input" accept=".pdf,.doc,.docx" hidden>
+                                        <span class="form-hint">PDF o Word (máx. 10MB). Certificados, permisos, avales,
+                                            etc.</span>
+                                    </div>
                                 </div>
+                            </div>
+                        </div>
 
-                                <div class="form-group full-width">
-                                    <label class="form-label required">Imagen de Portada</label>
-                                    <div class="upload-zone" id="cover-preview">
-                                        <input type="file" id="cover-image-input" accept="image/*" hidden>
-                                        <div class="upload-placeholder">
-                                            <span
-                                                class="material-symbols-outlined upload-icon">add_photo_alternate</span>
-                                            <p class="upload-text">Arrastra y suelta o haz clic para subir</p>
-                                            <span class="upload-hint">PNG, JPG o WEBP (máx. 5MB)</span>
+                        <!-- Step 3: Publish -->
+                        <div class="form-step" data-step="3">
+                            <div class="step-card">
+                                <h2 class="step-title">Publicación</h2>
+
+                                <!-- Summary -->
+                                <div class="summary-card">
+                                    <h3 class="summary-title">Resumen del Proyecto</h3>
+                                    <div class="summary-list">
+                                        <div class="summary-item">
+                                            <span class="summary-label">Título:</span>
+                                            <span class="summary-value" id="summary-title">-</span>
+                                        </div>
+                                        <div class="summary-item">
+                                            <span class="summary-label">Monto Meta:</span>
+                                            <span class="summary-value" id="summary-goal">-</span>
+                                        </div>
+                                        <div class="summary-item">
+                                            <span class="summary-label">Categoría:</span>
+                                            <span class="summary-value" id="summary-category">-</span>
+                                        </div>
+                                        <div class="summary-item">
+                                            <span class="summary-label">Ubicación:</span>
+                                            <span class="summary-value" id="summary-location">-</span>
                                         </div>
                                     </div>
-                                    <div class="error_msg" id="cover_image_error_msg"></div>
                                 </div>
 
-                                <div class="form-group full-width">
-                                    <label for="video-url" class="form-label">
-                                        Video del Proyecto
-                                    </label>
-                                    <input type="url" id="video-url" class="form-input"
-                                        placeholder="https://youtube.com/watch?v=...">
-                                </div>
-
-                                <div class="form-group full-width">
-                                    <label for="proof-document-input" class="form-label">Documento de Prueba
-                                        (opcional)</label>
-                                    <div class="file-upload-area">
-                                        <button type="button" class="btn btn-secondary" id="upload-doc-btn">
-                                            <span class="material-symbols-outlined">upload_file</span>
-                                            Seleccionar Archivo
-                                        </button>
-                                        <span id="proof-file-name" class="file-name">Ningún archivo seleccionado</span>
-                                    </div>
-                                    <input type="file" id="proof-document-input" accept=".pdf,.doc,.docx" hidden>
-                                    <span class="form-hint">PDF o Word (máx. 10MB). Certificados, permisos, avales,
-                                        etc.</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Step 3: Publish -->
-                    <div class="form-step" data-step="3">
-                        <div class="step-card">
-                            <h2 class="step-title">Publicación</h2>
-
-                            <!-- Summary -->
-                            <div class="summary-card">
-                                <h3 class="summary-title">Resumen del Proyecto</h3>
-                                <div class="summary-list">
-                                    <div class="summary-item">
-                                        <span class="summary-label">Título:</span>
-                                        <span class="summary-value" id="summary-title">-</span>
-                                    </div>
-                                    <div class="summary-item">
-                                        <span class="summary-label">Monto Meta:</span>
-                                        <span class="summary-value" id="summary-goal">-</span>
-                                    </div>
-                                    <div class="summary-item">
-                                        <span class="summary-label">Categoría:</span>
-                                        <span class="summary-value" id="summary-category">-</span>
-                                    </div>
-                                    <div class="summary-item">
-                                        <span class="summary-label">Ubicación:</span>
-                                        <span class="summary-value" id="summary-location">-</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="form-grid">
-                                <div class="form-group full-width">
-                                    <label for="end-date" class="form-label required">
-                                        Fecha de Finalización
-                                        <span class="tooltip">
-                                            <span class="material-symbols-outlined tooltip-icon">info</span>
-                                            <span class="tooltip-text">Fecha límite para recibir donaciones. Debe ser
-                                                una fecha futura.</span>
-                                        </span>
-                                    </label>
-                                    <input type="date" id="end-date" class="form-input" required>
-                                    <div class="error_msg" id="end_date_error_msg"></div>
-                                </div>
-
-                                <div class="form-group full-width">
-                                    <div class="checkbox-group">
-                                        <input type="checkbox" id="terms" required>
-                                        <label for="terms" class="checkbox-label">
-                                            Confirmo que la información es correcta y acepto los
-                                            <a href="#" class="link">términos y condiciones</a>.
+                                <div class="form-grid">
+                                    <div class="form-group full-width">
+                                        <label for="end-date" class="form-label required">
+                                            Fecha de Finalización
+                                            <span class="tooltip">
+                                                <span class="material-symbols-outlined tooltip-icon">info</span>
+                                                <span class="tooltip-text">Fecha límite para recibir donaciones. Debe ser
+                                                    una fecha futura.</span>
+                                            </span>
                                         </label>
+                                        <input type="date" id="end-date" class="form-input">
+                                        <div class="error_msg" id="end_date_error_msg"></div>
                                     </div>
-                                    <div class="error_msg" id="terms_error_msg"></div>
+
+                                    <div class="form-group full-width">
+                                        <div class="checkbox-group">
+                                            <input type="checkbox" id="terms" required>
+                                            <label for="terms" class="checkbox-label">
+                                                Confirmo que la información es correcta y acepto los
+                                                <a href="#" class="link">términos y condiciones</a>.
+                                            </label>
+                                        </div>
+                                        <div class="error_msg" id="terms_error_msg"></div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                </form>
-            </div>
-        </main>
+                    </form>
+                </div>
+            </main>
 
-        <!-- Sticky Footer Navigation -->
-        <footer class="create-footer">
-            <div class="footer-container">
-                <button type="button" class="btn btn-secondary btn-nav" id="btn-prev" disabled>
-                    <span class="material-symbols-outlined">arrow_back</span>
-                    Anterior
-                </button>
-                <button type="button" class="btn btn-primary btn-nav" id="btn-next">
-                    Siguiente
-                    <span class="material-symbols-outlined">arrow_forward</span>
-                </button>
-                <button type="submit" form="create-project-form" class="btn btn-primary btn-publish" id="btn-submit"
-                    style="display: none;">
-                    <span class="material-symbols-outlined">check_circle</span>
-                    Publicar Proyecto
-                </button>
-            </div>
-        </footer>
-    </div>
+            <footer class="create-footer">
+                <div class="footer-container">
+                    <button type="button" class="btn btn-secondary btn-nav" id="btn-prev" disabled>
+                        <span class="material-symbols-outlined">arrow_back</span>
+                        Anterior
+                    </button>
+                    <button type="button" class="btn btn-primary btn-nav" id="btn-next">
+                        Siguiente
+                        <span class="material-symbols-outlined">arrow_forward</span>
+                    </button>
+                    <button type="submit" form="create-project-form" class="btn btn-primary btn-publish" id="btn-submit"
+                        style="display: none;">
+                        <span class="material-symbols-outlined">check_circle</span>
+                        Publicar Proyecto
+                    </button>
+                </div>
+            </footer>
+        </div>
 
-    <script src="../../../scripts/components/notification.js"></script>
-    <script src="../../../scripts/components/imageLoader.js"></script>
-    <script src="../../../scripts/components/documentLoader.js"></script>
-    <script src="../../../scripts/pages/user/create-project-validation.js"></script>
-    <script src="../../../scripts/pages/user/create-project.js"></script>
-</body>
-
+        <script src="../../../scripts/components/notification.js"></script>
+        <script src="../../../scripts/components/imageLoader.js"></script>
+        <script src="../../../scripts/components/documentLoader.js"></script>
+        <script src="../../../scripts/pages/user/create-project-validation.js"></script>
+        <script src="../../../scripts/pages/user/create-project.js"></script>
+    </body>
 </html>

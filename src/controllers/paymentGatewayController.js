@@ -174,7 +174,7 @@ const generateQR = async (req, res) => {
 
         res.setHeader('Content-Type', 'image/png');
         res.setHeader('Content-Disposition', `inline; filename="qr-${id}.png"`);
-        res.setHeader('Cache-Control', 'public, max-age=3600'); // Cache por 1 hora
+        res.setHeader('Cache-Control', 'public, max-age=3600');
         res.send(qrBuffer);
     } catch (error) {
         console.error('Error generando QR:', error);

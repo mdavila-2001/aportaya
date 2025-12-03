@@ -1,8 +1,5 @@
 const { dbPool } = require('../config/dbConnection');
 
-/**
- * Crear un nuevo pago en el gateway
- */
 const createGatewayPayment = async (donationId, amount) => {
     const client = await dbPool.connect();
     try {
@@ -21,9 +18,6 @@ const createGatewayPayment = async (donationId, amount) => {
     }
 };
 
-/**
- * Confirmar un pago del gateway
- */
 const confirmGatewayPayment = async (paymentId) => {
     const client = await dbPool.connect();
     try {
@@ -48,9 +42,6 @@ const confirmGatewayPayment = async (paymentId) => {
     }
 };
 
-/**
- * Obtener un pago del gateway por ID
- */
 const getGatewayPaymentById = async (paymentId) => {
     const client = await dbPool.connect();
     try {
@@ -83,9 +74,6 @@ const getGatewayPaymentById = async (paymentId) => {
     }
 };
 
-/**
- * Obtener un pago del gateway por donation_id
- */
 const getGatewayPaymentByDonationId = async (donationId) => {
     const client = await dbPool.connect();
     try {
@@ -112,9 +100,6 @@ const getGatewayPaymentByDonationId = async (donationId) => {
     }
 };
 
-/**
- * Actualizar URLs de QR y pago
- */
 const updatePaymentUrls = async (paymentId, qrCodeUrl, paymentUrl) => {
     const client = await dbPool.connect();
     try {

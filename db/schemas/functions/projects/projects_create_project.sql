@@ -29,6 +29,7 @@ CREATE OR REPLACE FUNCTION projects.create_project(
   p_category_id int,
   p_summary text DEFAULT NULL,
   p_location text DEFAULT NULL,
+  p_cover_image_id uuid DEFAULT NULL,
   p_video_url text DEFAULT NULL,
   p_proof_document_id uuid DEFAULT NULL,
   p_currency text DEFAULT 'USD'
@@ -36,7 +37,7 @@ CREATE OR REPLACE FUNCTION projects.create_project(
 RETURNS uuid
 LANGUAGE plpgsql AS $$
 DECLARE
-  v_id uuid;
+  v_project_id uuid;
   v_slug text;
 BEGIN
   v_slug := projects.generate_unique_slug(p_title);
@@ -49,10 +50,18 @@ BEGIN
   ) VALUES (
     p_creator_id, p_title, v_slug, p_description, p_summary,
     p_financial_goal, 0, p_start_date, p_end_date,
-    'pending', 'not_started', p_category_id, p_location,
+    'in_review', 'not_started', p_category_id, p_location,
     p_video_url, p_proof_document_id, coalesce(p_currency,'USD'), now(), now()
-  ) RETURNING id INTO v_id;
+  ) RETURNING id INTO v_project_id;
 
-  RETURN v_id;
+  IF p_cover_image_id IS NOT NULL THEN
+    INSERT INTO projects.project_image (
+      project_id, image_id, is_cover, display_order, created_at
+    ) VALUES (
+      v_project_id, p_cover_image_id, TRUE, 0, now()
+    );
+  END IF;
+
+  RETURN v_project_id;
 END;
 $$;

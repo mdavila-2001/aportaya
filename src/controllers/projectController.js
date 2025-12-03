@@ -7,6 +7,7 @@ const createProject = async (req, res) => {
 
         const projectData = {
             title: req.body.title,
+            summary: req.body.summary,
             description: req.body.description,
             financialGoal: req.body.financialGoal,
             endDate: req.body.endDate,
@@ -48,7 +49,6 @@ const getProjects = async (req, res) => {
 
         const projects = await projectRepository.getProjects(searchBy, filters);
 
-        // Obtener favoritos del usuario si está autenticado
         let favoritedProjectIds = [];
         if (req.user) {
             const favoriteRepository = require('../repositories/favoriteRepository');
