@@ -525,7 +525,7 @@ BEGIN
 
     RAISE NOTICE 'Actualizaciones de proyectos creadas (11 updates).';
 
-    -- ========== CONVERSACIONES Y MENSAJES ==========
+/*     -- ========== CONVERSACIONES Y MENSAJES ==========
     RAISE NOTICE 'Creando conversaciones y mensajes...';
     
     -- Conversación: Melissa pregunta a Marcelo sobre Mochila Solar
@@ -568,6 +568,6 @@ BEGIN
     (v_conv_id, v_user_ana_id, '¡Excelente! Por favor contáctame por email para coordinar.', FALSE);
 
     RAISE NOTICE 'Conversaciones y mensajes creados (4 conversaciones, 12 mensajes).';
-
+ */
     RAISE NOTICE '--- SEED MASIVO COMPLETADO EXITOSAMENTE ---';
 END $$;

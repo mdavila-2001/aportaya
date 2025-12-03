@@ -25,11 +25,6 @@
     margin-bottom: var(--spM);
 }
 
-.table-layout-search .table-search {
-    max-width: 500px;
-    width: 100%;
-}
-
 .filter-chips {
     display: flex;
     gap: var(--spS);
