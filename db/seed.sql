@@ -37,6 +37,7 @@ DECLARE
     -- Usuarios
     v_user_admin_id UUID;
     v_user_marcelo_id UUID; v_user_carlos_id UUID; v_user_ana_id UUID; v_user_melissa_id UUID;
+    v_user_juan_id UUID; v_user_maria_id UUID; v_user_pedro_id UUID; v_user_lucia_id UUID;
 
     -- Categorías de Proyectos
     v_cat_proj_tech_id INT; v_cat_proj_health_id INT; v_cat_proj_social_id INT; v_cat_proj_art_id INT; v_cat_proj_env_id INT;
@@ -45,6 +46,12 @@ DECLARE
     v_proj_mochila_id UUID; v_proj_dron_id UUID; v_proj_comedor_id UUID; v_proj_clinica_id UUID; v_proj_murales_id UUID;
     v_proj_limpieza_id UUID; v_proj_impresora_id UUID; v_proj_biblioteca_id UUID; v_proj_telemed_id UUID; v_proj_festival_id UUID;
     v_proj_iot_id UUID; v_proj_reciclaje_id UUID; v_proj_taller_id UUID; v_proj_motor_id UUID; v_proj_ayuda_id UUID;
+    
+    -- Donaciones
+    v_donation_id UUID;
+    
+    -- Conversaciones
+    v_conv_id UUID;
 
 BEGIN
     RAISE NOTICE '--- INICIANDO SEED MASIVO (CORREGIDO) ---';
@@ -153,11 +160,20 @@ BEGIN
     SELECT users.register_user('Carlos', '', 'López', 'Sánchez', 'carlos@gmail.com', '12345678', 'M', '1992-08-15', v_img_carlos_id, v_role_user_id) INTO v_user_carlos_id;
     SELECT users.register_user('Ana', '', 'García', '', 'ana@gmail.com', '12345678', 'F', '1998-03-10', v_img_ana_id, v_role_user_id) INTO v_user_ana_id;
     SELECT users.register_user('Alejandra', 'Melissa', 'Rocha', 'Villegas', 'melissa@gmail.com', '12345678', 'F', '1994-03-31', v_img_melissa_id, v_role_user_id) INTO v_user_melissa_id;
+    
+    -- Usuarios adicionales para donaciones y comentarios
+    SELECT users.register_user('Juan', 'Pablo', 'Fernández', '', 'juan@gmail.com', '12345678', 'M', '1990-07-12', NULL, v_role_user_id) INTO v_user_juan_id;
+    SELECT users.register_user('María', 'Elena', 'Torres', 'Pérez', 'maria@gmail.com', '12345678', 'F', '1996-11-25', NULL, v_role_user_id) INTO v_user_maria_id;
+    SELECT users.register_user('Pedro', '', 'Ramírez', '', 'pedro@gmail.com', '12345678', 'M', '1988-04-08', NULL, v_role_user_id) INTO v_user_pedro_id;
+    SELECT users.register_user('Lucía', '', 'Martínez', 'Vargas', 'lucia@gmail.com', '12345678', 'F', '1993-09-30', NULL, v_role_user_id) INTO v_user_lucia_id;
 
     -- Activar usuarios
-    UPDATE users.user SET status = 'active' WHERE id IN (v_user_marcelo_id, v_user_carlos_id, v_user_ana_id, v_user_melissa_id);
+    UPDATE users.user SET status = 'active' WHERE id IN (
+        v_user_marcelo_id, v_user_carlos_id, v_user_ana_id, v_user_melissa_id,
+        v_user_juan_id, v_user_maria_id, v_user_pedro_id, v_user_lucia_id
+    );
 
-    RAISE NOTICE 'Usuarios creados y activados.';
+    RAISE NOTICE 'Usuarios creados y activados (8 usuarios regulares).';
 
     -- =====================================================
     -- 9. CATEGORÍAS DE PROYECTO Y REQUISITOS
@@ -304,24 +320,254 @@ BEGIN
     RAISE NOTICE 'Creación masiva de 15 proyectos completada (8 aprobados).';
 
     -- =====================================================
-    -- 11. INTERACCIONES (Donaciones)
+    -- 11. INTERACCIONES SOCIALES Y DONACIONES
     -- =====================================================
-    INSERT INTO payments.donation (project_id, user_id, amount, payment_status, payment_method) VALUES
-    (v_proj_mochila_id, v_user_melissa_id, 150.00, 'completed', 'credit_card');
+    
+    -- ========== DONACIONES ==========
+    RAISE NOTICE 'Creando donaciones...';
+    
+    -- Donaciones para Mochila Solar Pro
+    INSERT INTO payments.donation (project_id, user_id, amount, payment_status, payment_method) 
+    VALUES (v_proj_mochila_id, v_user_melissa_id, 150.00, 'completed', 'credit_card');
+    
+    INSERT INTO payments.donation (project_id, user_id, amount, payment_status, payment_method) 
+    VALUES (v_proj_mochila_id, v_user_juan_id, 200.00, 'completed', 'bank_transfer');
+    
+    INSERT INTO payments.donation (project_id, user_id, amount, payment_status, payment_method) 
+    VALUES (v_proj_mochila_id, v_user_maria_id, 50.00, 'completed', 'credit_card');
 
-    INSERT INTO payments.donation (project_id, user_id, amount, payment_status, payment_method) VALUES
-    (v_proj_dron_id, v_user_marcelo_id, 50.00, 'completed', 'bank_transfer');
+    -- Donaciones para Dron de Reforestación
+    INSERT INTO payments.donation (project_id, user_id, amount, payment_status, payment_method) 
+    VALUES (v_proj_dron_id, v_user_marcelo_id, 500.00, 'completed', 'bank_transfer');
+    
+    INSERT INTO payments.donation (project_id, user_id, amount, payment_status, payment_method) 
+    VALUES (v_proj_dron_id, v_user_pedro_id, 300.00, 'completed', 'credit_card');
 
-    INSERT INTO payments.donation (project_id, user_id, amount, payment_status, payment_method) VALUES
-    (v_proj_comedor_id, v_user_ana_id, 300.00, 'completed', 'credit_card');
+    -- Donaciones para Comedor Los Niños
+    INSERT INTO payments.donation (project_id, user_id, amount, payment_status, payment_method) 
+    VALUES (v_proj_comedor_id, v_user_ana_id, 300.00, 'completed', 'credit_card');
+    
+    INSERT INTO payments.donation (project_id, user_id, amount, payment_status, payment_method) 
+    VALUES (v_proj_comedor_id, v_user_lucia_id, 100.00, 'completed', 'bank_transfer');
+    
+    INSERT INTO payments.donation (project_id, user_id, amount, payment_status, payment_method) 
+    VALUES (v_proj_comedor_id, v_user_melissa_id, 200.00, 'completed', 'credit_card');
 
-    INSERT INTO payments.donation (project_id, user_id, amount, payment_status, payment_method) VALUES
-    (v_proj_clinica_id, v_user_carlos_id, 500.00, 'completed', 'bank_transfer');
+    -- Donaciones para Clínica Móvil Rural
+    INSERT INTO payments.donation (project_id, user_id, amount, payment_status, payment_method) 
+    VALUES (v_proj_clinica_id, v_user_carlos_id, 500.00, 'completed', 'bank_transfer');
+    
+    INSERT INTO payments.donation (project_id, user_id, amount, payment_status, payment_method) 
+    VALUES (v_proj_clinica_id, v_user_juan_id, 350.00, 'completed', 'credit_card');
+    
+    INSERT INTO payments.donation (project_id, user_id, amount, payment_status, payment_method) 
+    VALUES (v_proj_clinica_id, v_user_maria_id, 250.00, 'completed', 'bank_transfer');
 
-    INSERT INTO payments.donation (project_id, user_id, amount, payment_status, payment_method) VALUES
-    (v_proj_murales_id, v_user_melissa_id, 100.00, 'completed', 'credit_card');
+    -- Donaciones para Murales Urbanos
+    INSERT INTO payments.donation (project_id, user_id, amount, payment_status, payment_method) 
+    VALUES (v_proj_murales_id, v_user_melissa_id, 100.00, 'completed', 'credit_card');
+    
+    INSERT INTO payments.donation (project_id, user_id, amount, payment_status, payment_method) 
+    VALUES (v_proj_murales_id, v_user_pedro_id, 75.00, 'completed', 'credit_card');
 
-    RAISE NOTICE 'Donaciones creadas. El raised_amount se actualiza automáticamente por trigger.';
+    -- Donaciones para Limpieza Lago (proyecto finalizado)
+    INSERT INTO payments.donation (project_id, user_id, amount, payment_status, payment_method) 
+    VALUES (v_proj_limpieza_id, v_user_ana_id, 1000.00, 'completed', 'bank_transfer');
+    
+    INSERT INTO payments.donation (project_id, user_id, amount, payment_status, payment_method) 
+    VALUES (v_proj_limpieza_id, v_user_marcelo_id, 1500.00, 'completed', 'credit_card');
+    
+    INSERT INTO payments.donation (project_id, user_id, amount, payment_status, payment_method) 
+    VALUES (v_proj_limpieza_id, v_user_carlos_id, 2000.00, 'completed', 'bank_transfer');
+    
+    INSERT INTO payments.donation (project_id, user_id, amount, payment_status, payment_method) 
+    VALUES (v_proj_limpieza_id, v_user_lucia_id, 2000.00, 'completed', 'credit_card');
+    
+    INSERT INTO payments.donation (project_id, user_id, amount, payment_status, payment_method) 
+    VALUES (v_proj_limpieza_id, v_user_juan_id, 1500.00, 'completed', 'bank_transfer');
+    
+    INSERT INTO payments.donation (project_id, user_id, amount, payment_status, payment_method) 
+    VALUES (v_proj_limpieza_id, v_user_maria_id, 500.00, 'completed', 'credit_card');
+
+    -- Donaciones para Biblioteca Barrial
+    INSERT INTO payments.donation (project_id, user_id, amount, payment_status, payment_method) 
+    VALUES (v_proj_biblioteca_id, v_user_pedro_id, 150.00, 'completed', 'credit_card');
+
+    RAISE NOTICE 'Donaciones creadas (20 donaciones). El raised_amount se actualiza automáticamente por trigger.';
+
+    -- ========== COMENTARIOS ==========
+    RAISE NOTICE 'Creando comentarios en proyectos...';
+    
+    -- Comentarios en Mochila Solar Pro
+    INSERT INTO social.comment (project_id, user_id, content) 
+    VALUES (v_proj_mochila_id, v_user_melissa_id, '¡Excelente proyecto! Me encanta la idea de usar energía solar para cargar dispositivos.');
+    
+    INSERT INTO social.comment (project_id, user_id, content) 
+    VALUES (v_proj_mochila_id, v_user_juan_id, 'Perfecto para excursionistas. ¿Cuánto tiempo tarda en cargar un celular?');
+    
+    INSERT INTO social.comment (project_id, user_id, content) 
+    VALUES (v_proj_mochila_id, v_user_maria_id, 'Ya doné. Espero ver el prototipo pronto.');
+
+    -- Comentarios en Dron de Reforestación
+    INSERT INTO social.comment (project_id, user_id, content) 
+    VALUES (v_proj_dron_id, v_user_pedro_id, 'Innovación que realmente ayuda al planeta. Gran iniciativa.');
+    
+    INSERT INTO social.comment (project_id, user_id, content) 
+    VALUES (v_proj_dron_id, v_user_carlos_id, '¿Tienen plan para expandir esto a otras regiones del país?');
+
+    -- Comentarios en Comedor Los Niños
+    INSERT INTO social.comment (project_id, user_id, content) 
+    VALUES (v_proj_comedor_id, v_user_lucia_id, 'Hermoso proyecto social. ¿Cómo puedo colaborar como voluntaria?');
+    
+    INSERT INTO social.comment (project_id, user_id, content) 
+    VALUES (v_proj_comedor_id, v_user_ana_id, 'Esto es lo que necesita nuestra comunidad. Felicitaciones.');
+    
+    INSERT INTO social.comment (project_id, user_id, content) 
+    VALUES (v_proj_comedor_id, v_user_melissa_id, 'Apoyando proyectos que alimentan a niños. ¡Éxito!');
+
+    -- Comentarios en Clínica Móvil Rural
+    INSERT INTO social.comment (project_id, user_id, content) 
+    VALUES (v_proj_clinica_id, v_user_juan_id, 'Salud para todos. Este proyecto puede salvar vidas.');
+    
+    INSERT INTO social.comment (project_id, user_id, content) 
+    VALUES (v_proj_clinica_id, v_user_marcelo_id, '¿Qué especialidades médicas estarán disponibles?');
+
+    -- Comentarios en Murales Urbanos
+    INSERT INTO social.comment (project_id, user_id, content) 
+    VALUES (v_proj_murales_id, v_user_pedro_id, 'El arte urbano transforma ciudades. Gran idea.');
+    
+    INSERT INTO social.comment (project_id, user_id, content) 
+    VALUES (v_proj_murales_id, v_user_maria_id, '¿Habrá participación de la comunidad en el diseño?');
+
+    -- Comentarios en Limpieza Lago (proyecto finalizado)
+    INSERT INTO social.comment (project_id, user_id, content) 
+    VALUES (v_proj_limpieza_id, v_user_carlos_id, '¡Felicitaciones por completar la meta! Orgullo boliviano.');
+    
+    INSERT INTO social.comment (project_id, user_id, content) 
+    VALUES (v_proj_limpieza_id, v_user_lucia_id, 'Gracias por cuidar nuestro medio ambiente.');
+
+    RAISE NOTICE 'Comentarios creados (14 comentarios).';
+
+    -- ========== FAVORITOS ==========
+    RAISE NOTICE 'Creando favoritos...';
+    
+    INSERT INTO social.favorite (user_id, project_id) VALUES
+    (v_user_melissa_id, v_proj_mochila_id),
+    (v_user_melissa_id, v_proj_comedor_id),
+    (v_user_melissa_id, v_proj_murales_id),
+    (v_user_juan_id, v_proj_mochila_id),
+    (v_user_juan_id, v_proj_clinica_id),
+    (v_user_maria_id, v_proj_dron_id),
+    (v_user_maria_id, v_proj_comedor_id),
+    (v_user_pedro_id, v_proj_dron_id),
+    (v_user_pedro_id, v_proj_murales_id),
+    (v_user_pedro_id, v_proj_limpieza_id),
+    (v_user_lucia_id, v_proj_comedor_id),
+    (v_user_lucia_id, v_proj_clinica_id),
+    (v_user_carlos_id, v_proj_limpieza_id),
+    (v_user_ana_id, v_proj_comedor_id),
+    (v_user_marcelo_id, v_proj_dron_id);
+
+    RAISE NOTICE 'Favoritos creados (15 favoritos).';
+
+    -- ========== ACTUALIZACIONES DE PROYECTOS ==========
+    RAISE NOTICE 'Creando actualizaciones de proyectos...';
+    
+    -- Updates para Mochila Solar Pro
+    INSERT INTO social.update (project_id, title, content) 
+    VALUES (v_proj_mochila_id, 'Prototipo en desarrollo', 
+    'Hemos completado el diseño del circuito solar. Próximamente fotos del prototipo.');
+    
+    INSERT INTO social.update (project_id, title, content) 
+    VALUES (v_proj_mochila_id, '¡Gracias por el apoyo!', 
+    'Ya alcanzamos el 10% de la meta en solo una semana. Estamos muy agradecidos con todos ustedes.');
+
+    -- Updates para Dron de Reforestación
+    INSERT INTO social.update (project_id, title, content) 
+    VALUES (v_proj_dron_id, 'Primera prueba de vuelo exitosa', 
+    'El dron completó su primer vuelo de prueba dispersando semillas. Video próximamente.');
+    
+    INSERT INTO social.update (project_id, title, content) 
+    VALUES (v_proj_dron_id, 'Alianza con ONG ambiental', 
+    'Firmamos acuerdo con una ONG local para expandir el alcance del proyecto.');
+
+    -- Updates para Comedor Los Niños
+    INSERT INTO social.update (project_id, title, content) 
+    VALUES (v_proj_comedor_id, 'Local asegurado', 
+    'Ya tenemos el espacio para el comedor. Ahora necesitamos equipamiento de cocina.');
+    
+    INSERT INTO social.update (project_id, title, content) 
+    VALUES (v_proj_comedor_id, 'Menú nutricional diseñado', 
+    'Con ayuda de nutricionistas, diseñamos un menú balanceado para los niños.');
+
+    -- Updates para Clínica Móvil Rural
+    INSERT INTO social.update (project_id, title, content) 
+    VALUES (v_proj_clinica_id, 'Vehículo adquirido', 
+    'Conseguimos el vehículo que será adaptado como clínica móvil.');
+    
+    INSERT INTO social.update (project_id, title, content) 
+    VALUES (v_proj_clinica_id, 'Médicos voluntarios confirmados', 
+    '5 médicos se han sumado como voluntarios para las jornadas médicas.');
+
+    -- Updates para Murales Urbanos
+    INSERT INTO social.update (project_id, title, content) 
+    VALUES (v_proj_murales_id, 'Diseños finalizados', 
+    'Los diseños de los murales están listos. ¡Pronto comenzamos a pintar!');
+
+    -- Updates para Limpieza Lago (proyecto finalizado)
+    INSERT INTO social.update (project_id, title, content) 
+    VALUES (v_proj_limpieza_id, '¡Proyecto completado!', 
+    'Gracias a todos retiramos 5 toneladas de plástico del lago. ¡Misión cumplida!');
+    
+    INSERT INTO social.update (project_id, title, content) 
+    VALUES (v_proj_limpieza_id, 'Informe final', 
+    'Pueden ver el informe completo con fotos del antes y después en nuestro sitio web.');
+
+    RAISE NOTICE 'Actualizaciones de proyectos creadas (11 updates).';
+
+    -- ========== CONVERSACIONES Y MENSAJES ==========
+    RAISE NOTICE 'Creando conversaciones y mensajes...';
+    
+    -- Conversación: Melissa pregunta a Marcelo sobre Mochila Solar
+    INSERT INTO messaging.conversation (project_id, created_by, status)
+    VALUES (v_proj_mochila_id, v_user_melissa_id, 'active')
+    RETURNING id INTO v_conv_id;
+    
+    INSERT INTO messaging.message (conversation_id, sender_id, content, read) VALUES
+    (v_conv_id, v_user_melissa_id, '¡Hola Marcelo! Me encanta tu proyecto. ¿Cuándo estará listo el prototipo?', TRUE),
+    (v_conv_id, v_user_marcelo_id, 'Hola Melissa, gracias por tu apoyo. Estimamos tenerlo en 2 meses.', TRUE),
+    (v_conv_id, v_user_melissa_id, '¡Excelente! ¿Planeas producirlo en serie?', FALSE);
+
+    -- Conversación: Juan pregunta a Ana sobre Dron
+    INSERT INTO messaging.conversation (project_id, created_by, status)
+    VALUES (v_proj_dron_id, v_user_juan_id, 'active')
+    RETURNING id INTO v_conv_id;
+    
+    INSERT INTO messaging.message (conversation_id, sender_id, content, read) VALUES
+    (v_conv_id, v_user_juan_id, 'Ana, ¿qué tipo de semillas usarán en el dron?', TRUE),
+    (v_conv_id, v_user_ana_id, 'Usaremos especies nativas de la región. Ya tenemos el listado.', TRUE);
+
+    -- Conversación: Lucia pregunta a Carlos sobre Comedor
+    INSERT INTO messaging.conversation (project_id, created_by, status)
+    VALUES (v_proj_comedor_id, v_user_lucia_id, 'active')
+    RETURNING id INTO v_conv_id;
+    
+    INSERT INTO messaging.message (conversation_id, sender_id, content, read) VALUES
+    (v_conv_id, v_user_lucia_id, 'Carlos, me gustaría ser voluntaria. ¿Cómo puedo ayudar?', TRUE),
+    (v_conv_id, v_user_carlos_id, '¡Genial! Te envío el formulario de voluntarios por correo.', FALSE);
+
+    -- Conversación: Pedro pregunta a Ana sobre Clínica
+    INSERT INTO messaging.conversation (project_id, created_by, status)
+    VALUES (v_proj_clinica_id, v_user_pedro_id, 'active')
+    RETURNING id INTO v_conv_id;
+    
+    INSERT INTO messaging.message (conversation_id, sender_id, content, read) VALUES
+    (v_conv_id, v_user_pedro_id, '¿Qué comunidades atenderán primero?', TRUE),
+    (v_conv_id, v_user_ana_id, 'Comenzaremos por las comunidades más alejadas de Potosí.', TRUE),
+    (v_conv_id, v_user_pedro_id, 'Perfecto, conozco a médicos que podrían sumarse.', TRUE),
+    (v_conv_id, v_user_ana_id, '¡Excelente! Por favor contáctame por email para coordinar.', FALSE);
+
+    RAISE NOTICE 'Conversaciones y mensajes creados (4 conversaciones, 12 mensajes).';
 
     RAISE NOTICE '--- SEED MASIVO COMPLETADO EXITOSAMENTE ---';
 END $$;

@@ -239,10 +239,29 @@ const getMyProjects = async (req, res) => {
     }
 };
 
+const getProjectCategories = async (req, res) => {
+    try {
+        const categories = await projectRepository.getProjectCategories();
+
+        res.json({
+            success: true,
+            categories: categories
+        });
+    } catch (error) {
+        console.error('Error obteniendo categorías:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Error al obtener categorías',
+            error: error.message
+        });
+    }
+};
+
 module.exports = {
     createProject,
     getProjects,
     getProjectDetail,
     createComment,
-    getMyProjects
+    getMyProjects,
+    getProjectCategories
 };

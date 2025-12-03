@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Elementos del DOM
     const modal = document.getElementById('donation-modal');
     const closeBtn = document.getElementById('close-donation-modal');
     const donateBtns = document.querySelectorAll('.btn-donate');
@@ -9,7 +8,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const modalProjectTitle = document.getElementById('modal-project-title');
     const pageProjectTitle = document.getElementById('project-title');
 
-    // Estado
     let currentAmount = 100;
 
     // Inicialización
@@ -52,13 +50,12 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Confirmar donación
     confirmBtn.addEventListener('click', processDonation);
 
     // Funciones
     function openModal() {
         modal.style.display = 'flex';
-        document.body.style.overflow = 'hidden'; // Prevenir scroll
+        document.body.style.overflow = 'hidden';
     }
 
     function closeModal() {
@@ -104,7 +101,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const data = await response.json();
 
             if (data.success) {
-                // Redirigir a la página de pago
                 window.location.href = data.data.paymentUrl;
             } else {
                 throw new Error(data.message || 'Error al procesar la donación');

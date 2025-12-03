@@ -1,13 +1,5 @@
-/* ===========================
-   PAYMENT PAGE STYLES (NEW DESIGN)
-   =========================== */
-
 body {
     background-color: #f8fafc;
-    /* Light background for contrast or keep dark if preferred, but user HTML looks like a checkout page */
-    /* Reverting to dark mode based on previous context, but checking if user wants light mode? 
-       The user HTML uses specific classes. I will stick to the project's Dark Mode theme 
-       but adapt the structure. */
     background-color: var(--dark-bg);
     color: var(--text-main);
     display: flex;
@@ -15,7 +7,6 @@ body {
     min-height: 100vh;
 }
 
-/* Header */
 .checkout-header {
     background-color: var(--dark-bg-2);
     border-bottom: 1px solid var(--border-color);
@@ -60,7 +51,6 @@ body {
     font-size: 1.25rem;
 }
 
-/* Main Layout */
 .checkout-main {
     flex: 1;
     padding: 2rem 1.5rem;
@@ -77,14 +67,6 @@ body {
     gap: 2rem;
 }
 
-@media (min-width: 1024px) {
-    .checkout-grid {
-        grid-template-columns: 1.5fr 1fr;
-        gap: 4rem;
-    }
-}
-
-/* Typography */
 .page-title {
     font-size: 1.75rem;
     font-weight: 700;
@@ -92,7 +74,6 @@ body {
     color: var(--text-main);
 }
 
-/* Payment Method Card */
 .payment-method-card {
     background-color: var(--dark-bg-2);
     border: 1px solid var(--border-color);
@@ -176,7 +157,6 @@ body {
     line-height: 1.5;
 }
 
-/* Payment Status */
 .payment-status-card {
     background-color: var(--surface);
     border-radius: var(--border-radius-md);
@@ -213,7 +193,6 @@ body {
     color: var(--text-lighter);
 }
 
-/* Success State */
 .payment-status-card.success {
     background-color: rgba(17, 212, 115, 0.1);
     border-style: solid;
@@ -229,7 +208,6 @@ body {
     color: var(--primary);
 }
 
-/* Order Summary */
 .summary-card {
     background-color: var(--dark-bg-2);
     border-radius: var(--border-radius-lg);
@@ -315,7 +293,6 @@ body {
     color: var(--text-lighter);
 }
 
-/* Buttons */
 .btn-simulate {
     width: 100%;
     padding: 1rem;
@@ -360,7 +337,6 @@ body {
     transform: translateY(-1px);
 }
 
-/* Loading & Error */
 .loading-container {
     text-align: center;
     padding: 4rem 0;
@@ -392,7 +368,6 @@ body {
     text-align: center;
 }
 
-/* Footer */
 .checkout-footer {
     padding: 2rem 1.5rem;
     text-align: center;
@@ -411,6 +386,13 @@ body {
 .footer-links a {
     color: var(--text-light);
     text-decoration: none;
+}
+
+@media (min-width: 992px) {
+    .checkout-grid {
+        grid-template-columns: 1.5fr 1fr;
+        gap: 4rem;
+    }
 }
 
 .footer-links a:hover {

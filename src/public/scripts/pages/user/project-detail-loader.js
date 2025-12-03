@@ -53,7 +53,6 @@ function renderProject(project, isOwner) {
         document.getElementById('updates-tab').style.display = 'block';
     }
 
-    // Actualizar título de la página
     document.title = `${project.title} - AportaYa`;
 }
 
@@ -79,7 +78,6 @@ function renderDonors(donors) {
     `).join('');
 }
 
-// Renderizar comentarios
 function renderComments(comments) {
     const commentsList = document.getElementById('comments-list');
     const commentsCount = document.getElementById('comments-count');
@@ -109,7 +107,6 @@ function renderComments(comments) {
     `).join('');
 }
 
-// Renderizar actualizaciones
 function renderUpdates(updates) {
     const updatesList = document.getElementById('updates-list');
 
@@ -194,13 +191,11 @@ async function loadProjectDetail() {
     }
 }
 
-// Enviar comentario
 async function submitComment() {
     const textarea = document.getElementById('new-comment');
     const submitButton = document.getElementById('submit-comment');
     const content = textarea.value.trim();
 
-    // Validar contenido
     if (!content) {
         alert('Por favor escribe un comentario');
         return;
@@ -211,7 +206,6 @@ async function submitComment() {
         return;
     }
 
-    // Obtener slug del proyecto desde la URL
     const urlParams = new URLSearchParams(window.location.search);
     const slug = urlParams.get('slug');
 
@@ -221,7 +215,6 @@ async function submitComment() {
     }
 
     try {
-        // Deshabilitar botón durante el envío
         submitButton.disabled = true;
         submitButton.textContent = 'Enviando...';
 
@@ -238,21 +231,17 @@ async function submitComment() {
         const result = await response.json();
 
         if (response.ok) {
-            // Limpiar textarea
             textarea.value = '';
 
-            // Agregar comentario a la lista dinámicamente
             const comment = result.data.comment;
             const commentsList = document.getElementById('comments-list');
             const commentsCount = document.getElementById('comments-count');
 
-            // Remover mensaje de "no hay comentarios" si existe
             const emptyState = commentsList.querySelector('.empty-state');
             if (emptyState) {
                 emptyState.remove();
             }
 
-            // Crear elemento del nuevo comentario
             const commentHTML = `
                 <div class="comment-item">
                     <img class="comment-avatar" src="${comment.author_avatar || '/uploads/avatar/default.png'}" alt="${comment.author_name}">
@@ -286,7 +275,6 @@ async function submitComment() {
     }
 }
 
-// Manejo de tabs
 function setupTabs() {
     const tabLinks = document.querySelectorAll('.tab-link');
     const contentSections = document.querySelectorAll('.content-section');
@@ -306,7 +294,6 @@ function setupTabs() {
     });
 }
 
-// Inicialización
 document.addEventListener('DOMContentLoaded', () => {
     const token = localStorage.getItem('token');
     if (!token) {
@@ -318,7 +305,6 @@ document.addEventListener('DOMContentLoaded', () => {
     loadUserAvatar();
     loadProjectDetail();
 
-    // Event listener para enviar comentarios
     const submitCommentBtn = document.getElementById('submit-comment');
     if (submitCommentBtn) {
         submitCommentBtn.addEventListener('click', submitComment);

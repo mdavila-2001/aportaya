@@ -1,10 +1,3 @@
-/* ============================================
-   MODALES - Sistema Unificado Mobile-First
-   Soporta tanto overlay manual como popover nativo
-   ============================================ */
-
-/* --- ESTILO OVERLAY (Manual) --- */
-/* Mobile-first: Estilos base para móvil */
 .modal-overlay {
     position: fixed;
     top: 0;
@@ -16,7 +9,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 9999;
+    z-index: 150;
     padding: 1rem;
     animation: fadeIn 0.2s ease-out;
 }
@@ -29,11 +22,8 @@
     max-width: 100%;
     overflow: hidden;
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
-    animation: slideUpContainer 0.3s ease-out;
 }
 
-/* --- ESTILO POPOVER (Nativo) --- */
-/* Mobile-first: Ocupa casi todo el ancho en móvil */
 .modal[popover] {
     position: fixed;
     top: 50%;
@@ -55,11 +45,6 @@
     backdrop-filter: blur(4px);
 }
 
-/* Animaciones de apertura/cierre para popover */
-.modal[popover]:popover-open {
-    animation: slideUp 0.3s ease-out;
-}
-
 @starting-style {
     .modal[popover]:popover-open {
         opacity: 0;
@@ -75,8 +60,6 @@
     animation: fadeIn 0.2s ease-out;
 }
 
-/* --- VARIANTES DE TAMAÑO (Mobile-first) --- */
-/* En móvil, todos ocupan el ancho disponible */
 .modal-small,
 .modal-small.modal-container,
 .modal-medium,
@@ -86,7 +69,6 @@
     max-width: 100%;
 }
 
-/* --- ESTRUCTURA DEL MODAL --- */
 .modal-header {
     display: flex;
     justify-content: space-between;
@@ -113,7 +95,6 @@
     align-items: center;
     justify-content: center;
     border-radius: 6px;
-    transition: all 0.2s ease;
     flex-shrink: 0;
 }
 
@@ -139,7 +120,6 @@
     line-height: 1.5;
 }
 
-/* --- ACCIONES Y FOOTER --- */
 .modal-actions,
 .modal-footer {
     display: flex;
@@ -155,50 +135,12 @@
     justify-content: center;
 }
 
-/* --- FORMULARIOS EN MODALES --- */
 .modal-form {
     display: flex;
     flex-direction: column;
     gap: var(--spM);
 }
 
-/* --- ANIMACIONES --- */
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-
-    to {
-        opacity: 1;
-    }
-}
-
-@keyframes slideUp {
-    from {
-        opacity: 0;
-        transform: translate(-50%, -40%);
-    }
-
-    to {
-        opacity: 1;
-        transform: translate(-50%, -50%);
-    }
-}
-
-@keyframes slideUpContainer {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* --- RESPONSIVE: TABLET Y DESKTOP --- */
-/* Tablet: 768px+ */
 @media (min-width: 768px) {
     .modal-overlay {
         padding: 1.5rem;
@@ -209,7 +151,6 @@
         width: auto;
     }
 
-    /* Aplicar tamaños específicos en tablet+ */
     .modal-small,
     .modal-small.modal-container {
         max-width: 400px;
@@ -243,7 +184,6 @@
         font-size: 0.9375rem;
     }
 
-    /* Botones en fila horizontal en desktop */
     .modal-actions,
     .modal-footer {
         flex-direction: row;
@@ -258,7 +198,6 @@
     }
 }
 
-/* Desktop: 1024px+ */
 @media (min-width: 1024px) {
     .modal-overlay {
         padding: 2rem;

@@ -1,8 +1,3 @@
-/* ===========================
-   SUCCESS PAGE STYLES
-   Mobile-First Design
-   =========================== */
-
 body {
     background: linear-gradient(135deg, var(--dark-bg) 0%, var(--dark-bg-2) 100%);
     color: var(--text-main);
@@ -20,9 +15,6 @@ body {
     margin: 0 auto;
 }
 
-/* ===========================
-   LOADING STATE
-   =========================== */
 .loading-wrapper {
     text-align: center;
     padding: 3rem 1rem;
@@ -34,14 +26,7 @@ body {
     border: 4px solid rgba(17, 212, 115, 0.1);
     border-radius: 50%;
     border-top-color: var(--primary);
-    animation: spin 1s linear infinite;
     margin: 0 auto 1.5rem;
-}
-
-@keyframes spin {
-    to {
-        transform: rotate(360deg);
-    }
 }
 
 .loading-wrapper p {
@@ -49,9 +34,6 @@ body {
     font-size: 1rem;
 }
 
-/* ===========================
-   ERROR STATE
-   =========================== */
 .error-wrapper {
     text-align: center;
     padding: 2rem 1rem;
@@ -88,9 +70,6 @@ body {
     line-height: 1.5;
 }
 
-/* ===========================
-   SUCCESS STATE
-   =========================== */
 .success-wrapper {
     background-color: var(--dark-bg-2);
     border-radius: var(--border-radius-lg);
@@ -99,7 +78,6 @@ body {
     text-align: center;
 }
 
-/* Success Animation */
 .success-animation {
     margin-bottom: 2rem;
 }
@@ -113,19 +91,7 @@ body {
     align-items: center;
     justify-content: center;
     margin: 0 auto;
-    animation: scaleIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     box-shadow: 0 10px 30px rgba(17, 212, 115, 0.3);
-}
-
-@keyframes scaleIn {
-    0% {
-        transform: scale(0);
-        opacity: 0;
-    }
-    100% {
-        transform: scale(1);
-        opacity: 1;
-    }
 }
 
 .checkmark {
@@ -134,7 +100,6 @@ body {
     border: solid #000;
     border-width: 0 5px 5px 0;
     transform: rotate(45deg);
-    animation: checkmark 0.3s ease 0.3s forwards;
     opacity: 0;
 }
 
@@ -149,41 +114,25 @@ body {
     }
 }
 
-/* Typography */
 .success-title {
     font-size: 2rem;
     font-weight: 800;
     margin-bottom: 0.5rem;
     color: var(--text-main);
-    animation: fadeInUp 0.5s ease 0.4s backwards;
 }
 
 .success-subtitle {
     font-size: 1rem;
     color: var(--text-light);
     margin-bottom: 2rem;
-    animation: fadeInUp 0.5s ease 0.5s backwards;
 }
 
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* Payment Summary */
 .payment-summary {
     background-color: var(--surface);
     border-radius: var(--border-radius-md);
     padding: 1.5rem;
     margin-bottom: 1.5rem;
     text-align: left;
-    animation: fadeInUp 0.5s ease 0.6s backwards;
 }
 
 .summary-row {
@@ -226,7 +175,6 @@ body {
     margin: 1rem 0;
 }
 
-/* Project Card */
 .project-card {
     display: flex;
     gap: 1rem;
@@ -235,7 +183,6 @@ body {
     padding: 1rem;
     margin-bottom: 1.5rem;
     text-align: left;
-    animation: fadeInUp 0.5s ease 0.7s backwards;
 }
 
 .project-image {
@@ -262,13 +209,11 @@ body {
     color: var(--text-light);
 }
 
-/* Actions */
 .actions {
     display: flex;
     flex-direction: column;
     gap: 0.75rem;
     margin-bottom: 1.5rem;
-    animation: fadeInUp 0.5s ease 0.8s backwards;
 }
 
 .btn-primary,
@@ -308,10 +253,8 @@ body {
     color: var(--primary);
 }
 
-/* Share Section */
 .share-section {
     margin-bottom: 1.5rem;
-    animation: fadeInUp 0.5s ease 0.9s backwards;
 }
 
 .share-label {
@@ -347,7 +290,6 @@ body {
     transform: translateY(-2px);
 }
 
-/* Footer Note */
 .footer-note {
     display: flex;
     gap: 0.75rem;
@@ -356,7 +298,6 @@ body {
     border: 1px solid rgba(17, 212, 115, 0.2);
     border-radius: var(--border-radius-md);
     padding: 1rem;
-    animation: fadeInUp 0.5s ease 1s backwards;
 }
 
 .footer-note .material-symbols-outlined {
@@ -373,8 +314,7 @@ body {
     margin: 0;
 }
 
-/* Responsive */
-@media (min-width: 640px) {
+@media (min-width: 768px) {
     .success-wrapper {
         padding: 3rem 2rem;
     }
