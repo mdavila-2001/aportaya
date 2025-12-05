@@ -382,6 +382,89 @@ const updateProject = async (projectId, updateData) => {
     }
 };
 
+const getProjectObservations = async (projectId) => {
+    const client = await dbPool.connect();
+    try {
+        const query = `
+            SELECT 
+                h.reason,
+                h.change_date,
+                u.first_name || ' ' || COALESCE(u.last_name, '') as admin_name
+            FROM projects.project_status_history h
+            LEFT JOIN users.user u ON h.changed_by = u.id
+            LEFT JOIN projects.project p ON h.project_id = p.id
+            WHERE h.project_id = $1 
+              AND h.new_status = 'observed'
+              AND h.changed_by IS NOT NULL
+              AND h.changed_by != p.creator_id
+            ORDER BY h.change_date DESC
+            LIMIT 1
+        `;
+
+        const { rows } = await client.query(query, [projectId]);
+        return rows[0] || null;
+    } catch (error) {
+        console.error('Error obteniendo observaciones del proyecto:', error);
+        throw error;
+    } finally {
+        client.release();
+    }
+};
+
+const resubmitProject = async (projectId, userId) => {
+    const client = await dbPool.connect();
+    try {
+        await client.query('BEGIN');
+
+        // Verificar que el proyecto pertenece al usuario y está observado
+        const checkQuery = `
+            SELECT creator_id, approval_status 
+            FROM projects.project 
+            WHERE id = $1
+        `;
+        const checkResult = await client.query(checkQuery, [projectId]);
+
+        if (checkResult.rows.length === 0) {
+            throw new Error('Proyecto no encontrado');
+        }
+
+        const project = checkResult.rows[0];
+
+        if (project.creator_id !== userId) {
+            throw new Error('No tienes permiso para reenviar este proyecto');
+        }
+
+        if (project.approval_status !== 'observed') {
+            throw new Error('Solo se pueden reenviar proyectos observados');
+        }
+
+        // Cambiar estado a in_review
+        const updateQuery = `
+            UPDATE projects.project 
+            SET approval_status = 'in_review', updated_at = NOW()
+            WHERE id = $1
+        `;
+        await client.query(updateQuery, [projectId]);
+
+        // Registrar en historial
+        const historyQuery = `
+            INSERT INTO projects.project_status_history 
+                (project_id, old_status, new_status, changed_by, reason)
+            VALUES ($1, 'observed', 'in_review', $2, 'Proyecto reenviado por el creador')
+        `;
+        await client.query(historyQuery, [projectId, userId]);
+
+        await client.query('COMMIT');
+        return true;
+    } catch (error) {
+        await client.query('ROLLBACK');
+        console.error('Error reenviando proyecto:', error);
+        throw error;
+    } finally {
+        client.release();
+    }
+};
+
 module.exports = {
     createProject,
     getProjects,
@@ -393,5 +476,7 @@ module.exports = {
     createComment,
     getProjectsByCreator,
     getProjectById,
-    updateProject
+    updateProject,
+    getProjectObservations,
+    resubmitProject
 };

@@ -1,7 +1,7 @@
 const { requireRoles } = require('./authMiddleware');
 
-const isAdmin = requireRoles(['Administrador']);
+const isUser = requireRoles(['Usuario']);
 
 module.exports = {
-    isAdmin
+    isUser
 };

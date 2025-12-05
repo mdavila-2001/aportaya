@@ -4,6 +4,10 @@
     const API_BASE_URL = '/api/user/my-projects';
     const projectsGrid = document.getElementById('projects-grid');
     const emptyState = document.getElementById('empty-state');
+    const observationsModal = document.getElementById('observations-modal');
+    const resubmitBtn = document.getElementById('resubmit-btn');
+
+    let currentProjectId = null;
 
     async function loadMyProjects() {
         try {
@@ -68,6 +72,14 @@
 
         const statusInfo = getStatusInfo(project.status);
 
+        // Botón especial para proyectos observados
+        const observedButton = project.status === 'observed' ? `
+            <button class="btn btn-warning btn-sm" data-action="view-observations" data-id="${project.id}" style="margin-left: 0.5rem;">
+                <span class="material-symbols-outlined" style="font-size: 18px;">visibility</span>
+                Ver Observaciones
+            </button>
+        ` : '';
+
         card.innerHTML = `
             <div class="project-image-container">
                 <img 
@@ -92,12 +104,15 @@
                         <div class="progress-fill" style="width: ${progressWidth}%"></div>
                     </div>
                     <span class="project-goal">Meta: $${parseFloat(project.goal_amount).toLocaleString()}</span>
-                    <div class="card-footer" style="margin-top: 1rem; display: flex; justify-content: space-between; align-items: center;">
+                    <div class="card-footer" style="margin-top: 1rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem;">
                         <span class="days-left">${daysText}</span>
-                        <a href="edit-project.html?id=${project.id}" class="btn btn-outline btn-sm">
-                            <span class="material-symbols-outlined" style="font-size: 18px;">edit</span>
-                            Editar
-                        </a>
+                        <div style="display: flex; gap: 0.5rem;">
+                            <a href="edit-project.html?id=${project.id}" class="btn btn-outline btn-sm">
+                                <span class="material-symbols-outlined" style="font-size: 18px;">edit</span>
+                                Editar
+                            </a>
+                            ${observedButton}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -105,6 +120,100 @@
 
         return card;
     }
+
+    async function showObservations(projectId) {
+        try {
+            currentProjectId = projectId;
+            const token = localStorage.getItem('token');
+
+            const response = await fetch(`/api/user/projects/${projectId}/observations`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error('Error al cargar observaciones');
+            }
+
+            const result = await response.json();
+            const obs = result.data.observations;
+
+            if (!obs) {
+                document.getElementById('observation-reason').innerHTML = '<p>No se encontraron observaciones.</p>';
+            } else {
+                const date = new Date(obs.change_date).toLocaleDateString('es-ES', {
+                    day: '2-digit',
+                    month: 'long',
+                    year: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+
+                document.getElementById('observation-date').textContent = `Observado el ${date}`;
+                document.getElementById('observation-admin').textContent = `Por: ${obs.admin_name || 'Administrador'}`;
+                document.getElementById('observation-reason').innerHTML = `<strong>Motivo:</strong><br>${obs.reason || 'Sin motivo especificado'}`;
+            }
+
+            observationsModal?.showPopover();
+        } catch (error) {
+            console.error('Error:', error);
+            alert('Error al cargar las observaciones');
+        }
+    }
+
+    async function resubmitProject() {
+        if (!currentProjectId) return;
+
+        try {
+            const token = localStorage.getItem('token');
+
+            const response = await fetch(`/api/user/projects/${currentProjectId}/resubmit`, {
+                method: 'PUT',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            const result = await response.json();
+
+            if (!response.ok) {
+                throw new Error(result.message || 'Error al reenviar proyecto');
+            }
+
+            observationsModal?.hidePopover();
+
+            if (typeof Notification !== 'undefined') {
+                Notification.success('Proyecto reenviado a revisión exitosamente');
+            } else {
+                alert('Proyecto reenviado a revisión exitosamente');
+            }
+
+            // Recargar proyectos
+            setTimeout(() => loadMyProjects(), 1000);
+        } catch (error) {
+            console.error('Error:', error);
+            if (typeof Notification !== 'undefined') {
+                Notification.error(error.message);
+            } else {
+                alert(error.message || 'Error al reenviar el proyecto');
+            }
+        }
+    }
+
+    // Event delegation para botones
+    projectsGrid.addEventListener('click', (e) => {
+        const btn = e.target.closest('[data-action="view-observations"]');
+        if (btn) {
+            const projectId = btn.dataset.id;
+            showObservations(projectId);
+        }
+    });
+
+    // Botón reenviar
+    resubmitBtn?.addEventListener('click', resubmitProject);
 
     function calculateDaysLeft(endDate) {
         const end = new Date(endDate);

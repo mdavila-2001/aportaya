@@ -360,6 +360,69 @@ const updateProject = async (req, res) => {
     }
 };
 
+const getProjectObservations = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const userId = req.user.id;
+
+        const project = await projectRepository.getProjectById(id);
+
+        if (!project) {
+            return res.status(404).json({
+                success: false,
+                message: 'Proyecto no encontrado'
+            });
+        }
+
+        if (project.creator_id !== userId) {
+            return res.status(403).json({
+                success: false,
+                message: 'No tienes permiso para ver las observaciones de este proyecto'
+            });
+        }
+
+        const observations = await projectRepository.getProjectObservations(id);
+
+        res.json({
+            success: true,
+            data: {
+                observations
+            }
+        });
+    } catch (error) {
+        console.error('Error obteniendo observaciones:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Error al obtener observaciones'
+        });
+    }
+};
+
+const resubmitProject = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const userId = req.user.id;
+
+        await projectRepository.resubmitProject(id, userId);
+
+        res.json({
+            success: true,
+            message: 'Proyecto reenviado a revisión exitosamente'
+        });
+    } catch (error) {
+        console.error('Error reenviando proyecto:', error);
+
+        const statusCode = error.message.includes('No tienes permiso') ? 403 :
+            error.message.includes('no encontrado') ? 404 :
+                error.message.includes('Solo se pueden') ? 400 : 500;
+
+        res.status(statusCode).json({
+            success: false,
+            message: error.message || 'Error al reenviar el proyecto'
+        });
+    }
+};
+
 module.exports = {
     createProject,
     getProjects,
@@ -368,5 +431,7 @@ module.exports = {
     getMyProjects,
     getProjectCategories,
     getProjectForEdit,
-    updateProject
+    updateProject,
+    getProjectObservations,
+    resubmitProject
 };

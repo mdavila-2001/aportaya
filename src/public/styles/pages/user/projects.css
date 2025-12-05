@@ -6,6 +6,16 @@
     gap: var(--spM);
 }
 
+.observation-reason {
+    color: var(--text-light);
+}
+
+.observation-content {
+    display: flex;
+    gap: var(--spM);
+    flex-direction: column;
+}
+
 .projects-header {
     display: flex;
     flex-direction: column;

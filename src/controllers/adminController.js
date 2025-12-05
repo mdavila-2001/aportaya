@@ -523,6 +523,28 @@ const updateProjectStatus = async (req, res) => {
     }
 };
 
+const getProjectHistory = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        const history = await adminRepository.getProjectHistory(id);
+
+        res.status(200).json({
+            success: true,
+            message: 'Historial obtenido exitosamente',
+            data: {
+                history: history
+            }
+        });
+    } catch (error) {
+        console.error('Error obteniendo historial del proyecto:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Error obteniendo historial del proyecto'
+        });
+    }
+};
+
 module.exports = {
     getDashboardStats,
     getUsers,
@@ -538,5 +560,6 @@ module.exports = {
     deleteCategory,
     getProjects,
     getProjectById,
-    updateProjectStatus
+    updateProjectStatus,
+    getProjectHistory
 };

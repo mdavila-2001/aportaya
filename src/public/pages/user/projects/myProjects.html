@@ -196,6 +196,29 @@
             </div>
         </div>
 
+        <!-- Modal ver observaciones -->
+        <div class="modal" id="observations-modal" popover="manual">
+            <div class="modal-header">
+                <h2 class="modal-title">Observaciones del Administrador</h2>
+                <button class="modal-close" commandfor="observations-modal" command="hide-popover">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="observation-content">
+                    <p class="observation-date" id="observation-date"></p>
+                    <p class="observation-admin" id="observation-admin"></p>
+                    <div class="observation-reason" id="observation-reason"></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" commandfor="observations-modal" command="hide-popover">Cerrar</button>
+                <button class="btn btn-primary" id="resubmit-btn">Reenviar a Revisión</button>
+            </div>
+        </div>
+
+        <script src="../../../scripts/auth-guard.js"></script>
+        <script>requireUser();</script>
         <script src="../../../scripts/user-header.js"></script>
         <script src="../../../scripts/components/logout-modal.js"></script>
         <script src="../../../scripts/pages/user/my-projects-loader.js"></script>

@@ -93,7 +93,7 @@
                                     <div class="form-group">
                                         <label for="category" class="form-label required">Categoría</label>
                                         <select id="category" class="form-select">
-                                            <option value="">Selecciona una categoría</option>
+                                            <option value="" selected disabled>Selecciona una categoría</option>
                                         </select>
                                         <div class="error_msg" id="category_error_msg"></div>
                                     </div>
@@ -236,6 +236,8 @@
             </footer>
         </div>
 
+        <script src="../../../scripts/auth-guard.js"></script>
+        <script>requireUser();</script>
         <script src="../../../scripts/components/notification.js"></script>
         <script src="../../../scripts/components/imageLoader.js"></script>
         <script src="../../../scripts/components/documentLoader.js"></script>

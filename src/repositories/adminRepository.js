@@ -693,6 +693,33 @@ const updateProjectStatus = async (projectId, status, reason, adminId) => {
     }
 };
 
+const getProjectHistory = async (projectId) => {
+    const client = await dbPool.connect();
+    try {
+        const query = `
+            SELECT 
+                h.id,
+                h.old_status,
+                h.new_status,
+                h.reason,
+                h.change_date,
+                u.first_name || ' ' || COALESCE(u.last_name, '') as changed_by_name
+            FROM projects.project_status_history h
+            LEFT JOIN users.user u ON h.changed_by = u.id
+            WHERE h.project_id = $1
+            ORDER BY h.change_date DESC
+        `;
+
+        const { rows } = await client.query(query, [projectId]);
+        return rows;
+    } catch (error) {
+        console.error('Error obteniendo historial del proyecto:', error);
+        throw error;
+    } finally {
+        client.release();
+    }
+};
+
 module.exports = {
     getStats,
     getUsers,
@@ -708,5 +735,6 @@ module.exports = {
     deleteCategory,
     getProjects,
     getProjectById,
-    updateProjectStatus
+    updateProjectStatus,
+    getProjectHistory
 };

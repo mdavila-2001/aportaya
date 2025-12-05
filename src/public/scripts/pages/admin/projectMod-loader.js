@@ -138,7 +138,59 @@
     }
 
     async function loadHistory(projectId) {
-        historyList.innerHTML = '<p class="empty-history">No hay acciones registradas</p>';
+        try {
+            const token = localStorage.getItem('token');
+            const response = await fetch(`${API_BASE_URL}/projects/${projectId}/history`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error('Error al cargar historial');
+            }
+
+            const result = await response.json();
+            const history = result.data.history;
+
+            if (!history || history.length === 0) {
+                historyList.innerHTML = '<p class="empty-history">No hay acciones registradas</p>';
+                return;
+            }
+
+            historyList.innerHTML = history.map(item => {
+                const dateFormatted = formatDate(item.change_date);
+                const statusText = getStatusChangeText(item.old_status, item.new_status);
+                const reasonHtml = item.reason ? `<p class="history-reason">${escapeHtml(item.reason)}</p>` : '';
+
+                return `
+                    <div class="history-item">
+                        <div class="history-header">
+                            <span class="history-status">${statusText}</span>
+                            <span class="history-date">${dateFormatted}</span>
+                        </div>
+                        <p class="history-admin">Por: ${escapeHtml(item.changed_by_name || 'Sistema')}</p>
+                        ${reasonHtml}
+                    </div>
+                `;
+            }).join('');
+        } catch (error) {
+            console.error('Error cargando historial:', error);
+            historyList.innerHTML = '<p class="empty-history">Error al cargar el historial</p>';
+        }
+    }
+
+    function getStatusChangeText(oldStatus, newStatus) {
+        const statusNames = {
+            'draft': 'Borrador',
+            'in_review': 'En Revisión',
+            'observed': 'Observado',
+            'rejected': 'Rechazado',
+            'published': 'Publicado'
+        };
+
+        return `${statusNames[oldStatus] || oldStatus} → ${statusNames[newStatus] || newStatus}`;
     }
 
     function getStatusText(status) {

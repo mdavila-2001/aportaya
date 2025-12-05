@@ -74,6 +74,19 @@
         const statusText = getStatusText(project.approval_status);
         const imageUrl = project.cover_image_url || '/images/placeholder-project.jpg';
 
+        const showModerationButtons = project.approval_status === 'in_review';
+        const moderationButtonsHTML = showModerationButtons ? `
+            <button class="btn-icon btn-approve" data-action="approve" data-id="${project.id}" title="Aprobar">
+                <span class="material-symbols-outlined">check</span>
+            </button>
+            <button class="btn-icon btn-observe" data-action="observe" data-id="${project.id}" title="Observar">
+                <span class="material-symbols-outlined">visibility</span>
+            </button>
+            <button class="btn-icon btn-reject" data-action="reject" data-id="${project.id}" title="Rechazar">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+        ` : '';
+
         card.innerHTML = `
             <div class="project-card-image" style="background-image: url('${escapeHtml(imageUrl)}')">
                 <span class="project-status-badge status-${project.approval_status}">${statusText}</span>
@@ -86,15 +99,7 @@
                     <button class="btn btn-primary btn-review" data-action="review" data-id="${project.id}">
                         Revisar Detalles
                     </button>
-                    <button class="btn-icon btn-approve" data-action="approve" data-id="${project.id}" title="Aprobar">
-                        <span class="material-symbols-outlined">check</span>
-                    </button>
-                    <button class="btn-icon btn-observe" data-action="observe" data-id="${project.id}" title="Observar">
-                        <span class="material-symbols-outlined">visibility</span>
-                    </button>
-                    <button class="btn-icon btn-reject" data-action="reject" data-id="${project.id}" title="Rechazar">
-                        <span class="material-symbols-outlined">close</span>
-                    </button>
+                    ${moderationButtonsHTML}
                 </div>
             </div>
         `;

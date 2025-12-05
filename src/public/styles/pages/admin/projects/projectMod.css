@@ -177,6 +177,19 @@
     padding-bottom: 0;
 }
 
+.history-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spXS);
+}
+
+.history-status {
+    font-size: var(--sfM);
+    font-weight: 600;
+    color: var(--text-light);
+}
+
 .history-action {
     font-size: var(--sfM);
     color: var(--text-light-muted);
@@ -200,14 +213,26 @@
 }
 
 .history-admin {
+    font-size: var(--sfS);
     font-weight: 600;
-    color: var(--text-light);
+    color: var(--text-light-muted);
+    margin: 0 0 var(--spXS) 0;
 }
 
 .history-date {
     font-size: var(--sfXS);
     color: rgba(255, 255, 255, 0.5);
-    margin: 0 0 var(--spS) 0;
+}
+
+.history-reason {
+    font-size: var(--sfM);
+    color: var(--text-light);
+    background-color: rgba(255, 255, 255, 0.05);
+    padding: var(--spS);
+    border-radius: var(--border-radius-md);
+    margin: var(--spS) 0 0 0;
+    line-height: 1.5;
+    font-style: italic;
 }
 
 .history-note {
