@@ -342,18 +342,17 @@ const getProjectById = async (projectId) => {
                 p.campaign_status,
                 p.creator_id,
                 p.video_url,
+                p.proof_document_id,
                 c.name as category_name,
                 pi_cover.image_id as cover_image_id,
                 img_cover.file_path as cover_image_url,
-                pd.document_id as proof_document_id,
                 doc.file_path as proof_document_url,
                 doc.file_name as proof_document_name
             FROM projects.project p
             LEFT JOIN projects.category c ON p.category_id = c.id
             LEFT JOIN projects.project_image pi_cover ON p.id = pi_cover.project_id AND pi_cover.is_cover = TRUE
             LEFT JOIN files.image img_cover ON pi_cover.image_id = img_cover.id
-            LEFT JOIN projects.project_document pd ON p.id = pd.project_id
-            LEFT JOIN files.document doc ON pd.document_id = doc.id
+            LEFT JOIN files.document doc ON p.proof_document_id = doc.id
             WHERE p.id = $1
         `;
 

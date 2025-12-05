@@ -72,6 +72,14 @@
 
         const statusInfo = getStatusInfo(project.status);
 
+        // Botón de editar (solo visible en draft u observed)
+        const editButton = ['draft', 'observed'].includes(project.status) ? `
+            <a href="edit-project.html?id=${project.id}" class="btn btn-outline btn-sm">
+                <span class="material-symbols-outlined" style="font-size: 18px;">edit</span>
+                Editar
+            </a>
+        ` : '';
+
         // Botón especial para proyectos observados
         const observedButton = project.status === 'observed' ? `
             <button class="btn btn-warning btn-sm" data-action="view-observations" data-id="${project.id}" style="margin-left: 0.5rem;">
@@ -87,6 +95,36 @@
                 Enviar a Aprobación
             </button>
         ` : '';
+
+        let campaignButtons = '';
+        if (project.status === 'published') {
+            if (project.campaign_status === 'not_started') {
+                campaignButtons = `
+                    <button class="btn btn-success btn-sm" data-action="start-campaign" data-id="${project.id}" style="margin-left: 0.5rem;">
+                        <span class="material-symbols-outlined" style="font-size: 18px;">play_arrow</span>
+                        Iniciar Campaña
+                    </button>
+                `;
+            } else if (project.campaign_status === 'active') {
+                campaignButtons = `
+                    <button class="btn btn-warning btn-sm" data-action="pause-campaign" data-id="${project.id}" style="margin-left: 0.5rem;">
+                        <span class="material-symbols-outlined" style="font-size: 18px;">pause</span>
+                        Pausar
+                    </button>
+                    <button class="btn btn-danger btn-sm" data-action="finish-campaign" data-id="${project.id}" style="margin-left: 0.5rem;">
+                        <span class="material-symbols-outlined" style="font-size: 18px;">stop</span>
+                        Finalizar
+                    </button>
+                `;
+            } else if (project.campaign_status === 'paused') {
+                campaignButtons = `
+                    <button class="btn btn-success btn-sm" data-action="resume-campaign" data-id="${project.id}" style="margin-left: 0.5rem;">
+                        <span class="material-symbols-outlined" style="font-size: 18px;">play_arrow</span>
+                        Reanudar
+                    </button>
+                `;
+            }
+        }
 
         card.innerHTML = `
             <div class="project-image-container">
@@ -115,12 +153,10 @@
                     <div class="card-footer" style="margin-top: 1rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem;">
                         <span class="days-left">${daysText}</span>
                         <div style="display: flex; gap: 0.5rem;">
-                            <a href="edit-project.html?id=${project.id}" class="btn btn-outline btn-sm">
-                                <span class="material-symbols-outlined" style="font-size: 18px;">edit</span>
-                                Editar
-                            </a>
+                            ${editButton}
                             ${observedButton}
                             ${submitButton}
+                            ${campaignButtons}
                         </div>
                     </div>
                 </div>
@@ -168,7 +204,7 @@
             observationsModal?.showPopover();
         } catch (error) {
             console.error('Error:', error);
-            alert('Error al cargar las observaciones');
+            Notification.error('Error al cargar las observaciones');
         }
     }
 
@@ -197,7 +233,7 @@
             if (typeof Notification !== 'undefined') {
                 Notification.success('Proyecto reenviado a revisión exitosamente');
             } else {
-                alert('Proyecto reenviado a revisión exitosamente');
+                Notification.success('Proyecto reenviado a revisión exitosamente');
             }
 
             // Recargar proyectos
@@ -207,7 +243,7 @@
             if (typeof Notification !== 'undefined') {
                 Notification.error(error.message);
             } else {
-                alert(error.message || 'Error al reenviar el proyecto');
+                Notification.error(error.message || 'Error al reenviar el proyecto');
             }
         }
     }
@@ -228,7 +264,60 @@
             document.getElementById('submit-approval-modal').showPopover();
             return;
         }
+
+        // Campaign control buttons
+        const startBtn = e.target.closest('[data-action="start-campaign"]');
+        if (startBtn) {
+            await updateCampaignStatus(startBtn.dataset.id, 'active', 'iniciar');
+            return;
+        }
+
+        const pauseBtn = e.target.closest('[data-action="pause-campaign"]');
+        if (pauseBtn) {
+            await updateCampaignStatus(pauseBtn.dataset.id, 'paused', 'pausar');
+            return;
+        }
+
+        const resumeBtn = e.target.closest('[data-action="resume-campaign"]');
+        if (resumeBtn) {
+            await updateCampaignStatus(resumeBtn.dataset.id, 'active', 'reanudar');
+            return;
+        }
+
+        const finishBtn = e.target.closest('[data-action="finish-campaign"]');
+        if (finishBtn) {
+            if (confirm('¿Estás seguro de finalizar la campaña? Esta acción es irreversible.')) {
+                await updateCampaignStatus(finishBtn.dataset.id, 'finished', 'finalizar');
+            }
+            return;
+        }
     });
+
+    // Actualizar estado de campaña
+    async function updateCampaignStatus(projectId, newStatus, actionName) {
+        const token = localStorage.getItem('token');
+        try {
+            const response = await fetch(`/api/user/projects/${projectId}/campaign-status`, {
+                method: 'PUT',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ status: newStatus })
+            });
+
+            const result = await response.json();
+            if (!response.ok) throw new Error(result.message);
+
+            Notification.success(`Campaña ${actionName === 'iniciar' ? 'iniciada' :
+                actionName === 'pausar' ? 'pausada' :
+                    actionName === 'reanudar' ? 'reanudada' : 'finalizada'} exitosamente`);
+            loadMyProjects();
+        } catch (error) {
+            console.error('Error:', error);
+            Notification.error(error.message || 'Error al actualizar estado de campaña');
+        }
+    }
 
     // Confirmar envío a aprobación
     const confirmSubmitBtn = document.getElementById('confirm-submit-btn');
@@ -254,11 +343,11 @@
                 throw new Error(result.message);
             }
 
-            alert('✅ Proyecto enviado a revisión exitosamente');
+            Notification.success('Proyecto enviado a revisión exitosamente');
             loadMyProjects();
         } catch (error) {
             console.error('Error:', error);
-            alert(error.message || 'Error al enviar el proyecto');
+            Notification.error(error.message || 'Error al enviar el proyecto');
         }
     });
 

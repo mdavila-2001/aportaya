@@ -1,310 +1,312 @@
 <!DOCTYPE html>
 <html lang="es">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="author" content="Danny Marcelo Dávila Barrancos">
-        <meta name="description" content="Editar Proyecto - AportaYa">
-        <meta property="og:title" content="Editar Proyecto - AportaYa">
-        <meta property="og:author" content="Danny Marcelo Dávila Barrancos">
-        <meta property="og:description" content="Editar Proyecto - AportaYa">
-        <link rel="shortcut icon" href="../../../images/favicon.ico" type="image/x-icon">
 
-        <link rel="stylesheet" href="../../../styles/styles.css">
-        <link rel="stylesheet" href="../../../styles/fonts.css">
-        <link rel="stylesheet" href="../../../styles/components/buttons.css">
-        <link rel="stylesheet" href="../../../styles/components/header.css">
-        <link rel="stylesheet" href="../../../styles/components/sidebar.css">
-        <link rel="stylesheet" href="../../../styles/components/forms.css">
-        <link rel="stylesheet" href="../../../styles/components/modal.css">
-        <link rel="stylesheet" href="../../../styles/components/notification.css">
-        <link rel="stylesheet" href="../../../styles/pages/user/layout.css">
-        <link rel="stylesheet" href="../../../styles/pages/user/edit-project.css">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Danny Marcelo Dávila Barrancos">
+    <meta name="description" content="Editar Proyecto - AportaYa">
+    <meta property="og:title" content="Editar Proyecto - AportaYa">
+    <meta property="og:author" content="Danny Marcelo Dávila Barrancos">
+    <meta property="og:description" content="Editar Proyecto - AportaYa">
+    <link rel="shortcut icon" href="../../../images/favicon.ico" type="image/x-icon">
 
-        <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+    <link rel="stylesheet" href="../../../styles/styles.css">
+    <link rel="stylesheet" href="../../../styles/fonts.css">
+    <link rel="stylesheet" href="../../../styles/components/buttons.css">
+    <link rel="stylesheet" href="../../../styles/components/header.css">
+    <link rel="stylesheet" href="../../../styles/components/sidebar.css">
+    <link rel="stylesheet" href="../../../styles/components/forms.css">
+    <link rel="stylesheet" href="../../../styles/components/modal.css">
+    <link rel="stylesheet" href="../../../styles/components/notification.css">
+    <link rel="stylesheet" href="../../../styles/pages/user/layout.css">
+    <link rel="stylesheet" href="../../../styles/pages/user/edit-project.css">
 
-        <title>Editar Proyecto - AportaYa</title>
-    </head>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
 
-    <body>
-        <main class="user-content">
-            <aside class="sidebar user-sidebar">
-                <div class="sidebar-header">
-                    <div class="sidebar-brand">
-                        <div class="brand-icon">
+    <title>Editar Proyecto - AportaYa</title>
+</head>
+
+<body>
+    <main class="user-content">
+        <aside class="sidebar user-sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-brand">
+                    <div class="brand-icon">
+                        <span class="material-symbols-outlined">volunteer_activism</span>
+                    </div>
+                    <div class="brand-text">
+                        <h1>AportaYa</h1>
+                        <p>Mi Cuenta</p>
+                    </div>
+                </div>
+            </div>
+            <nav class="sidebar-nav" aria-label="Menú de navegación principal">
+                <ul class="sidebar-items">
+                    <li class="sidebar-item">
+                        <a href="../dashboard.html">
+                            <span class="material-symbols-outlined filled">dashboard</span>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a href="projects.html">
+                            <span class="material-symbols-outlined">explore</span>
+                            <span>Proyectos</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-item active">
+                        <a href="myProjects.html">
+                            <span class="material-symbols-outlined">folder</span>
+                            <span>Mis Proyectos</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a href="favorites.html">
+                            <span class="material-symbols-outlined">bookmark</span>
+                            <span>Favoritos</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a href="../donations.html">
                             <span class="material-symbols-outlined">volunteer_activism</span>
+                            <span>Mis Aportes</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            <div class="sidebar-footer">
+                <ul class="sidebar-items">
+                    <li class="sidebar-item logout-item">
+                        <button commandfor="logout-modal" command="show-popover" class="logout-btn">
+                            <span class="material-symbols-outlined">logout</span>
+                            <span>Cerrar Sesión</span>
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </aside>
+        <section class="user-main">
+            <header class="header-logged">
+                <div class="logged-in-content">
+                    <div class="header-menu">
+                        <input type="checkbox" name="mobile-menu-switch" id="mobile-menu-switch">
+                        <label for="mobile-menu-switch" class="mobile-menu-label">
+                            <span class="material-symbols-outlined mobile-menu">menu</span>
+                        </label>
+                        <div class="floating-menu">
+                            <nav class="user-menu" aria-label="User Menu">
+                                <ul class="mobile-sidebar-items">
+                                    <li class="mobile-sidebar-item">
+                                        <a href="../dashboard.html">
+                                            <span class="material-symbols-outlined filled">dashboard</span>
+                                            <span>Dashboard</span>
+                                        </a>
+                                    </li>
+                                    <li class="mobile-sidebar-item">
+                                        <a href="projects.html">
+                                            <span class="material-symbols-outlined">explore</span>
+                                            <span>Proyectos</span>
+                                        </a>
+                                    </li>
+                                    <li class="mobile-sidebar-item active">
+                                        <a href="myProjects.html">
+                                            <span class="material-symbols-outlined">folder</span>
+                                            <span>Mis Proyectos</span>
+                                        </a>
+                                    </li>
+                                    <li class="mobile-sidebar-item">
+                                        <a href="favorites.html">
+                                            <span class="material-symbols-outlined">bookmark</span>
+                                            <span>Favoritos</span>
+                                        </a>
+                                    </li>
+                                    <li class="mobile-sidebar-item">
+                                        <a href="../donations.html">
+                                            <span class="material-symbols-outlined">volunteer_activism</span>
+                                            <span>Mis Aportes</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </nav>
+                            <div class="mobile-sidebar-footer">
+                                <ul class="mobile-sidebar-items">
+                                    <li class="mobile-sidebar-item logout-item">
+                                        <button commandfor="logout-modal" command="show-popover" class="logout-btn">
+                                            <span class="material-symbols-outlined">logout</span>
+                                            <span>Cerrar Sesión</span>
+                                        </button>
+                                    </li>
+                                </ul>
+                            </div>
                         </div>
-                        <div class="brand-text">
-                            <h1>AportaYa</h1>
-                            <p>Mi Cuenta</p>
+                    </div>
+                    <div>
+                        <a class="logo">
+                            <img src="../../../images/aporta-ya-icon.webp" alt="AportaYa Logo" width="48" height="48">
+                            <img src="../../../images/aporta-ya-letters.webp" alt="AportaYa" width="100"
+                                class="letters">
+                        </a>
+                    </div>
+                    <div>
+                        <div class="user-info">
+                            <img src="/uploads/avatar/blank/no_photo.png" alt="Avatar" class="user-avatar" width="48"
+                                height="48" style="border-radius: 999px;">
+                            <span class="user-name">Cargando...</span>
                         </div>
                     </div>
                 </div>
-                <nav class="sidebar-nav" aria-label="Menú de navegación principal">
-                    <ul class="sidebar-items">
-                        <li class="sidebar-item">
-                            <a href="../dashboard.html">
-                                <span class="material-symbols-outlined filled">dashboard</span>
-                                <span>Dashboard</span>
-                            </a>
-                        </li>
-                        <li class="sidebar-item">
-                            <a href="projects.html">
-                                <span class="material-symbols-outlined">explore</span>
-                                <span>Proyectos</span>
-                            </a>
-                        </li>
-                        <li class="sidebar-item active">
-                            <a href="myProjects.html">
-                                <span class="material-symbols-outlined">folder</span>
-                                <span>Mis Proyectos</span>
-                            </a>
-                        </li>
-                        <li class="sidebar-item">
-                            <a href="favorites.html">
-                                <span class="material-symbols-outlined">bookmark</span>
-                                <span>Favoritos</span>
-                            </a>
-                        </li>
-                        <li class="sidebar-item">
-                            <a href="../donations.html">
-                                <span class="material-symbols-outlined">volunteer_activism</span>
-                                <span>Mis Aportes</span>
-                            </a>
-                        </li>
-                    </ul>
-                </nav>
-                <div class="sidebar-footer">
-                    <ul class="sidebar-items">
-                        <li class="sidebar-item logout-item">
-                            <button commandfor="logout-modal" command="show-popover" class="logout-btn">
-                                <span class="material-symbols-outlined">logout</span>
-                                <span>Cerrar Sesión</span>
-                            </button>
-                        </li>
-                    </ul>
+            </header>
+            <main class="edit-project-container">
+                <div class="edit-project-header">
+                    <h2>Editar Proyecto</h2>
+                    <p>Actualiza la información de tu proyecto</p>
                 </div>
-            </aside>
-            <section class="user-main">
-                <header class="header-logged">
-                    <div class="logged-in-content">
-                        <div class="header-menu">
-                            <input type="checkbox" name="mobile-menu-switch" id="mobile-menu-switch">
-                            <label for="mobile-menu-switch" class="mobile-menu-label">
-                                <span class="material-symbols-outlined mobile-menu">menu</span>
-                            </label>
-                            <div class="floating-menu">
-                                <nav class="user-menu" aria-label="User Menu">
-                                    <ul class="mobile-sidebar-items">
-                                        <li class="mobile-sidebar-item">
-                                            <a href="../dashboard.html">
-                                                <span class="material-symbols-outlined filled">dashboard</span>
-                                                <span>Dashboard</span>
-                                            </a>
-                                        </li>
-                                        <li class="mobile-sidebar-item">
-                                            <a href="projects.html">
-                                                <span class="material-symbols-outlined">explore</span>
-                                                <span>Proyectos</span>
-                                            </a>
-                                        </li>
-                                        <li class="mobile-sidebar-item active">
-                                            <a href="myProjects.html">
-                                                <span class="material-symbols-outlined">folder</span>
-                                                <span>Mis Proyectos</span>
-                                            </a>
-                                        </li>
-                                        <li class="mobile-sidebar-item">
-                                            <a href="favorites.html">
-                                                <span class="material-symbols-outlined">bookmark</span>
-                                                <span>Favoritos</span>
-                                            </a>
-                                        </li>
-                                        <li class="mobile-sidebar-item">
-                                            <a href="../donations.html">
-                                                <span class="material-symbols-outlined">volunteer_activism</span>
-                                                <span>Mis Aportes</span>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </nav>
-                                <div class="mobile-sidebar-footer">
-                                    <ul class="mobile-sidebar-items">
-                                        <li class="mobile-sidebar-item logout-item">
-                                            <button commandfor="logout-modal" command="show-popover" class="logout-btn">
-                                                <span class="material-symbols-outlined">logout</span>
-                                                <span>Cerrar Sesión</span>
-                                            </button>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <div>
-                            <a class="logo">
-                                <img src="../../../images/aporta-ya-icon.webp" alt="AportaYa Logo" width="48" height="48">
-                                <img src="../../../images/aporta-ya-letters.webp" alt="AportaYa" width="100"
-                                    class="letters">
-                            </a>
-                        </div>
-                        <div>
-                            <div class="user-info">
-                                <img src="/uploads/avatar/blank/no_photo.png" alt="Avatar" class="user-avatar" width="48"
-                                    height="48" style="border-radius: 999px;">
-                                <span class="user-name">Cargando...</span>
-                            </div>
+
+                <form class="edit-form" id="edit-project-form">
+                    <div class="form-group">
+                        <label for="project-title">
+                            Nombre del Proyecto <span style="color: #ef4444;">*</span>
+                        </label>
+                        <input type="text" id="project-title" name="title"
+                            placeholder="Ej: Construyendo un futuro mejor" maxlength="200">
+                        <div class="char-counter">
+                            <span id="title-counter">0</span>/200
                         </div>
                     </div>
-                </header>
-                <main class="edit-project-container">
-                    <div class="edit-project-header">
-                        <h2>Editar Proyecto</h2>
-                        <p>Actualiza la información de tu proyecto</p>
+
+                    <div class="form-group">
+                        <label for="project-summary">
+                            Resumen <span style="color: #ef4444;">*</span>
+                        </label>
+                        <textarea id="project-summary" name="summary"
+                            placeholder="Un resumen breve de tu proyecto (se mostrará en las tarjetas de vista previa)..."
+                            maxlength="500" rows="3"></textarea>
+                        <div class="char-counter">
+                            <span id="summary-counter">0</span>/500
+                        </div>
                     </div>
 
-                    <form class="edit-form" id="edit-project-form">
-                        <div class="form-group">
-                            <label for="project-title">
-                                Nombre del Proyecto <span style="color: #ef4444;">*</span>
-                            </label>
-                            <input type="text" id="project-title" name="title"
-                                placeholder="Ej: Construyendo un futuro mejor" maxlength="200">
-                            <div class="char-counter">
-                                <span id="title-counter">0</span>/200
-                            </div>
+                    <div class="form-group">
+                        <label for="project-description">
+                            Descripción Detallada <span style="color: #ef4444;">*</span>
+                        </label>
+                        <textarea id="project-description" name="description"
+                            placeholder="Describe tu proyecto de manera detallada..." maxlength="5000"></textarea>
+                        <div class="char-counter">
+                            <span id="description-counter">0</span>/5000
                         </div>
+                    </div>
 
-                        <div class="form-group">
-                            <label for="project-summary">
-                                Resumen <span style="color: #ef4444;">*</span>
-                            </label>
-                            <textarea id="project-summary" name="summary"
-                                placeholder="Un resumen breve de tu proyecto (se mostrará en las tarjetas de vista previa)..."
-                                maxlength="500" rows="3"></textarea>
-                            <div class="char-counter">
-                                <span id="summary-counter">0</span>/500
-                            </div>
-                        </div>
+                    <div class="form-group">
+                        <label for="project-end-date">
+                            Fecha Límite <span style="color: #ef4444;">*</span>
+                        </label>
+                        <input type="date" id="project-end-date" name="endDate">
+                        <small style="display: block; margin-top: 0.5rem; color: #666;">
+                            La fecha límite debe ser posterior a hoy
+                        </small>
+                    </div>
 
-                        <div class="form-group">
-                            <label for="project-description">
-                                Descripción Detallada <span style="color: #ef4444;">*</span>
-                            </label>
-                            <textarea id="project-description" name="description"
-                                placeholder="Describe tu proyecto de manera detallada..." maxlength="5000"></textarea>
-                            <div class="char-counter">
-                                <span id="description-counter">0</span>/5000
-                            </div>
-                        </div>
+                    <div class="form-group">
+                        <label for="project-financial-goal">
+                            Meta Financiera (Bs.) <span style="color: #ef4444;">*</span>
+                        </label>
+                        <input type="number" id="project-financial-goal" name="financialGoal" min="100" step="0.01">
+                        <small id="financial-goal-hint" style="display: block; margin-top: 0.5rem; color: #666;">
+                            Monto mínimo: Bs. 100
+                        </small>
+                    </div>
 
-                        <div class="form-group">
-                            <label for="project-end-date">
-                                Fecha Límite <span style="color: #ef4444;">*</span>
-                            </label>
-                            <input type="date" id="project-end-date" name="endDate">
-                            <small style="display: block; margin-top: 0.5rem; color: #666;">
-                                La fecha límite debe ser posterior a hoy
-                            </small>
-                        </div>
+                    <div class="form-group">
+                        <label for="project-category">
+                            Categoría <span style="color: #ef4444;">*</span>
+                        </label>
+                        <select id="project-category" name="categoryId" class="form-input">
+                            <option value="">Cargando categorías...</option>
+                        </select>
+                        <small id="category-hint" style="display: block; margin-top: 0.5rem; color: #666;"></small>
+                    </div>
 
-                        <div class="form-group">
-                            <label for="project-financial-goal">
-                                Meta Financiera (Bs.) <span style="color: #ef4444;">*</span>
-                            </label>
-                            <input type="number" id="project-financial-goal" name="financialGoal" min="100" step="0.01">
-                            <small id="financial-goal-hint" style="display: block; margin-top: 0.5rem; color: #666;">
-                                Monto mínimo: Bs. 100
-                            </small>
-                        </div>
+                    <div class="form-group">
+                        <label for="project-location">
+                            Ubicación <span style="color: #ef4444;">*</span>
+                        </label>
+                        <input type="text" id="project-location" name="location" placeholder="Ciudad, País">
+                    </div>
 
-                        <div class="form-group">
-                            <label for="project-category">
-                                Categoría <span style="color: #ef4444;">*</span>
-                            </label>
-                            <select id="project-category" name="categoryId">
-                                <option value="">Cargando categorías...</option>
-                            </select>
-                            <small id="category-hint" style="display: block; margin-top: 0.5rem; color: #666;"></small>
-                        </div>
+                    <div class="form-group">
+                        <label for="project-video">
+                            Video del Proyecto (opcional)
+                        </label>
+                        <input type="url" id="project-video" name="videoUrl"
+                            placeholder="https://youtube.com/watch?v=...">
+                    </div>
 
-                        <div class="form-group">
-                            <label for="project-location">
-                                Ubicación <span style="color: #ef4444;">*</span>
-                            </label>
-                            <input type="text" id="project-location" name="location" placeholder="Ciudad, País">
-                        </div>
+                    <div class="form-group">
+                        <label>Imagen de Portada</label>
+                        <div id="current-cover-preview" style="margin-bottom: 1rem;"></div>
+                        <input type="file" id="cover-image-input" accept="image/*" hidden>
+                        <input type="hidden" id="cover-image-id" name="coverImageId">
+                        <button type="button" class="btn btn-secondary" id="change-cover-btn">
+                            <span class="material-symbols-outlined" style="font-size: 18px;">upload</span>
+                            Cambiar Imagen
+                        </button>
+                    </div>
 
-                        <div class="form-group">
-                            <label for="project-video">
-                                Video del Proyecto (opcional)
-                            </label>
-                            <input type="url" id="project-video" name="videoUrl"
-                                placeholder="https://youtube.com/watch?v=...">
-                        </div>
+                    <div class="form-group">
+                        <label>Documento de Prueba (opcional)</label>
+                        <div id="current-document-preview" style="margin-bottom: 1rem;"></div>
+                        <input type="file" id="proof-document-input" accept=".pdf,.doc,.docx" hidden>
+                        <input type="hidden" id="proof-document-id" name="proofDocumentId">
+                        <button type="button" class="btn btn-secondary" id="change-document-btn">
+                            <span class="material-symbols-outlined" style="font-size: 18px;">upload</span>
+                            Cambiar Documento
+                        </button>
+                    </div>
 
-                        <div class="form-group">
-                            <label>Imagen de Portada</label>
-                            <div id="current-cover-preview" style="margin-bottom: 1rem;"></div>
-                            <input type="file" id="cover-image-input" accept="image/*" hidden>
-                            <input type="hidden" id="cover-image-id" name="coverImageId">
-                            <button type="button" class="btn btn-secondary" id="change-cover-btn">
-                                <span class="material-symbols-outlined" style="font-size: 18px;">upload</span>
-                                Cambiar Imagen
-                            </button>
-                        </div>
+                    <div class="form-actions">
+                        <a href="myProjects.html" class="btn btn-secondary">
+                            Cancelar
+                        </a>
+                        <button type="submit" class="btn btn-primary">
+                            <span class="material-symbols-outlined" style="font-size: 18px;">save</span>
+                            Guardar Cambios
+                        </button>
+                    </div>
+                </form>
+            </main>
+        </section>
+    </main>
 
-                        <div class="form-group">
-                            <label>Documento de Prueba (opcional)</label>
-                            <div id="current-document-preview" style="margin-bottom: 1rem;"></div>
-                            <input type="file" id="proof-document-input" accept=".pdf,.doc,.docx" hidden>
-                            <input type="hidden" id="proof-document-id" name="proofDocumentId">
-                            <button type="button" class="btn btn-secondary" id="change-document-btn">
-                                <span class="material-symbols-outlined" style="font-size: 18px;">upload</span>
-                                Cambiar Documento
-                            </button>
-                        </div>
-
-                        <div class="form-actions">
-                            <a href="myProjects.html" class="btn btn-secondary">
-                                Cancelar
-                            </a>
-                            <button type="submit" class="btn btn-primary">
-                                <span class="material-symbols-outlined" style="font-size: 18px;">save</span>
-                                Guardar Cambios
-                            </button>
-                        </div>
-                    </form>
-                </main>
-            </section>
-        </main>
-
-        <div class="modal modal-small" id="logout-modal" popover="manual">
-            <div class="modal-header">
-                <h2 class="modal-title">Cerrar sesión</h2>
-                <button class="modal-close" commandfor="logout-modal" command="hide-popover">
-                    <span class="material-symbols-outlined">close</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <p>¿Estás seguro de que deseas cerrar sesión?</p>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary" commandfor="logout-modal" command="hide-popover">Cancelar</button>
-                <button class="btn btn-primary" id="confirm-logout">Cerrar sesión</button>
-            </div>
+    <div class="modal modal-small" id="logout-modal" popover="manual">
+        <div class="modal-header">
+            <h2 class="modal-title">Cerrar sesión</h2>
+            <button class="modal-close" commandfor="logout-modal" command="hide-popover">
+                <span class="material-symbols-outlined">close</span>
+            </button>
         </div>
-
-        <div class="loading-overlay" id="loading-overlay">
-            <div class="spinner"></div>
+        <div class="modal-body">
+            <p>¿Estás seguro de que deseas cerrar sesión?</p>
         </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" commandfor="logout-modal" command="hide-popover">Cancelar</button>
+            <button class="btn btn-primary" id="confirm-logout">Cerrar sesión</button>
+        </div>
+    </div>
 
-        <div id="notification-container"></div>
+    <div class="loading-overlay" id="loading-overlay">
+        <div class="spinner"></div>
+    </div>
 
-        <script src="../../../scripts/auth-guard.js"></script>
-        <script>requireUser();</script>
-        <script src="../../../scripts/user-header.js"></script>
-        <script src="../../../scripts/components/logout-modal.js"></script>
-        <script src="../../../scripts/components/notification.js"></script>
-        <script src="../../../scripts/pages/user/edit-project-handler.js"></script>
-    </body>
+    <div id="notification-container"></div>
+
+    <script src="../../../scripts/auth-guard.js"></script>
+    <script>requireUser();</script>
+    <script src="../../../scripts/user-header.js"></script>
+    <script src="../../../scripts/components/logout-modal.js"></script>
+    <script src="../../../scripts/components/notification.js"></script>
+    <script src="../../../scripts/pages/user/edit-project-handler.js"></script>
+</body>
+
 </html>

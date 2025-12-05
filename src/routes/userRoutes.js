@@ -3,6 +3,7 @@ const router = express.Router();
 const userController = require('../controllers/userController');
 const favoriteController = require('../controllers/favoriteController');
 const projectController = require('../controllers/projectController');
+const campaignController = require('../controllers/campaignController');
 const { authenticate } = require('../middleware/authMiddleware');
 const { isUser } = require('../middleware/userMiddleware');
 
@@ -20,5 +21,6 @@ router.get('/projects/:id/observations', projectController.getProjectObservation
 router.put('/projects/:id', projectController.updateProject);
 router.put('/projects/:id/resubmit', projectController.resubmitProject);
 router.put('/projects/:id/submit-for-approval', projectController.submitProjectForApproval);
+router.put('/projects/:id/campaign-status', campaignController.updateCampaignStatus);
 
 module.exports = router;

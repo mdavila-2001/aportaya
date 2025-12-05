@@ -165,7 +165,7 @@ async function loadProjectDetail() {
 
         if (!response.ok) {
             if (response.status === 404) {
-                alert('Proyecto no encontrado');
+                Notification.error('Proyecto no encontrado');
                 window.location.href = 'projects.html';
                 return;
             }
@@ -183,7 +183,7 @@ async function loadProjectDetail() {
 
     } catch (error) {
         console.error('Error:', error);
-        alert('Error al cargar los detalles del proyecto');
+        Notification.error('Error al cargar los detalles del proyecto');
     }
 }
 
@@ -193,12 +193,12 @@ async function submitComment() {
     const content = textarea.value.trim();
 
     if (!content) {
-        alert('Por favor escribe un comentario');
+        Notification.error('Por favor escribe un comentario');
         return;
     }
 
     if (content.length > 1000) {
-        alert('El comentario no puede exceder 1000 caracteres');
+        Notification.error('El comentario no puede exceder 1000 caracteres');
         return;
     }
 
@@ -206,7 +206,7 @@ async function submitComment() {
     const slug = urlParams.get('slug');
 
     if (!slug) {
-        alert('Error: No se pudo identificar el proyecto');
+        Notification.error('Error: No se pudo identificar el proyecto');
         return;
     }
 
@@ -257,11 +257,11 @@ async function submitComment() {
             commentsCount.textContent = currentCount + 1;
 
         } else {
-            alert(result.message || 'Error al enviar el comentario');
+            Notification.error(result.message || 'Error al enviar el comentario');
         }
     } catch (error) {
         console.error('Error enviando comentario:', error);
-        alert('Error al enviar el comentario. Por favor intenta de nuevo.');
+        Notification.error('Error al enviar el comentario. Por favor intenta de nuevo.');
     } finally {
         submitButton.disabled = false;
         submitButton.textContent = 'Comentar';

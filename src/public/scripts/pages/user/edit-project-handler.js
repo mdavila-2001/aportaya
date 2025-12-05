@@ -62,7 +62,7 @@
         projectId = getProjectIdFromUrl();
 
         if (!projectId) {
-            showNotification('error', 'ID de proyecto no válido');
+            Notification.error('ID de proyecto no válido');
             setTimeout(() => window.location.href = 'myProjects.html', 2000);
             return;
         }
@@ -88,11 +88,11 @@
             if (!response.ok) {
                 if (response.status === 401) window.location.href = '../../auth/login.html';
                 if (response.status === 403) {
-                    showNotification('error', 'No tienes permiso para editar este proyecto');
+                    Notification.error('No tienes permiso para editar este proyecto');
                     setTimeout(() => window.location.href = 'myProjects.html', 2000);
                 }
                 if (response.status === 404) {
-                    showNotification('error', 'Proyecto no encontrado');
+                    Notification.error('Este campo es requerido');
                     setTimeout(() => window.location.href = 'myProjects.html', 2000);
                 }
                 throw new Error('Error al cargar el proyecto');
@@ -103,7 +103,7 @@
 
             // Verificar si es editable
             if (!['draft', 'observed'].includes(currentProject.approval_status)) {
-                showNotification('error', 'Solo puedes editar proyectos en estado Borrador u Observado');
+                Notification.error('Solo puedes editar proyectos en estado Borrador u Observado');
                 setTimeout(() => window.location.href = 'myProjects.html', 2500);
                 return;
             }
@@ -158,7 +158,7 @@
 
         } catch (error) {
             console.error('Error:', error);
-            showNotification('error', 'Error al cargar el proyecto');
+            Notification.error('Error al cargar el proyecto');
             setTimeout(() => window.location.href = 'myProjects.html', 2000);
         } finally {
             loadingOverlay.classList.remove('active');
@@ -188,12 +188,12 @@
         if (!file) return;
 
         if (!file.type.startsWith('image/')) {
-            showNotification('error', 'Por favor selecciona una imagen válida');
+            Notification.error('Por favor selecciona una categoría');
             return;
         }
 
         if (file.size > 5 * 1024 * 1024) {
-            showNotification('error', 'La imagen no debe superar 5MB');
+            Notification.error('La imagen no debe superar 5MB');
             return;
         }
 
@@ -219,10 +219,10 @@
                 <img src="${result.data.url}" alt="Nueva portada" 
                      style="max-width: 200px; border-radius: 8px;">
             `;
-            showNotification('success', 'Imagen cargada exitosamente');
+            Notification.success('Imagen cargada exitosamente');
         } catch (error) {
             console.error('Error:', error);
-            showNotification('error', 'Error al subir la imagen');
+            Notification.error('Error al subir la imagen');
         } finally {
             loadingOverlay.classList.remove('active');
         }
@@ -236,7 +236,7 @@
         if (!file) return;
 
         if (file.size > 10 * 1024 * 1024) {
-            showNotification('error', 'El documento no debe superar 10MB');
+            Notification.error('El documento no debe superar 10MB');
             return;
         }
 
@@ -259,10 +259,10 @@
 
             proofDocumentIdInput.value = result.data.documentId;
             currentDocumentPreview.innerHTML = `<p style="color: #666;">📄 ${file.name}</p>`;
-            showNotification('success', 'Documento cargado exitosamente');
+            Notification.success('Documento cargado exitosamente');
         } catch (error) {
             console.error('Error:', error);
-            showNotification('error', 'Error al subir el documento');
+            Notification.error('Por favor carga el documento de prueba');
         } finally {
             loadingOverlay.classList.remove('active');
         }
@@ -283,43 +283,43 @@
 
         // Validaciones básicas
         if (!title || title.length < 5) {
-            showNotification('error', 'El título debe tener al menos 5 caracteres');
+            Notification.error('El título debe tener al menos 5 caracteres');
             titleInput.focus();
             return;
         }
 
         if (!summary || summary.length < 10) {
-            showNotification('error', 'El resumen debe tener al menos 10 caracteres');
+            Notification.error('El resumen debe tener al menos 10 caracteres');
             summaryInput.focus();
             return;
         }
 
         if (!description || description.length < 20) {
-            showNotification('error', 'La descripción debe tener al menos 20 caracteres');
+            Notification.error('La descripción debe tener al menos 20 caracteres');
             descriptionInput.focus();
             return;
         }
 
         if (!endDate) {
-            showNotification('error', 'La fecha límite es obligatoria');
+            Notification.error('La fecha límite es obligatoria');
             endDateInput.focus();
             return;
         }
 
         if (!financialGoal || parseFloat(financialGoal) < 100) {
-            showNotification('error', 'La meta financiera debe ser al menos Bs. 100');
+            Notification.error('La meta financiera debe ser al menos Bs. 100');
             financialGoalInput.focus();
             return;
         }
 
         if (!categoryId) {
-            showNotification('error', 'Debes seleccionar una categoría');
+            Notification.error('Debes seleccionar una categoría');
             categorySelect.focus();
             return;
         }
 
         if (!location) {
-            showNotification('error', 'La ubicación es obligatoria');
+            Notification.error('La ubicación es requerida');
             locationInput.focus();
             return;
         }
@@ -329,7 +329,7 @@
         today.setHours(0, 0, 0, 0);
 
         if (selectedDate <= today) {
-            showNotification('error', 'La fecha límite debe ser posterior a hoy');
+            Notification.error('La fecha límite debe ser posterior a hoy');
             endDateInput.focus();
             return;
         }
@@ -383,7 +383,7 @@
                 throw new Error(result.message || 'Error al actualizar el proyecto');
             }
 
-            showNotification('success', '¡Proyecto actualizado exitosamente!');
+            Notification.success('Proyecto actualizado exitosamente');
 
             setTimeout(() => {
                 window.location.href = 'myProjects.html';
@@ -391,15 +391,13 @@
 
         } catch (error) {
             console.error('Error:', error);
-            showNotification('error', error.message || 'Error al actualizar el proyecto');
+            Notification.error(error.message || 'Error al cargar datos del proyecto');
         } finally {
             loadingOverlay.classList.remove('active');
         }
     });
 
-    function showNotification(type, message) {
-        window.showNotification(type, message);
-    }
+
 
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', loadProjectData);
