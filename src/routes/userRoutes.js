@@ -19,5 +19,6 @@ router.get('/projects/:id', projectController.getProjectForEdit);
 router.get('/projects/:id/observations', projectController.getProjectObservations);
 router.put('/projects/:id', projectController.updateProject);
 router.put('/projects/:id/resubmit', projectController.resubmitProject);
+router.put('/projects/:id/submit-for-approval', projectController.submitProjectForApproval);
 
 module.exports = router;

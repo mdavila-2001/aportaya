@@ -68,9 +68,9 @@
                             </a>
                         </li>
                         <li class="sidebar-item">
-                            <a href="../settings.html">
-                                <span class="material-symbols-outlined">settings</span>
-                                <span>Configuración</span>
+                            <a href="../donations.html">
+                                <span class="material-symbols-outlined">volunteer_activism</span>
+                                <span>Mis Aportes</span>
                             </a>
                         </li>
                     </ul>
@@ -122,9 +122,9 @@
                                             </a>
                                         </li>
                                         <li class="mobile-sidebar-item">
-                                            <a href="../settings.html">
-                                                <span class="material-symbols-outlined">settings</span>
-                                                <span>Configuración</span>
+                                            <a href="../donations.html">
+                                                <span class="material-symbols-outlined">volunteer_activism</span>
+                                                <span>Mis Aportes</span>
                                             </a>
                                         </li>
                                     </ul>
@@ -193,6 +193,27 @@
             <div class="modal-footer">
                 <button class="btn btn-secondary" commandfor="logout-modal" command="hide-popover">Cancelar</button>
                 <button class="btn btn-primary" id="confirm-logout">Cerrar sesión</button>
+            </div>
+        </div>
+
+        <div class="modal modal-small" id="submit-approval-modal" popover="manual">
+            <div class="modal-header">
+                <h2 class="modal-title">Enviar a Aprobación</h2>
+                <button class="modal-close" commandfor="submit-approval-modal" command="hide-popover">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>¿Estás seguro de enviar este proyecto a revisión?</p>
+                <p style="color: var(--text-light); font-size: var(--font-S); margin-top: 0.5rem;">
+                    Una vez enviado, el equipo de administración lo revisará. Si hay observaciones, podrás realizar cambios
+                    y reenviarlo.
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" commandfor="submit-approval-modal"
+                    command="hide-popover">Cancelar</button>
+                <button class="btn btn-primary" id="confirm-submit-btn">Enviar a Revisión</button>
             </div>
         </div>
 

@@ -67,9 +67,9 @@
                             </a>
                         </li>
                         <li class="sidebar-item">
-                            <a href="../settings.html">
-                                <span class="material-symbols-outlined">settings</span>
-                                <span>Configuración</span>
+                            <a href="../donations.html">
+                                <span class="material-symbols-outlined">volunteer_activism</span>
+                                <span>Mis Aportes</span>
                             </a>
                         </li>
                     </ul>
@@ -121,9 +121,9 @@
                                             </a>
                                         </li>
                                         <li class="mobile-sidebar-item">
-                                            <a href="../settings.html">
-                                                <span class="material-symbols-outlined">settings</span>
-                                                <span>Configuración</span>
+                                            <a href="../donations.html">
+                                                <span class="material-symbols-outlined">volunteer_activism</span>
+                                                <span>Mis Aportes</span>
                                             </a>
                                         </li>
                                     </ul>
@@ -167,13 +167,8 @@
                             <label for="project-title">
                                 Nombre del Proyecto <span style="color: #ef4444;">*</span>
                             </label>
-                            <input 
-                                type="text" 
-                                id="project-title" 
-                                name="title" 
-                                placeholder="Ej: Construyendo un futuro mejor"
-                                maxlength="200"
-                            >
+                            <input type="text" id="project-title" name="title"
+                                placeholder="Ej: Construyendo un futuro mejor" maxlength="200">
                             <div class="char-counter">
                                 <span id="title-counter">0</span>/200
                             </div>
@@ -183,13 +178,9 @@
                             <label for="project-summary">
                                 Resumen <span style="color: #ef4444;">*</span>
                             </label>
-                            <textarea 
-                                id="project-summary" 
-                                name="summary" 
+                            <textarea id="project-summary" name="summary"
                                 placeholder="Un resumen breve de tu proyecto (se mostrará en las tarjetas de vista previa)..."
-                                maxlength="500"
-                                rows="3"
-                            ></textarea>
+                                maxlength="500" rows="3"></textarea>
                             <div class="char-counter">
                                 <span id="summary-counter">0</span>/500
                             </div>
@@ -199,12 +190,8 @@
                             <label for="project-description">
                                 Descripción Detallada <span style="color: #ef4444;">*</span>
                             </label>
-                            <textarea 
-                                id="project-description" 
-                                name="description" 
-                                placeholder="Describe tu proyecto de manera detallada..."
-                                maxlength="5000"
-                            ></textarea>
+                            <textarea id="project-description" name="description"
+                                placeholder="Describe tu proyecto de manera detallada..." maxlength="5000"></textarea>
                             <div class="char-counter">
                                 <span id="description-counter">0</span>/5000
                             </div>
@@ -214,14 +201,67 @@
                             <label for="project-end-date">
                                 Fecha Límite <span style="color: #ef4444;">*</span>
                             </label>
-                            <input 
-                                type="date" 
-                                id="project-end-date" 
-                                name="endDate"
-                            >
+                            <input type="date" id="project-end-date" name="endDate">
                             <small style="display: block; margin-top: 0.5rem; color: #666;">
                                 La fecha límite debe ser posterior a hoy
                             </small>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="project-financial-goal">
+                                Meta Financiera (Bs.) <span style="color: #ef4444;">*</span>
+                            </label>
+                            <input type="number" id="project-financial-goal" name="financialGoal" min="100" step="0.01">
+                            <small id="financial-goal-hint" style="display: block; margin-top: 0.5rem; color: #666;">
+                                Monto mínimo: Bs. 100
+                            </small>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="project-category">
+                                Categoría <span style="color: #ef4444;">*</span>
+                            </label>
+                            <select id="project-category" name="categoryId">
+                                <option value="">Cargando categorías...</option>
+                            </select>
+                            <small id="category-hint" style="display: block; margin-top: 0.5rem; color: #666;"></small>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="project-location">
+                                Ubicación <span style="color: #ef4444;">*</span>
+                            </label>
+                            <input type="text" id="project-location" name="location" placeholder="Ciudad, País">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="project-video">
+                                Video del Proyecto (opcional)
+                            </label>
+                            <input type="url" id="project-video" name="videoUrl"
+                                placeholder="https://youtube.com/watch?v=...">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Imagen de Portada</label>
+                            <div id="current-cover-preview" style="margin-bottom: 1rem;"></div>
+                            <input type="file" id="cover-image-input" accept="image/*" hidden>
+                            <input type="hidden" id="cover-image-id" name="coverImageId">
+                            <button type="button" class="btn btn-secondary" id="change-cover-btn">
+                                <span class="material-symbols-outlined" style="font-size: 18px;">upload</span>
+                                Cambiar Imagen
+                            </button>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Documento de Prueba (opcional)</label>
+                            <div id="current-document-preview" style="margin-bottom: 1rem;"></div>
+                            <input type="file" id="proof-document-input" accept=".pdf,.doc,.docx" hidden>
+                            <input type="hidden" id="proof-document-id" name="proofDocumentId">
+                            <button type="button" class="btn btn-secondary" id="change-document-btn">
+                                <span class="material-symbols-outlined" style="font-size: 18px;">upload</span>
+                                Cambiar Documento
+                            </button>
                         </div>
 
                         <div class="form-actions">

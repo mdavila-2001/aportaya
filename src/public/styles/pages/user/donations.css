@@ -1,0 +1,139 @@
+.donations-main {
+    width: 100%;
+    padding: var(--spXL);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spL);
+}
+
+.donations-header {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spM);
+}
+
+.donations-summary {
+    display: flex;
+    gap: var(--spM);
+    flex-wrap: wrap;
+}
+
+.summary-card {
+    flex: 1;
+    min-width: 200px;
+    background: var(--card-bg);
+    border-radius: var(--radius-M);
+    padding: var(--spM);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spXS);
+    box-shadow: var(--shadow-S);
+}
+
+.summary-label {
+    font-size: var(--font-S);
+    color: var(--text-light);
+    font-weight: 500;
+}
+
+.summary-value {
+    font-size: var(--font-XXL);
+    color: var(--primary);
+    font-weight: 700;
+}
+
+.donations-container {
+    width: 100%;
+}
+
+.donations-table-wrapper {
+    background: var(--card-bg);
+    border-radius: var(--radius-M);
+    padding: var(--spM);
+    overflow-x: auto;
+}
+
+.donations-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.donations-table thead {
+    background: var(--bg-secondary);
+}
+
+.donations-table th {
+    padding: var(--spM);
+    text-align: left;
+    font-weight: 600;
+    color: var(--text);
+    border-bottom: 2px solid var(--border);
+}
+
+.donations-table td {
+    padding: var(--spM);
+    border-bottom: 1px solid var(--border);
+}
+
+.donation-amount {
+    font-weight: 600;
+    color: var(--success);
+}
+
+.project-link {
+    color: var(--primary);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s;
+}
+
+.project-link:hover {
+    color: var(--primary-dark);
+    text-decoration: underline;
+}
+
+.status-badge {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    border-radius: var(--radius-S);
+    font-size: var(--font-XS);
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.status-success {
+    background: var(--success-light);
+    color: var(--success-dark);
+}
+
+.status-pending {
+    background: var(--warning-light);
+    color: var(--warning-dark);
+}
+
+.status-failed {
+    background: var(--danger-light);
+    color: var(--danger-dark);
+}
+
+.empty-icon {
+    font-size: 64px;
+    color: var(--text-light);
+    opacity: 0.5;
+}
+
+@media (max-width: 768px) {
+    .donations-main {
+        padding: var(--spM);
+    }
+
+    .donations-table-wrapper {
+        padding: var(--spS);
+    }
+
+    .donations-table th,
+    .donations-table td {
+        padding: var(--spS);
+        font-size: var(--font-S);
+    }
+}

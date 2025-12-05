@@ -295,9 +295,23 @@ const updateProject = async (req, res) => {
     try {
         const { id } = req.params;
         const userId = req.user.id;
-        const { title, description, summary, endDate } = req.body;
+        const {
+            title,
+            description,
+            summary,
+            endDate,
+            financialGoal,
+            categoryId,
+            location,
+            videoUrl,
+            coverImageId,
+            proofDocumentId
+        } = req.body;
 
-        if (!title && !description && !summary && !endDate) {
+        // Validar que al menos un campo sea proporcionado
+        if (!title && !description && !summary && !endDate && !financialGoal &&
+            !categoryId && !location && videoUrl === undefined &&
+            coverImageId === undefined && proofDocumentId === undefined) {
             return res.status(400).json({
                 success: false,
                 message: 'Debes proporcionar al menos un campo para actualizar'
@@ -313,6 +327,7 @@ const updateProject = async (req, res) => {
             });
         }
 
+        // Validar permisos de usuario
         if (project.creator_id !== userId) {
             return res.status(403).json({
                 success: false,
@@ -320,6 +335,23 @@ const updateProject = async (req, res) => {
             });
         }
 
+        // VALIDACIÓN PRINCIPAL: Solo draft y observed son editables
+        if (!['draft', 'observed'].includes(project.approval_status)) {
+            return res.status(403).json({
+                success: false,
+                message: 'Solo puedes editar proyectos en estado Borrador u Observado'
+            });
+        }
+
+        // Validar meta financiera: solo editable si no hay donaciones
+        if (financialGoal !== undefined && project.raised_amount > 0) {
+            return res.status(400).json({
+                success: false,
+                message: 'No puedes cambiar la meta financiera si ya hay donaciones'
+            });
+        }
+
+        // Validar fecha límite
         if (endDate) {
             const endDateObj = new Date(endDate);
             const now = new Date();
@@ -332,11 +364,18 @@ const updateProject = async (req, res) => {
             }
         }
 
+        // Construir objeto de actualización
         const updateData = {};
         if (title) updateData.title = title.trim();
         if (description) updateData.description = description.trim();
         if (summary) updateData.summary = summary.trim();
         if (endDate) updateData.endDate = endDate;
+        if (financialGoal) updateData.financialGoal = parseFloat(financialGoal);
+        if (categoryId) updateData.categoryId = categoryId;
+        if (location) updateData.location = location.trim();
+        if (videoUrl !== undefined) updateData.videoUrl = videoUrl ? videoUrl.trim() : null;
+        if (coverImageId !== undefined) updateData.coverImageId = coverImageId;
+        if (proofDocumentId !== undefined) updateData.proofDocumentId = proofDocumentId;
 
         const success = await projectRepository.updateProject(id, updateData);
 
@@ -423,6 +462,31 @@ const resubmitProject = async (req, res) => {
     }
 };
 
+const submitProjectForApproval = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const userId = req.user.id;
+
+        await projectRepository.submitProjectForApproval(id, userId);
+
+        res.json({
+            success: true,
+            message: 'Proyecto enviado a revisión exitosamente'
+        });
+    } catch (error) {
+        console.error('Error enviando proyecto a aprobación:', error);
+
+        const statusCode = error.message.includes('permiso') ? 403 :
+            error.message.includes('no encontrado') ? 404 :
+                error.message.includes('borrador') ? 400 : 500;
+
+        res.status(statusCode).json({
+            success: false,
+            message: error.message || 'Error al enviar el proyecto'
+        });
+    }
+};
+
 module.exports = {
     createProject,
     getProjects,
@@ -433,5 +497,6 @@ module.exports = {
     getProjectForEdit,
     updateProject,
     getProjectObservations,
-    resubmitProject
+    resubmitProject,
+    submitProjectForApproval
 };

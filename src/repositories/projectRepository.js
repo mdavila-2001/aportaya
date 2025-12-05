@@ -333,9 +333,27 @@ const getProjectById = async (projectId) => {
                 p.title,
                 p.description,
                 p.summary,
+                p.financial_goal,
+                p.raised_amount,
                 p.end_date,
-                p.creator_id
+                p.location,
+                p.category_id,
+                p.approval_status,
+                p.campaign_status,
+                p.creator_id,
+                p.video_url,
+                c.name as category_name,
+                pi_cover.image_id as cover_image_id,
+                img_cover.file_path as cover_image_url,
+                pd.document_id as proof_document_id,
+                doc.file_path as proof_document_url,
+                doc.file_name as proof_document_name
             FROM projects.project p
+            LEFT JOIN projects.category c ON p.category_id = c.id
+            LEFT JOIN projects.project_image pi_cover ON p.id = pi_cover.project_id AND pi_cover.is_cover = TRUE
+            LEFT JOIN files.image img_cover ON pi_cover.image_id = img_cover.id
+            LEFT JOIN projects.project_document pd ON p.id = pd.project_id
+            LEFT JOIN files.document doc ON pd.document_id = doc.id
             WHERE p.id = $1
         `;
 
@@ -352,29 +370,99 @@ const getProjectById = async (projectId) => {
 const updateProject = async (projectId, updateData) => {
     const client = await dbPool.connect();
     try {
+        await client.query('BEGIN');
+
+        // Construir query dinámicamente solo con campos proporcionados
+        const updates = [];
+        const values = [projectId];
+        let paramIndex = 2;
+
+        if (updateData.title !== undefined) {
+            updates.push(`title = $${paramIndex++}`);
+            values.push(updateData.title);
+        }
+        if (updateData.summary !== undefined) {
+            updates.push(`summary = $${paramIndex++}`);
+            values.push(updateData.summary);
+        }
+        if (updateData.description !== undefined) {
+            updates.push(`description = $${paramIndex++}`);
+            values.push(updateData.description);
+        }
+        if (updateData.financialGoal !== undefined) {
+            updates.push(`financial_goal = $${paramIndex++}`);
+            values.push(updateData.financialGoal);
+        }
+        if (updateData.categoryId !== undefined) {
+            updates.push(`category_id = $${paramIndex++}`);
+            values.push(updateData.categoryId);
+        }
+        if (updateData.location !== undefined) {
+            updates.push(`location = $${paramIndex++}`);
+            values.push(updateData.location);
+        }
+        if (updateData.endDate !== undefined) {
+            updates.push(`end_date = $${paramIndex++}`);
+            values.push(updateData.endDate);
+        }
+        if (updateData.videoUrl !== undefined) {
+            updates.push(`video_url = $${paramIndex++}`);
+            values.push(updateData.videoUrl);
+        }
+
+        // Siempre actualizar updated_at
+        updates.push('updated_at = NOW()');
+
+        if (updates.length === 1) { // Solo updated_at
+            return true; // No hay nada que actualizar
+        }
+
         const query = `
-            SELECT projects.update_project(
-                $1,  -- p_id
-                $2,  -- p_title
-                $3,  -- p_description
-                $4,  -- p_summary
-                NULL, -- p_financial_goal
-                NULL, -- p_start_date
-                $5   -- p_end_date
-            ) as success;
+            UPDATE projects.project
+            SET ${updates.join(', ')}
+            WHERE id = $1
         `;
 
-        const values = [
-            projectId,
-            updateData.title || null,
-            updateData.description || null,
-            updateData.summary || null,
-            updateData.endDate || null
-        ];
+        await client.query(query, values);
 
-        const res = await client.query(query, values);
-        return res.rows[0].success;
+        // Actualizar imagen de portada si se proporciona
+        if (updateData.coverImageId !== undefined) {
+            // Primero eliminar imagen anterior
+            await client.query(`
+                DELETE FROM projects.project_image 
+                WHERE project_id = $1 AND is_cover = TRUE
+            `, [projectId]);
+
+            // Insertar nueva imagen
+            if (updateData.coverImageId) {
+                await client.query(`
+                    INSERT INTO projects.project_image (project_id, image_id, is_cover)
+                    VALUES ($1, $2, TRUE)
+                `, [projectId, updateData.coverImageId]);
+            }
+        }
+
+        // Actualizar documento de prueba si se proporciona
+        if (updateData.proofDocumentId !== undefined) {
+            // Primero eliminar documento anterior
+            await client.query(`
+                DELETE FROM projects.project_document 
+                WHERE project_id = $1
+            `, [projectId]);
+
+            // Insertar nuevo documento
+            if (updateData.proofDocumentId) {
+                await client.query(`
+                    INSERT INTO projects.project_document (project_id, document_id)
+                    VALUES ($1, $2)
+                `, [projectId, updateData.proofDocumentId]);
+            }
+        }
+
+        await client.query('COMMIT');
+        return true;
     } catch (error) {
+        await client.query('ROLLBACK');
         console.error('Error actualizando proyecto:', error);
         throw error;
     } finally {
@@ -465,6 +553,58 @@ const resubmitProject = async (projectId, userId) => {
     }
 };
 
+const submitProjectForApproval = async (projectId, userId) => {
+    const client = await dbPool.connect();
+    try {
+        await client.query('BEGIN');
+
+        // Validar que sea el owner y estado actual
+        const projectQuery = `
+            SELECT creator_id, approval_status 
+            FROM projects.project 
+            WHERE id = $1
+        `;
+        const { rows } = await client.query(projectQuery, [projectId]);
+
+        if (rows.length === 0) {
+            throw new Error('Proyecto no encontrado');
+        }
+
+        if (rows[0].creator_id !== userId) {
+            throw new Error('No tienes permiso para enviar este proyecto');
+        }
+
+        if (rows[0].approval_status !== 'draft') {
+            throw new Error('Solo puedes enviar proyectos en borrador');
+        }
+
+        // Cambiar estado
+        const updateQuery = `
+            UPDATE projects.project 
+            SET approval_status = 'in_review', updated_at = NOW()
+            WHERE id = $1
+        `;
+        await client.query(updateQuery, [projectId]);
+
+        // Registrar en historial
+        const historyQuery = `
+            INSERT INTO projects.project_status_history 
+                (project_id, old_status, new_status, changed_by, reason)
+            VALUES ($1, 'draft', 'in_review', $2, 'Proyecto enviado a revisión por el creador')
+        `;
+        await client.query(historyQuery, [projectId, userId]);
+
+        await client.query('COMMIT');
+        return true;
+    } catch (error) {
+        await client.query('ROLLBACK');
+        console.error('Error enviando proyecto a aprobación:', error);
+        throw error;
+    } finally {
+        client.release();
+    }
+};
+
 module.exports = {
     createProject,
     getProjects,
@@ -478,5 +618,6 @@ module.exports = {
     getProjectById,
     updateProject,
     getProjectObservations,
-    resubmitProject
+    resubmitProject,
+    submitProjectForApproval
 };

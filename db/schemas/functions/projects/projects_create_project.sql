@@ -50,7 +50,7 @@ BEGIN
   ) VALUES (
     p_creator_id, p_title, v_slug, p_description, p_summary,
     p_financial_goal, 0, p_start_date, p_end_date,
-    'in_review', 'not_started', p_category_id, p_location,
+    'draft', 'not_started', p_category_id, p_location,
     p_video_url, p_proof_document_id, coalesce(p_currency,'USD'), now(), now()
   ) RETURNING id INTO v_project_id;
 

@@ -80,6 +80,14 @@
             </button>
         ` : '';
 
+        // Botón para enviar a aprobación (solo si es draft)
+        const submitButton = project.status === 'draft' ? `
+            <button class="btn btn-primary btn-sm" data-action="submit-approval" data-id="${project.id}" style="margin-left: 0.5rem;">
+                <span class="material-symbols-outlined" style="font-size: 18px;">send</span>
+                Enviar a Aprobación
+            </button>
+        ` : '';
+
         card.innerHTML = `
             <div class="project-image-container">
                 <img 
@@ -112,6 +120,7 @@
                                 Editar
                             </a>
                             ${observedButton}
+                            ${submitButton}
                         </div>
                     </div>
                 </div>
@@ -203,12 +212,53 @@
         }
     }
 
-    // Event delegation para botones
-    projectsGrid.addEventListener('click', (e) => {
-        const btn = e.target.closest('[data-action="view-observations"]');
-        if (btn) {
-            const projectId = btn.dataset.id;
-            showObservations(projectId);
+    // Event delegation para botones de observaciones y envío a aprobación
+    projectsGrid?.addEventListener('click', async (e) => {
+        const viewObsBtn = e.target.closest('[data-action="view-observations"]');
+        if (viewObsBtn) {
+            const projectId = viewObsBtn.dataset.id;
+            await showObservations(projectId);
+            document.getElementById('observations-modal').showPopover();
+            return;
+        }
+
+        const submitBtn = e.target.closest('[data-action="submit-approval"]');
+        if (submitBtn) {
+            currentProjectId = submitBtn.dataset.id;
+            document.getElementById('submit-approval-modal').showPopover();
+            return;
+        }
+    });
+
+    // Confirmar envío a aprobación
+    const confirmSubmitBtn = document.getElementById('confirm-submit-btn');
+    confirmSubmitBtn?.addEventListener('click', async () => {
+        if (!currentProjectId) return;
+
+        const token = localStorage.getItem('token');
+
+        try {
+            const response = await fetch(`/api/user/projects/${currentProjectId}/submit-for-approval`, {
+                method: 'PUT',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            const result = await response.json();
+
+            document.getElementById('submit-approval-modal').hidePopover();
+
+            if (!response.ok) {
+                throw new Error(result.message);
+            }
+
+            alert('✅ Proyecto enviado a revisión exitosamente');
+            loadMyProjects();
+        } catch (error) {
+            console.error('Error:', error);
+            alert(error.message || 'Error al enviar el proyecto');
         }
     });
 
